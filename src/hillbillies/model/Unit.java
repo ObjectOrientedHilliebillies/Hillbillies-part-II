@@ -645,6 +645,57 @@ private int toughness;
  */
 private static int maxToughness = 200;
 
+/**
+ * Return the experience of this unit.
+ */
+public int getExperience() {
+	return this.experience;
+}
+
+/**
+ * Check whether the given experience is a valid experience for
+ * any unit.
+ *  
+ * @param  experience
+ *         The experience to check.
+ * @return 
+ *       | result == 0 < experience
+*/
+public static boolean isValidExperience(int experience) {
+	if (experience >= 0)
+		return true;
+	return false;
+}
+
+/**
+ * Set the experience of this unit to the given experience.
+ * 
+ * @param  experience
+ *         The new experience for this unit.
+ * @post   If the given experience is a valid experience for any unit,
+ *         the experience of this new unit is equal to the given
+ *         experience.
+ *       | if (isValidExperience(experience))
+ *       |   then new.getExperience() == experience
+ */
+@Raw
+public void setExperience(int experience) {
+	if (isValidExperience(experience))
+		if (!(experience >= 10))
+			this.experience = experience;
+		else{ // TODO checken met facade welke we moeten ophogen, random?
+			int points;
+			points = this.getExperience()/10;
+			this.setExperience(this.getExperience()%10);
+			this.setStrength(getStrength()+points);}
+}
+
+/**
+ * Variable registering the experience of this unit.
+ */
+private int experience;
+
+
 
 /* Points */
 /**
@@ -1041,6 +1092,8 @@ public void moveToAdjacent(int dx, int dy, int dz)
 		this.setTargetPosition(targetPosition);
 		this.setBaseSpeed();
 	}
+	if (this.getTargetCube() == null)
+		this.setExperience(this.getExperience() + 1);
 }
 
 /**
@@ -1055,7 +1108,7 @@ private double exhaustedPoints;
  * @param tickTime
  * 		The time the tick lasts.
  * 
- * @post The unit has moved a step to its target position.
+ * @post The unit has moved a step to its target position. //TODO experience ophogen
  * 		| new.getPosition() == this.getPosition
  * 								+ (this.speed * this.getTargetPosition - this.getPosition)
  *									/ distance
@@ -1081,10 +1134,12 @@ public void doMove(double tickTime) throws ModelException {
 	if (Util.fuzzyGreaterThanOrEqualTo(movingDistance, 1)){
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
+			this.setExperience(this.executedSteps + this.getExperience());
 			System.out.println("targetCube op null zetten");
 			this.sprinting = false;
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
+			this.executedSteps = 0;
 		}
 			
 		this.startNextActivity();
@@ -1104,6 +1159,8 @@ public void doMove(double tickTime) throws ModelException {
 	
 	}
 }
+
+public int executedSteps;
 
 /**
  * Return whether this unit is moving or not
@@ -1206,8 +1263,9 @@ public void doMoveTo() throws IllegalArgumentException, ModelException{
 		}
 	}
 	this.moveToAdjacent(difference[0], difference[1], difference[2]);
-	
 }
+
+
 
 /* Working */
 
