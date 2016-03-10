@@ -1390,7 +1390,7 @@ public boolean isUnderAttack() {
  * 
  * @param unit
  * 		the unit who is attacking this unit
- * @post 
+ * @post //TODO experience toevoegen aan post
  * 		| if Math.random() < dodgeChance 
  * 				 new.getPosition == this.getPosition + random
  * 				 this.getOrientation = unit.getOrientation
@@ -1407,6 +1407,7 @@ public void defenseAgainst(Unit unit) {
 	double dodgeChance = 0.2*unit.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
+		this.setExperience(this.getExperience() + 20);
 		double[] newPosition = new double[3];
 		int[] random = new int[3];
 		do {
@@ -1425,8 +1426,11 @@ public void defenseAgainst(Unit unit) {
 		this.faceOpponent(unit);
 		unit.faceOpponent(this);
 	}
-	else if (!(Math.random() < blockChance)) 
-		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);
+	else if (!(Math.random() < blockChance)) {
+		this.setExperience(this.getExperience() + 20);
+		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);}
+	else
+		unit.setExperience(this.getExperience() + 20);
 }
 
 /* Resting */
