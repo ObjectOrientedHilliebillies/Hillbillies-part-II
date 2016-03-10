@@ -127,5 +127,4 @@ public class Vector {
 		}
 		return neighbourForAtleastOneComponent;
 	}
-	
 }
