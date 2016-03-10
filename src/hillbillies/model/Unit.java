@@ -174,11 +174,6 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		e.printStackTrace();
 	}
 	
-	
-	if (isValidWeight(weight))
-		this.weight = weight;
-	else 
-		this.weight = this.minWeight;
 	if (! isValidAgility(agility))
 		agility = 25;
 	else
@@ -191,6 +186,10 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		toughness = 25;
 	else
 		this.setToughness(toughness);
+	if (!isValidWeight(weight))
+		this.weight = this.getMinWeight();
+	else 
+		this.setWeight(weight);
 	this.setDefaultBehavior(enableDefaultBehavior);
 	
 	
@@ -410,7 +409,7 @@ public String getName() {
 */
 public static boolean isValidName(String unitName) {
 	return Character.isUpperCase(unitName.charAt(0)) && unitName.length() >= 2 
-			&& unitName.matches("[a-zA-Z ']+");
+			&& unitName.matches("[a-zA-Z '\"]+");
 }
 
 /**
@@ -460,7 +459,7 @@ public int getWeight() {
  *       | result == maxWeight > weight >= (strength+agility)/2 
 */
 public boolean isValidWeight(int weight) {
-	return (weight >= minWeight 
+	return (weight >= this.getMinWeight() 
 			&& weight <= maxWeight);
 }
 
@@ -482,7 +481,7 @@ public void setWeight(int weight) {
 	if (isValidWeight(weight))
 		this.weight = weight;
 	else 
-		this.weight = minWeight;
+		this.weight = this.getMinWeight();
 }
 
 /**
@@ -495,10 +494,9 @@ private int weight;
  */
 private static int maxWeight = 200;
 
-/**
- * Variable registering the minimum weight of this unit.
- */
-private int minWeight = (this.getStrength() + this.getAgility())/2;
+public int getMinWeight() {
+	return (this.getStrength() + this.getAgility())/2;
+}
 
 /**
  * Return the strength of this unit.
