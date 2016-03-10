@@ -1,9 +1,7 @@
 package hillbillies.model;
 
-import java.util.ArrayList;
-
 public class Vector {
-	private final int cubesPerRib = 50;
+	private final static int cubesPerRib = 50;
 	private double compX;
 	private double compY;
 	private double compZ;
@@ -14,18 +12,22 @@ public class Vector {
 		setZcoord(coordZ);
 	}
 	
+	public Vector(double[] position){
+		this.setXcoord(position[0]);
+		this.setYcoord(position[1]);
+		this.setZcoord(position[2]);
+	}
+	
 	public void setVector(double coordX, double coordY, double coordZ) {
 		setXcoord(coordX);
 		setYcoord(coordY);
 		setZcoord(coordZ);
 	}
 	
-	public ArrayList<Double> getVectorArray() {
-		ArrayList<Double> vectorArray = new ArrayList<>();
-		vectorArray.add(this.getXCoord());
-		vectorArray.add(this.getYCoord());
-		vectorArray.add(this.getZCoord());
-		return vectorArray;
+	public void setVector(double[] position){
+		this.setXcoord(position[0]);
+		this.setYcoord(position[1]);
+		this.setZcoord(position[2]);
 	}
 	
 	public double[] getVector() {
@@ -36,22 +38,22 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public Cube getCube(){
-		return new Cube(this);
-	}
-	
-	public boolean inBorders(){
-		return (this.getXCoord() <= this.cubesPerRib && this.getXCoord() >= 0 &&
-				this.getYCoord() <= this.cubesPerRib && this.getYCoord() >= 0 &&
-				this.getZCoord() <= this.cubesPerRib && this.getZCoord() >= 0);
+	public int[] getCube(){
+		int[] cubeArray = new int[3];
+		cubeArray[0] = (int) this.getXCoord();
+		cubeArray[1] = (int) this.getYCoord();
+		cubeArray[2] = (int) this.getZCoord();
+		return cubeArray;
 	}
 	
 	public void setXcoord(double coordX) {
 		this.compX = coordX;
 	}
+	
 	public void setYcoord(double coordY) {
 		this.compY = coordY;
 	}
+	
 	public void setZcoord(double coordZ) {
 		this.compZ = coordZ;
 	}
@@ -59,10 +61,71 @@ public class Vector {
 	public double getXCoord() {
 		return this.compX;
 	}
+	
 	public double getYCoord() {
 		return this.compY;
 	}
+	
 	public double getZCoord() {
 		return this.compZ;
 	}
+
+	/**
+	 * Check whether the given position is a position inside of the game world.
+	 *  
+	 * @param  position
+	 *         The position to check.
+	 * @return 
+	 *       | result == 
+	 *       // FIXME Deze check aanvullen.
+	*/
+	public static boolean isPositionInsideWorld(Vector position) {
+		return (isComponentInsideWorld(position.getXCoord())&&
+				isComponentInsideWorld(position.getYCoord())&&
+				isComponentInsideWorld(position.getZCoord()));
+	}
+	
+	public static boolean isPositionInsideWorld(double[] position){
+		for (int i=0; i != 3 ; i++){
+			if (!isComponentInsideWorld(position[i])){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Check whether the given component is in the borders of the game world.
+	 * 
+	 * @param component
+	 * 		  The component to check
+	 * @return
+	 * 		| result == (0 < component < 50)
+	 */
+	public static boolean isComponentInsideWorld(double component){
+		if ((component < 0) || (component >= Vector.cubesPerRib))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Check whether the given cube is a neighbour cube of this cube
+	 *  
+	 * @param  otherCube
+	 *         The Cube to check.
+	 * @return 
+	 *       | result == //FIXME
+	*/
+	private boolean isNeighbourCube(Vector otherCube){
+		boolean neighbourForAtleastOneComponent = false;
+		for (int i = 0; i != 3; i++) {
+			int difference = Math.abs(this.getCube()[i] - otherCube.getCube()[i]);
+		    if (difference == 1)
+		    	neighbourForAtleastOneComponent = true;
+		    else if (difference != 0)
+		    	return false;
+		}
+		return neighbourForAtleastOneComponent;
+	}
+	
 }

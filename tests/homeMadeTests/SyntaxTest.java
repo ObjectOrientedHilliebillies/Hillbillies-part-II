@@ -8,13 +8,18 @@ import ogp.framework.util.Util;
 public class SyntaxTest {
 	@Test
 	public final void test(){
-		String a;
-		String b;
+		int[] a = new int[3];
+		for (int i=0; i != 3; i++){
+			a[i]=i;
+		}
+		double b; 
+		double c;
+		double d;
 		
-		a = "a";
-		b = a;
-		a = "x";
+		b = a[0];
+		c = a[1];
+		d = a[2];
 		
-		System.out.println(b);
+		System.out.println(d);
 }
 }
