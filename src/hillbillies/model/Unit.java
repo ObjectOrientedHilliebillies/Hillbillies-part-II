@@ -1,5 +1,37 @@
 package hillbillies.model;
 
+//New classes: boulder, log, world
+//New attributes: faction, experience
+//New methods: fall, die, carry
+//Adapted methods: moveTo, work, dodge
+
+//Boulder: Has a position, weight between 10 and 50, (unit carrying? checken in facade)
+
+//Log: same as boulder
+
+//World: default = air, checken in facade, na world creation: checken of naar 
+//			elke blok een pad loopt vanaf de rand van de wereld. anders collapsen.
+
+//Faction: unit cannot attack units with same faction
+
+//Experience: every 10 exp points strength, agility, or toughness increases with
+//			1 point. 1 point per executed step, no points if movement is
+//			interuptted. 20 points per succeeded dodge, block or attack.
+
+//Fall: Fall when no neighbouring cube is solid. A unit loses 10 hitpoints
+//			per Z-level they fall.
+
+//Die: If hitpoints <= 0. Drop carried items.
+
+//Carry: checken in facade. Als ge iets dropt dan komt dat terug
+
+//moveTo: the block the unit is standing in must be non-solid, 
+//			at least one neighbouring cube must be solid.
+
+//Work: checken in facade. Rock gaat kapot => unit draagt rock
+
+//Dodge: dodge to passable terrain.
+
 import java.util.Arrays;
 
 
@@ -613,6 +645,57 @@ private int toughness;
  */
 private static int maxToughness = 200;
 
+/**
+ * Return the experience of this unit.
+ */
+public int getExperience() {
+	return this.experience;
+}
+
+/**
+ * Check whether the given experience is a valid experience for
+ * any unit.
+ *  
+ * @param  experience
+ *         The experience to check.
+ * @return 
+ *       | result == 0 < experience
+*/
+public static boolean isValidExperience(int experience) {
+	if (experience >= 0)
+		return true;
+	return false;
+}
+
+/**
+ * Set the experience of this unit to the given experience.
+ * 
+ * @param  experience
+ *         The new experience for this unit.
+ * @post   If the given experience is a valid experience for any unit,
+ *         the experience of this new unit is equal to the given
+ *         experience.
+ *       | if (isValidExperience(experience))
+ *       |   then new.getExperience() == experience
+ */
+@Raw
+public void setExperience(int experience) {
+	if (isValidExperience(experience))
+		if (!(experience >= 10))
+			this.experience = experience;
+		else{ // TODO checken met facade welke we moeten ophogen, random?
+			int points;
+			points = this.getExperience()/10;
+			this.setExperience(this.getExperience()%10);
+			this.setStrength(getStrength()+points);}
+}
+
+/**
+ * Variable registering the experience of this unit.
+ */
+private int experience;
+
+
 
 /* Points */
 /**
@@ -1009,6 +1092,8 @@ public void moveToAdjacent(int dx, int dy, int dz)
 		this.setTargetPosition(targetPosition);
 		this.setBaseSpeed();
 	}
+	if (this.getTargetCube() == null)
+		this.setExperience(this.getExperience() + 1);
 }
 
 /**
@@ -1023,7 +1108,7 @@ private double exhaustedPoints;
  * @param tickTime
  * 		The time the tick lasts.
  * 
- * @post The unit has moved a step to its target position.
+ * @post The unit has moved a step to its target position. //TODO experience ophogen
  * 		| new.getPosition() == this.getPosition
  * 								+ (this.speed * this.getTargetPosition - this.getPosition)
  *									/ distance
@@ -1049,10 +1134,12 @@ public void doMove(double tickTime) throws ModelException {
 	if (Util.fuzzyGreaterThanOrEqualTo(movingDistance, 1)){
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
+			this.setExperience(this.executedSteps + this.getExperience());
 			System.out.println("targetCube op null zetten");
 			this.sprinting = false;
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
+			this.executedSteps = 0;
 		}
 			
 		this.startNextActivity();
@@ -1072,6 +1159,8 @@ public void doMove(double tickTime) throws ModelException {
 	
 	}
 }
+
+public int executedSteps;
 
 /**
  * Return whether this unit is moving or not
@@ -1174,8 +1263,9 @@ public void doMoveTo() throws IllegalArgumentException, ModelException{
 		}
 	}
 	this.moveToAdjacent(difference[0], difference[1], difference[2]);
-	
 }
+
+
 
 /* Working */
 
@@ -1300,7 +1390,7 @@ public boolean isUnderAttack() {
  * 
  * @param unit
  * 		the unit who is attacking this unit
- * @post 
+ * @post //TODO experience toevoegen aan post
  * 		| if Math.random() < dodgeChance 
  * 				 new.getPosition == this.getPosition + random
  * 				 this.getOrientation = unit.getOrientation
@@ -1317,6 +1407,7 @@ public void defenseAgainst(Unit unit) {
 	double dodgeChance = 0.2*unit.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
+		this.setExperience(this.getExperience() + 20);
 		double[] newPosition = new double[3];
 		int[] random = new int[3];
 		do {
@@ -1335,8 +1426,11 @@ public void defenseAgainst(Unit unit) {
 		this.faceOpponent(unit);
 		unit.faceOpponent(this);
 	}
-	else if (!(Math.random() < blockChance)) 
-		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);
+	else if (!(Math.random() < blockChance)) {
+		this.setExperience(this.getExperience() + 20);
+		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);}
+	else
+		unit.setExperience(this.getExperience() + 20);
 }
 
 /* Resting */
