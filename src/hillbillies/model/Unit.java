@@ -1,5 +1,37 @@
 package hillbillies.model;
 
+//New classes: boulder, log, world
+//New attributes: faction, experience
+//New methods: fall, die, carry
+//Adapted methods: moveTo, work, dodge
+
+//Boulder: Has a position, weight between 10 and 50, (unit carrying? checken in facade)
+
+//Log: same as boulder
+
+//World: default = air, checken in facade, na world creation: checken of naar 
+//			elke blok een pad loopt vanaf de rand van de wereld. anders collapsen.
+
+//Faction: unit cannot attack units with same faction
+
+//Experience: every 10 exp points strength, agility, or toughness increases with
+//			1 point. 1 point per executed step, no points if movement is
+//			interuptted. 20 points per succeeded dodge, block or attack.
+
+//Fall: Fall when no neighbouring cube is solid. A unit loses 10 hitpoints
+//			per Z-level they fall.
+
+//Die: If hitpoints <= 0. Drop carried items.
+
+//Carry: checken in facade. Als ge iets dropt dan komt dat terug
+
+//moveTo: the block the unit is standing in must be non-solid, 
+//			at least one neighbouring cube must be solid.
+
+//Work: checken in facade. Rock gaat kapot => unit draagt rock
+
+//Dodge: dodge to passable terrain.
+
 import java.util.Arrays;
 
 
