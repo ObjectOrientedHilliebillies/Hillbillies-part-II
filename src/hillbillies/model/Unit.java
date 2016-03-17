@@ -175,12 +175,20 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> refs/remotes/origin/master
 	if (isValidWeight(weight))
 		this.weight = weight;
 	else 
 		this.weight = this.minWeight;
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/Victor
+=======
+=======
+>>>>>>> origin/master
+>>>>>>> refs/remotes/origin/master
 	if (! isValidAgility(agility))
 		agility = 25;
 	else
