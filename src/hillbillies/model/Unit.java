@@ -1562,8 +1562,8 @@ public void doDefaultBehavior() throws ModelException{
 	
 	if (activeActivity == "move" && !sprinting && Math.random()<0.05){
 		this.sprinting = true;
-		
-	}else if (activeActivity == null) {
+	}
+	else if (activeActivity == null) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
 			int[] newTargetCube = new int[3];		
