@@ -159,7 +159,7 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		boolean enableDefaultBehavior)
 		throws IllegalArgumentException, ModelException {
 	/*  given enableDefaultBehavior, maximal hitpoints,
-	 *  maximal stamina,
+	 *  maximal stamina
 	 */
 	this.setName(name);
 	
@@ -174,6 +174,13 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		e.printStackTrace();
 	}
 	
+<<<<<<< HEAD
+=======
+	if (isValidWeight(weight))
+		this.weight = weight;
+	else 
+		this.weight = this.minWeight;
+>>>>>>> refs/remotes/origin/Victor
 	if (! isValidAgility(agility))
 		agility = 25;
 	else
@@ -192,8 +199,6 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		this.setWeight(weight);
 	this.setDefaultBehavior(enableDefaultBehavior);
 	
-	
-	// FIXME niet finaal
 	setHitpoints(getMaxHitpoints()-5);
 	setStamina(getMaxStamina()-5);
 	
@@ -207,17 +212,17 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 /**
  * Variable registering the position of this unit.
  */
-private double[] position;
+private Vector position;
 
 /**
  * Variable registering the target cube of this Unit.
  */
-private int[] targetCube;
+private Vector targetCube;
 
 /**
  * Variable registering the target position of this Unit.
  */
-private double[] targetPosition;
+private Vector targetPosition;
 
 
 /**
@@ -225,39 +230,7 @@ private double[] targetPosition;
  */
 @Basic @Raw
 public double[] getPosition() {
-	return this.position;
-}
-
-/**
- * Check whether the given position is a valid position for
- * any unit.
- *  
- * @param  position
- *         The position to check.
- * @return 
- *       | result == 
- *       // FIXME Deze check aanvullen.
-*/
-public static boolean isValidPosition(double[] position) {
-	for (double comp : position){
-		if (!isValidComponent(comp))
-			return false;
-	}
-	return true;
-}
-
-/**
- * Check whether the given component is a valid component for any unit.
- * 
- * @param component
- * 		  The component to check
- * @return
- * 		| result == (0 < component < 50)
- */
-public static boolean isValidComponent(double component){
-	if ((component < 0) || (component > 50))
-		return false;
-	return true;
+	return this.position.getVector();
 }
 
 /**
@@ -276,16 +249,16 @@ public static boolean isValidComponent(double component){
 @Raw
 public void setPosition(double[] position) 
 		throws ModelException {
-	if (! isValidPosition(position))
+	if (! Vector.isPositionInsideWorld(position))
 		throw new ModelException();
-	this.position = position;
+	this.position = new Vector(position);
 }
 
 /**
  * Return the target position of this unit.
  */
 @Basic @Raw
-public double[] getTargetPosition() {
+public Vector getTargetPosition() {
 	return this.targetPosition;
 }
 
@@ -304,9 +277,9 @@ public double[] getTargetPosition() {
  */
 @Raw
 public void setTargetPosition(double[] targetPosition) throws ModelException {
-	if (! isValidPosition(targetPosition))
+	if (! Vector.isPositionInsideWorld(targetPosition))
 		throw new ModelException();
-	this.targetPosition = targetPosition;
+	this.targetPosition = new Vector(targetPosition);
 }
 
 /**
@@ -314,38 +287,14 @@ public void setTargetPosition(double[] targetPosition) throws ModelException {
  */
 @Basic @Raw
 public int[] getCube() {
-	int[] cubeArray = new int[3];
-	for (int i=0 ; i !=3 ; i++){
-		cubeArray[i] = (int) position[i];
-	}
-	return cubeArray;
-	
-	// FIXME oud vs new nog eens vergelijken
-//	return this.cube;
-}
-
-/**
- * Check whether the given Cube is a valid Cube for
- * any Unit.
- *  
- * @param  Cube
- *         The Cube to check.
- * @return 
- *       | result == 0 < //FIXME
-*/
-public static boolean isValidCube(int[] cube) {
-	for (double comp : cube){
-		if ((comp < 0) || (comp > 50))
-			return false;
-	}
-	return true;
+	return this.position.getCube();
 }
 
 /**
  * Return the target cube of this unit.
  */
 @Basic @Raw
-public int[] getTargetCube() {
+public Vector getTargetCube() {
 	return this.targetCube;
 }
 
@@ -363,28 +312,13 @@ public int[] getTargetCube() {
  *       | ! isValidPosition(getCube())
  */
 @Raw
-public void setTargetCube(int[] cube) 
+public void setTargetCube(Vector cube) 
 		throws ModelException {
-	if (! isValidCube(cube))
+	if (! Vector.isPositionInsideWorld(cube))
 		throw new ModelException();
 	this.targetCube = cube;
 }
 
-/**
- * Check whether the given cube is a neighbour cube of this cube
- *  
- * @param  otherCube
- *         The Cube to check.
- * @return 
- *       | result == //FIXME
-*/
-private boolean isNeighbourCube(int[] otherCube){
-	for (int i = 0; i != 3; i++) {
-	    if (Math.abs(this.getCube()[i] - otherCube[i]) == 1)
-	    	return true;
-	}
-	return false;
-}
 ////////////////////////////////////////////////
 ////////////////////* NAME *////////////////////
 ////////////////////////////////////////////////
