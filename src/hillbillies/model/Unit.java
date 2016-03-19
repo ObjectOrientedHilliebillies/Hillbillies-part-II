@@ -49,6 +49,7 @@ import ogp.framework.util.Util;
 // FIXME MoveTo start niet zo gemakkelijk.
 // TODO Defence is nog niet echt getest
 // FIXME isSprinting geeft soms fout aan
+// FIXME Een unit kan nog niet sterven.
 
 
 /**
@@ -283,7 +284,7 @@ public void setTargetPosition(double[] targetPosition) throws ModelException {
  */
 @Basic @Raw
 public int[] getCube() {
-	return this.position.getCube();
+	return this.position.getCube().getVector();
 }
 
 /**
@@ -769,7 +770,7 @@ public void advanceTime(double tickTime) throws IllegalArgumentException, ModelE
 		}
 		
 	if (this.activeActivity == null && (this.targetCube != null) && 
-				!Arrays.equals(this.getCube(), this.targetCube)){
+				!Vector.equals(this.getCube(), this.targetCube)){
 		doMoveTo();
 	}
 	if (isWorking())
@@ -1344,6 +1345,7 @@ public void defenseAgainst(Unit unit) {
 				random[i] = (int) (Math.random() * 3) - 1;
 				newPosition[i] = this.getPosition()[i] + random[i];
 			} while (!isValidComponent(newPosition[i]));
+			// Fixme deze math in een andere classe steken :)
 		}
 		} while (random[0] == 0 && random[1] == 0 && random[2] == 0);
 		try {

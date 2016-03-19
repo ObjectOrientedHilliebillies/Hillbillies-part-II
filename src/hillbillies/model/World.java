@@ -1,6 +1,6 @@
 package hillbillies.model;
 
-public class GameWorld {
+public class World {
 	private final int cubesPerRib = 50;
 	
 	public GameWorld(){

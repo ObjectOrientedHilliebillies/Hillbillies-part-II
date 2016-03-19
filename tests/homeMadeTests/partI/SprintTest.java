@@ -1,10 +1,10 @@
-package homeMadeTests;
+package homeMadeTests.partI;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class RestTest {
+public class SprintTest {
 
 	@Test
 	public void test() {

@@ -1,4 +1,4 @@
-package homeMadeTests;
+package homeMadeTests.partI;
 
 import static org.junit.Assert.*;
 
@@ -35,5 +35,4 @@ public class StrengthAgilityToughnessTest {
 		assertEquals(160, unit.getAgility());
 		assertEquals(160, unit.getToughness());
 	}
-
 }
