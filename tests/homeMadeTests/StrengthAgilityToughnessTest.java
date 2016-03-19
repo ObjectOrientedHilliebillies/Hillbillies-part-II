@@ -1,9 +1,11 @@
-package hillbillies.model;
+package homeMadeTests;
 
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import hillbillies.model.Unit;
 
 public class StrengthAgilityToughnessTest {
 	
