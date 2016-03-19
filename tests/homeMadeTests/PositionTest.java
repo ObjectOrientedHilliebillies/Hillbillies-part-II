@@ -35,6 +35,28 @@ public class PositionTest {
 		unit.setPosition(position);
 	}
 	
+	@Test
+	public void moveTest() throws ModelException {
+		int[] cube = new int[3];
+		cube[0] = 20;
+		cube[1] = 20;
+		cube[2] = 20;
+		unit.moveTo(cube);
+		assertEquals(unit.getCube(), cube);
+	}
 	
-
+	@Test
+	public void moveToAdjacentTest() throws IllegalArgumentException, ModelException {
+		int[] cube = new int[3];
+		cube[0] = 20;
+		cube[1] = 20;
+		cube[2] = 20;
+		unit.moveTo(cube);
+		unit.moveToAdjacent(1, 0, 0);
+		int[] newCube = new int[3];
+		newCube[0] = 21;
+		newCube[1] = 20;
+		newCube[2] = 20;
+		assertEquals(unit.getCube(), newCube);
+	}
 }
