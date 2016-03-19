@@ -3,7 +3,7 @@ package hillbillies.model;
 public class World {
 	private final int cubesPerRib = 50;
 	
-	public GameWorld(){
+	public World(){
 		
 	}
 	
