@@ -38,12 +38,17 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public Vector getCube(){
-		double[] cubeArray = new double[3];
-		cubeArray[0] = (int) this.getXCoord();
-		cubeArray[1] = (int) this.getYCoord();
-		cubeArray[2] = (int) this.getZCoord();
-		return new Vector(cubeArray);
+	public Cube getCube(){
+		
+		return 
+	}
+	
+	public int[] getIntCube(){
+//		int[] cubeArray = new int[3];
+//		cubeArray[0] = (int) this.getXCoord();
+//		cubeArray[1] = (int) this.getYCoord();
+//		cubeArray[2] = (int) this.getZCoord();
+		return this.getCube().getIntCube();
 	}
 	
 	public void setXcoord(double coordX) {
@@ -119,7 +124,7 @@ public class Vector {
 	private boolean isNeighbourCube(Vector otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(this.getCube()[i] - otherCube.getCube()[i]);
+			int difference = Math.abs(this.getIntCube()[i] - otherCube.getIntCube()[i]);
 		    if (difference == 1)
 		    	neighbourForAtleastOneComponent = true;
 		    else if (difference != 0)
