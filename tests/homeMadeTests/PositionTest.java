@@ -59,4 +59,15 @@ public class PositionTest {
 		newCube[2] = 20;
 		assertEquals(unit.getCube(), newCube);
 	}
+	
+	@Test
+	public void moveToAdjacentTest2() throws IllegalArgumentException, ModelException {
+		// Hier moet een exception gegooid worden //TODO
+		int[] cube = new int[3];
+		cube[0] = 0;
+		cube[1] = 0;
+		cube[2] = 0;
+		unit.moveTo(cube);
+		unit.moveToAdjacent(-1, 0, 0);
+	}
 }
