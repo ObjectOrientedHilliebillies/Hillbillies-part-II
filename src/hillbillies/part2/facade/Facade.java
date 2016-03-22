@@ -3,6 +3,7 @@ package hillbillies.part2.facade;
 import java.util.Set;
 
 import hillbillies.model.Unit;
+import hillbillies.model.Vector;
 import hillbillies.model.World;
 import hillbillies.part2.listener.TerrainChangeListener;
 import ogp.framework.util.ModelException;
@@ -10,15 +11,16 @@ import ogp.framework.util.ModelException;
 public class Facade implements IFacade {
 
 	@Override
-	public Unit createUnit(String name, int[] initialPosition, int weight, int agility, int strength, int toughness,
-			boolean enableDefaultBehavior) throws ModelException {	
+	public Unit createUnit(String name, int[] initialPosition, int weight, 
+			int agility, int strength, int toughness,boolean enableDefaultBehavior) 
+					throws ModelException {	
 		
 		return new Unit(name, initialPosition, weight, agility, strength, toughness, enableDefaultBehavior);
 	}
 
 	@Override
 	public double[] getPosition(Unit unit) throws ModelException {
-		return unit.getPosition();
+		return unit.getDoublePosition();
 	}
 
 	@Override
@@ -107,7 +109,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void moveToAdjacent(Unit unit, int dx, int dy, int dz) throws ModelException {
-			unit.moveToAdjacent(dx, dy, dz);
+		Vector positionDifference = new Vector(dx, dy, dz);	
+		unit.moveToAdjacent(positionDifference);
 	}
 
 	@Override

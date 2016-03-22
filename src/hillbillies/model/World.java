@@ -48,7 +48,7 @@ public class World {
 		return NbCubesZ;
 	}
 	
-	public boolean isValidPosition(Vector position){
+	public boolean isPositionInWorld(Vector position){
 		if (position.getXCoord() < 0 || position.getXCoord() > NbCubesX
 			|| position.getYCoord() < 0 || position.getYCoord() > NbCubesY
 			|| position.getZCoord() < 0 || position.getZCoord() > NbCubesZ){
@@ -57,7 +57,7 @@ public class World {
 		return true;
 	}
 	
-	public boolean isValidCube(int[] cube){
+	public boolean isCubeInWorld(int[] cube){
 		if (cube[0] < 0 || cube[0] >= NbCubesX
 			|| cube[1] < 0 || cube[1] >= NbCubesY
 			|| cube[2] < 0 || cube[2] >= NbCubesZ){

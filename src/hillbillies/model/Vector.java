@@ -123,6 +123,59 @@ public class Vector {
 		return false;
 	}
 	
+	public static double distanceBetween(Vector vector1, Vector vector2){
+		return lenght(getVectorFromTo(vector1, vector2));
+	}
 	
+	public static double heightDifference(Vector it, Vector comparedTo){
+		return (it.getYCoord() - comparedTo.getYCoord());
+	}
+	
+	public static Vector getCentreOfCube(int[] cube){
+		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
+	}
+	
+	public static Vector addVectors(Vector vector1, Vector vector2){
+		return new Vector(vector1.compX + vector2.compX, 
+				vector1.compY + vector2.compY,
+				vector1.compZ + vector2.compZ);
+	}
+	
+	public static Vector getVectorFromTo(Vector from, Vector to){
+		return new Vector(to.compX - from.compX, 
+				to.compY - from.compY,
+				to.compZ - from.compZ);
+	}
+	
+	public static Vector multiply(Vector vector, double scalar){
+		return new Vector(vector.compX * scalar,
+				vector.compY * scalar,
+				vector.compZ * scalar);
+	}
+	
+	public static double orientationInXZPlane(Vector vector){
+		return Math.atan2(vector.getYCoord(), vector.getXCoord());
+	}
+	
+	public static double lenght(Vector vector){
+		return Math.sqrt(Math.pow(vector.getXCoord(),2) 
+				+Math.pow(vector.getYCoord(),2)
+				+Math.pow(vector.getZCoord(),2));
+	}
+	
+	public static Vector getOneCubeCloserToCube(Vector currentPosition, int[] target){
+		int[] currentCube = currentPosition.getIntCube();
+		int[] difference = new int[3];
+		for (int i=0; i != 3; i++){
+			if (currentCube[i] == target[i])
+				difference[i] = 0;
+			else if (currentCube[i] < target[i])
+				difference[i] = 1;
+			else {
+				difference[i] = -1;
+			
+			}
+		}
+	}
 	
 }
