@@ -1,7 +1,6 @@
 package hillbillies.model;
 
 public class Vector {
-	private final static int cubesPerRib = 50;
 	private double compX;
 	private double compY;
 	private double compZ;
@@ -68,44 +67,6 @@ public class Vector {
 	
 	public double getZCoord() {
 		return this.compZ;
-	}
-
-	/**
-	 * Check whether the given position is a position inside of the game world.
-	 *  
-	 * @param  position
-	 *         The position to check.
-	 * @return 
-	 *       | result == 
-	 *       // FIXME Deze check aanvullen.
-	*/
-	public static boolean isPositionInsideWorld(Vector position) {
-		return (isComponentInsideWorld(position.getXCoord())&&
-				isComponentInsideWorld(position.getYCoord())&&
-				isComponentInsideWorld(position.getZCoord()));
-	}
-	
-	public static boolean isPositionInsideWorld(double[] position){
-		for (int i=0; i != 3 ; i++){
-			if (!isComponentInsideWorld(position[i])){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Check whether the given component is in the borders of the game world.
-	 * 
-	 * @param component
-	 * 		  The component to check
-	 * @return
-	 * 		| result == (0 < component < 50)
-	 */
-	public static boolean isComponentInsideWorld(double component){
-		if ((component < 0) || (component >= Vector.cubesPerRib))
-			return false;
-		return true;
 	}
 	
 	/**

@@ -50,6 +50,7 @@ import ogp.framework.util.Util;
 // TODO Defence is nog niet echt getest
 // FIXME isSprinting geeft soms fout aan
 // FIXME Een unit kan nog niet sterven.
+// FIXME ALLE PUBLIEKE METHODEN MOETEN EEN TEST HEBBEN!!!
 
 
 /**
@@ -214,7 +215,7 @@ private Vector position;
 /**
  * Variable registering the target cube of this Unit.
  */
-private Vector targetCube;
+private int[] targetCube;
 
 /**
  * Variable registering the target position of this Unit.
@@ -244,9 +245,9 @@ public double[] getPosition() {
  *       | ! isValidPosition(this.getPosition())
  */
 @Raw
-public void setPosition(double[] position) 
+public void setPosition(Vector position) 
 		throws ModelException {
-	if (! Vector.isPositionInsideWorld(position))
+	if (! World.)
 		throw new ModelException();
 	this.position = new Vector(position);
 }
@@ -291,7 +292,7 @@ public int[] getCube() {
  * Return the target cube of this unit.
  */
 @Basic @Raw
-public Vector getTargetCube() {
+public int[] getTargetCube() {
 	return this.targetCube;
 }
 
