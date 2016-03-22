@@ -38,17 +38,12 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public Cube getCube(){
-		
-		return 
-	}
-	
 	public int[] getIntCube(){
-//		int[] cubeArray = new int[3];
-//		cubeArray[0] = (int) this.getXCoord();
-//		cubeArray[1] = (int) this.getYCoord();
-//		cubeArray[2] = (int) this.getZCoord();
-		return this.getCube().getIntCube();
+		int[] cubeArray = new int[3];
+		cubeArray[0] = (int) this.getXCoord();
+		cubeArray[1] = (int) this.getYCoord();
+		cubeArray[2] = (int) this.getZCoord();
+		return cubeArray;
 	}
 	
 	public void setXcoord(double coordX) {
