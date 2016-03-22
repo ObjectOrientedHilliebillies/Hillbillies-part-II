@@ -284,7 +284,7 @@ public void setTargetPosition(double[] targetPosition) throws ModelException {
  */
 @Basic @Raw
 public int[] getCube() {
-	return this.position.getCube().getVector();
+	return this.position.getIntCube();
 }
 
 /**
@@ -770,7 +770,7 @@ public void advanceTime(double tickTime) throws IllegalArgumentException, ModelE
 		}
 		
 	if (this.activeActivity == null && (this.targetCube != null) && 
-				!Vector.equals(this.getCube(), this.targetCube)){
+				!Vector.equals(this.getCube(), this.targetCube.getIntCube())){
 		doMoveTo();
 	}
 	if (isWorking())

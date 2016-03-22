@@ -38,17 +38,12 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public Cube getCube(){
-		
-		return 
-	}
-	
 	public int[] getIntCube(){
-//		int[] cubeArray = new int[3];
-//		cubeArray[0] = (int) this.getXCoord();
-//		cubeArray[1] = (int) this.getYCoord();
-//		cubeArray[2] = (int) this.getZCoord();
-		return this.getCube().getIntCube();
+		int[] cubeArray = new int[3];
+		cubeArray[0] = (int) this.getXCoord();
+		cubeArray[1] = (int) this.getYCoord();
+		cubeArray[2] = (int) this.getZCoord();
+		return cubeArray;
 	}
 	
 	public void setXcoord(double coordX) {
@@ -149,6 +144,24 @@ public class Vector {
 		}
 		return false;
 	}
+	
+	/**
+	 * Check whether the given cubes are the same cubes.
+	 *  
+	 * @param  cube1, cube2  //FIXME moet dat met comma tussen of moet je hier een nieuwe param opstellen?
+	 *         The cubes to compare.
+	 * @return 
+	 *       | result == (cube1 = cube2)
+	*/
+	public static boolean equals(int[] cube1, int[] cube2){
+		if (cube1[1] == cube2[1]
+				&& cube1[2] == cube2[2]
+				&& cube1[3] == cube2[3]){
+			return true;
+		}
+		return false;
+	}
+	
 	
 	
 }
