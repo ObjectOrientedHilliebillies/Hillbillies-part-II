@@ -49,6 +49,7 @@ import ogp.framework.util.Util;
 // FIXME MoveTo start niet zo gemakkelijk.
 // TODO Defence is nog niet echt getest
 // FIXME isSprinting geeft soms fout aan
+// FIXME Een unit kan nog niet sterven.
 
 
 /**
@@ -173,11 +174,10 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		// FIXME Auto-generated catch block. EN GAAN WE DAN GEEN DEFAULT POSITIE SETTEN?
 		e.printStackTrace();
 	}
-	
 	if (isValidWeight(weight))
 		this.weight = weight;
 	else 
-		this.weight = this.minWeight;
+		this.weight = this.getMinWeight();
 	if (! isValidAgility(agility))
 		agility = 25;
 	else
@@ -190,6 +190,10 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 		toughness = 25;
 	else
 		this.setToughness(toughness);
+	if (!isValidWeight(weight))
+		this.weight = this.getMinWeight();
+	else 
+		this.setWeight(weight);
 	this.setDefaultBehavior(enableDefaultBehavior);
 	
 	setHitpoints(getMaxHitpoints()-5);
@@ -280,7 +284,7 @@ public void setTargetPosition(double[] targetPosition) throws ModelException {
  */
 @Basic @Raw
 public int[] getCube() {
-	return this.position.getCube();
+	return this.position.getCube().getVector();
 }
 
 /**
@@ -386,7 +390,7 @@ public int getWeight() {
  *       | result == maxWeight > weight >= (strength+agility)/2 
 */
 public boolean isValidWeight(int weight) {
-	return (weight >= minWeight 
+	return (weight >= this.getMinWeight() 
 			&& weight <= maxWeight);
 }
 
@@ -408,7 +412,7 @@ public void setWeight(int weight) {
 	if (isValidWeight(weight))
 		this.weight = weight;
 	else 
-		this.weight = minWeight;
+		this.weight = this.getMinWeight();
 }
 
 /**
@@ -421,10 +425,9 @@ private int weight;
  */
 private static int maxWeight = 200;
 
-/**
- * Variable registering the minimum weight of this unit.
- */
-private int minWeight = (this.getStrength() + this.getAgility())/2;
+public int getMinWeight() {
+	return (this.getStrength() + this.getAgility())/2;
+}
 
 /**
  * Return the strength of this unit.
@@ -767,7 +770,7 @@ public void advanceTime(double tickTime) throws IllegalArgumentException, ModelE
 		}
 		
 	if (this.activeActivity == null && (this.targetCube != null) && 
-				!Arrays.equals(this.getCube(), this.targetCube)){
+				!Vector.equals(this.getCube(), this.targetCube)){
 		doMoveTo();
 	}
 	if (isWorking())
@@ -1342,6 +1345,7 @@ public void defenseAgainst(Unit unit) {
 				random[i] = (int) (Math.random() * 3) - 1;
 				newPosition[i] = this.getPosition()[i] + random[i];
 			} while (!isValidComponent(newPosition[i]));
+			// Fixme deze math in een andere classe steken :)
 		}
 		} while (random[0] == 0 && random[1] == 0 && random[2] == 0);
 		try {
@@ -1490,8 +1494,8 @@ public void doDefaultBehavior() throws ModelException{
 	
 	if (activeActivity == "move" && !sprinting && Math.random()<0.05){
 		this.sprinting = true;
-		
-	}else if (activeActivity == null) {
+	}
+	else if (activeActivity == null) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
 			int[] newTargetCube = new int[3];		

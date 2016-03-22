@@ -38,12 +38,17 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public int[] getCube(){
-		int[] cubeArray = new int[3];
-		cubeArray[0] = (int) this.getXCoord();
-		cubeArray[1] = (int) this.getYCoord();
-		cubeArray[2] = (int) this.getZCoord();
-		return cubeArray;
+	public Cube getCube(){
+		
+		return 
+	}
+	
+	public int[] getIntCube(){
+//		int[] cubeArray = new int[3];
+//		cubeArray[0] = (int) this.getXCoord();
+//		cubeArray[1] = (int) this.getYCoord();
+//		cubeArray[2] = (int) this.getZCoord();
+		return this.getCube().getIntCube();
 	}
 	
 	public void setXcoord(double coordX) {
@@ -119,7 +124,7 @@ public class Vector {
 	private boolean isNeighbourCube(Vector otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(this.getCube()[i] - otherCube.getCube()[i]);
+			int difference = Math.abs(this.getIntCube()[i] - otherCube.getIntCube()[i]);
 		    if (difference == 1)
 		    	neighbourForAtleastOneComponent = true;
 		    else if (difference != 0)
@@ -127,4 +132,23 @@ public class Vector {
 		}
 		return neighbourForAtleastOneComponent;
 	}
+	
+	/**
+	 * Check whether the given vectors are the same vector.
+	 *  
+	 * @param  vector1, vector2  //FIXME moet dat met comma tussen of moet je hier een nieuwe param opstellen?
+	 *         The vectors to compare.
+	 * @return 
+	 *       | result == (vector1 = vector1)
+	*/
+	public static boolean equals(Vector vector1, Vector vector2){
+		if (vector1.getXCoord() == vector2.getXCoord()
+				&& vector1.getYCoord() == vector2.getYCoord()
+				&& vector1.getZCoord() == vector2.getZCoord()){
+			return true;
+		}
+		return false;
+	}
+	
+	
 }
