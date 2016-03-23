@@ -1085,7 +1085,7 @@ public void doMove(double tickTime) throws ModelException {
 	}
 	else{
 		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
-		Vector newPosition = Vector.addVectors(this.position, 
+		this.position = Vector.addVectors(this.position, 
 			Vector.multiply(difference, movedDistanceRelatieveToRemainingDistance));
 		this.orientation = Vector.orientationInXZPlane(difference);
 	}
@@ -1181,21 +1181,9 @@ public void moveTo(int[] cube) throws ModelException{
 * 		| !isValidPosition(targetPosition)
 */
 public void doMoveTo() throws IllegalArgumentException, ModelException{
-	
-	Vector difference = Vector.getOneCubeCloserToCube(this.targetCube);
-	for (int i=0; i != 3; i++){
-		if (this.getCube()[i] == this.getTargetCube()[i])
-			difference[i] = 0;
-		else if (this.getCube()[i] < this.getTargetCube()[i])
-			difference[i] = 1;
-		else {
-			difference[i] = -1;
-		
-		}
-	}
-	this.moveToAdjacent(difference[0], difference[1], difference[2]);
+	Vector difference = Vector.getOneCubeCloserToCube(this.position, this.targetCube);
+	this.moveToAdjacent(difference);
 }
-
 
 
 /* Working */
@@ -1266,18 +1254,18 @@ public boolean isWorking() {
  *						unit.defenseAgainst(this);
  *						
  */
-public void attack(Unit unit){
-	if ((unit != this) && 
-		((this.getCube() == unit.getCube()) || (this.isNeighbourCube(unit.getCube()))) && 
-		(!this.isAttacking())){
-			
-		System.out.println("attack");
+public void attack(Unit defender){
+	if (defender != this 
+		&& (this.getCube() == defender.getCube() 
+			|| Vector.isNeighbourCube(this.getCube(), defender.getCube())) 
+		&& !this.isAttacking()){
 		
+		System.out.println("attack");
 		this.activityStartTime = this.getCurrentTime();
 		this.activeActivity = "attack";
-		this.faceOpponent(unit);
-		unit.faceOpponent(this);
-		unit.defenseAgainst(this);
+		this.faceOpponent(defender);
+		defender.faceOpponent(this);
+		defender.defenseAgainst(this);
 		// FIXME een methode setActivieActivity maken!
 	}
 }

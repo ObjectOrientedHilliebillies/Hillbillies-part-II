@@ -77,10 +77,10 @@ public class Vector {
 	 * @return 
 	 *       | result == //FIXME
 	*/
-	private boolean isNeighbourCube(Vector otherCube){
+	public static boolean isNeighbourCube(int[] thisCube, int[] otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(this.getIntCube()[i] - otherCube.getIntCube()[i]);
+			int difference = Math.abs(thisCube[i] - otherCube[i]);
 		    if (difference == 1)
 		    	neighbourForAtleastOneComponent = true;
 		    else if (difference != 0)
@@ -173,9 +173,11 @@ public class Vector {
 				difference[i] = 1;
 			else {
 				difference[i] = -1;
-			
-			}
+			}	
 		}
+		return new Vector(difference[0], difference[1], difference[2]);
 	}
+	
+	
 	
 }
