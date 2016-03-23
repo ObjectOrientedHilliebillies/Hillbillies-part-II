@@ -51,4 +51,6 @@ public class Material {
 	 * Variable registering the position of this material.
 	 */
 	private Vector position;
+	
+	
 }

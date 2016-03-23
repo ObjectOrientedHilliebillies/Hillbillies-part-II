@@ -1213,6 +1213,38 @@ public void work() throws IllegalArgumentException {
 	}
 }
 
+public boolean isCarryingMaterial() {
+	if ((carriedMaterial == "boulder") || (carriedMaterial == "log"))
+			return true;
+	return false;
+}
+
+public String carriedMaterial;
+
+public void workAt(Vector position) {
+	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
+		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
+	if (!isValidActivity("work")){
+		this.nextActivity = "work";
+		throw new IllegalArgumentException();
+	}
+	if (activeActivity != "work"){
+		activeActivity = "work";
+		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+	}
+	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
+	if (this.isCarryingMaterial())
+		this.dropMaterial();
+	else if ((this.getWorld().getTerrainType(position) == 3)) //&& //TODO boulder en log op workshop
+		//TODO equipment
+		this.work();
+	else if ()
+}
+
+public void dropMaterial() {
+	//TODO
+}
+
 /**
  *  Start the next activity
  *  
@@ -1233,6 +1265,8 @@ public boolean isWorking() {
 		return true;
 	return false;
 }
+
+
 
 /* Attacking */
 
