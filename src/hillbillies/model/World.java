@@ -1,7 +1,5 @@
 package hillbillies.model;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
 

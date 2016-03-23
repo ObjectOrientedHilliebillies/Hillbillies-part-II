@@ -17,6 +17,13 @@ public class Vector {
 		this.setZcoord(position[2]);
 	}
 	
+	public Vector(int[] cube){
+		this.setXcoord(cube[0]);
+		this.setYcoord(cube[1]);
+		this.setZcoord(cube[2]);
+	}
+	
+	
 	public void setVector(double coordX, double coordY, double coordZ) {
 		setXcoord(coordX);
 		setYcoord(coordY);
@@ -124,7 +131,7 @@ public class Vector {
 	}
 	
 	public static double distanceBetween(Vector vector1, Vector vector2){
-		return lenght(getVectorFromTo(vector1, vector2));
+		return getVectorFromTo(vector1, vector2).lenght();
 	}
 	
 	public static double heightDifference(Vector it, Vector comparedTo){
@@ -135,7 +142,7 @@ public class Vector {
 		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
 	}
 	
-	public static Vector addVectors(Vector vector1, Vector vector2){
+	public static Vector sum(Vector vector1, Vector vector2){
 		return new Vector(vector1.compX + vector2.compX, 
 				vector1.compY + vector2.compY,
 				vector1.compZ + vector2.compZ);
@@ -153,14 +160,14 @@ public class Vector {
 				vector.compZ * scalar);
 	}
 	
-	public static double orientationInXZPlane(Vector vector){
-		return Math.atan2(vector.getYCoord(), vector.getXCoord());
+	public double orientationInXZPlane(){
+		return Math.atan2(this.getYCoord(), this.getXCoord());
 	}
 	
-	public static double lenght(Vector vector){
-		return Math.sqrt(Math.pow(vector.getXCoord(),2) 
-				+Math.pow(vector.getYCoord(),2)
-				+Math.pow(vector.getZCoord(),2));
+	public double lenght(){
+		return Math.sqrt(Math.pow(this.getXCoord(),2) 
+				+Math.pow(this.getYCoord(),2)
+				+Math.pow(this.getZCoord(),2));
 	}
 	
 	public static Vector getOneCubeCloserToCube(Vector currentPosition, int[] target){
@@ -178,6 +185,15 @@ public class Vector {
 		return new Vector(difference[0], difference[1], difference[2]);
 	}
 	
-	
+	public Vector getRandomAdjacentDodge(World world){
+		int[] thisCube = this.getIntCube();
+		int[] newCube = new int[3];		
+		do {
+		for (int i=0; i != 3; i++){
+				newCube[i] = thisCube[i] + (int) (Math.random() * 3) - 1;
+			}
+		} while (equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
+		return new Vector(newCube);
+	}
 	
 }

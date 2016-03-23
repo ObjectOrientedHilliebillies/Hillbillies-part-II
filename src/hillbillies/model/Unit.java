@@ -1022,7 +1022,7 @@ public void setSpeed(Vector targetPosition) {
  */
 public void moveToAdjacent(Vector positionDifference)
 		throws IllegalArgumentException, ModelException {
-	Vector targetPosition = Vector.addVectors(Vector.getCentreOfCube(this.getCube()),
+	Vector targetPosition = Vector.sum(Vector.getCentreOfCube(this.getCube()),
 			positionDifference);
 	if (!isValidActivity("move") || !this.world.isPositionInWorld(targetPosition)){
 		this.nextActivity = "move";
@@ -1085,9 +1085,9 @@ public void doMove(double tickTime) throws ModelException {
 	}
 	else{
 		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
-		this.position = Vector.addVectors(this.position, 
+		this.position = Vector.sum(this.position, 
 			Vector.multiply(difference, movedDistanceRelatieveToRemainingDistance));
-		this.orientation = Vector.orientationInXZPlane(difference);
+		this.orientation = difference.orientationInXZPlane();
 	}
 }
 
@@ -1123,8 +1123,8 @@ public double getOrientation() {
 									, opponent.getDoublePosition()[0] - this.getDoublePosition()[0]);
  */
 public void faceOpponent(Unit opponent){
-	this.orientation = Vector.orientationInXZPlane(Vector.getVectorFromTo(opponent.position,
-																		this.position));
+	Vector direction = Vector.getVectorFromTo(opponent.position, this.position);
+	this.orientation = direction.orientationInXZPlane();
 }
 
 /**
@@ -1318,39 +1318,29 @@ public boolean isUnderAttack() {
  * 				 
  * 		
  */
-public void defenseAgainst(Unit unit) {	
+public void defenseAgainst(Unit attacker) {	
 	System.out.println("defend");
 	this.activeActivity = "defend";
-	double blockChance = 0.25*(unit.getStrength() + unit.getAgility())/
+	double blockChance = 0.25*(attacker.getStrength() + attacker.getAgility())/
 						(this.getAgility() + this.getStrength());
-	double dodgeChance = 0.2*unit.getAgility()/(double) this.getAgility();
+	double dodgeChance = 0.2*attacker.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		double[] newPosition = new double[3];
-		int[] random = new int[3];
-		do {
-		for (int i=0; i != 3; i++){
-			do {
-				random[i] = (int) (Math.random() * 3) - 1;
-				newPosition[i] = this.getPosition()[i] + random[i];
-			} while (!isValidComponent(newPosition[i]));
-			// Fixme deze math in een andere classe steken :)
-		}
-		} while (random[0] == 0 && random[1] == 0 && random[2] == 0);
+		Vector newPosition = this.position.getRandomAdjacentDodge(world);
 		try {
 			this.setPosition(newPosition);
 		} catch (ModelException e) {
-			System.out.println("If this happend you broke the matrix");
+			System.out.println("This chould never fail");
 		}
-		this.faceOpponent(unit);
-		unit.faceOpponent(this);
+		this.faceOpponent(attacker);
+		attacker.faceOpponent(this);
 	}
 	else if (!(Math.random() < blockChance)) {
 		this.setExperience(this.getExperience() + 20);
-		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);}
+		this.setHitpoints(this.getHitpoints() - attacker.getStrength()/10);}
 	else
-		unit.setExperience(this.getExperience() + 20);
+		attacker.setExperience(this.getExperience() + 20);
 }
 
 /* Resting */
