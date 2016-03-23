@@ -4,7 +4,7 @@ import ogp.framework.util.ModelException;
 
 public class Material {
 	
-	public void material(double[] initialPosition) throws ModelException {
+	public Material(Vector initialPosition) throws ModelException {
 		this.setWeight();
 		this.setPosition(initialPosition);
 	}
@@ -34,10 +34,10 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	public void setPosition(double[] position) throws ModelException {
+	public void setPosition(Vector position) throws ModelException {
 		if (! Vector.isPositionInsideWorld(position)) // TODO falling toevoegen
 			throw new ModelException();
-		this.position = new Vector(position);
+		this.position = position;
 	}
 	
 	/**

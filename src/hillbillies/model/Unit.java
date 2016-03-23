@@ -1213,13 +1213,18 @@ public void work() throws IllegalArgumentException {
 	}
 }
 
-public boolean isCarryingMaterial() {
-	if ((carriedMaterial == "boulder") || (carriedMaterial == "log"))
-			return true;
-	return false;
+public void setCarriedMaterial(Material material) {
+	//TODO defensive
+	this.carriedMaterial = material;
 }
 
-public String carriedMaterial;
+public boolean isCarryingMaterial() {
+	if (carriedMaterial == null)
+		return false;
+	return true;
+}
+
+private Material carriedMaterial = null;
 
 public void workAt(Vector position) {
 	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
@@ -1235,10 +1240,18 @@ public void workAt(Vector position) {
 	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
 	if (this.isCarryingMaterial())
 		this.dropMaterial();
-	else if ((this.getWorld().getTerrainType(position) == 3)) //&& //TODO boulder en log op workshop
+	else if ((this.getWorld().getTerrainType(position) == 3)
+		&& this.getWorld().getMaterialType(position) == 1) //TODO en 2 normaal...
 		//TODO equipment
 		this.work();
-	else if ()
+	else if (this.getWorld().getMaterialType(position) == )
+		this.pickUpBoulder; //TODO dit kan beter met material en subklassen
+	else if (this.getWorld().getMaterialType(position) == 2)
+		this.pickUpLog;
+	else if (this.getWorld().getTerrainType(position) == 1)
+		log = new Log(position);
+	else if (this.getWorld().getTerrainType(position) == 1)
+		Material boulder = new Boulder(position);
 }
 
 public void dropMaterial() {
