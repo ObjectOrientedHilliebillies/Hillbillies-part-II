@@ -33,9 +33,6 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
-
-
-
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.ModelException;
@@ -49,6 +46,8 @@ import ogp.framework.util.Util;
 // FIXME MoveTo start niet zo gemakkelijk.
 // TODO Defence is nog niet echt getest
 // FIXME isSprinting geeft soms fout aan
+// FIXME Een unit kan nog niet sterven.
+// FIXME ALLE PUBLIEKE METHODEN MOETEN EEN TEST HEBBEN!!!
 
 
 /**
@@ -155,32 +154,22 @@ public class Unit {
  *       | if (isValidOrientation(orientation))
  *       | new.getOrientation() == PI/2
  */
-public Unit(String name, int[] initialPosition, int weight, int agility, int strength, int toughness,
+public Unit(String name, int[] initialCube, int weight, int agility, int strength, int toughness,
 		boolean enableDefaultBehavior)
 		throws IllegalArgumentException, ModelException {
-	/*  given enableDefaultBehavior, maximal hitpoints,
-	 *  maximal stamina
-	 */
 	this.setName(name);
 	
 	try {
-		double[] coordinates = new double[3];
-		coordinates[0] = (double) initialPosition[0] + 0.5;
-		coordinates[1] = (double) initialPosition[1] + 0.5;
-		coordinates[2] = (double) initialPosition[2] + 0.5;
-		this.setPosition(coordinates);
+		Vector position = Vector.getCentreOfCube(initialCube);
+		this.setPosition(position);
 	} catch (ModelException e) {
-		// FIXME Auto-generated catch block. EN GAAN WE DAN GEEN DEFAULT POSITIE SETTEN?
+		// TODO Auto-generated catch block. EN GAAN WE DAN GEEN DEFAULT POSITIE SETTEN?
 		e.printStackTrace();
 	}
-	
-<<<<<<< HEAD
 	if (isValidWeight(weight))
 		this.weight = weight;
 	else 
-		this.weight = this.minWeight;
-=======
->>>>>>> origin/master
+		this.weight = this.getMinWeight();
 	if (! isValidAgility(agility))
 		agility = 25;
 	else
@@ -205,6 +194,19 @@ public Unit(String name, int[] initialPosition, int weight, int agility, int str
 	this.orientation = (Math.PI/2);
 }
 
+/**
+ * Variable registering the world of this unit.
+ */
+private World world;
+
+/**
+ * Return the world of this unit.
+ */
+public World getWorld(){
+	return this.world;
+}
+
+
 ////////////////////////////////////////////////////
 ////////////////////* POSITION *////////////////////
 ////////////////////////////////////////////////////
@@ -217,7 +219,7 @@ private Vector position;
 /**
  * Variable registering the target cube of this Unit.
  */
-private Vector targetCube;
+private int[] targetCube;
 
 /**
  * Variable registering the target position of this Unit.
@@ -229,7 +231,15 @@ private Vector targetPosition;
  * Return the position of this unit.
  */
 @Basic @Raw
-public double[] getPosition() {
+public Vector getPosition() {
+	return this.position;
+}
+
+/**
+ * Return the position of this unit.
+ */
+@Basic @Raw
+public double[] getDoublePosition() {
 	return this.position.getVector();
 }
 
@@ -247,11 +257,11 @@ public double[] getPosition() {
  *       | ! isValidPosition(this.getPosition())
  */
 @Raw
-public void setPosition(double[] position) 
+public void setPosition(Vector position) 
 		throws ModelException {
-	if (! Vector.isPositionInsideWorld(position))
+	if (! this.world.isPositionInWorld(position))
 		throw new ModelException();
-	this.position = new Vector(position);
+	this.position = position;
 }
 
 /**
@@ -276,10 +286,10 @@ public Vector getTargetPosition() {
  *       | ! isValidPosition(this.getPosition())
  */
 @Raw
-public void setTargetPosition(double[] targetPosition) throws ModelException {
-	if (! Vector.isPositionInsideWorld(targetPosition))
+public void setTargetPosition(Vector targetPosition) throws ModelException {
+	if (! this.world.isPositionInWorld(targetPosition))
 		throw new ModelException();
-	this.targetPosition = new Vector(targetPosition);
+	this.targetPosition = targetPosition;
 }
 
 /**
@@ -287,14 +297,14 @@ public void setTargetPosition(double[] targetPosition) throws ModelException {
  */
 @Basic @Raw
 public int[] getCube() {
-	return this.position.getCube();
+	return this.position.getIntCube();
 }
 
 /**
  * Return the target cube of this unit.
  */
 @Basic @Raw
-public Vector getTargetCube() {
+public int[] getTargetCube() {
 	return this.targetCube;
 }
 
@@ -312,9 +322,9 @@ public Vector getTargetCube() {
  *       | ! isValidPosition(getCube())
  */
 @Raw
-public void setTargetCube(Vector cube) 
+public void setTargetCube(int[] cube) 
 		throws ModelException {
-	if (! Vector.isPositionInsideWorld(cube))
+	if (! this.world.isCubeInWorld(cube))
 		throw new ModelException();
 	this.targetCube = cube;
 }
@@ -773,9 +783,10 @@ public void advanceTime(double tickTime) throws IllegalArgumentException, ModelE
 		}
 		
 	if (this.activeActivity == null && (this.targetCube != null) && 
-				!Arrays.equals(this.getCube(), this.targetCube)){
+				!Vector.equals(this.getCube(), this.targetCube)){
 		doMoveTo();
 	}
+	
 	if (isWorking())
 		doWork();
 	else if (isResting())
@@ -969,21 +980,21 @@ public boolean isSprinting() {
  *		|		new.getSpeed() == this.getSpeed()*2
  *				
  */
-public void setSpeed(double[] targetPosition) {
-	if (activeActivity != "move")
-		this.speed = 0;
-	else{ 
-		double zDifference = (this.getPosition()[2] - targetPosition[2]);
-		if (zDifference == -1)
+public void setSpeed(Vector targetPosition) {
+//	if (activeActivity != "move")
+//		this.speed = 0;
+//	else{ 
+		double heightDifference = Vector.heightDifference(this.position, targetPosition);
+		if (heightDifference == -1)
 			this.speed = this.getBaseSpeed()/2;
-		else if (zDifference == 1)
+		else if (heightDifference == 1)
 			this.speed = this.getBaseSpeed()*1.2;
 		else{
 			this.speed = this.getBaseSpeed();
 		}
 		if (this.sprinting)
 			this.speed = this.speed * 2;
-	}
+//	}
 }
 
 
@@ -1009,13 +1020,11 @@ public void setSpeed(double[] targetPosition) {
  * 		targetPosition is not a valid position
  * 		| !isValidPosition(targetPosition)
  */
-public void moveToAdjacent(int dx, int dy, int dz)
+public void moveToAdjacent(Vector positionDifference)
 		throws IllegalArgumentException, ModelException {
-	double[] targetPosition = new double[3];
-	targetPosition[0] = this.getCube()[0] + dx + .5;
-	targetPosition[1] = this.getCube()[1] + dy + .5;
-	targetPosition[2] = this.getCube()[2] + dz + .5;
-	if (!isValidActivity("move") || !isValidPosition(targetPosition)){
+	Vector targetPosition = Vector.addVectors(Vector.getCentreOfCube(this.getCube()),
+			positionDifference);
+	if (!isValidActivity("move") || !this.world.isPositionInWorld(targetPosition)){
 		this.nextActivity = "move";
 		throw new IllegalArgumentException();
 	}
@@ -1055,15 +1064,14 @@ public void doMove(double tickTime) throws ModelException {
 		stamina = stamina + (int) (oldExhaustedPoints) - (int) (exhaustedPoints);
 		if (stamina <= 0)
 			this.sprinting = false;
+		// TODO If the unit has some stamina left but is is not enough so sprint the whole tick, then the unit doesn't sprint at all.
 	}
 	
 	this.setSpeed(this.targetPosition);
-	double d = Math.sqrt(Math.pow(this.getTargetPosition()[0]-this.getPosition()[0],2)
-						+Math.pow(this.getTargetPosition()[1]-this.getPosition()[1],2)
-						+Math.pow(this.getTargetPosition()[2]-this.getPosition()[2],2));
+	double d = Vector.distanceBetween(targetPosition, position);
 	
-	double movingDistance = tickTime*speed/d;
-	if (Util.fuzzyGreaterThanOrEqualTo(movingDistance, 1)){
+	double movedDistanceRelatieveToRemainingDistance = tickTime*speed/d;
+	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
 			this.setExperience(this.executedSteps + this.getExperience());
@@ -1073,22 +1081,13 @@ public void doMove(double tickTime) throws ModelException {
 			this.exhaustedPoints = 0;
 			this.executedSteps = 0;
 		}
-			
 		this.startNextActivity();
 	}
 	else{
-	double[] newPosition = new double[3];
-	for (int i=0; i != 3; i++){
-		newPosition[i] = this.getPosition()[i]
-				+(movingDistance*(this.getTargetPosition()[i]-this.getPosition()[i]));
-	}	
-	if (!Util.fuzzyEquals(this.getTargetPosition()[1], this.getPosition()[1])
-			|| !Util.fuzzyEquals(this.getTargetPosition()[0], this.getPosition()[0])){
-	this.orientation = Math.atan2(this.getTargetPosition()[1]-this.getPosition()[1], 
-			this.getTargetPosition()[0]-this.getPosition()[0]);
-	}
-	this.setPosition(newPosition);
-	
+		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
+		Vector newPosition = Vector.addVectors(this.position, 
+			Vector.multiply(difference, movedDistanceRelatieveToRemainingDistance));
+		this.orientation = Vector.orientationInXZPlane(difference);
 	}
 }
 
@@ -1120,12 +1119,12 @@ public double getOrientation() {
  * 		The opponent this unit is fighting with
  * 
  * @post this unit is turned to the opponent
- * 		| new.orientation = Math.atan2(opponent.getPosition()[1] - this.getPosition()[1]
-									, opponent.getPosition()[0] - this.getPosition()[0]);
+ * 		| new.orientation = Math.atan2(opponent.getDoublePosition()[1] - this.getDoublePosition()[1]
+									, opponent.getDoublePosition()[0] - this.getDoublePosition()[0]);
  */
 public void faceOpponent(Unit opponent){
-	this.orientation = Math.atan2(opponent.getPosition()[1] - this.getPosition()[1]
-									, opponent.getPosition()[0] - this.getPosition()[0]);
+	this.orientation = Vector.orientationInXZPlane(Vector.getVectorFromTo(opponent.position,
+																		this.position));
 }
 
 /**
@@ -1150,7 +1149,7 @@ private double orientation;
  * 		
  */
 public void moveTo(int[] cube) throws ModelException{
-	if (!Unit.isValidCube(cube))
+	if (!this.world.isCubeInWorld(cube))
 		throw new ModelException();
 	this.setTargetCube(cube);
 	System.out.println("target set");
@@ -1183,7 +1182,7 @@ public void moveTo(int[] cube) throws ModelException{
 */
 public void doMoveTo() throws IllegalArgumentException, ModelException{
 	
-	int[] difference = new int[3];
+	Vector difference = Vector.getOneCubeCloserToCube(this.targetCube);
 	for (int i=0; i != 3; i++){
 		if (this.getCube()[i] == this.getTargetCube()[i])
 			difference[i] = 0;
@@ -1348,6 +1347,7 @@ public void defenseAgainst(Unit unit) {
 				random[i] = (int) (Math.random() * 3) - 1;
 				newPosition[i] = this.getPosition()[i] + random[i];
 			} while (!isValidComponent(newPosition[i]));
+			// Fixme deze math in een andere classe steken :)
 		}
 		} while (random[0] == 0 && random[1] == 0 && random[2] == 0);
 		try {
@@ -1496,8 +1496,8 @@ public void doDefaultBehavior() throws ModelException{
 	
 	if (activeActivity == "move" && !sprinting && Math.random()<0.05){
 		this.sprinting = true;
-		
-	}else if (activeActivity == null) {
+	}
+	else if (activeActivity == null) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
 			int[] newTargetCube = new int[3];		

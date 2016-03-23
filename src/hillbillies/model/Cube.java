@@ -27,7 +27,7 @@ public class Cube {
 		return cubeArray;
 	}
 	
-	public int[] getIntCube() {
+	public int[] getCube() {
 		int[] cubeArray = new int[3];
 		cubeArray[0] = this.getXCoord();
 		cubeArray[1] = this.getYCoord();
