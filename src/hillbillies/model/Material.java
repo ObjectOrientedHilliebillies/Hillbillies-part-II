@@ -35,7 +35,7 @@ public class Material {
 	 * Set the position of this material to the given position.
 	 */
 	public void setPosition(double[] position) throws ModelException {
-		if (! Vector.isPositionInsideWorld(position))
+		if (! Vector.isPositionInsideWorld(position)) // TODO falling toevoegen
 			throw new ModelException();
 		this.position = new Vector(position);
 	}
