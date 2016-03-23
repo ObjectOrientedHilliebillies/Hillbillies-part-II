@@ -1,7 +1,6 @@
 package hillbillies.model;
 
 public class Vector {
-	private final static int cubesPerRib = 50;
 	private double compX;
 	private double compY;
 	private double compZ;
@@ -38,7 +37,7 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public int[] getCube(){
+	public int[] getIntCube(){
 		int[] cubeArray = new int[3];
 		cubeArray[0] = (int) this.getXCoord();
 		cubeArray[1] = (int) this.getYCoord();
@@ -69,44 +68,6 @@ public class Vector {
 	public double getZCoord() {
 		return this.compZ;
 	}
-
-	/**
-	 * Check whether the given position is a position inside of the game world.
-	 *  
-	 * @param  position
-	 *         The position to check.
-	 * @return 
-	 *       | result == 
-	 *       // FIXME Deze check aanvullen.
-	*/
-	public static boolean isPositionInsideWorld(Vector position) {
-		return (isComponentInsideWorld(position.getXCoord())&&
-				isComponentInsideWorld(position.getYCoord())&&
-				isComponentInsideWorld(position.getZCoord()));
-	}
-	
-	public static boolean isPositionInsideWorld(double[] position){
-		for (int i=0; i != 3 ; i++){
-			if (!isComponentInsideWorld(position[i])){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Check whether the given component is in the borders of the game world.
-	 * 
-	 * @param component
-	 * 		  The component to check
-	 * @return
-	 * 		| result == (0 < component < 50)
-	 */
-	public static boolean isComponentInsideWorld(double component){
-		if ((component < 0) || (component >= Vector.cubesPerRib))
-			return false;
-		return true;
-	}
 	
 	/**
 	 * Check whether the given cube is a neighbour cube of this cube
@@ -119,7 +80,7 @@ public class Vector {
 	private boolean isNeighbourCube(Vector otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(this.getCube()[i] - otherCube.getCube()[i]);
+			int difference = Math.abs(this.getIntCube()[i] - otherCube.getIntCube()[i]);
 		    if (difference == 1)
 		    	neighbourForAtleastOneComponent = true;
 		    else if (difference != 0)
@@ -127,4 +88,94 @@ public class Vector {
 		}
 		return neighbourForAtleastOneComponent;
 	}
+	
+	/**
+	 * Check whether the given vectors are the same vector.
+	 *  
+	 * @param  vector1, vector2  //FIXME moet dat met comma tussen of moet je hier een nieuwe param opstellen?
+	 *         The vectors to compare.
+	 * @return 
+	 *       | result == (vector1 = vector1)
+	*/
+	public static boolean equals(Vector vector1, Vector vector2){
+		if (vector1.getXCoord() == vector2.getXCoord()
+				&& vector1.getYCoord() == vector2.getYCoord()
+				&& vector1.getZCoord() == vector2.getZCoord()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Check whether the given cubes are the same cubes.
+	 *  
+	 * @param  cube1, cube2  //FIXME moet dat met comma tussen of moet je hier een nieuwe param opstellen?
+	 *         The cubes to compare.
+	 * @return 
+	 *       | result == (cube1 = cube2)
+	*/
+	public static boolean equals(int[] cube1, int[] cube2){
+		if (cube1[1] == cube2[1]
+				&& cube1[2] == cube2[2]
+				&& cube1[3] == cube2[3]){
+			return true;
+		}
+		return false;
+	}
+	
+	public static double distanceBetween(Vector vector1, Vector vector2){
+		return lenght(getVectorFromTo(vector1, vector2));
+	}
+	
+	public static double heightDifference(Vector it, Vector comparedTo){
+		return (it.getYCoord() - comparedTo.getYCoord());
+	}
+	
+	public static Vector getCentreOfCube(int[] cube){
+		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
+	}
+	
+	public static Vector addVectors(Vector vector1, Vector vector2){
+		return new Vector(vector1.compX + vector2.compX, 
+				vector1.compY + vector2.compY,
+				vector1.compZ + vector2.compZ);
+	}
+	
+	public static Vector getVectorFromTo(Vector from, Vector to){
+		return new Vector(to.compX - from.compX, 
+				to.compY - from.compY,
+				to.compZ - from.compZ);
+	}
+	
+	public static Vector multiply(Vector vector, double scalar){
+		return new Vector(vector.compX * scalar,
+				vector.compY * scalar,
+				vector.compZ * scalar);
+	}
+	
+	public static double orientationInXZPlane(Vector vector){
+		return Math.atan2(vector.getYCoord(), vector.getXCoord());
+	}
+	
+	public static double lenght(Vector vector){
+		return Math.sqrt(Math.pow(vector.getXCoord(),2) 
+				+Math.pow(vector.getYCoord(),2)
+				+Math.pow(vector.getZCoord(),2));
+	}
+	
+	public static Vector getOneCubeCloserToCube(Vector currentPosition, int[] target){
+		int[] currentCube = currentPosition.getIntCube();
+		int[] difference = new int[3];
+		for (int i=0; i != 3; i++){
+			if (currentCube[i] == target[i])
+				difference[i] = 0;
+			else if (currentCube[i] < target[i])
+				difference[i] = 1;
+			else {
+				difference[i] = -1;
+			
+			}
+		}
+	}
+	
 }
