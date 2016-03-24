@@ -33,7 +33,9 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -194,6 +196,11 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
+<<<<<<< HEAD
+=======
+	this.setWorld(world);
+	this.setFaction();
+>>>>>>> refs/remotes/origin/master
 }
 
 /**
@@ -212,6 +219,7 @@ public void setWorld(World world) {
 	this.world = world;
 }
 
+<<<<<<< HEAD
 /**
  * Variable registering the faction of this unit.
  */
@@ -227,6 +235,23 @@ public Faction getFaction(){
 
 
 //FIXME waarom geen setWorld?
+=======
+public Faction getFaction() {
+	return this.faction;
+}
+
+private void setFaction() {
+	if (this.getWorld().getNbOffFactions() < 5) {
+		Faction newFaction = new Faction(this.getWorld());
+		this.faction = newFaction;
+	}
+	else {
+		this.faction = this.getWorld().getSmallestFaction();
+	}
+}
+
+private Faction faction;
+>>>>>>> refs/remotes/origin/master
 
 
 ////////////////////////////////////////////////////
@@ -1343,12 +1368,12 @@ public void workAt(Vector position) throws ModelException {
 public void dropMaterial(Vector position) throws ModelException {
 	if (this.getCarriedMaterial() == "Log"){
 		Log log = new Log(position, this.getWorld(), this.getAdditionalWeight());
-		this.getWorld().addMaterial(log);
+		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
 		this.setAdditionalWeight(0);
 		}
 	else if (this.getCarriedMaterial() == "Boulder") {
 		Boulder boulder = new Boulder(position, this.getWorld(), this.getAdditionalWeight());
-		this.getWorld().addMaterial(boulder);
+		//this.getWorld().addMaterial(boulder);
 		this.setAdditionalWeight(0);
 	}
 	this.setCarriedMaterial(null); 

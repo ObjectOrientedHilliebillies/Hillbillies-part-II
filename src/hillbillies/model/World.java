@@ -196,6 +196,18 @@ public class World {
 	public void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
+
+	public Faction getSmallestFaction() {
+		Iterator<Faction> iterator = factions.iterator();
+		Faction smallestFaction = null;
+	    while(iterator.hasNext()) {
+	        Faction faction = iterator.next();
+	        if (faction.getNbOffUnitsInFaction() 
+	        		< smallestFaction.getNbOffUnitsInFaction())
+	        	smallestFaction = faction;
+	        }
+	    return smallestFaction;
+	}
 }
 
 
