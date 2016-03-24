@@ -66,11 +66,17 @@ public class World {
 		return true;
 	}
 	
+	/**
+	 * 0: Air
+	 * 1: Rock
+	 * 2: Wood
+	 * 3: Workshop
+	 */
 	private int[][][] terrainTypes;
 	
 	public int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
-		return terrainTypes[cubeArray[1]][cubeArray[2]][cubeArray[3]];
+		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
 	}
 	
 	public void setTerrainType(Vector cube, int terrainType){
@@ -85,4 +91,29 @@ public class World {
 		return (terrainType >=0 && terrainType <=3);
 	}
 	
+	/**
+	 * materialTypes:
+	 * 1: boulder
+	 * 2: log
+	 */
+	private Material[][][] materialTypes;
+	
+	//FIXME meerdere materialTypes op 1 positie mogelijk!
+	
+	public Material getMaterialType(Vector position) { 
+		int[] positionArray = position.getIntCube();
+		return materialTypes[positionArray[0]][positionArray[1]][positionArray[2]];				
+	}
+	
+	public void setMaterialType(Vector position, Material materialType){
+		//if (!isValidMaterialType(materialType)){ //TODO
+		//	throw new IllegalArgumentException();		
+		//}
+		int[] coord = position.getIntCube();
+		materialTypes[coord[0]][coord[1]][coord[2]] = materialType;
+	}
+	
+	private boolean isValidMaterialType (int materialType){
+		return (materialType >=1 && materialType <=2);
+	}
 }
