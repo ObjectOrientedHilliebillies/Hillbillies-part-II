@@ -200,20 +200,17 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getNbCubesX(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return world.getNbCubesX();
 	}
 
 	@Override
 	public int getNbCubesY(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return world.getNbCubesY();
 	}
 
 	@Override
 	public int getNbCubesZ(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return world.getNbCubesZ();
 	}
 
 	@Override
@@ -293,14 +290,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Unit> getUnitsOfFaction(Faction faction) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return faction.getUnitsInFaction();
 	}
 
 	@Override
 	public Set<Faction> getActiveFactions(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return world.getActiveFactions();
 	}
 
 	@Override
