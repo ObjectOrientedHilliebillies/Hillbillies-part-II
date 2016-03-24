@@ -155,4 +155,25 @@ public class World {
 	//private boolean isValidMaterialType (int materialType){
 	//	return (materialType >=1 && materialType <=2);
 	//}
+	
+	private Set<Faction> factions;
+	
+	public Set<Faction> getActiveFactions() {
+		return this.factions;
+	}
+	
+	public int getNbOffFactions() {
+		return this.getActiveFactions().size();
+	}
+	
+	public void addFaction(Faction faction) {
+		if (this.getNbOffFactions() < 5)
+			factions.add(faction);
+	}
+	
+	public void removeFaction(Faction faction) {
+		factions.remove(faction);
+	}
 }
+
+
