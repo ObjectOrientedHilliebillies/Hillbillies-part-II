@@ -179,10 +179,10 @@ public class Vector {
 		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
 	}
 	
-	public Vector sum(Vector otherVector){
-		return new Vector(this.compX + otherVector.compX, 
-				this.compY + otherVector.compY,
-				this.compZ + otherVector.compZ);
+	public static Vector sum(Vector vector1, Vector vector2){
+		return new Vector(vector1.compX + vector2.compX, 
+				vector1.compY + vector2.compY,
+				vector1.compZ + vector2.compZ);
 	}
 	
 	public static int[] sum(int[] thisCube, int[] otherCube){

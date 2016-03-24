@@ -1,5 +1,8 @@
 package hillbillies.model;
 
+import java.util.LinkedHashMap;
+import java.util.Set;
+
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
 
@@ -11,13 +14,13 @@ public class World {
 	 *         The terrain of this new world.
 	 **/         
 	private ConnectedToBorder connectedToBorder;
-	public World(int[][][] initialTerrainTypes, TerrainChangeListener modelListener){
+	public World(int[][][] initialTerrainTypes, TerrainChangeListener givenModelListener){
 		NbCubesX = initialTerrainTypes.length;
 		NbCubesY = initialTerrainTypes[0].length;
 		NbCubesZ = initialTerrainTypes[0][0].length;
 		
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
-		
+		modelListener = givenModelListener;
 		// TODO dit is nog slecht dit moet opgesplitst worden in verschillende methodes, en elke cube moet gezet worden niet enkel de solid ones!
 		for (int x=0 ; x != NbCubesX ; x++){
 			System.out.println(x);
@@ -36,6 +39,7 @@ public class World {
 	private final int NbCubesX;
 	private final int NbCubesY;
 	private final int NbCubesZ;
+	private final TerrainChangeListener modelListener;
 	
 	public int getNbCubesX(){
 		return NbCubesX;
@@ -66,6 +70,22 @@ public class World {
 		}
 		return true;
 	}
+	
+	public void changeSolidToPassable(int[] cube, int terrainType){
+		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
+		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+		Set<int[]> neighbours = Vector.getNeighbourCubes(cube);
+		for (int[] neighbour : neighbours){
+			this.collapseIfFloating(neighbour);
+		}
+	}
+	
+	public void collapseIfFloating(int[] cube){
+		if (!connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2])){
+			this.changeSolidToPassable(cube, 0);
+		}
+	}
+	
 	
 	/**
 	 * 0: Air
