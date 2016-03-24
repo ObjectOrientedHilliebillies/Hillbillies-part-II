@@ -5,7 +5,6 @@ import java.util.Set;
 public class Faction {
 	public Faction(World world) {
 		this.setWorld(world);
-		world.addFaction(this);
 	}
 	
 	public World getWorld() {
@@ -18,9 +17,6 @@ public class Faction {
 	
 	private World world;
 	
-<<<<<<< HEAD
-	private Set<Unit> unitsOfFaction;
-=======
 	private Set<Unit> unitsInFaction;
 	
 	public Set<Unit> getUnitsInFaction() {
@@ -32,13 +28,8 @@ public class Faction {
 	}
 	
 	public void addUnit(Unit unit) {
-		if (this.getNbOffUnitsInFaction() < 50)
+		if (this.getNbOffUnitsInFaction() != 50)
 			this.unitsInFaction.add(unit);
-	}
-	
->>>>>>> refs/remotes/origin/master
-	
-	public Set<Unit> getUnitsOfFaction(){
-		return unitsOfFaction;
+			unit.setFaction(this);
 	}
 }

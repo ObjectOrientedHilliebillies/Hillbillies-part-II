@@ -234,35 +234,17 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getNbCubesX(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getNbCubesX");
-		// TODO Auto-generated method stub
-		return 0;
-=======
 		return world.getNbCubesX();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public int getNbCubesY(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getNbCubesY");
-		// TODO Auto-generated method stub
-		return 0;
-=======
 		return world.getNbCubesY();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public int getNbCubesZ(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getNbCubesZ");
-		// TODO Auto-generated method stub
-		return 0;
-=======
 		return world.getNbCubesZ();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
@@ -288,9 +270,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isSolidConnectedToBorder(World world, int x, int y, int z) throws ModelException {
-		System.out.println("isSolidConnectedToBorder");
-		// TODO Auto-generated method stub
-		return false;
+		int[] cube = {x,y,z};
+		return world.isSolidConnectedToBorder(cube);
 	}
 
 	@Override
@@ -307,9 +288,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Unit> getUnits(World world) throws ModelException {
-		System.out.println("getUnits");
-		// TODO Auto-generated method stub
-		return null;
+		return world.getUnits();
 	}
 
 	@Override
@@ -342,29 +321,17 @@ public class Facade implements IFacade {
 
 	@Override
 	public Faction getFaction(Unit unit) throws ModelException {
-		System.out.println("getFaction");
-		// TODO Auto-generated method stub
-		return null;
+		return unit.getFaction();
 	}
 
 	@Override
 	public Set<Unit> getUnitsOfFaction(Faction faction) throws ModelException {
-<<<<<<< HEAD
-		return faction.getUnitsOfFaction();
-=======
 		return faction.getUnitsInFaction();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public Set<Faction> getActiveFactions(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getActiveFactions");
-		// TODO Auto-generated method stub
-		return null;
-=======
 		return world.getActiveFactions();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override

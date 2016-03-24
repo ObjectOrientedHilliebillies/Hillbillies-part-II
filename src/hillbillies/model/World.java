@@ -1,6 +1,7 @@
 package hillbillies.model;
 
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -85,10 +86,14 @@ public class World {
 		}
 	}
 	
-	public void collapseIfFloating(int[] cube){
+	private void collapseIfFloating(int[] cube){
 		if (!connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2])){
 			this.changeSolidToPassable(cube, 0);
 		}
+	}
+	
+	public boolean isSolidConnectedToBorder(int[] cube){
+		return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
 	}
 	
 	
@@ -178,19 +183,34 @@ public class World {
 	//	return (materialType >=1 && materialType <=2);
 	//}
 	
+	/*Faction*/
+	
 	private Set<Faction> factions;
 	
 	public Set<Faction> getActiveFactions() {
 		return this.factions;
 	}
 	
-	public int getNbOffFactions() {
+	private int getNbOffFactions() {
 		return this.getActiveFactions().size();
 	}
 	
-	public void addFaction(Faction faction) {
-		if (this.getNbOffFactions() < 5)
-			factions.add(faction);
+	private Faction makeFaction(){
+		return new Faction(this);
+	}
+	
+	private void addFaction(Faction faction) {
+		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
+			throw new IllegalArgumentException();
+		}
+		factions.add(faction);
+	}
+	
+	private boolean isValidNbOfFactions(int number){
+		if (number > 5){
+			return false;
+		}
+		return true;
 	}
 	
 	public void removeFaction(Faction faction) {
@@ -198,15 +218,43 @@ public class World {
 	}
 
 	public Faction getSmallestFaction() {
-		Iterator<Faction> iterator = factions.iterator();
 		Faction smallestFaction = null;
-	    while(iterator.hasNext()) {
-	        Faction faction = iterator.next();
-	        if (faction.getNbOffUnitsInFaction() 
+		for (Faction faction : factions){
+			if (faction.getNbOffUnitsInFaction() 
 	        		< smallestFaction.getNbOffUnitsInFaction())
 	        	smallestFaction = faction;
-	        }
+		}
 	    return smallestFaction;
+	}
+	
+	/*Unit*/
+	
+	public Set<Unit> getUnits(){
+		Set<Unit> unitsInWorld = Collections.emptySet();
+		for (Faction faction : factions){
+			unitsInWorld.addAll(faction.getUnitsInFaction());
+		}
+	    return unitsInWorld;
+	}
+	
+	private int getNbOfUnits(){
+		int nbUnitsInWorld = 0;
+		for (Faction faction : factions){
+			nbUnitsInWorld = nbUnitsInWorld + faction.getNbOffUnitsInFaction();
+		}
+	    return nbUnitsInWorld;
+	}
+	
+	public void addUnit(Unit unit){
+		if (this.getNbOfUnits()!=100){
+			if (this.getNbOffFactions() != 5){
+				Faction newFaction = this.makeFaction();
+				this.addFaction(newFaction);
+				newFaction.addUnit(unit);
+			} else {
+				this.getSmallestFaction().addUnit(unit);
+			}
+		}		
 	}
 }
 
