@@ -256,8 +256,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-		Vector position = new Vector(x,y,z);
-		return world.getTerrainType(position);
+		int[] cube = {x,y,z};
+		return world.getTerrainType(cube);
 
 	}
 

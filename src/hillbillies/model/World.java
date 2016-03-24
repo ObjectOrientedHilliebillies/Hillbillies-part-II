@@ -32,10 +32,10 @@ public class World {
 			System.out.println(x);
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
+					terrainTypes[x][y][z] = initialTerrainTypes[x][y][z];
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
 						connectedToBorder.changeSolidToPassable(x, y, z);
-						modelListener.notifyTerrainChanged(x, y, z);
 					}
 				}
 			}
@@ -77,9 +77,40 @@ public class World {
 		return true;
 	}
 	
-	public void changeSolidToPassable(int[] cube, int terrainType){
+	/**
+	 * 0: Air
+	 * 1: Rock
+	 * 2: Wood
+	 * 3: Workshop
+	 */
+	private int[][][] terrainTypes; 
+	
+	public int getTerrainType(Vector cube){
+		int[] cubeArray = cube.getIntCube();
+		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
+	}
+	
+	public int getTerrainType(int[] cube){
+		return terrainTypes[cube[0]][cube[1]][cube[2]];
+	}
+	
+	public void setTerrainType(int[] cube, int terrainType){
+		if (!isValidTerrainType(terrainType)){
+			throw new IllegalArgumentException();		
+		}
+		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
+		modelListener.notifyTerrainChanged(cube[0], cube[0], cube[0]);
+		if (terrainType != 1 && terrainType != 2){
+			this.changeSolidToPassable(cube);
+		}
+	}
+	
+	private boolean isValidTerrainType (int terrainType){
+		return (terrainType >=0 && terrainType <=3);
+	}
+	
+	private void changeSolidToPassable(int[] cube){
 		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
 		Set<int[]> neighbours = Vector.getNeighbourCubes(cube, this);
 		for (int[] neighbour : neighbours){
 			this.collapseIfFloating(neighbour);
@@ -87,40 +118,16 @@ public class World {
 	}
 	
 	private void collapseIfFloating(int[] cube){
-		if (!connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2])){
-			this.changeSolidToPassable(cube, 0);
+		if (!this.isSolidCubeConnectedToBorder(int[] cube)){
+			this.setTerrainType(cube, 0);
 		}
 	}
 	
-	public boolean isSolidConnectedToBorder(int[] cube){
+	private boolean isSolidCubeConnectedToBorder(int[] cube){
 		return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
 	}
 	
-	
-	/**
-	 * 0: Air
-	 * 1: Rock
-	 * 2: Wood
-	 * 3: Workshop
-	 */
-	private int[][][] terrainTypes; //FIXME in de facade is dat een set, zouden we beter ook doen
-	
-	public int getTerrainType(Vector cube){
-		int[] cubeArray = cube.getIntCube();
-		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
-	}
-	
-	public void setTerrainType(Vector cube, int terrainType){
-		if (!isValidTerrainType(terrainType)){
-			throw new IllegalArgumentException();		
-		}
-		int[] coord = cube.getIntCube();
-		terrainTypes[coord[0]][coord[1]][coord[2]] = terrainType;
-	}
-	
-	private boolean isValidTerrainType (int terrainType){
-		return (terrainType >=0 && terrainType <=3);
-	}
+	private void 
 	
 	/**
 	 * materialTypes:
