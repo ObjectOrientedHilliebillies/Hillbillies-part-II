@@ -1,10 +1,8 @@
 package hillbillies.model;
 
-public class Faction {
-<<<<<<< HEAD
+import java.util.Set;
 
-=======
-	
+public class Faction {
 	public Faction(World world) {
 		this.setWorld(world);
 		world.addFaction(this);
@@ -20,8 +18,9 @@ public class Faction {
 	
 	private World world;
 	
+	private Set<Unit> unitsOfFaction;
 	
-	
-	
->>>>>>> refs/remotes/origin/master
+	public Set<Unit> getUnitsOfFaction(){
+		return unitsOfFaction;
+	}
 }

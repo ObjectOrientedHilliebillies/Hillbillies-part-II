@@ -262,26 +262,16 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getCubeType");
-		// TODO Auto-generated method stub
-		return 0;
-=======
 		Vector position = new Vector(x,y,z);
 		return world.getTerrainType(position);
->>>>>>> refs/remotes/origin/master
+
 	}
 
 	@Override
 	public void setCubeType(World world, int x, int y, int z, int value) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("setCubeType");
-		// TODO Auto-generated method stub
-		
-=======
 		Vector position = new Vector(x,y,z);
 		world.setTerrainType(position, value);
->>>>>>> refs/remotes/origin/master
+
 	}
 
 	@Override
@@ -300,9 +290,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void addUnit(Unit unit, World world) throws ModelException {
-		System.out.println("addUnit");
-		// TODO Auto-generated method stub
-		
+		unit.setWorld(world);
 	}
 
 	@Override
@@ -314,24 +302,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isCarryingLog(Unit unit) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("isCarryingLog");
-		// TODO Auto-generated method stub
-		return false;
-=======
 		return unit.isCarryingLog();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public boolean isCarryingBoulder(Unit unit) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("isCarryingBoulder");
-		// TODO Auto-generated method stub
-		return false;
-=======
 		return unit.isCarryingBoulder();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
@@ -343,25 +319,13 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getExperiencePoints(Unit unit) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getExperiencePoints");
-		// TODO Auto-generated method stub
-		return 0;
-=======
 		return unit.getExperience();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public void workAt(Unit unit, int x, int y, int z) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("workAt");
-		// TODO Auto-generated method stub
-		
-=======
 		Vector position = new Vector(x, y, z) ;
 		unit.workAt(position);
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
@@ -373,9 +337,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Unit> getUnitsOfFaction(Faction faction) throws ModelException {
-		System.out.println("getUnitsOfFaction");
-		// TODO Auto-generated method stub
-		return null;
+		return faction.getUnitsOfFaction();
 	}
 
 	@Override
@@ -387,48 +349,24 @@ public class Facade implements IFacade {
 
 	@Override
 	public double[] getPosition(Boulder boulder) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getPosition");
-		// TODO Auto-generated method stub
-		return null;
-=======
 		Vector position = boulder.getPosition();
 		return position.getVector();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public Set<Boulder> getBoulders(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getBoulders");
-		// TODO Auto-generated method stub
-		return null;
-=======
 		return world.getBoulders();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public double[] getPosition(Log log) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getPosition");
-		// TODO Auto-generated method stub
-		return null;
-=======
 		Vector position = log.getPosition();
 		return position.getVector();
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
 	public Set<Log> getLogs(World world) throws ModelException {
-<<<<<<< HEAD
-		System.out.println("getLogs");
-		// TODO Auto-generated method stub
-		return null;
-=======
 		return world.getLogs();
->>>>>>> refs/remotes/origin/master
 	}
 
 }

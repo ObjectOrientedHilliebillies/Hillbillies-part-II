@@ -157,7 +157,7 @@ public class Unit {
  *       | new.getOrientation() == PI/2
  */
 public Unit(String name, int[] initialCube, int weight, int agility, int strength, int toughness,
-		boolean enableDefaultBehavior, World world)
+		boolean enableDefaultBehavior)
 		throws IllegalArgumentException, ModelException {
 	this.setName(name);
 	
@@ -194,7 +194,6 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
-	this.setWorld(world);
 }
 
 /**
@@ -209,9 +208,23 @@ public World getWorld(){
 	return this.world;
 }
 
-private void setWorld(World world) {
+public void setWorld(World world) {
 	this.world = world;
 }
+
+/**
+ * Variable registering the faction of this unit.
+ */
+private Faction faction;
+
+public void setFaction(Faction faction) {
+	this.faction = faction;
+}
+
+public Faction getFaction(){
+	return this.faction;
+}
+
 
 //FIXME waarom geen setWorld?
 
@@ -1280,39 +1293,11 @@ public boolean isCarryingBoulder() {
 	return false;
 }
 
-<<<<<<< HEAD
-//public void workAt(Vector position) {
-//	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
-//		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
-//	if (!isValidActivity("work")){
-//		this.nextActivity = "work";
-//		throw new IllegalArgumentException();
-//	}
-//	if (activeActivity != "work"){
-//		activeActivity = "work";
-//		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
-//	}
-//	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
-//	if (this.isCarryingMaterial())
-//		this.dropMaterial();
-//	else if ((this.getWorld().getTerrainType(position) == 3)
-//		&& this.world.getMaterialType(position) == 1) //TODO en 2 normaal...
-//		//TODO equipment
-//		this.work();
-//	else if (this.getWorld().getMaterialType(position) == )
-//		this.pickUpBoulder; //TODO dit kan beter met material en subklassen
-//	else if (this.world.getMaterialType(position) == 2)
-//		this.pickUpLog;
-//	else if (this.getWorld().getTerrainType(position) == 1)
-//		log = new Log(position);
-//	else if (this.getWorld().getTerrainType(position) == 1)
-//		Material boulder = new Boulder(position);
-//}
-=======
+
 private String carriedMaterial = null;
 
 public void workAt(Vector position) throws ModelException {
-	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
+	if (!position.isNeighbourCube(this.getCube()))
 		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
 	if (!isValidActivity("work")){
 		this.nextActivity = "work";
@@ -1354,7 +1339,6 @@ public void workAt(Vector position) throws ModelException {
 		this.increaseExperience(10);
 		}
 }
->>>>>>> refs/remotes/origin/master
 
 public void dropMaterial(Vector position) throws ModelException {
 	if (this.getCarriedMaterial() == "Log"){
@@ -1485,23 +1469,10 @@ public void defenseAgainst(Unit attacker) {
 	double dodgeChance = 0.2*attacker.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
-<<<<<<< HEAD
 		this.setExperience(this.getExperience() + 20);
 		Vector newPosition = this.position.getRandomAdjacentDodge(world);
-=======
+
 		this.increaseExperience(20);
-		double[] newPosition = new double[3];
-		int[] random = new int[3];
-		do {
-		for (int i=0; i != 3; i++){
-			do {
-				random[i] = (int) (Math.random() * 3) - 1;
-				newPosition[i] = this.getPosition()[i] + random[i];
-			} while (!isValidComponent(newPosition[i]));
-			// Fixme deze math in een andere classe steken :)
-		}
-		} while (random[0] == 0 && random[1] == 0 && random[2] == 0);
->>>>>>> refs/remotes/origin/master
 		try {
 			this.setPosition(newPosition);
 		} catch (ModelException e) {
@@ -1511,17 +1482,10 @@ public void defenseAgainst(Unit attacker) {
 		attacker.faceOpponent(this);
 	}
 	else if (!(Math.random() < blockChance)) {
-<<<<<<< HEAD
-		this.setExperience(this.getExperience() + 20);
+		this.increaseExperience(20);
 		this.setHitpoints(this.getHitpoints() - attacker.getStrength()/10);}
 	else
-		attacker.setExperience(this.getExperience() + 20);
-=======
-		this.increaseExperience(20);
-		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);}
-	else
-		unit.increaseExperience(20);
->>>>>>> refs/remotes/origin/master
+		attacker.increaseExperience(20);
 }
 
 /* Resting */
@@ -1673,7 +1637,5 @@ public void doDefaultBehavior() throws ModelException{
 		}else 
 			this.doDefaultBehavior();
 		}
-	}
-	
-	
+	}	
 }

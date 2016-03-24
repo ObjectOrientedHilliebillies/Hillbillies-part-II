@@ -1,14 +1,12 @@
 package hillbillies.model;
 
-<<<<<<< HEAD
-import java.util.Set;
-=======
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
->>>>>>> refs/remotes/origin/master
+
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
