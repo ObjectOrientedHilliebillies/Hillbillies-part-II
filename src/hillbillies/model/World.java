@@ -1,6 +1,14 @@
 package hillbillies.model;
 
+<<<<<<< HEAD
 import java.util.Set;
+=======
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+>>>>>>> refs/remotes/origin/master
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
@@ -92,7 +100,7 @@ public class World {
 	 * 2: Wood
 	 * 3: Workshop
 	 */
-	private int[][][] terrainTypes;
+	private int[][][] terrainTypes; //FIXME in de facade is dat een set, zouden we beter ook doen
 	
 	public int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
@@ -116,24 +124,80 @@ public class World {
 	 * 1: boulder
 	 * 2: log
 	 */
-	private Material[][][] materialTypes;
+	private Set<Material> materials;
+	private Set<Log> logs;
+	private Set<Boulder> boulders;
 	
-	//FIXME meerdere materialTypes op 1 positie mogelijk!
 	
-	public Material getMaterialType(Vector position) { 
-		int[] positionArray = position.getIntCube();
-		return materialTypes[positionArray[0]][positionArray[1]][positionArray[2]];				
+	public List<Material> getMaterialsAt(Vector position) { 
+		Iterator<Material> iterator = materials.iterator();
+		List<Material> foundMaterials = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material.getPosition() == position) 
+	        	foundMaterials.add(material); }
+	    return foundMaterials;
 	}
 	
-	public void setMaterialType(Vector position, Material materialType){
-		//if (!isValidMaterialType(materialType)){ //TODO
-		//	throw new IllegalArgumentException();		
-		//}
-		int[] coord = position.getIntCube();
-		materialTypes[coord[0]][coord[1]][coord[2]] = materialType;
+	public Set<Log> getLogs() {
+		Iterator<Material> iterator = materials.iterator();
+		Set<Log> logs = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material instanceof Log) 
+	        	logs.add((Log) material); 
+	        }
+	    return logs;
 	}
 	
-	private boolean isValidMaterialType (int materialType){
-		return (materialType >=1 && materialType <=2);
+	public Set<Boulder> getBoulders() {
+		Iterator<Material> iterator = materials.iterator();
+		Set<Boulder> boulders = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material instanceof Boulder) 
+	        	boulders.add((Boulder) material); 
+	        }
+	    return boulders;
+	}
+	
+//	public void setMaterial(Vector position, Material material){
+//		//if (!isValidMaterialType(materialType)){ //TODO
+//		//	throw new IllegalArgumentException();		
+//		//}
+//		
+//	}
+
+	public void addMaterial(Material material) {
+		materials.add(material);
+	}
+	
+	public void removeMaterial(Material material) {
+		materials.remove(material);
+	}
+	
+	//private boolean isValidMaterialType (int materialType){
+	//	return (materialType >=1 && materialType <=2);
+	//}
+	
+	private Set<Faction> factions;
+	
+	public Set<Faction> getActiveFactions() {
+		return this.factions;
+	}
+	
+	public int getNbOffFactions() {
+		return this.getActiveFactions().size();
+	}
+	
+	public void addFaction(Faction faction) {
+		if (this.getNbOffFactions() < 5)
+			factions.add(faction);
+	}
+	
+	public void removeFaction(Faction faction) {
+		factions.remove(faction);
 	}
 }
+
+
