@@ -1,6 +1,5 @@
 package hillbillies.model;
 
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 import hillbillies.part2.listener.TerrainChangeListener;
@@ -74,7 +73,7 @@ public class World {
 	public void changeSolidToPassable(int[] cube, int terrainType){
 		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
 		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
-		Set<int[]> neighbours = Vector.getNeighbourCubes(cube);
+		Set<int[]> neighbours = Vector.getNeighbourCubes(cube, this);
 		for (int[] neighbour : neighbours){
 			this.collapseIfFloating(neighbour);
 		}

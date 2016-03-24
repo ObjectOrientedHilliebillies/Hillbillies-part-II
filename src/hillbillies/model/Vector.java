@@ -117,15 +117,16 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	public static Set<int[]> getNeighbourCubes(int[] thisCube){
+	public static Set<int[]> getNeighbourCubes(int[] thisCube, World world){
 		Set<int[]> neighbourCubes = new HashSet<int[]>();
 		for (int x=-1; x!=2; x++){
 			for (int y=-1; y!=2; y++){
 				for (int z=-1; z!=2; z++){
 					int[] offset = {x,y,z};
 					int[] neighbourCube = Vector.sum(thisCube, offset);
-					if ()
-					neighbourCubes.add(Vector.sum(thisCube, offset));
+					if (world.isCubeInWorld(neighbourCube)){
+						neighbourCubes.add(Vector.sum(thisCube, offset));
+					}
 				}
 			}
 		}
