@@ -2,6 +2,8 @@ package hillbillies.part2.facade;
 
 import java.util.Set;
 
+import hillbillies.model.Boulder;
+import hillbillies.model.Log;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
 import hillbillies.model.World;
@@ -221,14 +223,14 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		Vector position = new Vector(x,y,z);
+		return world.getTerrainType(position);
 	}
 
 	@Override
 	public void setCubeType(World world, int x, int y, int z, int value) throws ModelException {
-		// TODO Auto-generated method stub
-		
+		Vector position = new Vector(x,y,z);
+		world.setTerrainType(position, value);
 	}
 
 	@Override
@@ -257,14 +259,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isCarryingLog(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return unit.isCarryingLog();
 	}
 
 	@Override
 	public boolean isCarryingBoulder(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return unit.isCarryingBoulder();
 	}
 
 	@Override
@@ -275,14 +275,13 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getExperiencePoints(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return unit.getExperience();
 	}
 
 	@Override
 	public void workAt(Unit unit, int x, int y, int z) throws ModelException {
-		// TODO Auto-generated method stub
-		
+		Vector position = new Vector(x, y, z) ;
+		unit.workAt(position);
 	}
 
 	@Override
@@ -305,8 +304,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public double[] getPosition(Boulder boulder) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		Vector position = boulder.getPosition();
+		return position.getVector();
 	}
 
 	@Override
@@ -317,8 +316,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public double[] getPosition(Log log) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		Vector position = log.getPosition();
+		return position.getVector();
 	}
 
 	@Override

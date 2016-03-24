@@ -6,7 +6,7 @@ public class Vector {
 	private double compZ;
 
 	public Vector(double coordX, double coordY, double coordZ){
-		setXcoord(coordX);
+		setXcoord(coordX); //TODO Is hetzelfde als setVector
 		setYcoord(coordY);
 		setZcoord(coordZ);
 	}

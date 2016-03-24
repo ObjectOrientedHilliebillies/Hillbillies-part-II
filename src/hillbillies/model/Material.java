@@ -4,9 +4,18 @@ import ogp.framework.util.ModelException;
 
 public class Material {
 	
-	public Material(Vector initialPosition) throws ModelException {
+	public Material(Vector initialPosition, World world) throws ModelException {
 		this.setWeight();
 		this.setPosition(initialPosition);
+		this.setWorld(world);
+		world.addMaterial(this);
+	}
+	
+	public Material(Vector initialPosition, World world, int weight) throws ModelException {
+		this.setWeight(weight);
+		this.setPosition(initialPosition);
+		this.setWorld(world); 
+		world.addMaterial(this);
 	}
 	
 	/**
@@ -17,6 +26,17 @@ public class Material {
 		int randomInt = (int) random*40;
 		int weight = 10 + randomInt;
 		this.weight = weight;
+	}
+	
+	private void setWeight(int weight) {
+		if (isValidWeight(weight))
+			this.weight = weight;
+	}
+	
+	private boolean isValidWeight(int weight) {
+		if (10 <= weight && weight <= 50)
+			return true;
+		return false;			
 	}
 	
 	/**
@@ -35,7 +55,7 @@ public class Material {
 	 * Set the position of this material to the given position.
 	 */
 	public void setPosition(Vector position) throws ModelException {
-		if (! Vector.isPositionInsideWorld(position)) // TODO falling toevoegen
+		if (! position.isPositionInsideWorld()) // TODO falling toevoegen
 			throw new ModelException();
 		this.position = position;
 	}
@@ -52,5 +72,13 @@ public class Material {
 	 */
 	private Vector position;
 	
+	public World getWorld() {
+		return this.world;
+	}
 	
+	private void setWorld(World world) {
+		this.world = world;
+	}
+	
+	private World world;
 }
