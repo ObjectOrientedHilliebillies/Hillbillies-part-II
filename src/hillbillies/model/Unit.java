@@ -425,7 +425,7 @@ public boolean isValidWeight(int weight) {
 @Raw
 public void setWeight(int weight) {
 	if (isValidWeight(weight))
-		this.weight = weight;
+		this.weight = weight + this.getCarriedMaterial().getWeight(); //TODO checken of carriedMaterial == null ook 0 als weight teruggeeft.
 	else 
 		this.weight = this.getMinWeight();
 }
@@ -1221,8 +1221,12 @@ public void work() throws IllegalArgumentException {
 
 public void setCarriedMaterial(Material material) {
 	//TODO defensive
-	// TODO weight ophogen en zo
+	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
+	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
+	//		een additional weight definieren en een materiaal kapotmaken als het 
+	//		opgerapen wordt en terug maken als het gedropt wordt.
 	this.carriedMaterial = material;
+	this.setWeight(this.getWeight()); 
 }
 
 public Material getCarriedMaterial() {
@@ -1260,16 +1264,17 @@ public void workAt(Vector position) throws ModelException {
 		activeActivity = "work";
 		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
 	}
-	Material materialAtPosition = this.getWorld().getMaterialType(position);
+	Material materialAtPosition = this.getWorld().getMaterial(position);
 	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
 	if (this.isCarryingMaterial()) {
 		this.dropMaterial(position);
 		this.increaseExperience(10); 
 		}
 	else if ((this.getWorld().getTerrainType(position) == 3) 
-		&& this.getWorld().getMaterialType(position) instanceof Boulder) { 
+		&& this.getWorld().getMaterial(position) instanceof Boulder) { 
 		//TODO en log normaal...
 		//TODO equipment
+		//FIXME
 		this.work();
 		this.increaseExperience(10); 
 		}
@@ -1279,6 +1284,7 @@ public void workAt(Vector position) throws ModelException {
 		}
 	else if (materialAtPosition instanceof Log) {
 		this.setCarriedMaterial(materialAtPosition);
+		//TODO log dissapears in world
 		this.increaseExperience(10);
 		}
 	else if (this.getWorld().getTerrainType(position) == 1) {
@@ -1292,7 +1298,8 @@ public void workAt(Vector position) throws ModelException {
 }
 
 public void dropMaterial(Vector position) {
-	this.getWorld().setMaterialType(position, this.getCarriedMaterial());
+	this.getWorld().setMaterial(position, this.getCarriedMaterial());
+	this.setCarriedMaterial(null);
 }
 
 /**

@@ -72,7 +72,7 @@ public class World {
 	 * 2: Wood
 	 * 3: Workshop
 	 */
-	private int[][][] terrainTypes;
+	private int[][][] terrainTypes; //FIXME in de facade is dat een set, zouden we beter ook doen
 	
 	public int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
@@ -96,24 +96,24 @@ public class World {
 	 * 1: boulder
 	 * 2: log
 	 */
-	private Material[][][] materialTypes;
+	private Material[][][] materials;
 	
-	//FIXME meerdere materialTypes op 1 positie mogelijk!
+	//FIXME meerdere materialTypes op 1 positie mogelijk! Onmogelijk met een set?
 	
-	public Material getMaterialType(Vector position) { 
+	public Material getMaterial(Vector position) { 
 		int[] positionArray = position.getIntCube();
-		return materialTypes[positionArray[0]][positionArray[1]][positionArray[2]];				
+		return materials[positionArray[0]][positionArray[1]][positionArray[2]];				
 	}
 	
-	public void setMaterialType(Vector position, Material materialType){
+	public void setMaterial(Vector position, Material material){
 		//if (!isValidMaterialType(materialType)){ //TODO
 		//	throw new IllegalArgumentException();		
 		//}
 		int[] coord = position.getIntCube();
-		materialTypes[coord[0]][coord[1]][coord[2]] = materialType;
+		materials[coord[0]][coord[1]][coord[2]] = material;
 	}
 	
-	private boolean isValidMaterialType (int materialType){
-		return (materialType >=1 && materialType <=2);
-	}
+	//private boolean isValidMaterialType (int materialType){
+	//	return (materialType >=1 && materialType <=2);
+	//}
 }
