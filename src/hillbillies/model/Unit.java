@@ -645,11 +645,18 @@ public void setExperience(int experience) {
 	if (isValidExperience(experience))
 		if (!(experience >= 10))
 			this.experience = experience;
-		else{ // TODO checken met facade welke we moeten ophogen, random?
+		else{ // FIXME random eentje ophogen
 			int points;
 			points = this.getExperience()/10;
 			this.setExperience(this.getExperience()%10);
-			this.setStrength(getStrength()+points);}
+			double random = Math.random();
+			if (random < 0.33)
+				this.setStrength(this.getStrength()+points);
+			else if (random < 0.66)
+				this.setToughness(this.getToughness() + points);
+			else
+				this.setAgility(this.getAgility() + points);
+			}
 }
 
 public void increaseExperience(int experience) {
