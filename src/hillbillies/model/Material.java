@@ -4,9 +4,10 @@ import ogp.framework.util.ModelException;
 
 public class Material {
 	
-	public Material(Vector initialPosition) throws ModelException {
+	public Material(Vector initialPosition, World world) throws ModelException {
 		this.setWeight();
 		this.setPosition(initialPosition);
+		//this.setWorld(world);
 	}
 	
 	/**
@@ -52,5 +53,9 @@ public class Material {
 	 */
 	private Vector position;
 	
+	public World getWorld() {
+		return this.world;
+	}
 	
+	private World world;
 }

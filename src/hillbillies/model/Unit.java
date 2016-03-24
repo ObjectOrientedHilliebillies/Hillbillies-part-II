@@ -206,6 +206,8 @@ public World getWorld(){
 	return this.world;
 }
 
+//FIXME waarom geen setWorld?
+
 
 ////////////////////////////////////////////////////
 ////////////////////* POSITION *////////////////////
@@ -632,6 +634,10 @@ public void setExperience(int experience) {
 			this.setStrength(getStrength()+points);}
 }
 
+public void increaseExperience(int experience) {
+	this.setExperience(this.getExperience() + experience);
+}
+
 /**
  * Variable registering the experience of this unit.
  */
@@ -1034,7 +1040,7 @@ public void moveToAdjacent(Vector positionDifference)
 		this.setBaseSpeed();
 	}
 	if (this.getTargetCube() == null)
-		this.setExperience(this.getExperience() + 1);
+		this.increaseExperience(1);
 }
 
 /**
@@ -1074,7 +1080,7 @@ public void doMove(double tickTime) throws ModelException {
 	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
-			this.setExperience(this.executedSteps + this.getExperience());
+			this.increaseExperience(this.executedSteps);
 			System.out.println("targetCube op null zetten");
 			this.sprinting = false;
 			this.targetCube = null;
@@ -1215,7 +1221,12 @@ public void work() throws IllegalArgumentException {
 
 public void setCarriedMaterial(Material material) {
 	//TODO defensive
+	// TODO weight ophogen en zo
 	this.carriedMaterial = material;
+}
+
+public Material getCarriedMaterial() {
+	return this.carriedMaterial;
 }
 
 public boolean isCarryingMaterial() {
@@ -1224,9 +1235,21 @@ public boolean isCarryingMaterial() {
 	return true;
 }
 
+public boolean isCarryingLog() {
+	if (this.getCarriedMaterial() instanceof Log) //TODO checken in boek of dit wel goed is
+		return true;
+	return false;
+}
+
+public boolean isCarryingBoulder() {
+	if (this.getCarriedMaterial() instanceof Boulder)
+		return true;
+	return false;
+}
+
 private Material carriedMaterial = null;
 
-public void workAt(Vector position) {
+public void workAt(Vector position) throws ModelException {
 	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
 		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
 	if (!isValidActivity("work")){
@@ -1237,25 +1260,39 @@ public void workAt(Vector position) {
 		activeActivity = "work";
 		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
 	}
+	Material materialAtPosition = this.getWorld().getMaterialType(position);
 	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
-	if (this.isCarryingMaterial())
-		this.dropMaterial();
-	else if ((this.getWorld().getTerrainType(position) == 3)
-		&& this.getWorld().getMaterialType(position) == 1) //TODO en 2 normaal...
+	if (this.isCarryingMaterial()) {
+		this.dropMaterial(position);
+		this.increaseExperience(10); 
+		}
+	else if ((this.getWorld().getTerrainType(position) == 3) 
+		&& this.getWorld().getMaterialType(position) instanceof Boulder) { 
+		//TODO en log normaal...
 		//TODO equipment
 		this.work();
-	else if (this.getWorld().getMaterialType(position) == )
-		this.pickUpBoulder; //TODO dit kan beter met material en subklassen
-	else if (this.getWorld().getMaterialType(position) == 2)
-		this.pickUpLog;
-	else if (this.getWorld().getTerrainType(position) == 1)
-		log = new Log(position);
-	else if (this.getWorld().getTerrainType(position) == 1)
-		Material boulder = new Boulder(position);
+		this.increaseExperience(10); 
+		}
+	else if (materialAtPosition instanceof Boulder ) {
+		this.setCarriedMaterial(materialAtPosition); 
+		this.increaseExperience(10); 
+		}
+	else if (materialAtPosition instanceof Log) {
+		this.setCarriedMaterial(materialAtPosition);
+		this.increaseExperience(10);
+		}
+	else if (this.getWorld().getTerrainType(position) == 1) {
+		Log log = new Log(position, this.getWorld());
+		this.increaseExperience(10);
+		}
+	else if (this.getWorld().getTerrainType(position) == 1) {
+		Boulder boulder = new Boulder(position, this.getWorld());
+		this.increaseExperience(10);
+		}
 }
 
-public void dropMaterial() {
-	//TODO
+public void dropMaterial(Vector position) {
+	this.getWorld().setMaterialType(position, this.getCarriedMaterial());
 }
 
 /**
@@ -1373,7 +1410,7 @@ public void defenseAgainst(Unit unit) {
 	double dodgeChance = 0.2*unit.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
-		this.setExperience(this.getExperience() + 20);
+		this.increaseExperience(20);
 		double[] newPosition = new double[3];
 		int[] random = new int[3];
 		do {
@@ -1394,10 +1431,10 @@ public void defenseAgainst(Unit unit) {
 		unit.faceOpponent(this);
 	}
 	else if (!(Math.random() < blockChance)) {
-		this.setExperience(this.getExperience() + 20);
+		this.increaseExperience(20);
 		this.setHitpoints(this.getHitpoints() - unit.getStrength()/10);}
 	else
-		unit.setExperience(this.getExperience() + 20);
+		unit.increaseExperience(20);
 }
 
 /* Resting */
