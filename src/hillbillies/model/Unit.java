@@ -33,6 +33,8 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+import java.util.List;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.ModelException;
@@ -155,7 +157,7 @@ public class Unit {
  *       | new.getOrientation() == PI/2
  */
 public Unit(String name, int[] initialCube, int weight, int agility, int strength, int toughness,
-		boolean enableDefaultBehavior)
+		boolean enableDefaultBehavior, World world)
 		throws IllegalArgumentException, ModelException {
 	this.setName(name);
 	
@@ -192,6 +194,7 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
+	this.setWorld(world);
 }
 
 /**
@@ -204,6 +207,10 @@ private World world;
  */
 public World getWorld(){
 	return this.world;
+}
+
+private void setWorld(World world) {
+	this.world = world;
 }
 
 //FIXME waarom geen setWorld?
@@ -425,15 +432,26 @@ public boolean isValidWeight(int weight) {
 @Raw
 public void setWeight(int weight) {
 	if (isValidWeight(weight))
-		this.weight = weight + this.getCarriedMaterial().getWeight(); //TODO checken of carriedMaterial == null ook 0 als weight teruggeeft.
+		this.weight = weight + this.getAdditionalWeight(); 
 	else 
-		this.weight = this.getMinWeight();
+		this.weight = this.getMinWeight() + this.getAdditionalWeight();
+}
+
+public int getAdditionalWeight() {
+	return this.additionalWeight;
+}
+
+public void setAdditionalWeight(int weight) {
+	this.additionalWeight = weight;
+	this.setWeight(this.getWeight());
 }
 
 /**
  * Variable registering the weight of this unit.
  */
 private int weight;
+
+private int additionalWeight;
 
 /**
  * Variable registering the maximum weight of this unit.
@@ -1225,11 +1243,15 @@ public void setCarriedMaterial(Material material) {
 	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
 	//		een additional weight definieren en een materiaal kapotmaken als het 
 	//		opgerapen wordt en terug maken als het gedropt wordt.
-	this.carriedMaterial = material;
-	this.setWeight(this.getWeight()); 
+	if (material instanceof Log)
+		this.carriedMaterial = "Log";
+	else if (material instanceof Boulder)
+		this.carriedMaterial = "Boulder";
+	this.setAdditionalWeight(material.getWeight());
+	this.getWorld().removeMaterial(material);
 }
 
-public Material getCarriedMaterial() {
+public String getCarriedMaterial() {
 	return this.carriedMaterial;
 }
 
@@ -1240,18 +1262,18 @@ public boolean isCarryingMaterial() {
 }
 
 public boolean isCarryingLog() {
-	if (this.getCarriedMaterial() instanceof Log) //TODO checken in boek of dit wel goed is
+	if (this.getCarriedMaterial() == "Log") 
 		return true;
 	return false;
 }
 
 public boolean isCarryingBoulder() {
-	if (this.getCarriedMaterial() instanceof Boulder)
+	if (this.getCarriedMaterial() == "Boulder")
 		return true;
 	return false;
 }
 
-private Material carriedMaterial = null;
+private String carriedMaterial = null;
 
 public void workAt(Vector position) throws ModelException {
 	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
@@ -1264,26 +1286,26 @@ public void workAt(Vector position) throws ModelException {
 		activeActivity = "work";
 		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
 	}
-	Material materialAtPosition = this.getWorld().getMaterial(position);
+	List<Material> materialAtPosition = this.getWorld().getMaterialsAt(position);
 	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
 	if (this.isCarryingMaterial()) {
 		this.dropMaterial(position);
 		this.increaseExperience(10); 
 		}
 	else if ((this.getWorld().getTerrainType(position) == 3) 
-		&& this.getWorld().getMaterial(position) instanceof Boulder) { 
+		&& this.getWorld().getMaterialsAt(position) instanceof Boulder) { 
 		//TODO en log normaal...
 		//TODO equipment
 		//FIXME
 		this.work();
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition instanceof Boulder ) {
-		this.setCarriedMaterial(materialAtPosition); 
+	else if (materialAtPosition.get(0) instanceof Boulder ) {
+		this.setCarriedMaterial(materialAtPosition.get(0)); 
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition instanceof Log) {
-		this.setCarriedMaterial(materialAtPosition);
+	else if (materialAtPosition.get(0) instanceof Log) {
+		this.setCarriedMaterial(materialAtPosition.get(0)); //TODO misschien verder itereren
 		//TODO log dissapears in world
 		this.increaseExperience(10);
 		}
@@ -1297,9 +1319,18 @@ public void workAt(Vector position) throws ModelException {
 		}
 }
 
-public void dropMaterial(Vector position) {
-	this.getWorld().setMaterial(position, this.getCarriedMaterial());
-	this.setCarriedMaterial(null);
+public void dropMaterial(Vector position) throws ModelException {
+	if (this.getCarriedMaterial() == "Log"){
+		Log log = new Log(position, this.getWorld(), this.getAdditionalWeight());
+		this.getWorld().addMaterial(log);
+		this.setAdditionalWeight(0);
+		}
+	else if (this.getCarriedMaterial() == "Boulder") {
+		Boulder boulder = new Boulder(position, this.getWorld(), this.getAdditionalWeight());
+		this.getWorld().addMaterial(boulder);
+		this.setAdditionalWeight(0);
+	}
+	this.setCarriedMaterial(null); 
 }
 
 /**

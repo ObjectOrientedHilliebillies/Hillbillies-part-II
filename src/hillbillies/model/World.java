@@ -1,5 +1,9 @@
 package hillbillies.model;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import hillbillies.part2.listener.TerrainChangeListener;
@@ -96,21 +100,32 @@ public class World {
 	 * 1: boulder
 	 * 2: log
 	 */
-	private Material[][][] materials;
+	private Set<Material> materials;
 	
-	//FIXME meerdere materialTypes op 1 positie mogelijk! Onmogelijk met een set?
-	
-	public Material getMaterial(Vector position) { 
-		int[] positionArray = position.getIntCube();
-		return materials[positionArray[0]][positionArray[1]][positionArray[2]];				
+	public List<Material> getMaterialsAt(Vector position) { 
+		Iterator<Material> iterator = materials.iterator();
+		List<Material> foundMaterials = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material.getPosition() == position) 
+	        	foundMaterials.add(material); }
+	    return foundMaterials;
+	        
 	}
 	
-	public void setMaterial(Vector position, Material material){
-		//if (!isValidMaterialType(materialType)){ //TODO
-		//	throw new IllegalArgumentException();		
-		//}
-		int[] coord = position.getIntCube();
-		materials[coord[0]][coord[1]][coord[2]] = material;
+//	public void setMaterial(Vector position, Material material){
+//		//if (!isValidMaterialType(materialType)){ //TODO
+//		//	throw new IllegalArgumentException();		
+//		//}
+//		
+//	}
+
+	public void addMaterial(Material material) {
+		materials.add(material);
+	}
+	
+	public void removeMaterial(Material material) {
+		materials.remove(material);
 	}
 	
 	//private boolean isValidMaterialType (int materialType){

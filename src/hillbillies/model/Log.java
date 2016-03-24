@@ -8,6 +8,10 @@ public class Log extends Material {
 		super(initialPosition, world);
 		// TODO Auto-generated constructor stub
 	}
+
+	public Log(Vector initialPosition, World world, int weight) throws ModelException {
+		super(initialPosition, world, weight);
+	}
 	
 	
 }

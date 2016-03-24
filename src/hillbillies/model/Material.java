@@ -7,13 +7,15 @@ public class Material {
 	public Material(Vector initialPosition, World world) throws ModelException {
 		this.setWeight();
 		this.setPosition(initialPosition);
-		//this.setWorld(world); //TODO
+		this.setWorld(world);
+		world.addMaterial(this);
 	}
 	
 	public Material(Vector initialPosition, World world, int weight) throws ModelException {
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
-		//this.setWorld(world); //TODO
+		this.setWorld(world); 
+		world.addMaterial(this);
 	}
 	
 	/**
@@ -72,6 +74,10 @@ public class Material {
 	
 	public World getWorld() {
 		return this.world;
+	}
+	
+	private void setWorld(World world) {
+		this.world = world;
 	}
 	
 	private World world;
