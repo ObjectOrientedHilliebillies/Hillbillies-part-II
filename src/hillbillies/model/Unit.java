@@ -1226,33 +1226,33 @@ public boolean isCarryingMaterial() {
 
 private Material carriedMaterial = null;
 
-public void workAt(Vector position) {
-	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
-		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
-	if (!isValidActivity("work")){
-		this.nextActivity = "work";
-		throw new IllegalArgumentException();
-	}
-	if (activeActivity != "work"){
-		activeActivity = "work";
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
-	}
-	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
-	if (this.isCarryingMaterial())
-		this.dropMaterial();
-	else if ((this.getWorld().getTerrainType(position) == 3)
-		&& this.getWorld().getMaterialType(position) == 1) //TODO en 2 normaal...
-		//TODO equipment
-		this.work();
-	else if (this.getWorld().getMaterialType(position) == )
-		this.pickUpBoulder; //TODO dit kan beter met material en subklassen
-	else if (this.getWorld().getMaterialType(position) == 2)
-		this.pickUpLog;
-	else if (this.getWorld().getTerrainType(position) == 1)
-		log = new Log(position);
-	else if (this.getWorld().getTerrainType(position) == 1)
-		Material boulder = new Boulder(position);
-}
+//public void workAt(Vector position) {
+//	if (!position.isNeighbourCube(position.getIntCube(), this.getCube()))
+//		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
+//	if (!isValidActivity("work")){
+//		this.nextActivity = "work";
+//		throw new IllegalArgumentException();
+//	}
+//	if (activeActivity != "work"){
+//		activeActivity = "work";
+//		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+//	}
+//	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
+//	if (this.isCarryingMaterial())
+//		this.dropMaterial();
+//	else if ((this.getWorld().getTerrainType(position) == 3)
+//		&& this.world.getMaterialType(position) == 1) //TODO en 2 normaal...
+//		//TODO equipment
+//		this.work();
+//	else if (this.getWorld().getMaterialType(position) == )
+//		this.pickUpBoulder; //TODO dit kan beter met material en subklassen
+//	else if (this.world.getMaterialType(position) == 2)
+//		this.pickUpLog;
+//	else if (this.getWorld().getTerrainType(position) == 1)
+//		log = new Log(position);
+//	else if (this.getWorld().getTerrainType(position) == 1)
+//		Material boulder = new Boulder(position);
+//}
 
 public void dropMaterial() {
 	//TODO
@@ -1304,7 +1304,7 @@ public boolean isWorking() {
 public void attack(Unit defender){
 	if (defender != this 
 		&& (this.getCube() == defender.getCube() 
-			|| Vector.isNeighbourCube(this.getCube(), defender.getCube())) 
+			|| this.position.isNeighbourCube(defender.getCube())) 
 		&& !this.isAttacking()){
 		
 		System.out.println("attack");

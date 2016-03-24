@@ -11,17 +11,20 @@ public class World {
 	 *         The terrain of this new world.
 	 **/         
 	private ConnectedToBorder connectedToBorder;
-	public World(int[][][] terrainTypes, TerrainChangeListener modelListener){
-		connectedToBorder = new ConnectedToBorder(
-					terrainTypes.length, terrainTypes[0].length, terrainTypes[0][0].length);
-		NbCubesX = terrainTypes.length;
-		NbCubesY = terrainTypes[0].length;
-		NbCubesZ = terrainTypes[0][0].length;
+	public World(int[][][] initialTerrainTypes, TerrainChangeListener modelListener){
+		NbCubesX = initialTerrainTypes.length;
+		NbCubesY = initialTerrainTypes[0].length;
+		NbCubesZ = initialTerrainTypes[0][0].length;
+		
+		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
+		
 		// TODO dit is nog slecht dit moet opgesplitst worden in verschillende methodes, en elke cube moet gezet worden niet enkel de solid ones!
 		for (int x=0 ; x != NbCubesX ; x++){
+			System.out.println(x);
 			for (int y=0 ; y != NbCubesY; y++){
-				for  (int z=0 ; z != NbCubesZ; y++){
-					if (terrainTypes[x][y][z] != 1 && terrainTypes[x][y][z] != 2){
+				for  (int z=0 ; z != NbCubesZ; z++){
+					if (initialTerrainTypes[x][y][z] != 1 
+							&& initialTerrainTypes[x][y][z] != 2){
 						connectedToBorder.changeSolidToPassable(x, y, z);
 						modelListener.notifyTerrainChanged(x, y, z);
 					}

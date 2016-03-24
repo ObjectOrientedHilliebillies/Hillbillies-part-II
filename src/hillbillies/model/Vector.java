@@ -1,5 +1,8 @@
 package hillbillies.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Vector {
 	private double compX;
 	private double compY;
@@ -84,7 +87,8 @@ public class Vector {
 	 * @return 
 	 *       | result == //FIXME
 	*/
-	public static boolean isNeighbourCube(int[] thisCube, int[] otherCube){
+	public boolean isNeighbourCube(int[] otherCube){
+		int[] thisCube = this.getIntCube();
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
 			int difference = Math.abs(thisCube[i] - otherCube[i]);
@@ -94,6 +98,38 @@ public class Vector {
 		    	return false;
 		}
 		return neighbourForAtleastOneComponent;
+	}
+	
+	public  boolean isDirectlyAdjacentCube(int[] otherCube){
+		int[] thisCube = this.getIntCube();
+		boolean neighbourForAtleastOneComponent = false;
+		for (int i = 0; i != 3; i++) {
+			int difference = Math.abs(thisCube[i] - otherCube[i]);
+		    if (difference == 1){
+		    	if (neighbourForAtleastOneComponent){
+		    		return false;
+		    	}
+		    	neighbourForAtleastOneComponent = true;
+		    }
+		    else if (difference != 0)
+		    	return false;
+		}
+		return neighbourForAtleastOneComponent;
+	}
+	
+	public static Set<int[]> getNeighbourCubes(int[] thisCube){
+		Set<int[]> neighbourCubes = new HashSet<int[]>();
+		for (int x=-1; x!=2; x++){
+			for (int y=-1; y!=2; y++){
+				for (int z=-1; z!=2; z++){
+					int[] offset = {x,y,z};
+					int[] neighbourCube = Vector.sum(thisCube, offset);
+					if ()
+					neighbourCubes.add(Vector.sum(thisCube, offset));
+				}
+			}
+		}
+		return neighbourCubes;
 	}
 	
 	/**
@@ -121,10 +157,11 @@ public class Vector {
 	 * @return 
 	 *       | result == (cube1 = cube2)
 	*/
-	public static boolean equals(int[] cube1, int[] cube2){
-		if (cube1[1] == cube2[1]
-				&& cube1[2] == cube2[2]
-				&& cube1[3] == cube2[3]){
+	public static boolean equals(int[] thisCube, int[] otherCube){
+//		int[] thisCube = this.getIntCube();
+		if (thisCube[1] == otherCube[1]
+				&& thisCube[2] == otherCube[2]
+				&& thisCube[3] == otherCube[3]){
 			return true;
 		}
 		return false;
@@ -142,10 +179,17 @@ public class Vector {
 		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
 	}
 	
-	public static Vector sum(Vector vector1, Vector vector2){
-		return new Vector(vector1.compX + vector2.compX, 
-				vector1.compY + vector2.compY,
-				vector1.compZ + vector2.compZ);
+	public Vector sum(Vector otherVector){
+		return new Vector(this.compX + otherVector.compX, 
+				this.compY + otherVector.compY,
+				this.compZ + otherVector.compZ);
+	}
+	
+	public static int[] sum(int[] thisCube, int[] otherCube){
+		int[] result = {thisCube[1] + otherCube[1], 
+						thisCube[2] + otherCube[2],
+						thisCube[3] + otherCube[3]};
+		return result;
 	}
 	
 	public static Vector getVectorFromTo(Vector from, Vector to){
