@@ -101,6 +101,9 @@ public class World {
 	 * 2: log
 	 */
 	private Set<Material> materials;
+	private Set<Log> logs;
+	private Set<Boulder> boulders;
+	
 	
 	public List<Material> getMaterialsAt(Vector position) { 
 		Iterator<Material> iterator = materials.iterator();
@@ -110,7 +113,28 @@ public class World {
 	        if(material.getPosition() == position) 
 	        	foundMaterials.add(material); }
 	    return foundMaterials;
-	        
+	}
+	
+	public Set<Log> getLogs() {
+		Iterator<Material> iterator = materials.iterator();
+		Set<Log> logs = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material instanceof Log) 
+	        	logs.add((Log) material); 
+	        }
+	    return logs;
+	}
+	
+	public Set<Boulder> getBoulders() {
+		Iterator<Material> iterator = materials.iterator();
+		Set<Boulder> boulders = null;
+	    while(iterator.hasNext()) {
+	        Material material = iterator.next();
+	        if(material instanceof Boulder) 
+	        	boulders.add((Boulder) material); 
+	        }
+	    return boulders;
 	}
 	
 //	public void setMaterial(Vector position, Material material){
