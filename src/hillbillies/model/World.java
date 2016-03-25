@@ -231,7 +231,7 @@ public class World {
 		return this.factions;
 	}
 	
-	private int getNbOffFactions() {
+	public int getNbOffFactions() {
 		return this.getActiveFactions().size();
 	}
 	
@@ -307,6 +307,7 @@ public class World {
 		}		
 	}
 
+<<<<<<< HEAD
 	/*Time*/
 	
 	public void advanceTime(double dt) {
@@ -314,6 +315,10 @@ public class World {
 		for (Unit unit : unitsInWorld){
 			unit.advanceTime(dt);
 		}
+=======
+	public void removeUnit(Unit unit) {
+		unit.getFaction().removeUnit(unit);
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	

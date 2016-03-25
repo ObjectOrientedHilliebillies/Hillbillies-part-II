@@ -202,7 +202,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public World createWorld(int[][][] terrainTypes, TerrainChangeListener modelListener) throws ModelException {
-		System.out.println("createWorld");
+		System.out.println(terrainTypes);
 		return new World(terrainTypes, modelListener);
 	}
 
@@ -279,8 +279,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isAlive(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return true;
+		return unit.isAlive();
 	}
 
 	@Override
