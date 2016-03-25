@@ -5,8 +5,9 @@ public class Material {
 	
 	public Material(Vector initialPosition, World world){
 		this.setWeight();
-		this.setPosition(initialPosition);
 		this.setWorld(world);
+		this.setPosition(initialPosition);
+		
 		world.addMaterial(this);
 	}
 	

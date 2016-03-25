@@ -1,27 +1,20 @@
 package homeMadeTests;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
-import ogp.framework.util.Util;
+
+import hillbillies.model.Material;
+import hillbillies.model.Unit;
 
 public class SyntaxTest {
+	
 	@Test
 	public final void test(){
-		int teller = 0; 
-		int[][][] a = new int[3][4][5];
-		for (int i=0; i != 3; i++){
-			for (int j=0; j != 4; j++){
-				for (int k=0; k != 4; k++){
-					a[i][j][k] = teller;
-					teller = teller+1;
-				}
-			}
-		}
-		
-		System.out.println(a.length);
-		System.out.println(a[0].length);
-		System.out.println(a[0][0].length);
-		System.out.println(Arrays.deepToString(a));
-}
+		List<Material> foundMaterials = new ArrayList<>();
+		System.out.println(foundMaterials.size());
+	}
 }

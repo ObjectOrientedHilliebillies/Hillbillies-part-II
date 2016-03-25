@@ -181,7 +181,7 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	if (!isValidWeight(weight))
 		this.weight = this.getMinWeight();
 	else 
-		this.setWeight(weight);
+		this.setWeight(weight); //TODO da's hier vreemd met die weight's
 	this.setDefaultBehavior(enableDefaultBehavior);
 	
 	setHitpoints(getMaxHitpoints()-5);
@@ -457,9 +457,9 @@ public boolean isValidWeight(int weight) {
 @Raw
 public void setWeight(int weight) {
 	if (isValidWeight(weight))
-		this.weight = weight + this.getAdditionalWeight(); 
+		this.weight = weight; 
 	else 
-		this.weight = this.getMinWeight() + this.getAdditionalWeight();
+		this.weight = this.getMinWeight();
 }
 
 public int getAdditionalWeight() {
@@ -468,14 +468,16 @@ public int getAdditionalWeight() {
 
 public void setAdditionalWeight(int weight) {
 	this.additionalWeight = weight;
-	this.setWeight(this.getWeight());
+}
+
+public int getTotalWeight() {
+	return this.getWeight() + this.getAdditionalWeight();
 }
 
 /**
  * Variable registering the weight of this unit.
  */
 private int weight;
-
 private int additionalWeight;
 
 /**
@@ -786,8 +788,19 @@ public boolean isValidHitpoints(int hitpoints) {
  */
 @Raw
 public void setHitpoints(int hitpoints) {
-	assert isValidHitpoints(hitpoints);
-	this.hitpoints = hitpoints;
+	if (hitpoints <= 0)
+		this.die();
+	else {
+		assert isValidHitpoints(hitpoints); //TODO check wegdoen
+		this.hitpoints = hitpoints;
+	}
+}
+
+public void die(){
+	if (this.isCarryingMaterial())
+		this.dropMaterial(this.getPosition());
+	this.getWorld().removeUnit(); //FIXME
+	
 }
 
 /**
@@ -815,7 +828,7 @@ public int getMaxHitpoints() {
  */
 @Basic @Raw
 public double getCurrentSpeed() {
-	return 3*(this.getStrength() + this.getAgility())/(4*this.getWeight());
+	return 3*(this.getStrength() + this.getAgility())/(4*this.getTotalWeight());
 }
 
 
@@ -979,7 +992,7 @@ public double getBaseSpeed() {
 //FIXME da's een louche functienaam, kunnen we 
 //		dat niet beter in getBaseSpeed zetten?
 public void setBaseSpeed(){
-	this.baseSpeed = 3*(this.getStrength() + this.getAgility())/(double) (4*this.getWeight());
+	this.baseSpeed = 3*(this.getStrength() + this.getAgility())/(double) (4*this.getTotalWeight());
 }
 
 /**
@@ -1332,33 +1345,35 @@ public void workAt(Vector position){
 		this.work();
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition.get(0) instanceof Boulder ) {
+	else if (materialAtPosition.size() !=0 
+			&& materialAtPosition.get(0) instanceof Boulder ) {
 		this.setCarriedMaterial(materialAtPosition.get(0)); 
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition.get(0) instanceof Log) {
+	else if (materialAtPosition.size() !=0 
+			&& materialAtPosition.get(0) instanceof Log) {
 		this.setCarriedMaterial(materialAtPosition.get(0)); //TODO misschien verder itereren
 		//TODO log dissapears in world
 		this.increaseExperience(10);
 		}
-	else if (this.getWorld().getTerrainType(position) == 1) {
-		Log log = new Log(position, this.getWorld());
+	else if (this.getWorld().getTerrainType(position) == 2) {
+		new Log(position, this.getWorld());
 		this.increaseExperience(10);
 		}
 	else if (this.getWorld().getTerrainType(position) == 1) {
-		Boulder boulder = new Boulder(position, this.getWorld());
+		new Boulder(position, this.getWorld());
 		this.increaseExperience(10);
 		}
 }
 
 public void dropMaterial(Vector position){
 	if (this.getCarriedMaterial() == "Log"){
-		Log log = new Log(position, this.getWorld(), this.getAdditionalWeight());
+		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
 		this.setAdditionalWeight(0);
 		}
 	else if (this.getCarriedMaterial() == "Boulder") {
-		Boulder boulder = new Boulder(position, this.getWorld(), this.getAdditionalWeight());
+		new Boulder(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(boulder);
 		this.setAdditionalWeight(0);
 	}
