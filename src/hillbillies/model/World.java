@@ -2,15 +2,12 @@ package hillbillies.model;
 
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
-
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
+
 
 public class World {
 	/**
@@ -25,14 +22,15 @@ public class World {
 		NbCubesY = initialTerrainTypes[0].length;
 		NbCubesZ = initialTerrainTypes[0][0].length;
 		
+		this.terrainTypes = new int[NbCubesX][NbCubesY][NbCubesZ];
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
 		// TODO dit is nog slecht dit moet opgesplitst worden in verschillende methodes, en elke cube moet gezet worden niet enkel de solid ones!
 		for (int x=0 ; x != NbCubesX ; x++){
-			System.out.println(x);
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
 					terrainTypes[x][y][z] = initialTerrainTypes[x][y][z];
+					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
 						connectedToBorder.changeSolidToPassable(x, y, z);
@@ -40,6 +38,7 @@ public class World {
 				}
 			}
 		}
+		this.collapseAllFloatingCubes();
 	}
 
 	private final int NbCubesX;
@@ -85,6 +84,14 @@ public class World {
 	 */
 	private int[][][] terrainTypes; 
 	
+	private boolean isSolid(int[] cube){
+		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
+		if (terrainType != 1 && terrainType != 2){
+			return false;
+		}
+		return true;
+	}
+	
 	public int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
 		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
@@ -118,56 +125,68 @@ public class World {
 	}
 	
 	private void collapseIfFloating(int[] cube){
-		if (!this.isSolidCubeConnectedToBorder(int[] cube)){
-			this.setTerrainType(cube, 0);
+		if (this.isSolid(cube)){
+			if (!this.isSolidConnectedToBorder(cube)){
+				this.setTerrainType(cube, 0);
+			}
 		}
 	}
 	
-	private boolean isSolidCubeConnectedToBorder(int[] cube){
-		return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
+	public boolean isSolidConnectedToBorder(int[] cube){
+		if (this.isSolid(cube)){
+			return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
+		}
+		return true;
 	}
 	
-	private void 
+	private void collapseAllFloatingCubes(){
+		for (int x=0 ; x != NbCubesX ; x++){
+			for (int y=0 ; y != NbCubesY; y++){
+				for  (int z=0 ; z != NbCubesZ; z++){
+					 int[] cube = {x,y,z};
+					 this.collapseIfFloating(cube);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * materialTypes:
 	 * 1: boulder
 	 * 2: log
 	 */
-	private Set<Material> materials;
-	private Set<Log> logs;
-	private Set<Boulder> boulders;
+	private Set<Material> materials = Collections.emptySet();
+	private Set<Log> logs = Collections.emptySet();
+	private Set<Boulder> boulders = Collections.emptySet();
 	
 	
 	public List<Material> getMaterialsAt(Vector position) { 
-		Iterator<Material> iterator = materials.iterator();
-		List<Material> foundMaterials = null;
-	    while(iterator.hasNext()) {
-	        Material material = iterator.next();
-	        if(material.getPosition() == position) 
-	        	foundMaterials.add(material); }
+		List<Material> foundMaterials = Collections.emptyList();
+		for (Material material : materials){
+			if(material.getPosition() == position){
+	        	foundMaterials.add(material); 
+			}
+        }
 	    return foundMaterials;
 	}
 	
 	public Set<Log> getLogs() {
-		Iterator<Material> iterator = materials.iterator();
-		Set<Log> logs = null;
-	    while(iterator.hasNext()) {
-	        Material material = iterator.next();
-	        if(material instanceof Log) 
-	        	logs.add((Log) material); 
-	        }
+		Set<Log> logs = Collections.emptySet();
+		for (Material material : materials){
+			if(material instanceof Log){
+	        	logs.add((Log) material);
+			}
+        }
 	    return logs;
 	}
 	
 	public Set<Boulder> getBoulders() {
-		Iterator<Material> iterator = materials.iterator();
-		Set<Boulder> boulders = null;
-	    while(iterator.hasNext()) {
-	        Material material = iterator.next();
-	        if(material instanceof Boulder) 
-	        	boulders.add((Boulder) material); 
-	        }
+		Set<Boulder> boulders = Collections.emptySet();
+		for (Material material : materials){
+			if(material instanceof Boulder){
+	        	boulders.add((Boulder) material);
+			}
+        }
 	    return boulders;
 	}
 	
@@ -192,7 +211,7 @@ public class World {
 	
 	/*Faction*/
 	
-	private Set<Faction> factions;
+	private Set<Faction> factions = Collections.emptySet();
 	
 	public Set<Faction> getActiveFactions() {
 		return this.factions;
@@ -210,6 +229,7 @@ public class World {
 		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
 			throw new IllegalArgumentException();
 		}
+		System.out.println("factionadded");
 		factions.add(faction);
 	}
 	
@@ -252,9 +272,15 @@ public class World {
 	    return nbUnitsInWorld;
 	}
 	
+	public Unit spawnUnit(boolean enableDefaultBehavior){
+		int[] initialCube = {10,10,14};
+		return new Unit("Test", initialCube, enableDefaultBehavior, this);
+	}
+	
 	public void addUnit(Unit unit){
 		if (this.getNbOfUnits()!=100){
 			if (this.getNbOffFactions() != 5){
+				System.out.print("new faction");
 				Faction newFaction = this.makeFaction();
 				this.addFaction(newFaction);
 				newFaction.addUnit(unit);
@@ -263,6 +289,8 @@ public class World {
 			}
 		}		
 	}
+	
+	
 }
 
 

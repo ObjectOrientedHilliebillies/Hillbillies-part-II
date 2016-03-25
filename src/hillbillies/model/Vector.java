@@ -187,9 +187,9 @@ public class Vector {
 	}
 	
 	public static int[] sum(int[] thisCube, int[] otherCube){
-		int[] result = {thisCube[1] + otherCube[1], 
-						thisCube[2] + otherCube[2],
-						thisCube[3] + otherCube[3]};
+		int[] result = {thisCube[0] + otherCube[0], 
+						thisCube[1] + otherCube[1],
+						thisCube[2] + otherCube[2]};
 		return result;
 	}
 	
