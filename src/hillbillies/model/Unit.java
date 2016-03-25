@@ -926,7 +926,7 @@ public void startNextActivity(){
 	if (nextActivity == null)
 		activeActivity = null;
 	else if (nextActivity == "work")
-		this.work();
+		this.workAt(this.position.getRandomAdjacentCubeInWorld(this.world));
 	else if (nextActivity == "rest")
 		this.rest();
 	
@@ -1262,43 +1262,45 @@ public void doMoveTo(){
 
 /* Working */
 
-public void setCarriedMaterial(Material material) {
+private void pickupMaterial(Material material) {
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
 	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
 	//		een additional weight definieren en een materiaal kapotmaken als het 
 	//		opgerapen wordt en terug maken als het gedropt wordt.
 	if (material instanceof Log)
-		this.carriedMaterial = "Log";
+		this.carriedMaterial = 2;
 	else if (material instanceof Boulder)
-		this.carriedMaterial = "Boulder";
+		this.carriedMaterial = 1;
 	this.setAdditionalWeight(material.getWeight());
 	this.getWorld().removeMaterial(material);
 }
 
-public String getCarriedMaterial() {
-	return this.carriedMaterial;
-}
 
 public boolean isCarryingMaterial() {
-	if (carriedMaterial == null)
-		return false;
-	return true;
+	if (carriedMaterial != 0)
+		return true;
+	return false;
 }
 
 public boolean isCarryingLog() {
-	if (this.getCarriedMaterial() == "Log") 
+	if (this.carriedMaterial == 2) 
 		return true;
 	return false;
 }
 
 public boolean isCarryingBoulder() {
-	if (this.getCarriedMaterial() == "Boulder")
+	if (this.carriedMaterial == 1)
 		return true;
 	return false;
 }
-
-private String carriedMaterial = null;
+/**
+ * loadTypes:
+ * 0: nothing
+ * 1: boulder
+ * 2: log
+ */
+private int carriedMaterial = 0;
 private int[] cubeWorkingOn = null;
 
 public void workAt(int[] cube){
@@ -1326,55 +1328,44 @@ public void workAt(int[] cube){
  */
 public void doWork() {
 	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime)){
-		List<Material> materialAtPosition = this.world.getMaterialsAt(cube);
-	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
-	if (this.isCarryingMaterial()) {
-		this.dropMaterial(this.position);
+		List<Material> materialAtPosition = this.world.getMaterialsAt(cubeWorkingOn);
+		if (this.isCarryingMaterial()) {
+			this.dropMaterial(this.position);
+			}
+		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
+			//FIXME deze doet het nog niet!
+			}
+		else if (this.world.materialToPickUp(cubeWorkingOn) != null) {
+			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
+			}
+		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 2) {
+			new Log(cubeWorkingOn, this.getWorld());
+			this.world.setTerrainType(cubeWorkingOn, 0);
+			}
+		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 1) {
+			new Boulder(cubeWorkingOn, this.getWorld());
+			this.world.setTerrainType(cubeWorkingOn, 0);
+			}
+		else{
+			this.increaseExperience(-10); 
+		}
 		this.increaseExperience(10); 
-		}
-	else if ((this.getWorld().getTerrainType(cube) == 3) 
-		&& this.getWorld().getMaterialsAt(cube) instanceof Boulder) { 
-		//TODO en log normaal...
-		//TODO equipment
-		//FIXME
-		this.work();
-		this.increaseExperience(10); 
-		}
-	else if (materialAtPosition.size() !=0 
-			&& materialAtPosition.get(0) instanceof Boulder ) {
-		this.setCarriedMaterial(materialAtPosition.get(0)); 
-		this.increaseExperience(10); 
-		}
-	else if (materialAtPosition.size() !=0 
-			&& materialAtPosition.get(0) instanceof Log) {
-		this.setCarriedMaterial(materialAtPosition.get(0)); //TODO misschien verder itereren
-		//TODO log dissapears in world
-		this.increaseExperience(10);
-		}
-	else if (this.getWorld().getTerrainType(cube) == 2) {
-		new Log(cube, this.getWorld());
-		this.increaseExperience(10);
-		}
-	else if (this.getWorld().getTerrainType(cube) == 1) {
-		new Boulder(cube, this.getWorld());
-		this.increaseExperience(10);
-		}
-	this.startNextActivity();
+		this.startNextActivity();
+	}
 }
 
-public void dropMaterial(Vector position){
-	if (this.getCarriedMaterial() == "Log"){
+private void dropMaterial(Vector position){
+	if (this.carriedMaterial == 2){
 		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
 		this.setAdditionalWeight(0);
 		}
-	else if (this.getCarriedMaterial() == "Boulder") {
+	else if (this.carriedMaterial == 1) {
 		new Boulder(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(boulder);
 		this.setAdditionalWeight(0);
 	}
-	this.setCarriedMaterial(null);
-}
+	this.carriedMaterial = 0;
 }
 
 
@@ -1484,7 +1475,8 @@ public void defenseAgainst(Unit attacker) {
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		Vector newPosition = this.position.getRandomAdjacentDodge(world);
+		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(world);
+		Vector newPosition = Vector.getCentreOfCube(randomCube);
 
 		this.increaseExperience(20);
 		try {
@@ -1644,12 +1636,13 @@ public void doDefaultBehavior(){
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
-			this.work();
+			this.workAt(this.position.getRandomAdjacentCubeInWorld(this.world));
 		}else if (randomActivity == 2 && 
 				(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 			this.rest();
 		}else 
 			this.doDefaultBehavior();
 		}
-	}	
+	}
+
 }

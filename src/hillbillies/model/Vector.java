@@ -230,7 +230,7 @@ public class Vector {
 		return new Vector(difference[0], difference[1], difference[2]);
 	}
 	
-	public Vector getRandomAdjacentDodge(World world){
+	public int[] getRandomAdjacentCubeInWorld(World world){
 		int[] thisCube = this.getIntCube();
 		int[] newCube = new int[3];		
 		do {
@@ -238,7 +238,7 @@ public class Vector {
 				newCube[i] = thisCube[i] + (int) (Math.random() * 3) - 1;
 			}
 		} while (equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
-		return new Vector(newCube);
+		return newCube;
 	}
 	
 }

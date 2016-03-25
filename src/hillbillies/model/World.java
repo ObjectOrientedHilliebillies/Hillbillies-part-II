@@ -2,9 +2,9 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import hillbillies.part2.listener.TerrainChangeListener;
@@ -107,11 +107,20 @@ public class World {
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
-		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-		modelListener.notifyTerrainChanged(cube[0], cube[0], cube[0]);
-		if (terrainType != 1 && terrainType != 2){
+		if (terrainType != 1 && terrainType != 2 && this.isSolid(cube)){
+			terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
+			modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+			double rand = Math.random();
+			if (rand < 0.125) {
+				new Log(cube, this);
+			} else if (rand < 0.25){
+				new Boulder(cube, this);
+			}
 			this.changeSolidToPassable(cube);
 		}
+		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
+		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+		
 	}
 	
 	private boolean isValidTerrainType (int terrainType){
@@ -152,6 +161,8 @@ public class World {
 		}
 	}
 	
+	
+	
 	/**
 	 * materialTypes:
 	 * 1: boulder
@@ -161,6 +172,40 @@ public class World {
 	private Set<Log> logs = new HashSet<>();
 	private Set<Boulder> boulders = new HashSet<>();
 	
+	public boolean isWorkshopWithLogAndBoulder(int[] cube){
+		if (this.getTerrainType(cube) != 3){
+			return false;
+		}
+		List<Material> materialsOnCube = this.getMaterialsAt(cube);
+		boolean logInStock = false;
+		boolean boulderInStock = false;
+		for (Material material : materialsOnCube) {
+			if (!logInStock && material instanceof Log) {
+				logInStock = true;
+			}
+			if (!boulderInStock && material instanceof Boulder) {
+				boulderInStock = true;
+			}
+			if (boulderInStock && logInStock) {
+				return true;
+			}
+		}
+		return false;
+	}	
+	
+	public Material materialToPickUp(int[] cube){
+		List<Material> materialsOnCube = this.getMaterialsAt(cube);
+		Material materialToReturn = null;
+		for (Material material : materialsOnCube) {
+			if (material instanceof Boulder) {
+				return material;
+			}
+			if (material instanceof Log) {
+				materialToReturn = material;
+			}
+		}
+		return materialToReturn;
+	}
 	
 	public List<Material> getMaterialsAt(Vector position) { 
 		List<Material> foundMaterials = new ArrayList<>();
@@ -181,8 +226,6 @@ public class World {
         }
 	    return foundMaterials;
 	}
-	
-	
 	
 	public Set<Log> getLogs() {
 		Set<Log> logs = new HashSet<>();
@@ -307,7 +350,6 @@ public class World {
 		}		
 	}
 
-<<<<<<< HEAD
 	/*Time*/
 	
 	public void advanceTime(double dt) {
@@ -315,10 +357,10 @@ public class World {
 		for (Unit unit : unitsInWorld){
 			unit.advanceTime(dt);
 		}
-=======
+	}
+
 	public void removeUnit(Unit unit) {
 		unit.getFaction().removeUnit(unit);
->>>>>>> refs/remotes/origin/master
 	}
 	
 	
