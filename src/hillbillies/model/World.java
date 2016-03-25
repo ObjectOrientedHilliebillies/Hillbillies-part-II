@@ -232,7 +232,6 @@ public class World {
 			throw new IllegalArgumentException();
 		}
 		System.out.println("factionadded");
-		System.out.println(faction);
 		this.factions.add(faction);
 	}
 	
@@ -263,7 +262,6 @@ public class World {
 	public Set<Unit> getUnits(){
 		Set<Unit> unitsInWorld = new HashSet<>();
 		for (Faction faction : factions){
-			System.out.println(faction.getUnitsInFaction());
 			unitsInWorld.addAll(faction.getUnitsInFaction());
 		}
 	    return unitsInWorld;
@@ -278,7 +276,7 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		int[] initialCube = {10,10,14};
+		int[] initialCube = {10,10,10}; 
 		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
 		this.addUnit(newUnit);
 		return newUnit;
@@ -288,7 +286,7 @@ public class World {
 		if (this.getNbOfUnits()!=100){
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
-				Faction newFaction = this.makeFaction();
+				Faction newFaction =  new Faction(this);
 				this.addFaction(newFaction);
 				newFaction.addUnit(unit);
 			} else {

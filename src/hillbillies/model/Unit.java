@@ -1345,33 +1345,35 @@ public void workAt(Vector position){
 		this.work();
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition.get(0) instanceof Boulder ) {
+	else if (materialAtPosition.size() !=0 
+			&& materialAtPosition.get(0) instanceof Boulder ) {
 		this.setCarriedMaterial(materialAtPosition.get(0)); 
 		this.increaseExperience(10); 
 		}
-	else if (materialAtPosition.get(0) instanceof Log) {
+	else if (materialAtPosition.size() !=0 
+			&& materialAtPosition.get(0) instanceof Log) {
 		this.setCarriedMaterial(materialAtPosition.get(0)); //TODO misschien verder itereren
 		//TODO log dissapears in world
 		this.increaseExperience(10);
 		}
-	else if (this.getWorld().getTerrainType(position) == 1) {
-		Log log = new Log(position, this.getWorld());
+	else if (this.getWorld().getTerrainType(position) == 2) {
+		new Log(position, this.getWorld());
 		this.increaseExperience(10);
 		}
 	else if (this.getWorld().getTerrainType(position) == 1) {
-		Boulder boulder = new Boulder(position, this.getWorld());
+		new Boulder(position, this.getWorld());
 		this.increaseExperience(10);
 		}
 }
 
 public void dropMaterial(Vector position){
 	if (this.getCarriedMaterial() == "Log"){
-		Log log = new Log(position, this.getWorld(), this.getAdditionalWeight());
+		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
 		this.setAdditionalWeight(0);
 		}
 	else if (this.getCarriedMaterial() == "Boulder") {
-		Boulder boulder = new Boulder(position, this.getWorld(), this.getAdditionalWeight());
+		new Boulder(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(boulder);
 		this.setAdditionalWeight(0);
 	}

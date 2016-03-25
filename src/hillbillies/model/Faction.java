@@ -1,5 +1,6 @@
 package hillbillies.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Faction {
@@ -17,7 +18,7 @@ public class Faction {
 	
 	private World world;
 	
-	private Set<Unit> unitsInFaction;
+	private Set<Unit> unitsInFaction = new HashSet<>();
 	
 	public Set<Unit> getUnitsInFaction() {
 		return this.unitsInFaction;

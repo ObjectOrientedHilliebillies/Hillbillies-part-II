@@ -1,17 +1,20 @@
 package homeMadeTests;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 
+import hillbillies.model.Material;
 import hillbillies.model.Unit;
 
 public class SyntaxTest {
 	
 	@Test
 	public final void test(){
-		boolean test = (1<null)
-		System.out.println( 1<null );
+		List<Material> foundMaterials = new ArrayList<>();
+		System.out.println(foundMaterials.size());
 	}
 }

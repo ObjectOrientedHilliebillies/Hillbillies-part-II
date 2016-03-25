@@ -147,7 +147,6 @@ public class Facade implements IFacade {
 
 	@Override
 	public double getOrientation(Unit unit) throws ModelException {
-		System.out.println("getOrientation");
 		return unit.getOrientation();
 	}
 
@@ -282,9 +281,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isAlive(Unit unit) throws ModelException {
-		System.out.println("isAlive");
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
