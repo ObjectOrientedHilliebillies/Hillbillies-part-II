@@ -33,4 +33,8 @@ public class Faction {
 			this.unitsInFaction.add(unit);
 			unit.setFaction(this);
 	}
+
+	public void removeUnit(Unit unit) {
+		this.getUnitsInFaction().remove(unit);
+	}
 }

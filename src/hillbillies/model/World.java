@@ -294,6 +294,10 @@ public class World {
 			}
 		}		
 	}
+
+	public void removeUnit(Unit unit) {
+		unit.getFaction().removeUnit(unit);
+	}
 	
 	
 }
