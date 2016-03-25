@@ -160,9 +160,9 @@ public class Vector {
 	*/
 	public static boolean equals(int[] thisCube, int[] otherCube){
 //		int[] thisCube = this.getIntCube();
-		if (thisCube[1] == otherCube[1]
-				&& thisCube[2] == otherCube[2]
-				&& thisCube[3] == otherCube[3]){
+		if (thisCube[0] == otherCube[0]
+				&& thisCube[1] == otherCube[1]
+				&& thisCube[2] == otherCube[2]){
 			return true;
 		}
 		return false;

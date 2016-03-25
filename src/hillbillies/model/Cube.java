@@ -7,10 +7,8 @@ public class Cube {
 	private int compY;
 	private int compZ;
 	
-	public Cube(Vector vector){
-		setXcoord((int) (vector.getXCoord()));
-		setYcoord((int) (vector.getYCoord()));
-		setZcoord((int) (vector.getZCoord()));
+	public Cube(int coord){
+		this.setCoord(coord);
 	}
 	
 	public void setCube(Vector vector){

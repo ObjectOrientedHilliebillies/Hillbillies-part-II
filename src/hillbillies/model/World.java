@@ -172,6 +172,18 @@ public class World {
 	    return foundMaterials;
 	}
 	
+	public List<Material> getMaterialsAt(int[] cube) { 
+		List<Material> foundMaterials = new ArrayList<>();
+		for (Material material : materials){
+			if(material.getPosition().getIntCube() == cube){
+	        	foundMaterials.add(material); 
+			}
+        }
+	    return foundMaterials;
+	}
+	
+	
+	
 	public Set<Log> getLogs() {
 		Set<Log> logs = new HashSet<>();
 		for (Material material : materials){
@@ -293,6 +305,15 @@ public class World {
 				this.getSmallestFaction().addUnit(unit);
 			}
 		}		
+	}
+
+	/*Time*/
+	
+	public void advanceTime(double dt) {
+		Set<Unit> unitsInWorld = this.getUnits();
+		for (Unit unit : unitsInWorld){
+			unit.advanceTime(dt);
+		}
 	}
 	
 	

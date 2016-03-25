@@ -223,9 +223,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void advanceTime(World world, double dt) throws ModelException {
-//		System.out.println("advanceTime");
-		// TODO Auto-generated method stub
-		
+		world.advanceTime(dt);		
 	}
 
 	@Override
@@ -292,8 +290,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void workAt(Unit unit, int x, int y, int z) throws ModelException {
-		Vector position = new Vector(x, y, z) ;
-		unit.workAt(position);
+		int[] cube = {x,y,z};
+		unit.workAt(cube);
 	}
 
 	@Override

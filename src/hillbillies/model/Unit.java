@@ -294,7 +294,7 @@ public double[] getDoublePosition() {
  */
 @Raw
 public void setPosition(Vector position){
-	if (! this.world.isPositionInWorld(position))
+	if (this.world != null && !this.world.isPositionInWorld(position))
 		throw new IllegalArgumentException();
 	this.position = position;
 }
@@ -1190,8 +1190,8 @@ public double getOrientation() {
  * 		| new.orientation = Math.atan2(opponent.getDoublePosition()[1] - this.getDoublePosition()[1]
 									, opponent.getDoublePosition()[0] - this.getDoublePosition()[0]);
  */
-public void faceOpponent(Unit opponent){
-	Vector direction = Vector.getVectorFromTo(opponent.position, this.position);
+public void face(Vector point){
+	Vector direction = Vector.getVectorFromTo(this.position, point);
 	this.orientation = direction.orientationInXZPlane();
 }
 
@@ -1256,31 +1256,6 @@ public void doMoveTo(){
 
 /* Working */
 
-/**
- * Change the activity from this unit to work
- * 
- * @post If work is a valid activity for this unit and its previous activity 
- * 			was not work, activeActivity is changed to "work" and endTime 
- * 			is set to the right value.
- * 		| if (isValidActivity("work") && activeActivity != "work")
- * 		| 		then activeActivity = "work"
- * 		|		new.endTime = this.getCurrentTime() + 
- * 		|			500/(double)(this.getStrength())
- * @throws IllegalArgumentException
- * 		"work" is not a valid activity for this unit
- * 		| !this.isValidActivity("work")
- */
-public void work() throws IllegalArgumentException {
-	if (!isValidActivity("work")){
-		this.nextActivity = "work";
-		throw new IllegalArgumentException();
-	}
-	if (activeActivity != "work"){
-		activeActivity = "work";
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
-	}
-}
-
 public void setCarriedMaterial(Material material) {
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
@@ -1317,28 +1292,42 @@ public boolean isCarryingBoulder() {
 	return false;
 }
 
-
 private String carriedMaterial = null;
+private int[] cubeWorkingOn = null;
 
-public void workAt(Vector position){
-	if (!position.isNeighbourCube(this.getCube()))
-		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
+public void workAt(int[] cube){
+	if (!this.position.isNeighbourCube(cube))
+		return;
 	if (!isValidActivity("work")){
 		this.nextActivity = "work";
 		throw new IllegalArgumentException();
 	}
-	if (activeActivity != "work"){
+	if (activeActivity != "work" || !cubeWorkingOn.equals(cube)){
 		activeActivity = "work";
 		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+		this.cubeWorkingOn = cube;
+		this.face(Vector.getCentreOfCube(cube));
 	}
-	List<Material> materialAtPosition = this.getWorld().getMaterialsAt(position);
+	
+}
+
+/**
+ *  Start the next activity
+ *  
+ *  @post If endTime is not passed yet, a next activity will begin
+ *  		| if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
+					this.startNextActivity();
+ */
+public void doWork() {
+	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime)){
+		List<Material> materialAtPosition = this.world.getMaterialsAt(cube);
 	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
 	if (this.isCarryingMaterial()) {
-		this.dropMaterial(position);
+		this.dropMaterial(this.position);
 		this.increaseExperience(10); 
 		}
-	else if ((this.getWorld().getTerrainType(position) == 3) 
-		&& this.getWorld().getMaterialsAt(position) instanceof Boulder) { 
+	else if ((this.getWorld().getTerrainType(cube) == 3) 
+		&& this.getWorld().getMaterialsAt(cube) instanceof Boulder) { 
 		//TODO en log normaal...
 		//TODO equipment
 		//FIXME
@@ -1356,14 +1345,15 @@ public void workAt(Vector position){
 		//TODO log dissapears in world
 		this.increaseExperience(10);
 		}
-	else if (this.getWorld().getTerrainType(position) == 2) {
-		new Log(position, this.getWorld());
+	else if (this.getWorld().getTerrainType(cube) == 2) {
+		new Log(cube, this.getWorld());
 		this.increaseExperience(10);
 		}
-	else if (this.getWorld().getTerrainType(position) == 1) {
-		new Boulder(position, this.getWorld());
+	else if (this.getWorld().getTerrainType(cube) == 1) {
+		new Boulder(cube, this.getWorld());
 		this.increaseExperience(10);
 		}
+	this.startNextActivity();
 }
 
 public void dropMaterial(Vector position){
@@ -1377,20 +1367,11 @@ public void dropMaterial(Vector position){
 		//this.getWorld().addMaterial(boulder);
 		this.setAdditionalWeight(0);
 	}
-	this.setCarriedMaterial(null); 
+	this.setCarriedMaterial(null);
+}
 }
 
-/**
- *  Start the next activity
- *  
- *  @post If endTime is not passed yet, a next activity will begin
- *  		| if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
-					this.startNextActivity();
- */
-public void doWork() {
-	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
-		this.startNextActivity();
-}
+
 
 /**
  * Return whether this unit is working or not
@@ -1432,8 +1413,9 @@ public void attack(Unit defender){
 		System.out.println("attack");
 		this.activityStartTime = this.getCurrentTime();
 		this.activeActivity = "attack";
-		this.faceOpponent(defender);
-		defender.faceOpponent(this);
+		
+		this.face(defender.getPosition());
+		defender.face(this.getPosition());
 		defender.defenseAgainst(this);
 		// FIXME een methode setActivieActivity maken!
 	}
@@ -1504,8 +1486,8 @@ public void defenseAgainst(Unit attacker) {
 		} catch (IllegalArgumentException e) {
 			System.out.println("This chould never fail");
 		}
-		this.faceOpponent(attacker);
-		attacker.faceOpponent(this);
+		this.face(attacker.getPosition());
+		attacker.face(this.getPosition());
 	}
 	else if (!(Math.random() < blockChance)) {
 		this.increaseExperience(20);

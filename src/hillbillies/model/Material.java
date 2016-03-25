@@ -3,10 +3,10 @@ package hillbillies.model;
 
 public class Material {
 	
-	public Material(Vector initialPosition, World world){
+	public Material(int[] intialCube, World world){
 		this.setWeight();
 		this.setWorld(world);
-		this.setPosition(initialPosition);
+		this.setPosition(Vector.getCentreOfCube(intialCube));
 		
 		world.addMaterial(this);
 	}
