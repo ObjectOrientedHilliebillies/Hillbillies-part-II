@@ -1,17 +1,17 @@
 package hillbillies.model;
 
-import ogp.framework.util.ModelException;
 
 public class Material {
 	
-	public Material(Vector initialPosition, World world) throws ModelException {
+	public Material(Vector initialPosition, World world){
 		this.setWeight();
-		this.setPosition(initialPosition);
 		this.setWorld(world);
+		this.setPosition(initialPosition);
+		
 		world.addMaterial(this);
 	}
 	
-	public Material(Vector initialPosition, World world, int weight) throws ModelException {
+	public Material(Vector initialPosition, World world, int weight){
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
 		this.setWorld(world); 
@@ -54,9 +54,9 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	public void setPosition(Vector position) throws ModelException {
-		if (! position.isPositionInsideWorld()) // TODO falling toevoegen
-			throw new ModelException();
+	public void setPosition(Vector position){
+		if (! world.isPositionInWorld(position)) // TODO falling toevoegen
+			throw new IllegalArgumentException();
 		this.position = position;
 	}
 	

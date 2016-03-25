@@ -1,12 +1,11 @@
 package hillbillies.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Faction {
-	
 	public Faction(World world) {
 		this.setWorld(world);
-		world.addFaction(this);
 	}
 	
 	public World getWorld() {
@@ -19,7 +18,7 @@ public class Faction {
 	
 	private World world;
 	
-	private Set<Unit> unitsInFaction;
+	private Set<Unit> unitsInFaction = new HashSet<>();
 	
 	public Set<Unit> getUnitsInFaction() {
 		return this.unitsInFaction;
@@ -30,11 +29,8 @@ public class Faction {
 	}
 	
 	public void addUnit(Unit unit) {
-		if (this.getNbOffUnitsInFaction() < 50)
+		if (this.getNbOffUnitsInFaction() != 50)
 			this.unitsInFaction.add(unit);
+			unit.setFaction(this);
 	}
-	
-	
-	
-	
 }
