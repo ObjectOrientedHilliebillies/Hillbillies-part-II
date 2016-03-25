@@ -219,7 +219,7 @@ public class World {
 		return this.factions;
 	}
 	
-	private int getNbOffFactions() {
+	public int getNbOffFactions() {
 		return this.getActiveFactions().size();
 	}
 	
@@ -293,6 +293,10 @@ public class World {
 				this.getSmallestFaction().addUnit(unit);
 			}
 		}		
+	}
+
+	public void removeUnit(Unit unit) {
+		unit.getFaction().removeUnit(unit);
 	}
 	
 	

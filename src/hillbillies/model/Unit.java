@@ -796,11 +796,17 @@ public void setHitpoints(int hitpoints) {
 	}
 }
 
+public boolean isAlive() {
+	return this.alive;
+}
+
+public boolean alive = true;
+
 public void die(){
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
-	this.getWorld().removeUnit(); //FIXME
-	
+	this.alive = false;
+	this.getFaction().removeUnit(this); 
 }
 
 /**
