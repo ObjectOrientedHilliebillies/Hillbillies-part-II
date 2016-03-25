@@ -264,6 +264,8 @@ public class Facade implements IFacade {
 		try {
 			return world.getUnits();
 		} catch (NullPointerException e){
+			System.out.println("nullpointer");
+			System.out.println(world.getUnits());
 			throw new ModelException();
 		}
 	}

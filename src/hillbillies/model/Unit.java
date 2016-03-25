@@ -789,7 +789,7 @@ public boolean isValidHitpoints(int hitpoints) {
 @Raw
 public void setHitpoints(int hitpoints) {
 	if (hitpoints <= 0)
-		this.die;
+		this.die();
 	else {
 		assert isValidHitpoints(hitpoints); //TODO check wegdoen
 		this.hitpoints = hitpoints;

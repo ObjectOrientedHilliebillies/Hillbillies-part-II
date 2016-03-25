@@ -1,7 +1,9 @@
 package hillbillies.model;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -155,13 +157,13 @@ public class World {
 	 * 1: boulder
 	 * 2: log
 	 */
-	private Set<Material> materials = Collections.emptySet();
-	private Set<Log> logs = Collections.emptySet();
-	private Set<Boulder> boulders = Collections.emptySet();
+	private Set<Material> materials = new HashSet<>();
+	private Set<Log> logs = new HashSet<>();
+	private Set<Boulder> boulders = new HashSet<>();
 	
 	
 	public List<Material> getMaterialsAt(Vector position) { 
-		List<Material> foundMaterials = Collections.emptyList();
+		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition() == position){
 	        	foundMaterials.add(material); 
@@ -171,7 +173,7 @@ public class World {
 	}
 	
 	public Set<Log> getLogs() {
-		Set<Log> logs = Collections.emptySet();
+		Set<Log> logs = new HashSet<>();
 		for (Material material : materials){
 			if(material instanceof Log){
 	        	logs.add((Log) material);
@@ -181,7 +183,7 @@ public class World {
 	}
 	
 	public Set<Boulder> getBoulders() {
-		Set<Boulder> boulders = Collections.emptySet();
+		Set<Boulder> boulders = new HashSet<>();
 		for (Material material : materials){
 			if(material instanceof Boulder){
 	        	boulders.add((Boulder) material);
@@ -211,7 +213,7 @@ public class World {
 	
 	/*Faction*/
 	
-	private Set<Faction> factions = Collections.emptySet();
+	private Set<Faction> factions = new HashSet<>();
 	
 	public Set<Faction> getActiveFactions() {
 		return this.factions;
@@ -230,7 +232,8 @@ public class World {
 			throw new IllegalArgumentException();
 		}
 		System.out.println("factionadded");
-		factions.add(faction);
+		System.out.println(faction);
+		this.factions.add(faction);
 	}
 	
 	private boolean isValidNbOfFactions(int number){
@@ -249,6 +252,7 @@ public class World {
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
 	        		< smallestFaction.getNbOffUnitsInFaction())
+				System.out.println(smallestFaction.getNbOffUnitsInFaction());
 	        	smallestFaction = faction;
 		}
 	    return smallestFaction;
@@ -257,8 +261,9 @@ public class World {
 	/*Unit*/
 	
 	public Set<Unit> getUnits(){
-		Set<Unit> unitsInWorld = Collections.emptySet();
+		Set<Unit> unitsInWorld = new HashSet<>();
 		for (Faction faction : factions){
+			System.out.println(faction.getUnitsInFaction());
 			unitsInWorld.addAll(faction.getUnitsInFaction());
 		}
 	    return unitsInWorld;
@@ -274,7 +279,9 @@ public class World {
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
 		int[] initialCube = {10,10,14};
-		return new Unit("Test", initialCube, enableDefaultBehavior, this);
+		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
+		this.addUnit(newUnit);
+		return newUnit;
 	}
 	
 	public void addUnit(Unit unit){
