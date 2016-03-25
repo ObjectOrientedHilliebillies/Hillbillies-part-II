@@ -17,7 +17,7 @@ public class Facade implements IFacade {
 	public Unit createUnit(String name, int[] initialPosition, int weight, 
 			int agility, int strength, int toughness,boolean enableDefaultBehavior) 
 					throws ModelException {	
-		
+		System.out.println("createUnit");
 		return new Unit(name, initialPosition, weight, agility, strength, toughness, enableDefaultBehavior);
 	}
 
@@ -28,6 +28,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public int[] getCubeCoordinate(Unit unit) throws ModelException {
+		System.out.println("getCubeCoordinate");
 		return unit.getCube();
 	}
 
@@ -38,6 +39,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setName(Unit unit, String newName) throws ModelException {
+		System.out.println("setName");
 		try {unit.setName(newName);
 		}
 		catch (IllegalArgumentException exc) {
@@ -52,6 +54,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setWeight(Unit unit, int newValue) throws ModelException {
+		System.out.println("setWeight");
 		unit.setWeight(newValue);
 	}
 
@@ -62,6 +65,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setStrength(Unit unit, int newValue) throws ModelException {
+		System.out.println("setStrength");
 		unit.setStrength(newValue);
 	}
 
@@ -72,6 +76,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setAgility(Unit unit, int newValue) throws ModelException {
+		System.out.println("setAgility");
 		unit.setAgility(newValue);
 	}
 
@@ -82,6 +87,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setToughness(Unit unit, int newValue) throws ModelException {
+		System.out.println("setToughness");
 		unit.setToughness(newValue);
 	}
 	@Override
@@ -105,13 +111,8 @@ public class Facade implements IFacade {
 	}
 
 	@Override
-	public void advanceTime(Unit unit, double dt) throws ModelException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void moveToAdjacent(Unit unit, int dx, int dy, int dz) throws ModelException {
+		System.out.println("moveToAdjacent");
 		Vector positionDifference = new Vector(dx, dy, dz);	
 		unit.moveToAdjacent(positionDifference);
 	}
@@ -128,12 +129,14 @@ public class Facade implements IFacade {
 
 	@Override
 	public void startSprinting(Unit unit) throws ModelException {
+		System.out.println("startSprinting");
 		unit.startSprinting();
 		
 	}
 
 	@Override
 	public void stopSprinting(Unit unit) throws ModelException {
+		System.out.println("stopSprinting");
 		unit.stopSprinting();		
 	}
 
@@ -144,16 +147,19 @@ public class Facade implements IFacade {
 
 	@Override
 	public double getOrientation(Unit unit) throws ModelException {
+		System.out.println("getOrientation");
 		return unit.getOrientation();
 	}
 
 	@Override
 	public void moveTo(Unit unit, int[] cube) throws ModelException {
+		System.out.println("moveTo");
 		unit.moveTo(cube);		
 	}
 
 	@Override
 	public void work(Unit unit) throws ModelException {
+		System.out.println("work");
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,6 +170,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void fight(Unit attacker, Unit defender) throws ModelException {
+		System.out.println("fight");
 		attacker.attack(defender);	
 	}
 
@@ -174,6 +181,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void rest(Unit unit) throws ModelException {
+		System.out.println("rest");
 		unit.rest();		
 	}
 
@@ -184,8 +192,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setDefaultBehaviorEnabled(Unit unit, boolean value) throws ModelException {
+		System.out.println("setDefaultBehaviorEnabled");
 		unit.setDefaultBehavior(value);
-		System.out.println(value);
 	}
 
 	@Override
@@ -195,6 +203,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public World createWorld(int[][][] terrainTypes, TerrainChangeListener modelListener) throws ModelException {
+		System.out.println("createWorld");
 		return new World(terrainTypes, modelListener);
 	}
 
@@ -215,44 +224,48 @@ public class Facade implements IFacade {
 
 	@Override
 	public void advanceTime(World world, double dt) throws ModelException {
+//		System.out.println("advanceTime");
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-		Vector position = new Vector(x,y,z);
-		return world.getTerrainType(position);
+		int[] cube = {x,y,z};
+		return world.getTerrainType(cube);
+
 	}
 
 	@Override
 	public void setCubeType(World world, int x, int y, int z, int value) throws ModelException {
-		Vector position = new Vector(x,y,z);
-		world.setTerrainType(position, value);
+		int[] cube = {x,y,z};
+		world.setTerrainType(cube, value);
+
 	}
 
 	@Override
 	public boolean isSolidConnectedToBorder(World world, int x, int y, int z) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		int[] cube = {x,y,z};
+		return world.isSolidConnectedToBorder(cube);
 	}
 
 	@Override
 	public Unit spawnUnit(World world, boolean enableDefaultBehavior) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return world.spawnUnit(enableDefaultBehavior);
 	}
 
 	@Override
 	public void addUnit(Unit unit, World world) throws ModelException {
-		// TODO Auto-generated method stub
-		
+		world.addUnit(unit);
 	}
 
 	@Override
 	public Set<Unit> getUnits(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return world.getUnits();
+		} catch (NullPointerException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override
@@ -267,6 +280,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isAlive(Unit unit) throws ModelException {
+		System.out.println("isAlive");
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -284,8 +298,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public Faction getFaction(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return unit.getFaction();
 	}
 
 	@Override
@@ -306,7 +319,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Boulder> getBoulders(World world) throws ModelException {
-		return world.getBoulders();
+		try {
+			return world.getBoulders();
+		} catch (NullPointerException e){
+			throw new ModelException();
+		}
+		
 	}
 
 	@Override
@@ -317,7 +335,11 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Log> getLogs(World world) throws ModelException {
-		return world.getLogs();
+		try {
+			return world.getLogs();
+		} catch (NullPointerException e){
+			throw new ModelException();
+		}
 	}
 
 }
