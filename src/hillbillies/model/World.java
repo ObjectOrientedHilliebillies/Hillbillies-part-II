@@ -219,7 +219,7 @@ public class World {
 		return this.factions;
 	}
 	
-	private int getNbOffFactions() {
+	public int getNbOffFactions() {
 		return this.getActiveFactions().size();
 	}
 	

@@ -202,7 +202,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public World createWorld(int[][][] terrainTypes, TerrainChangeListener modelListener) throws ModelException {
-		System.out.println("createWorld");
+		System.out.println(terrainTypes);
 		return new World(terrainTypes, modelListener);
 	}
 
