@@ -3,7 +3,7 @@ package hillbillies.model;
 
 public class Material {
 	
-	public Material(int[] intialCube, World world){
+	protected Material(int[] intialCube, World world){
 		this.setWeight();
 		this.setWorld(world);
 		this.setPosition(Vector.getCentreOfCube(intialCube));
@@ -11,7 +11,7 @@ public class Material {
 		world.addMaterial(this);
 	}
 	
-	public Material(Vector initialPosition, World world, int weight){
+	protected Material(Vector initialPosition, World world, int weight){
 		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
@@ -54,7 +54,7 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	public void setPosition(Vector position){
+	private void setPosition(Vector position){
 		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
 		this.position = position;
@@ -72,7 +72,7 @@ public class Material {
 	 */
 	private Vector position;
 	
-	public World getWorld() {
+	private World getWorld() {
 		return this.world;
 	}
 	

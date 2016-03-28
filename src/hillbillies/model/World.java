@@ -64,12 +64,13 @@ public class World {
 		if (position.getXCoord() < 0 || position.getXCoord() > NbCubesX
 			|| position.getYCoord() < 0 || position.getYCoord() > NbCubesY
 			|| position.getZCoord() < 0 || position.getZCoord() > NbCubesZ){
+			System.out.println("Not a vector inside the world");
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isCubeInWorld(int[] cube){
+	boolean isCubeInWorld(int[] cube){
 		if (cube[0] < 0 || cube[0] >= NbCubesX
 			|| cube[1] < 0 || cube[1] >= NbCubesY
 			|| cube[2] < 0 || cube[2] >= NbCubesZ){
@@ -80,6 +81,7 @@ public class World {
 	
 	public boolean isPassable(Vector position){
 		if (isSolid(position.getIntCube())){
+			System.out.println("Cube not passable");
 			return false;
 		}
 		return true;
@@ -101,7 +103,7 @@ public class World {
 		return true;
 	}
 	
-	public int getTerrainType(Vector cube){
+	private int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
 		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
 	}
@@ -214,7 +216,7 @@ public class World {
 		return materialToReturn;
 	}
 	
-	public List<Material> getMaterialsAt(Vector position) { 
+	private List<Material> getMaterialsAt(Vector position) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition() == position){
@@ -224,7 +226,7 @@ public class World {
 	    return foundMaterials;
 	}
 	
-	public List<Material> getMaterialsAt(int[] cube) { 
+	private List<Material> getMaterialsAt(int[] cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(Vector.equals(material.getPosition().getIntCube(), cube)){
@@ -254,7 +256,7 @@ public class World {
 	    return boulders;
 	}
 	
-//	public void setMaterial(Vector position, Material material){
+//	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ //TODO
 //		//	throw new IllegalArgumentException();		
 //		//}
@@ -281,12 +283,8 @@ public class World {
 		return this.factions;
 	}
 	
-	public int getNbOffFactions() {
+	private int getNbOffFactions() {
 		return this.getActiveFactions().size();
-	}
-	
-	private Faction makeFaction(){
-		return new Faction(this);
 	}
 	
 	private void addFaction(Faction faction) {
@@ -304,11 +302,11 @@ public class World {
 		return true;
 	}
 	
-	public void removeFaction(Faction faction) {
+	private void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
 
-	public Faction getSmallestFaction() {
+	private Faction getSmallestFaction() {
 		Faction smallestFaction = null;
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
@@ -345,6 +343,7 @@ public class World {
 	
 	public void addUnit(Unit unit){
 		if (this.getNbOfUnits()!=100){
+			unit.setWorld(this);
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
 				Faction newFaction =  new Faction(this);
@@ -365,7 +364,7 @@ public class World {
 		}
 	}
 
-	public void removeUnit(Unit unit) {
+	private void removeUnit(Unit unit) {
 		unit.getFaction().removeUnit(unit);
 	}
 	

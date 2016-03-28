@@ -14,26 +14,26 @@ public class Vector {
 		setZcoord(coordZ);
 	}
 	
-	public Vector(double[] position){
+	private Vector(double[] position){
 		this.setXcoord(position[0]);
 		this.setYcoord(position[1]);
 		this.setZcoord(position[2]);
 	}
 	
-	public Vector(int[] cube){
+	private Vector(int[] cube){
 		this.setXcoord(cube[0]);
 		this.setYcoord(cube[1]);
 		this.setZcoord(cube[2]);
 	}
 	
 	
-	public void setVector(double coordX, double coordY, double coordZ) {
+	private void setVector(double coordX, double coordY, double coordZ) {
 		setXcoord(coordX);
 		setYcoord(coordY);
 		setZcoord(coordZ);
 	}
 	
-	public void setVector(double[] position){
+	private void setVector(double[] position){
 		this.setXcoord(position[0]);
 		this.setYcoord(position[1]);
 		this.setZcoord(position[2]);
@@ -55,15 +55,15 @@ public class Vector {
 		return cubeArray;
 	}
 	
-	public void setXcoord(double coordX) {
+	private void setXcoord(double coordX) {
 		this.compX = coordX;
 	}
 	
-	public void setYcoord(double coordY) {
+	private void setYcoord(double coordY) {
 		this.compY = coordY;
 	}
 	
-	public void setZcoord(double coordZ) {
+	private void setZcoord(double coordZ) {
 		this.compZ = coordZ;
 	}
 	
@@ -100,7 +100,7 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	public  boolean isDirectlyAdjacentCube(int[] otherCube){
+	private  boolean isDirectlyAdjacentCube(int[] otherCube){
 		int[] thisCube = this.getIntCube();
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
@@ -141,7 +141,7 @@ public class Vector {
 	 * @return 
 	 *       | result == (vector1 = vector1)
 	*/
-	public static boolean equals(Vector vector1, Vector vector2){
+	private static boolean equals(Vector vector1, Vector vector2){
 		if (vector1.getXCoord() == vector2.getXCoord()
 				&& vector1.getYCoord() == vector2.getYCoord()
 				&& vector1.getZCoord() == vector2.getZCoord()){
@@ -186,7 +186,7 @@ public class Vector {
 				vector1.compZ + vector2.compZ);
 	}
 	
-	public static int[] sum(int[] thisCube, int[] otherCube){
+	private static int[] sum(int[] thisCube, int[] otherCube){
 		int[] result = {thisCube[0] + otherCube[0], 
 						thisCube[1] + otherCube[1],
 						thisCube[2] + otherCube[2]};
@@ -209,7 +209,7 @@ public class Vector {
 		return Math.atan2(this.getYCoord(), this.getXCoord());
 	}
 	
-	public double lenght(){
+	private double lenght(){
 		return Math.sqrt(Math.pow(this.getXCoord(),2) 
 				+Math.pow(this.getYCoord(),2)
 				+Math.pow(this.getZCoord(),2));
@@ -237,7 +237,7 @@ public class Vector {
 		for (int i=0; i != 3; i++){
 				newCube[i] = thisCube[i] + (int) (Math.random() * 3) - 1;
 			}
-		} while (equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
+		} while (Vector.equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
 		return newCube;
 	}
 	
