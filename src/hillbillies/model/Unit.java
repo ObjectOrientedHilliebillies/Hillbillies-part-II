@@ -33,6 +33,9 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+
+import org.junit.experimental.theories.Theories;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.Util;
@@ -225,7 +228,6 @@ private World world;
  * Return the world of this unit.
  */
 public World getWorld(){
-	// TODO terug op private zetten
 	return this.world;
 }
 
@@ -1207,15 +1209,18 @@ private void doMove(double tickTime){
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
 			this.executedSteps = 0;
+			this.activeActivity = 0;
 		}
-		this.activeActivity = 0;
-		this.startNextActivity();
+		if (nextActivity != 0){
+			this.startNextActivity();
+		}		
 	}
 	else{
 		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
 		this.position = Vector.sum(this.position, 
-			Vector.multiply(difference, movedDistanceRelatieveToRemainingDistance));
+			difference.scale(movedDistanceRelatieveToRemainingDistance));
 		this.orientation = difference.orientationInXZPlane();
+		// TODO EXTRA Unit stops if he reaches the next checkpoint but should continue walking to the target cube.
 	}
 }
 
@@ -1524,7 +1529,7 @@ private void defenseAgainst(Unit attacker) {
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(world);
+		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
 		Vector newPosition = Vector.getCentreOfCube(randomCube);
 
 		this.increaseExperience(20);
@@ -1677,4 +1682,25 @@ private void doDefaultBehavior(){
 		}
 	}
 
+private int fellFrom;
+private final static Vector fallSpeed = new Vector(0, 0, -3);
+
+private void galling(){
+	if (this.activeActivity != 2){
+		if (!this.position.hasSupportOfSolid(this.world)){
+			this.fellFrom = this.getCube()[2];
+			this.activeActivity = 2;
+		}
+	}	
+	if (this.activeActivity == 2){
+		if (this.position.hasSupportOfSolidUnderneath(this.world)){
+			this.position = Vector.getCentreOfCube(this.getCube());
+			int cubesFallen = this.fellFrom - this.getCube()[2];
+			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
+		}else{
+			this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
+		}
+	}
+		
+}
 }

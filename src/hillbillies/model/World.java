@@ -95,7 +95,7 @@ public class World {
 	 */
 	private int[][][] terrainTypes; 
 	
-	private boolean isSolid(int[] cube){
+	public boolean isSolid(int[] cube){
 		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
 		if (terrainType != 1 && terrainType != 2){
 			return false;
@@ -360,7 +360,6 @@ public class World {
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
 		for (Unit unit : unitsInWorld){
-			unit.advanceTime(dt);
 		}
 	}
 

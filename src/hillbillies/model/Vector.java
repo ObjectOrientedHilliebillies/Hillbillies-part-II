@@ -1,7 +1,15 @@
 package hillbillies.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import sun.net.www.content.audio.wav;
 
 public class Vector {
 	private double compX;
@@ -100,6 +108,31 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
+	private final int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, { 0, -1, 0 }, { 0, +1, 0 },
+		{ 0, 0, -1 }, { 0, 0, +1 } };
+		
+	private Set<int[]> getDirectAdjenctCubes(World world){
+		int[] thisCube = this.getIntCube(); 
+		Set<int[]> directAdjectCubes = new HashSet<>();
+		for (int[] offset : directAdjacentOffsets){
+			int[] directAdject = Vector.sum(thisCube, offset);
+			if (world.isCubeInWorld(directAdject)){
+				directAdjectCubes.add(directAdject);
+			}
+		}
+		return directAdjectCubes;
+	}
+		
+	private Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
+		Set<int[]> remainingCubes = new HashSet<>();
+		for (int[] cube : unfilterdCubes){
+			if (world.isSolid(cube)){
+				remainingCubes.add(cube);
+			}
+		}
+		return remainingCubes;
+	}
+	
 	private  boolean isDirectlyAdjacentCube(int[] otherCube){
 		int[] thisCube = this.getIntCube();
 		boolean neighbourForAtleastOneComponent = false;
@@ -132,7 +165,7 @@ public class Vector {
 		}
 		return neighbourCubes;
 	}
-	
+
 	/**
 	 * Check whether the given vectors are the same vector.
 	 *  
@@ -199,10 +232,10 @@ public class Vector {
 				to.compZ - from.compZ);
 	}
 	
-	public static Vector multiply(Vector vector, double scalar){
-		return new Vector(vector.compX * scalar,
-				vector.compY * scalar,
-				vector.compZ * scalar);
+	public Vector scale(double scalar){
+		return new Vector(this.compX * scalar,
+				this.compY * scalar,
+				this.compZ * scalar);
 	}
 	
 	public double orientationInXZPlane(){
@@ -240,5 +273,23 @@ public class Vector {
 		} while (Vector.equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
 		return newCube;
 	}
+	
+	public boolean hasSupportOfSolid(World world){
+		Set<int[]> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
+		if (directAdjenctCubes.size() == 4){
+			if (this.filterPassableCubes(directAdjenctCubes, world).size() == 0){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean hasSupportOfSolidUnderneath(World world){
+		int[] thisCube = this.getIntCube();
+		int[] cubeBenath = {thisCube[0], thisCube[1], thisCube[2]-1};
+		return (world.isCubeInWorld(cubeBenath) || world.isSolid(cubeBenath));
+	}
+	
+	
 	
 }
