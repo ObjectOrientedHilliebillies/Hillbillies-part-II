@@ -848,23 +848,25 @@ private double getCurrentSpeed() {
 /////////////////////* TIME */////////////////////
 //////////////////////////////////////////////////
 
+private double timeSinceLastRested = 0;
+
 // No documentation required for advanceTime
 public void advanceTime(double tickTime) {
 	if (!isValidTickTime(tickTime)){
 		throw new IllegalArgumentException();
 	}
 	else{
-		this.setTime(this.currentTime + tickTime);
+		this.setTickTime(tickTime);
 		
+	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
-	if (getCurrentTime()-lastTimeRested >= 180 && this.isValidActivity(4)){
+	this.falling();
+	
+	if (this.timeSinceLastRested >= 180 && this.isValidActivity(4)){
 			this.rest();
 			System.out.println("3 min zijn om. Tijd om in bed te gaan.");
 		}
-	if (this.nextActivity != 0){
-		System.out.println(activeActivity);
-		System.out.println(nextActivity);
-	}
+	
 	if (this.activeActivity == 0 && this.nextActivity != 0){
 		this.startNextActivity();
 	}
@@ -907,13 +909,6 @@ private boolean isValidTickTime(double tickTime) {
 }
 
 /**
- * Return the current time
- */
-private double getCurrentTime() {
-	return this.currentTime;
-}
-
-/**
  * Set the time to the given time.
  * 
  * @param  time
@@ -923,8 +918,8 @@ private double getCurrentTime() {
  *  //FIXME moet dit niet checken of het een valid time is en een exception throwen?
  */
 @Raw
-private void setTime(double time) {
-	this.currentTime = time;
+private void setTickTime(double time) {
+	this.tickTime = time;
 }
 
 /**
@@ -958,7 +953,7 @@ private boolean isValidActivity(int activity){
 private void startNextActivity(){
 	if (nextActivity == 1){
 		activeActivity = 1;
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength());
 		this.face(Vector.getCentreOfCube(this.cubeWorkingOn));
 	}
 	else if (nextActivity == 4)
@@ -972,7 +967,7 @@ private void startNextActivity(){
 /**
  * Variable registering the current time
  */
-private double currentTime;
+private double tickTime;
 
 /**
  * Variable registering the maximum time interval
@@ -1010,17 +1005,12 @@ private int nextActivity = 0;
 /**
  * Variable registering the end time
  */
-private double endTime;
+private double remainingTimeToFinishWork;
 
 /**
- * Variable registering the start time of the current activity
+ * Variable registering the remaining time the unit is busy attacking.
  */
-private double activityStartTime;
-
-/**
- * Variable registering the last time this unit rested
- */
-private double lastTimeRested =0.2;
+private double remainingTimeToFinishAttack;
 
 ////////////////////////////////////////////////////////////////
 ///////////////////////* BASIC MOVEMENT *///////////////////////
@@ -1374,7 +1364,7 @@ public void workAt(int[] cube){
 	}
 	if (activeActivity != 1 || !cubeWorkingOn.equals(cube)){
 		activeActivity = 1;
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength()*100);
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength()*100);
 		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
 		this.cubeWorkingOn = cube;
 		this.face(Vector.getCentreOfCube(cube));
@@ -1390,7 +1380,8 @@ public void workAt(int[] cube){
 					this.startNextActivity();
  */
 private void doWork() {
-	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime)){
+	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - this.tickTime;
+	if (this.remainingTimeToFinishWork < 0){
 		if (this.isCarryingMaterial()) {
 			this.dropMaterial(Vector.getCentreOfCube(cubeWorkingOn));
 			}
@@ -1471,7 +1462,7 @@ public void attack(Unit defender){
 		&& !this.isAttacking()){
 		
 		System.out.println("attack");
-		this.activityStartTime = this.getCurrentTime();
+		this.remainingTimeToFinishAttack = 1;
 		this.activeActivity = 5;
 		
 		this.face(defender.getPosition());
@@ -1490,7 +1481,8 @@ public void attack(Unit defender){
 					this.startNextActivity()
  */
 private void doAttack(){
-	if (this.getCurrentTime() >= activityStartTime + 1){
+	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - this.tickTime;
+	if (this.remainingTimeToFinishAttack < 0){
 		this.startNextActivity();
 	}
 }
@@ -1571,7 +1563,6 @@ public void rest() throws IllegalArgumentException{
 	}
 	if (activeActivity != 4){
 		recoverdPoints = 0;
-		activityStartTime = this.getCurrentTime();
 		this.activeActivity = 4;
 	}
 }
@@ -1592,9 +1583,9 @@ public void rest() throws IllegalArgumentException{
  */
 private void doRest() {
 	double oldRecoverdPoints = recoverdPoints;
-	recoverdPoints = (this.getCurrentTime()-activityStartTime)*this.getToughness()/200/0.2;
+	recoverdPoints = this.tickTime*this.getToughness()/200/0.2;
 	if (Util.fuzzyGreaterThanOrEqualTo(recoverdPoints,1)){
-		lastTimeRested = getCurrentTime();
+		this.timeSinceLastRested = 0;
 		if (hitpoints != getMaxHitpoints()){
 			hitpoints = hitpoints - (int) (oldRecoverdPoints) + (int) (recoverdPoints);
 			if (hitpoints > getMaxHitpoints())
@@ -1685,7 +1676,7 @@ private void doDefaultBehavior(){
 private int fellFrom;
 private final static Vector fallSpeed = new Vector(0, 0, -3);
 
-private void galling(){
+private void falling(){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			this.fellFrom = this.getCube()[2];
