@@ -845,7 +845,6 @@ public double getCurrentSpeed() {
 // No documentation required for advanceTime
 public void advanceTime(double tickTime) {
 	if (!isValidTickTime(tickTime)){
-		//System.out.println(tickTime);
 		throw new IllegalArgumentException();
 	}
 	else{
@@ -854,7 +853,7 @@ public void advanceTime(double tickTime) {
 	
 	if (getCurrentTime()-lastTimeRested >= 180 && this.isValidActivity("rest")){
 			this.rest();
-			//System.out.println("3 min zijn om");
+			System.out.println("3 min zijn om");
 		}
 		
 	if (this.activeActivity == null && (this.targetCube != null) && 
@@ -1098,7 +1097,8 @@ public void setSpeed(Vector targetPosition) {
 public void moveToAdjacent(Vector positionDifference){
 	Vector targetPosition = Vector.sum(Vector.getCentreOfCube(this.getCube()),
 			positionDifference);
-	if (!isValidActivity("move") || !this.world.isPositionInWorld(targetPosition)){
+	if (!isValidActivity("move") || !this.world.isPositionInWorld(targetPosition)
+			|| !this.world.isPassable(targetPosition)){
 		this.nextActivity = "move";
 		throw new IllegalArgumentException();
 	}
@@ -1304,7 +1304,7 @@ private int carriedMaterial = 0;
 private int[] cubeWorkingOn = null;
 
 public void workAt(int[] cube){
-	if (!this.position.isNeighbourCube(cube))
+	if (!this.position.isNeighbourCube(cube) && !Vector.equals(this.getCube(), cube))
 		return;
 	if (!isValidActivity("work")){
 		this.nextActivity = "work";
@@ -1312,7 +1312,8 @@ public void workAt(int[] cube){
 	}
 	if (activeActivity != "work" || !cubeWorkingOn.equals(cube)){
 		activeActivity = "work";
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength()*100);
+		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
 		this.cubeWorkingOn = cube;
 		this.face(Vector.getCentreOfCube(cube));
 	}
@@ -1328,14 +1329,14 @@ public void workAt(int[] cube){
  */
 public void doWork() {
 	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime)){
-		List<Material> materialAtPosition = this.world.getMaterialsAt(cubeWorkingOn);
 		if (this.isCarryingMaterial()) {
-			this.dropMaterial(this.position);
+			this.dropMaterial(Vector.getCentreOfCube(cubeWorkingOn));
 			}
 		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
 			//FIXME deze doet het nog niet!
 			}
 		else if (this.world.materialToPickUp(cubeWorkingOn) != null) {
+			System.out.println("pickingMaterialUp");
 			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
 			}
 		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 2) {

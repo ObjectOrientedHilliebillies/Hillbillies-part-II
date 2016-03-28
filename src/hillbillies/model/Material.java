@@ -12,9 +12,9 @@ public class Material {
 	}
 	
 	public Material(Vector initialPosition, World world, int weight){
+		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
-		this.setWorld(world); 
 		world.addMaterial(this);
 	}
 	
@@ -55,7 +55,7 @@ public class Material {
 	 * Set the position of this material to the given position.
 	 */
 	public void setPosition(Vector position){
-		if (! world.isPositionInWorld(position)) // TODO falling toevoegen
+		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
 		this.position = position;
 	}

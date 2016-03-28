@@ -78,6 +78,13 @@ public class World {
 		return true;
 	}
 	
+	public boolean isPassable(Vector position){
+		if (isSolid(position.getIntCube())){
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * 0: Air
 	 * 1: Rock
@@ -220,7 +227,7 @@ public class World {
 	public List<Material> getMaterialsAt(int[] cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
-			if(material.getPosition().getIntCube() == cube){
+			if(Vector.equals(material.getPosition().getIntCube(), cube)){
 	        	foundMaterials.add(material); 
 			}
         }
@@ -306,7 +313,6 @@ public class World {
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
 	        		< smallestFaction.getNbOffUnitsInFaction())
-				System.out.println(smallestFaction.getNbOffUnitsInFaction());
 	        	smallestFaction = faction;
 		}
 	    return smallestFaction;
