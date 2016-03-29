@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.experimental.theories.Theories;
+
+import jdk.internal.dynalink.beans.StaticClass;
 import sun.net.www.content.audio.wav;
 
 public class Vector {
@@ -122,8 +125,12 @@ public class Vector {
 		}
 		return directAdjectCubes;
 	}
+	
+	public static Set<int[]> getDirectAdjenctCubes(int[] cube, World world){
+		return Vector.getCentreOfCube(cube).getDirectAdjenctCubes(world);
+	}
 		
-	private Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
+	public static Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
 		Set<int[]> remainingCubes = new HashSet<>();
 		for (int[] cube : unfilterdCubes){
 			if (world.isSolid(cube)){
@@ -282,6 +289,10 @@ public class Vector {
 			}
 		}
 		return true;
+	}
+	
+	public static boolean hasSupportOfSolid(int[] cube, World world){
+		return Vector.getCentreOfCube(cube).hasSupportOfSolid(world);
 	}
 	
 	public boolean hasSupportOfSolidUnderneath(World world){
