@@ -1,9 +1,10 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Log extends Material {
 
-	public Log(int[] intitialCube, World world){
+	public Log(List<Integer> intitialCube, World world){
 		super(intitialCube, world);
 	}
 

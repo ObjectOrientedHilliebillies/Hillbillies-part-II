@@ -31,10 +31,10 @@ public class Vector {
 		this.setZcoord(position[2]);
 	}
 	
-	private Vector(int[] cube){
-		this.setXcoord(cube[0]);
-		this.setYcoord(cube[1]);
-		this.setZcoord(cube[2]);
+	private Vector(List<Integer> cube){
+		this.setXcoord(cube.get(0));
+		this.setYcoord(cube.get(1));
+		this.setZcoord(cube.get(2));
 	}
 	
 	
@@ -58,11 +58,11 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public int[] getIntCube(){
-		int[] cubeArray = new int[3];
-		cubeArray[0] = (int) this.getXCoord();
-		cubeArray[1] = (int) this.getYCoord();
-		cubeArray[2] = (int) this.getZCoord();
+	public List<Integer> getIntCube(){
+		List<Integer> cubeArray = new ArrayList<>();
+		cubeArray.add((int) this.getXCoord());
+		cubeArray.add((int) this.getYCoord());
+		cubeArray.add((int) this.getZCoord());
 		return cubeArray;
 	}
 	
@@ -98,11 +98,11 @@ public class Vector {
 	 * @return 
 	 *       | result == //FIXME
 	*/
-	public boolean isNeighbourCube(int[] otherCube){
-		int[] thisCube = this.getIntCube();
+	public boolean isNeighbourCube(List<Integer> otherCube){
+		List<Integer> thisCube = this.getIntCube();
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(thisCube[i] - otherCube[i]);
+			int difference = Math.abs(thisCube.get(i) - otherCube.get(i));
 		    if (difference == 1)
 		    	neighbourForAtleastOneComponent = true;
 		    else if (difference != 0)
@@ -111,25 +111,23 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	private final static int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
-		{ 0, -1, 0 }, { 0, +1, 0 }, { 0, 0, -1 }, { 0, 0, +1 } };
+	private final int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
+		{ 0, -1, 0 }, { 0, +1, 0 },{ 0, 0, -1 }, { 0, 0, +1 } };
 		
-	private Set<int[]> getDirectAdjenctCubes(World world){
-		int[] thisCube = this.getIntCube(); 
-		Set<int[]> directAdjectCubes = new HashSet<>();
-		for (int[] offset : directAdjacentOffsets){
-			int[] directAdject = Vector.sum(thisCube, offset);
-			if (world.isCubeInWorld(directAdject)){
-				directAdjectCubes.add(directAdject);
-			}
-		}
-		return directAdjectCubes;
+		List<int[]> shuffledOffsets = new ArrayList<>(Arrays.asList(directAdjacentOffsets));
+		
+	private Set<List<Integer>> getDirectAdjenctCubes(List<Integer> coord) {
+		List<int[]> shuffledOffsets = new ArrayList<>(Arrays.asList(directAdjacentOffsets));
+		Collections.shuffle(shuffledOffsets);
+		return shuffledOffsets.stream().map(
+				offset -> Arrays.asList(coord.get(0) + offset[0], 
+						coord.get(1) + offset[1], coord.get(2) + offset[2])).collect(Collectors.toList()));
 	}
 	
-	public static Set<int[]> getDirectAdjenctCubes(int[] thisCube, World world){
-		Set<int[]> directAdjectCubes = new HashSet<>();
-		for (int[] offset : directAdjacentOffsets){
-			int[] directAdject = Vector.sum(thisCube, offset);
+	public static Set<List<Integer>> getDirectAdjenctCubes(List<Integer> thisCube, World world){
+		Set<List<Integer>> directAdjectCubes = new HashSet<>();
+		for (List<Integer> offset : directAdjacentOffsets){
+			List<Integer> directAdject = Vector.sum(thisCube, offset);
 			if (world.isCubeInWorld(directAdject)){
 				directAdjectCubes.add(directAdject);
 			}
@@ -137,9 +135,9 @@ public class Vector {
 		return directAdjectCubes;
 	}
 		
-	public static Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
-		Set<int[]> remainingCubes = new HashSet<>();
-		for (int[] cube : unfilterdCubes){
+	public static Set<List<Integer>> filterPassableCubes(Set<List<Integer>> unfilterdCubes, World world){
+		Set<List<Integer>> remainingCubes = new HashSet<>();
+		for (List<Integer> cube : unfilterdCubes){
 			if (world.isSolid(cube)){
 				remainingCubes.add(cube);
 			}
@@ -147,7 +145,7 @@ public class Vector {
 		return remainingCubes;
 	}
 	
-	public static boolean isDirectlyAdjacentCube(int[] thisCube, int[] otherCube){
+	public static boolean isDirectlyAdjacentCube(List<Integer> thisCube, List<Integer> otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
 			int difference = Math.abs(thisCube[i] - otherCube[i]);
@@ -163,13 +161,13 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	public static Set<int[]> getNeighbourCubes(int[] thisCube, World world){
-		Set<int[]> neighbourCubes = new HashSet<int[]>();
+	public static Set<List<Integer>> getNeighbourCubes(List<Integer> thisCube, World world){
+		Set<List<Integer>> neighbourCubes = new HashSet<List<Integer>>();
 		for (int x=-1; x!=2; x++){
 			for (int y=-1; y!=2; y++){
 				for (int z=-1; z!=2; z++){
-					int[] offset = {x,y,z};
-					int[] neighbourCube = Vector.sum(thisCube, offset);
+					List<Integer> offset = {x,y,z};
+					List<Integer> neighbourCube = Vector.sum(thisCube, offset);
 					if (world.isCubeInWorld(neighbourCube)){
 						neighbourCubes.add(Vector.sum(thisCube, offset));
 					}
@@ -205,20 +203,20 @@ public class Vector {
 	 * @return 
 	 *       | result == (cube1 = cube2)
 	*/
-	public static boolean equals(int[] thisCube, int[] otherCube){
-//		int[] thisCube = this.getIntCube();
-		if (thisCube[0] == otherCube[0]
-				&& thisCube[1] == otherCube[1]
-				&& thisCube[2] == otherCube[2]){
+	public static boolean equals(List<Integer> thisCube, List<Integer> otherCube){
+//		List<Integer> thisCube = this.getIntCube();
+		if (thisCube.get(0) == otherCube.get(0)
+				&& thisCube.get(1) == otherCube.get(1)
+				&& thisCube.get(2) == otherCube.get(2)){
 			return true;
 		}
 		return false;
 	}
 	
-	public static double distanceBetween(int[] cube1, int[] cube2){
-		return Math.sqrt(Math.pow(cube1[0]-cube2[0],2) 
-				+Math.pow(cube1[1]-cube2[1],2)
-				+Math.pow(cube1[2]-cube2[2],2));
+	public static double distanceBetween(List<Integer> cube1, List<Integer> cube2){
+		return Math.sqrt(Math.pow(cube1.get(0)-cube2.get(0),2) 
+				+Math.pow(cube1.get(1)-cube2.get(1),2)
+				+Math.pow(cube1.get(2)-cube2.get(2),2));
 	}
 	
 	public static double distanceBetween(Vector vector1, Vector vector2){
@@ -229,8 +227,8 @@ public class Vector {
 		return (it.getYCoord() - comparedTo.getYCoord());
 	}
 	
-	public static Vector getCentreOfCube(int[] cube){
-		return new Vector(cube[0]+0.5, cube[1]+0.5, cube[2]+0.5);
+	public static Vector getCentreOfCube(List<Integer> cube){
+		return new Vector(cube.get(0)+0.5, cube.get(1)+0.5, cube.get(2)+0.5);
 	}
 	
 	public static Vector sum(Vector vector1, Vector vector2){
@@ -239,10 +237,10 @@ public class Vector {
 				vector1.compZ + vector2.compZ);
 	}
 	
-	private static int[] sum(int[] thisCube, int[] otherCube){
-		int[] result = {thisCube[0] + otherCube[0], 
-						thisCube[1] + otherCube[1],
-						thisCube[2] + otherCube[2]};
+	private static List<Integer> sum(List<Integer> thisCube, List<Integer> otherCube){
+		List<Integer> result = {thisCube.get(0) + otherCube.get(0), 
+						thisCube.get(1) + otherCube.get(1),
+						thisCube.get(2) + otherCube.get(2)};
 		return result;
 	}
 	
@@ -268,9 +266,9 @@ public class Vector {
 				+Math.pow(this.getZCoord(),2));
 	}
 	
-	public static Vector getOneCubeCloserToCube(Vector currentPosition, int[] target){
-		int[] currentCube = currentPosition.getIntCube();
-		int[] difference = new int[3];
+	public static Vector getOneCubeCloserToCube(Vector currentPosition, List<Integer> target){
+		List<Integer> currentCube = currentPosition.getIntCube();
+		List<Integer> difference = new int[3];
 		for (int i=0; i != 3; i++){
 			if (currentCube[i] == target[i])
 				difference[i] = 0;
@@ -280,12 +278,12 @@ public class Vector {
 				difference[i] = -1;
 			}	
 		}
-		return new Vector(difference[0], difference[1], difference[2]);
+		return new Vector(difference.get(0), difference.get(1), difference.get(2));
 	}
 	
-	public int[] getRandomAdjacentCubeInWorld(World world){
-		int[] thisCube = this.getIntCube();
-		int[] newCube = new int[3];		
+	public List<Integer> getRandomAdjacentCubeInWorld(World world){
+		List<Integer> thisCube = this.getIntCube();
+		List<Integer> newCube = new int[3];		
 		do {
 		for (int i=0; i != 3; i++){
 				newCube[i] = thisCube[i] + (int) (Math.random() * 3) - 1;
@@ -295,7 +293,7 @@ public class Vector {
 	}
 	
 	public boolean hasSupportOfSolid(World world){
-		Set<int[]> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
+		Set<List<Integer>> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
 		if (directAdjenctCubes.size() == 6){
 			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
 				return false;
@@ -304,8 +302,8 @@ public class Vector {
 		return true;
 	}
 	
-	public static boolean hasSupportOfSolid(int[] cube, World world){
-		Set<int[]> directAdjenctCubes = Vector.getDirectAdjenctCubes(cube, world) ;
+	public static boolean hasSupportOfSolid(List<Integer> cube, World world){
+		Set<List<Integer>> directAdjenctCubes = Vector.getDirectAdjenctCubes(cube, world) ;
 		if (directAdjenctCubes.size() == 6){
 			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
 				return false;
@@ -315,8 +313,8 @@ public class Vector {
 	}
 	
 	public boolean hasSupportOfSolidUnderneath(World world){
-		int[] thisCube = this.getIntCube();
-		int[] cubeBenath = {thisCube[0], thisCube[1], thisCube[2]-1};
+		List<Integer> thisCube = this.getIntCube();
+		List<Integer> cubeBenath = {thisCube.get(0), thisCube.get(1), thisCube.get(2)-1};
 		return (!world.isCubeInWorld(cubeBenath) || world.isSolid(cubeBenath));
 	}
 	

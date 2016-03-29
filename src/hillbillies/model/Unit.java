@@ -1,6 +1,7 @@
 package hillbillies.model;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 //New classes: boulder, log, world
 //New attributes: faction, experience
@@ -161,7 +162,7 @@ public class Unit {
  *       | if (isValidOrientation(orientation))
  *       | new.getOrientation() == PI/2
  */
-public Unit(String name, int[] initialCube, int weight, int agility, int strength, int toughness,
+public Unit(String name, List<Integer> initialCube, int weight, int agility, int strength, int toughness,
 		boolean enableDefaultBehavior){
 	this.setName(name);
 	
@@ -197,7 +198,7 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	this.orientation = (Math.PI/2);
 }
 
-public Unit(String name, int[] initialCube, boolean enableDefaultBehavior, World world){
+public Unit(String name, List<Integer> initialCube, boolean enableDefaultBehavior, World world){
 	this.world = world;
 	this.setName("Name");  //FIXME not final!
 	
@@ -1199,7 +1200,7 @@ private void doMove(double tickTime){
 	double movedDistanceRelatieveToRemainingDistance = tickTime*speed/d;
 	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
 		this.setPosition(this.targetPosition);
-		if (Arrays.equals(this.getCube(), this.targetCube)){
+		if (this.getCube().equals(this.targetCube)){
 			this.increaseExperience(this.executedSteps);
 			System.out.println("targetCube op null zetten");
 			this.sprinting = false;
@@ -1276,7 +1277,7 @@ private double orientation;
  * 		| !isValidCube(cube)
  * 		
  */
-public void moveTo(int[] cube){
+public void moveTo(List<Integer> cube){
 	if (!this.world.isCubeInWorld(cube))
 		throw new IllegalArgumentException();
 	this.setTargetCube(cube);
@@ -1308,7 +1309,7 @@ public void moveTo(int[] cube){
 */
 private void doMoveTo(){
 	System.out.println("Starting pathfinding");
-	List<int[]> path = world.getPath(this.getCube(), this.targetCube);
+	List<List<Integer>> path = world.getPath(this.getCube(), this.targetCube);
 	Vector difference = Vector.getCentreOfCube(path.get(path.size()));
 	this.moveToAdjacent(difference);
 }
@@ -1355,9 +1356,9 @@ public boolean isCarryingBoulder() {
  * 2: log
  */
 private int carriedMaterial = 0;
-private int[] cubeWorkingOn = null;
+private List<Integer> cubeWorkingOn = null;
 
-public void workAt(int[] cube){
+public void workAt(List<Integer> cube){
 	if (!this.position.isNeighbourCube(cube) && !Vector.equals(this.getCube(), cube))
 		return;
 	if (!isValidActivity(1)){
@@ -1526,7 +1527,7 @@ private void defenseAgainst(Unit attacker) {
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
+		List<Integer> randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
 		Vector newPosition = Vector.getCentreOfCube(randomCube);
 
 		this.increaseExperience(20);
@@ -1662,9 +1663,9 @@ private void doDefaultBehavior(){
 	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
-			int[] newTargetCube = new int[3];		
+			List<Integer> newTargetCube = new ArrayList<Integer>();		
 			for (int i=0; i != 3; i++){
-				newTargetCube[i] = (int) (Math.random() * 50);
+				newTargetCube.add((int) (Math.random() * 50));
 				}
 			this.setTargetCube(newTargetCube);
 					
@@ -1685,14 +1686,14 @@ private void falling(){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");
-			this.fellFrom = this.getCube()[2];
+			this.fellFrom = this.getCube().get(2);
 			this.activeActivity = 2;
 		}
 	}	
 	if (this.activeActivity == 2){
 		if (this.position.hasSupportOfSolidUnderneath(this.world)){
 			this.position = Vector.getCentreOfCube(this.getCube());
-			int cubesFallen = this.fellFrom - this.getCube()[2];
+			int cubesFallen = this.fellFrom - this.getCube().get(2);
 			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
 			this.startNextActivity();
 			System.out.println("Stopped falling");

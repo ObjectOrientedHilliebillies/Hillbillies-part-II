@@ -1,9 +1,10 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Boulder extends Material {
 
-	public Boulder(int[] intitialCube, World world){
+	public Boulder(List<Integer> intitialCube, World world){
 		super(intitialCube, world);
 	}
 	

@@ -1,9 +1,10 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Material {
 	
-	protected Material(int[] intialCube, World world){
+	protected Material(List<Integer> intialCube, World world){
 		this.setWeight();
 		this.setWorld(world);
 		this.setPosition(Vector.getCentreOfCube(intialCube));
