@@ -155,13 +155,7 @@ public class Facade implements IFacade {
 		System.out.println("moveTo");
 		unit.moveTo(cube);		
 	}
-
-	@Override
-	public void work(Unit unit) throws ModelException {
-		System.out.println("work");
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public boolean isWorking(Unit unit) throws ModelException {
 		return unit.isWorking();
@@ -181,7 +175,11 @@ public class Facade implements IFacade {
 	@Override
 	public void rest(Unit unit) throws ModelException {
 		System.out.println("rest");
-		unit.rest();		
+		try{
+		unit.rest();
+		} catch(IllegalArgumentException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override
@@ -202,7 +200,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public World createWorld(int[][][] terrainTypes, TerrainChangeListener modelListener) throws ModelException {
-		System.out.println(terrainTypes);
+		System.out.println("createWorld");
 		return new World(terrainTypes, modelListener);
 	}
 
@@ -288,7 +286,11 @@ public class Facade implements IFacade {
 	@Override
 	public void workAt(Unit unit, int x, int y, int z) throws ModelException {
 		int[] cube = {x,y,z};
+		try{
 		unit.workAt(cube);
+		}catch (IllegalArgumentException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package hillbillies.tests.facade;
+package homeMadeTests.partII;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ import hillbillies.part2.facade.IFacade;
 import hillbillies.part2.listener.DefaultTerrainChangeListener;
 import ogp.framework.util.ModelException;
 
-public class Part2TestPartial {
+public class FullTest {
 
 	private Facade facade;
 
@@ -71,5 +71,4 @@ public class Part2TestPartial {
 			facade.advanceTime(world, step);
 		facade.advanceTime(world, time - n * step);
 	}
-
 }

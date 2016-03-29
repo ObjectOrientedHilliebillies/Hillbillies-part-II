@@ -64,12 +64,13 @@ public class World {
 		if (position.getXCoord() < 0 || position.getXCoord() > NbCubesX
 			|| position.getYCoord() < 0 || position.getYCoord() > NbCubesY
 			|| position.getZCoord() < 0 || position.getZCoord() > NbCubesZ){
+			System.out.println("Not a vector inside the world");
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isCubeInWorld(int[] cube){
+	boolean isCubeInWorld(int[] cube){
 		if (cube[0] < 0 || cube[0] >= NbCubesX
 			|| cube[1] < 0 || cube[1] >= NbCubesY
 			|| cube[2] < 0 || cube[2] >= NbCubesZ){
@@ -80,6 +81,7 @@ public class World {
 	
 	public boolean isPassable(Vector position){
 		if (isSolid(position.getIntCube())){
+			System.out.println("Cube not passable");
 			return false;
 		}
 		return true;
@@ -93,7 +95,7 @@ public class World {
 	 */
 	private int[][][] terrainTypes; 
 	
-	private boolean isSolid(int[] cube){
+	public boolean isSolid(int[] cube){
 		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
 		if (terrainType != 1 && terrainType != 2){
 			return false;
@@ -101,7 +103,7 @@ public class World {
 		return true;
 	}
 	
-	public int getTerrainType(Vector cube){
+	private int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
 		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
 	}
@@ -136,8 +138,10 @@ public class World {
 	
 	private void changeSolidToPassable(int[] cube){
 		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-		Set<int[]> neighbours = Vector.getNeighbourCubes(cube, this);
+		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+		this.accessibleCubes.add(cube);
 		for (int[] neighbour : neighbours){
+			
 			this.collapseIfFloating(neighbour);
 		}
 	}
@@ -163,10 +167,17 @@ public class World {
 				for  (int z=0 ; z != NbCubesZ; z++){
 					 int[] cube = {x,y,z};
 					 this.collapseIfFloating(cube);
+					 if (!this.isSolid(cube) && Vector.hasSupportOfSolid(cube, this)){
+						 accessibleCubes.add(cube);
+					 }
 				}
 			}
 		}
 	}
+	
+	private void changeAccessibilityIfNessesary
+	
+	private Set<int[]> accessibleCubes = new HashSet<>();
 	
 	
 	
@@ -214,7 +225,7 @@ public class World {
 		return materialToReturn;
 	}
 	
-	public List<Material> getMaterialsAt(Vector position) { 
+	private List<Material> getMaterialsAt(Vector position) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition() == position){
@@ -224,7 +235,7 @@ public class World {
 	    return foundMaterials;
 	}
 	
-	public List<Material> getMaterialsAt(int[] cube) { 
+	private List<Material> getMaterialsAt(int[] cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(Vector.equals(material.getPosition().getIntCube(), cube)){
@@ -254,7 +265,7 @@ public class World {
 	    return boulders;
 	}
 	
-//	public void setMaterial(Vector position, Material material){
+//	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ //TODO
 //		//	throw new IllegalArgumentException();		
 //		//}
@@ -281,12 +292,8 @@ public class World {
 		return this.factions;
 	}
 	
-	public int getNbOffFactions() {
+	private int getNbOffFactions() {
 		return this.getActiveFactions().size();
-	}
-	
-	private Faction makeFaction(){
-		return new Faction(this);
 	}
 	
 	private void addFaction(Faction faction) {
@@ -304,11 +311,11 @@ public class World {
 		return true;
 	}
 	
-	public void removeFaction(Faction faction) {
+	private void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
 
-	public Faction getSmallestFaction() {
+	private Faction getSmallestFaction() {
 		Faction smallestFaction = null;
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
@@ -345,6 +352,7 @@ public class World {
 	
 	public void addUnit(Unit unit){
 		if (this.getNbOfUnits()!=100){
+			unit.setWorld(this);
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
 				Faction newFaction =  new Faction(this);
@@ -361,14 +369,75 @@ public class World {
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
 		for (Unit unit : unitsInWorld){
-			unit.advanceTime(dt);
 		}
 	}
 
-	public void removeUnit(Unit unit) {
+	private void removeUnit(Unit unit) {
 		unit.getFaction().removeUnit(unit);
 	}
 	
+	/*Pathfinding*/
+	
+	private Set<int[]> getAccessibleCubes(){
+		
+	}
+	
+	public void findPath(int[] start, int[] goal){
+    // The set of nodes already evaluated.
+    closedSet := {}
+    // The set of currently discovered nodes still to be evaluated.
+    // Initially, only the start node is known.
+    openSet := {start}
+    // For each node, which node it can most efficiently be reached from.
+    // If a node can be reached from many nodes, cameFrom will eventually contain the
+    // most efficient previous step.
+    cameFrom := the empty map
+
+    // For each node, the cost of getting from the start node to that node.
+    gScore := map with default value of Infinity
+    // The cost of going from start to start is zero.
+    gScore[start] := 0 
+    // For each node, the total cost of getting from the start node to the goal
+    // by passing by that node. That value is partly known, partly heuristic.
+    fScore := map with default value of Infinity
+    // For the first node, that value is completely heuristic.
+    fScore[start] := heuristic_cost_estimate(start, goal)
+
+    while openSet is not empty
+        current := the node in openSet having the lowest fScore[] value
+        if current = goal
+            return reconstruct_path(cameFrom, goal)
+
+        openSet.Remove(current)
+        closedSet.Add(current)
+        for each neighbor of current
+            if neighbor in closedSet
+                continue		// Ignore the neighbor which is already evaluated.
+            // The distance from start to a neighbor
+            tentative_gScore := gScore[current] + dist_between(current, neighbor)
+            if neighbor not in openSet	// Discover a new node
+                openSet.Add(neighbor)
+            else if tentative_gScore >= gScore[neighbor]
+                continue		// This is not a better path.
+
+            // This path is the best until now. Record it!
+            cameFrom[neighbor] := current
+            gScore[neighbor] := tentative_gScore
+            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
+
+    return failure
+	}	
+    	
+
+function reconstruct_path(cameFrom, current)
+    total_path := [current]
+    while current in cameFrom.Keys:
+        current := cameFrom[current]
+        total_path.append(current)
+    return total_path
+    		
+    		
+
 	
 }
 

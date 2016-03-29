@@ -1,7 +1,18 @@
 package hillbillies.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.junit.experimental.theories.Theories;
+
+import jdk.internal.dynalink.beans.StaticClass;
+import sun.net.www.content.audio.wav;
 
 public class Vector {
 	private double compX;
@@ -14,26 +25,26 @@ public class Vector {
 		setZcoord(coordZ);
 	}
 	
-	public Vector(double[] position){
+	private Vector(double[] position){
 		this.setXcoord(position[0]);
 		this.setYcoord(position[1]);
 		this.setZcoord(position[2]);
 	}
 	
-	public Vector(int[] cube){
+	private Vector(int[] cube){
 		this.setXcoord(cube[0]);
 		this.setYcoord(cube[1]);
 		this.setZcoord(cube[2]);
 	}
 	
 	
-	public void setVector(double coordX, double coordY, double coordZ) {
+	private void setVector(double coordX, double coordY, double coordZ) {
 		setXcoord(coordX);
 		setYcoord(coordY);
 		setZcoord(coordZ);
 	}
 	
-	public void setVector(double[] position){
+	private void setVector(double[] position){
 		this.setXcoord(position[0]);
 		this.setYcoord(position[1]);
 		this.setZcoord(position[2]);
@@ -55,15 +66,15 @@ public class Vector {
 		return cubeArray;
 	}
 	
-	public void setXcoord(double coordX) {
+	private void setXcoord(double coordX) {
 		this.compX = coordX;
 	}
 	
-	public void setYcoord(double coordY) {
+	private void setYcoord(double coordY) {
 		this.compY = coordY;
 	}
 	
-	public void setZcoord(double coordZ) {
+	private void setZcoord(double coordZ) {
 		this.compZ = coordZ;
 	}
 	
@@ -100,7 +111,36 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	public  boolean isDirectlyAdjacentCube(int[] otherCube){
+	private final int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, { 0, -1, 0 }, { 0, +1, 0 },
+		{ 0, 0, -1 }, { 0, 0, +1 } };
+		
+	private Set<int[]> getDirectAdjenctCubes(World world){
+		int[] thisCube = this.getIntCube(); 
+		Set<int[]> directAdjectCubes = new HashSet<>();
+		for (int[] offset : directAdjacentOffsets){
+			int[] directAdject = Vector.sum(thisCube, offset);
+			if (world.isCubeInWorld(directAdject)){
+				directAdjectCubes.add(directAdject);
+			}
+		}
+		return directAdjectCubes;
+	}
+	
+	public static Set<int[]> getDirectAdjenctCubes(int[] cube, World world){
+		return Vector.getCentreOfCube(cube).getDirectAdjenctCubes(world);
+	}
+		
+	public static Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
+		Set<int[]> remainingCubes = new HashSet<>();
+		for (int[] cube : unfilterdCubes){
+			if (world.isSolid(cube)){
+				remainingCubes.add(cube);
+			}
+		}
+		return remainingCubes;
+	}
+	
+	private  boolean isDirectlyAdjacentCube(int[] otherCube){
 		int[] thisCube = this.getIntCube();
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
@@ -132,7 +172,7 @@ public class Vector {
 		}
 		return neighbourCubes;
 	}
-	
+
 	/**
 	 * Check whether the given vectors are the same vector.
 	 *  
@@ -141,7 +181,7 @@ public class Vector {
 	 * @return 
 	 *       | result == (vector1 = vector1)
 	*/
-	public static boolean equals(Vector vector1, Vector vector2){
+	private static boolean equals(Vector vector1, Vector vector2){
 		if (vector1.getXCoord() == vector2.getXCoord()
 				&& vector1.getYCoord() == vector2.getYCoord()
 				&& vector1.getZCoord() == vector2.getZCoord()){
@@ -186,7 +226,7 @@ public class Vector {
 				vector1.compZ + vector2.compZ);
 	}
 	
-	public static int[] sum(int[] thisCube, int[] otherCube){
+	private static int[] sum(int[] thisCube, int[] otherCube){
 		int[] result = {thisCube[0] + otherCube[0], 
 						thisCube[1] + otherCube[1],
 						thisCube[2] + otherCube[2]};
@@ -199,17 +239,17 @@ public class Vector {
 				to.compZ - from.compZ);
 	}
 	
-	public static Vector multiply(Vector vector, double scalar){
-		return new Vector(vector.compX * scalar,
-				vector.compY * scalar,
-				vector.compZ * scalar);
+	public Vector scale(double scalar){
+		return new Vector(this.compX * scalar,
+				this.compY * scalar,
+				this.compZ * scalar);
 	}
 	
 	public double orientationInXZPlane(){
 		return Math.atan2(this.getYCoord(), this.getXCoord());
 	}
 	
-	public double lenght(){
+	private double lenght(){
 		return Math.sqrt(Math.pow(this.getXCoord(),2) 
 				+Math.pow(this.getYCoord(),2)
 				+Math.pow(this.getZCoord(),2));
@@ -237,8 +277,30 @@ public class Vector {
 		for (int i=0; i != 3; i++){
 				newCube[i] = thisCube[i] + (int) (Math.random() * 3) - 1;
 			}
-		} while (equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
+		} while (Vector.equals(thisCube, newCube) || !world.isCubeInWorld(newCube));
 		return newCube;
 	}
+	
+	public boolean hasSupportOfSolid(World world){
+		Set<int[]> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
+		if (directAdjenctCubes.size() == 4){
+			if (this.filterPassableCubes(directAdjenctCubes, world).size() == 0){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean hasSupportOfSolid(int[] cube, World world){
+		return Vector.getCentreOfCube(cube).hasSupportOfSolid(world);
+	}
+	
+	public boolean hasSupportOfSolidUnderneath(World world){
+		int[] thisCube = this.getIntCube();
+		int[] cubeBenath = {thisCube[0], thisCube[1], thisCube[2]-1};
+		return (world.isCubeInWorld(cubeBenath) || world.isSolid(cubeBenath));
+	}
+	
+	
 	
 }
