@@ -111,8 +111,8 @@ public class Vector {
 		return neighbourForAtleastOneComponent;
 	}
 	
-	private final int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, { 0, -1, 0 }, { 0, +1, 0 },
-		{ 0, 0, -1 }, { 0, 0, +1 } };
+	private final static int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
+		{ 0, -1, 0 }, { 0, +1, 0 }, { 0, 0, -1 }, { 0, 0, +1 } };
 		
 	private Set<int[]> getDirectAdjenctCubes(World world){
 		int[] thisCube = this.getIntCube(); 
@@ -126,8 +126,15 @@ public class Vector {
 		return directAdjectCubes;
 	}
 	
-	public static Set<int[]> getDirectAdjenctCubes(int[] cube, World world){
-		return Vector.getCentreOfCube(cube).getDirectAdjenctCubes(world);
+	public static Set<int[]> getDirectAdjenctCubes(int[] thisCube, World world){
+		Set<int[]> directAdjectCubes = new HashSet<>();
+		for (int[] offset : directAdjacentOffsets){
+			int[] directAdject = Vector.sum(thisCube, offset);
+			if (world.isCubeInWorld(directAdject)){
+				directAdjectCubes.add(directAdject);
+			}
+		}
+		return directAdjectCubes;
 	}
 		
 	public static Set<int[]> filterPassableCubes(Set<int[]> unfilterdCubes, World world){
@@ -140,8 +147,7 @@ public class Vector {
 		return remainingCubes;
 	}
 	
-	private  boolean isDirectlyAdjacentCube(int[] otherCube){
-		int[] thisCube = this.getIntCube();
+	public static boolean isDirectlyAdjacentCube(int[] thisCube, int[] otherCube){
 		boolean neighbourForAtleastOneComponent = false;
 		for (int i = 0; i != 3; i++) {
 			int difference = Math.abs(thisCube[i] - otherCube[i]);
@@ -170,6 +176,7 @@ public class Vector {
 				}
 			}
 		}
+		neighbourCubes.remove(thisCube);
 		return neighbourCubes;
 	}
 
@@ -206,6 +213,12 @@ public class Vector {
 			return true;
 		}
 		return false;
+	}
+	
+	public static double distanceBetween(int[] cube1, int[] cube2){
+		return Math.sqrt(Math.pow(cube1[0]-cube2[0],2) 
+				+Math.pow(cube1[1]-cube2[1],2)
+				+Math.pow(cube1[2]-cube2[2],2));
 	}
 	
 	public static double distanceBetween(Vector vector1, Vector vector2){
@@ -283,7 +296,7 @@ public class Vector {
 	
 	public boolean hasSupportOfSolid(World world){
 		Set<int[]> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
-		if (directAdjenctCubes.size() == 4){
+		if (directAdjenctCubes.size() == 6){
 			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
 				return false;
 			}
@@ -292,13 +305,19 @@ public class Vector {
 	}
 	
 	public static boolean hasSupportOfSolid(int[] cube, World world){
-		return Vector.getCentreOfCube(cube).hasSupportOfSolid(world);
+		Set<int[]> directAdjenctCubes = Vector.getDirectAdjenctCubes(cube, world) ;
+		if (directAdjenctCubes.size() == 6){
+			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean hasSupportOfSolidUnderneath(World world){
 		int[] thisCube = this.getIntCube();
 		int[] cubeBenath = {thisCube[0], thisCube[1], thisCube[2]-1};
-		return (world.isCubeInWorld(cubeBenath) || world.isSolid(cubeBenath));
+		return (!world.isCubeInWorld(cubeBenath) || world.isSolid(cubeBenath));
 	}
 	
 	

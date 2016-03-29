@@ -1,5 +1,7 @@
 package hillbillies.model;
 
+import java.nio.file.Path;
+
 //New classes: boulder, log, world
 //New attributes: faction, experience
 //New methods: fall, die, carry
@@ -33,8 +35,11 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.experimental.theories.Theories;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -261,7 +266,7 @@ private Vector position;
 /**
  * Variable registering the target cube of this Unit.
  */
-private int[] targetCube;
+private List<Integer> targetCube;
 
 /**
  * Variable registering the target position of this Unit.
@@ -337,7 +342,7 @@ private void setTargetPosition(Vector targetPosition){
  * Return the cube of this unit.
  */
 @Basic @Raw
-public int[] getCube() {
+public List<Integer> getCube() {
 	return this.position.getIntCube();
 }
 
@@ -345,7 +350,7 @@ public int[] getCube() {
  * Return the target cube of this unit.
  */
 @Basic @Raw
-private int[] getTargetCube() {
+private List<Integer> getTargetCube() {
 	return this.targetCube;
 }
 
@@ -363,7 +368,7 @@ private int[] getTargetCube() {
  *       | ! isValidPosition(getCube())
  */
 @Raw
-private void setTargetCube(int[] cube) {
+private void setTargetCube(List<Integer> cube) {
 	if (! this.world.isCubeInWorld(cube))
 		throw new IllegalArgumentException();
 	this.targetCube = cube;
@@ -813,6 +818,7 @@ private void die(){
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
 	this.getFaction().removeUnit(this); 
+	// TODO grondig testen ik kreeg hier nog een bug!
 }
 
 /**
@@ -930,6 +936,8 @@ private void setTickTime(double time) {
  *       | result == !(this.isResting() && recoverdPoints<1)
 */
 private boolean isValidActivity(int activity){
+	if (this.activeActivity == 2)
+		return false;
 	if (this.isResting() && recoverdPoints<1)
 		return false;
 	if (this.activeActivity == 3)
@@ -1190,7 +1198,6 @@ private void doMove(double tickTime){
 	
 	double movedDistanceRelatieveToRemainingDistance = tickTime*speed/d;
 	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
-		System.out.println(movedDistanceRelatieveToRemainingDistance);
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
 			this.increaseExperience(this.executedSteps);
@@ -1201,9 +1208,7 @@ private void doMove(double tickTime){
 			this.executedSteps = 0;
 			this.activeActivity = 0;
 		}
-		if (nextActivity != 0){
-			this.startNextActivity();
-		}		
+		this.startNextActivity();
 	}
 	else{
 		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
@@ -1276,8 +1281,6 @@ public void moveTo(int[] cube){
 		throw new IllegalArgumentException();
 	this.setTargetCube(cube);
 	System.out.println("target set");
-//	if (this.isValidActivity("move"))
-//		this.activeActivity = "move";
 }
 
 /**
@@ -1304,7 +1307,9 @@ public void moveTo(int[] cube){
 * 		| !isValidPosition(targetPosition)
 */
 private void doMoveTo(){
-	Vector difference = Vector.getOneCubeCloserToCube(this.position, this.targetCube);
+	System.out.println("Starting pathfinding");
+	List<int[]> path = world.getPath(this.getCube(), this.targetCube);
+	Vector difference = Vector.getCentreOfCube(path.get(path.size()));
 	this.moveToAdjacent(difference);
 }
 
@@ -1679,6 +1684,7 @@ private final static Vector fallSpeed = new Vector(0, 0, -3);
 private void falling(){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
+			System.out.println("Started falling");
 			this.fellFrom = this.getCube()[2];
 			this.activeActivity = 2;
 		}
@@ -1688,6 +1694,8 @@ private void falling(){
 			this.position = Vector.getCentreOfCube(this.getCube());
 			int cubesFallen = this.fellFrom - this.getCube()[2];
 			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
+			this.startNextActivity();
+			System.out.println("Stopped falling");
 		}else{
 			this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
 		}
