@@ -284,7 +284,7 @@ public class Vector {
 	public boolean hasSupportOfSolid(World world){
 		Set<int[]> directAdjenctCubes = this.getDirectAdjenctCubes(world) ;
 		if (directAdjenctCubes.size() == 4){
-			if (this.filterPassableCubes(directAdjenctCubes, world).size() == 0){
+			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
 				return false;
 			}
 		}

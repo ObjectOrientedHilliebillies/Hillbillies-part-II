@@ -27,7 +27,6 @@ public class World {
 		this.terrainTypes = new int[NbCubesX][NbCubesY][NbCubesZ];
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
-		// TODO dit is nog slecht dit moet opgesplitst worden in verschillende methodes, en elke cube moet gezet worden niet enkel de solid ones!
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
@@ -112,6 +111,10 @@ public class World {
 		return terrainTypes[cube[0]][cube[1]][cube[2]];
 	}
 	
+	private boolean isValidTerrainType (int terrainType){
+		return (terrainType >=0 && terrainType <=3);
+	}
+	
 	public void setTerrainType(int[] cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
@@ -125,24 +128,31 @@ public class World {
 			} else if (rand < 0.25){
 				new Boulder(cube, this);
 			}
-			this.changeSolidToPassable(cube);
+			connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
+			this.accessibleCubes.add(cube);
+			Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+			Set<int[]> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
+			neighbours.removeAll(solidNeighbours);
+
+			for (int[] neighbour : neighbours){
+				this.changeAccessibilityIfNessesary(neighbour);
+			}
+			for (int[] solidNeighbour : solidNeighbours){
+				this.collapseIfFloating(solidNeighbour);
+			}
 		}
 		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
 		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
 		
 	}
 	
-	private boolean isValidTerrainType (int terrainType){
-		return (terrainType >=0 && terrainType <=3);
-	}
-	
-	private void changeSolidToPassable(int[] cube){
-		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
-		this.accessibleCubes.add(cube);
-		for (int[] neighbour : neighbours){
-			
-			this.collapseIfFloating(neighbour);
+	private void changeAccessibilityIfNessesary(int[] cube){
+		if (!this.isSolid(cube)){
+			if (Vector.hasSupportOfSolid(cube, this)){
+				accessibleCubes.add(cube);
+			} else {
+				accessibleCubes.remove(cube);
+			}
 		}
 	}
 	
@@ -166,16 +176,16 @@ public class World {
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
 					 int[] cube = {x,y,z};
-					 this.collapseIfFloating(cube);
 					 if (!this.isSolid(cube) && Vector.hasSupportOfSolid(cube, this)){
 						 accessibleCubes.add(cube);
 					 }
+					 this.collapseIfFloating(cube);
 				}
 			}
 		}
 	}
 	
-	private void changeAccessibilityIfNessesary
+	
 	
 	private Set<int[]> accessibleCubes = new HashSet<>();
 	
@@ -379,7 +389,19 @@ public class World {
 	/*Pathfinding*/
 	
 	private Set<int[]> getAccessibleCubes(){
-		
+		return this.accessibleCubes;
+	}
+	
+	private Set<int[]> getAccessibleNeigbours (int[] cube){
+		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
+		Set<int[]> accessibleNeighbours = new HashSet<>();
+		for (int[] neighbour: neighbours){
+			if (accessibleCubes.contains(neighbour)){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
 	}
 	
 	public void findPath(int[] start, int[] goal){
