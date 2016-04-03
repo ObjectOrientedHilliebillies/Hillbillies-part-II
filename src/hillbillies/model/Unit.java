@@ -33,7 +33,9 @@ package hillbillies.model;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
-import java.util.List;
+
+import org.junit.experimental.theories.Theories;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.Util;
@@ -230,6 +232,10 @@ public World getWorld(){
 	return this.world;
 }
 
+public void setWorld(World world){
+	this.world = world;
+}
+
 
 /**
  * Variable registering the faction of this unit.
@@ -277,7 +283,7 @@ private Vector targetPosition;
  * Return the position of this unit.
  */
 @Basic @Raw
-public Vector getPosition() {
+private Vector getPosition() {
 	return this.position;
 }
 
@@ -303,8 +309,8 @@ public double[] getDoublePosition() {
  *       | ! isValidPosition(this.getPosition())
  */
 @Raw
-public void setPosition(Vector position){
-	if (! this.world.isPositionInWorld(position))
+private void setPosition(Vector position){
+	if (this.world != null && !this.world.isPositionInWorld(position))
 		throw new IllegalArgumentException();
 	this.position = position;
 }
@@ -313,7 +319,7 @@ public void setPosition(Vector position){
  * Return the target position of this unit.
  */
 @Basic @Raw
-public Vector getTargetPosition() {
+private Vector getTargetPosition() {
 	return this.targetPosition;
 }
 
@@ -331,7 +337,7 @@ public Vector getTargetPosition() {
  *       | ! isValidPosition(this.getPosition())
  */
 @Raw
-public void setTargetPosition(Vector targetPosition){
+private void setTargetPosition(Vector targetPosition){
 	if (! this.world.isPositionInWorld(targetPosition))
 		throw new IllegalArgumentException();
 	this.targetPosition = targetPosition;
@@ -349,7 +355,7 @@ public int[] getCube() {
  * Return the target cube of this unit.
  */
 @Basic @Raw
-public int[] getTargetCube() {
+private int[] getTargetCube() {
 	return this.targetCube;
 }
 
@@ -367,7 +373,7 @@ public int[] getTargetCube() {
  *       | ! isValidPosition(getCube())
  */
 @Raw
-public void setTargetCube(int[] cube) {
+private void setTargetCube(int[] cube) {
 	if (! this.world.isCubeInWorld(cube))
 		throw new IllegalArgumentException();
 	this.targetCube = cube;
@@ -395,7 +401,7 @@ public String getName() {
  *       | result == Character.isUpperCase(name.charAt(0)) && name.length() >= 2 
 				&& name.matches("[a-zA-Z ']")
 */
-public static boolean isValidName(String unitName) {
+private static boolean isValidName(String unitName) {
 	return Character.isUpperCase(unitName.charAt(0)) && unitName.length() >= 2 
 			&& unitName.matches("[a-zA-Z '\"]+");
 }
@@ -446,7 +452,7 @@ public int getWeight() {
  * @return 
  *       | result == maxWeight > weight >= (strength+agility)/2 
 */
-public boolean isValidWeight(int weight) {
+private boolean isValidWeight(int weight) {
 	return (weight >= this.getMinWeight() 
 			&& weight <= maxWeight);
 }
@@ -472,6 +478,17 @@ public void setWeight(int weight) {
 		this.weight = this.getMinWeight();
 }
 
+<<<<<<< HEAD
+private int getAdditionalWeight() {
+	return this.additionalWeight;
+}
+
+private void setAdditionalWeight(int weight) {
+	this.additionalWeight = weight;
+}
+
+private int getTotalWeight() {
+=======
 /**
  * Return the additional weight (the weight of a carried material) of this unit.
  */
@@ -510,6 +527,7 @@ public boolean isValidAdditionalWeight(int weight) {
  * Return the total weight (own weight + weight of a carried material) of this unit.
  */
 public int getTotalWeight() {
+>>>>>>> refs/remotes/origin/Jonas
 	return this.getWeight() + this.getAdditionalWeight();
 }
 
@@ -524,10 +542,14 @@ private int additionalWeight;
  */
 private static int maxWeight = 200;
 
+<<<<<<< HEAD
+private int getMinWeight() {
+=======
 /**
  * Return the minimum weight of this unit.
  */
 public int getMinWeight() {
+>>>>>>> refs/remotes/origin/Jonas
 	return (this.getStrength() + this.getAgility())/2;
 }
 
@@ -548,7 +570,7 @@ public int getStrength() {
  * @return 
  *       | result == 0 < unitStrength <= maxStrength
 */
-public static boolean isValidStrength(int strength) {
+private static boolean isValidStrength(int strength) {
 	return (0 < strength && strength <= maxStrength);
 }
 
@@ -597,7 +619,7 @@ public int getAgility() {
  * @return 
  *       | result == 0 < agility <= maxAgility
 */
-public static boolean isValidAgility(int agility) {
+private static boolean isValidAgility(int agility) {
 	return (0 < agility && agility <= maxAgility);
 }
 
@@ -645,7 +667,7 @@ public int getToughness() {
  * @return 
  *       | result == 0 < toughness <= maxToughness
 */
-public static boolean isValidToughness(int toughness) {
+private static boolean isValidToughness(int toughness) {
 	return (0 < toughness && toughness <= maxToughness);
 }
 
@@ -692,7 +714,7 @@ public int getExperience() {
  * @return 
  *       | result == 0 < experience
 */
-public static boolean isValidExperience(int experience) {
+private static boolean isValidExperience(int experience) {
 	if (experience >= 0)
 		return true;
 	return false;
@@ -711,7 +733,7 @@ public static boolean isValidExperience(int experience) {
  *       |   then new.getExperience() == experience
  */
 @Raw
-public void setExperience(int experience) {
+private void setExperience(int experience) {
 	if (isValidExperience(experience))
 		if (!(experience >= 10))
 			this.experience = experience;
@@ -729,6 +751,9 @@ public void setExperience(int experience) {
 			}
 }
 
+<<<<<<< HEAD
+private void increaseExperience(int experience) {
+=======
 /**
  * Increase the experience of this unit with the given experience.
  * 
@@ -740,6 +765,7 @@ public void setExperience(int experience) {
  * 		increased
  */
 public void increaseExperience(int experience) {
+>>>>>>> refs/remotes/origin/Jonas
 	this.setExperience(this.getExperience() + experience);
 }
 
@@ -768,7 +794,7 @@ public int getStamina() {
  * @return 
  *       | result == 0 < stamina < this.getMaxStamina()
 */
-public boolean isValidStamina(int stamina) {
+private boolean isValidStamina(int stamina) {
 	return (0 < stamina && stamina < this.getMaxStamina());
 }
 
@@ -785,7 +811,7 @@ public boolean isValidStamina(int stamina) {
  *       | new.getStamina() == stamina
  */
 @Raw
-public void setStamina(int stamina) {
+private void setStamina(int stamina) {
 	assert isValidStamina(stamina);
 	this.stamina = stamina;
 }
@@ -823,7 +849,7 @@ public int getHitpoints() {
  * @return 
  *       | result == 0 < hitpoints <= getMaxHitpoints()
 */
-public boolean isValidHitpoints(int hitpoints) {
+private boolean isValidHitpoints(int hitpoints) {
 	return ((0 < hitpoints) && (hitpoints <= this.getMaxHitpoints()));
 }
 
@@ -840,7 +866,7 @@ public boolean isValidHitpoints(int hitpoints) {
  *       | new.getHitpoints() == hitpoints
  */
 @Raw
-public void setHitpoints(int hitpoints) {
+private void setHitpoints(int hitpoints) {
 	if (hitpoints <= 0)
 		this.die();
 	else {
@@ -856,6 +882,11 @@ public boolean isAlive() {
 	return this.alive;
 }
 
+<<<<<<< HEAD
+private boolean alive = true;
+
+private void die(){
+=======
 /**
  * Variable registering whether this unit is alive or not.
  * 		True if alive, false else.
@@ -869,6 +900,7 @@ public boolean alive = true;
  * 		this unit is removed from its faction.
  */
 public void die(){
+>>>>>>> refs/remotes/origin/Jonas
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
@@ -899,7 +931,7 @@ public int getMaxHitpoints() {
  * Return the current speed of this unit.
  */
 @Basic @Raw
-public double getCurrentSpeed() {
+private double getCurrentSpeed() {
 	return 3*(this.getStrength() + this.getAgility())/(4*this.getTotalWeight());
 }
 
@@ -908,22 +940,30 @@ public double getCurrentSpeed() {
 /////////////////////* TIME */////////////////////
 //////////////////////////////////////////////////
 
+private double timeSinceLastRested = 0;
+
 // No documentation required for advanceTime
 public void advanceTime(double tickTime) {
 	if (!isValidTickTime(tickTime)){
-		//System.out.println(tickTime);
 		throw new IllegalArgumentException();
 	}
 	else{
-		this.setTime(this.currentTime + tickTime);
+		this.setTickTime(tickTime);
 		
+	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
-	if (getCurrentTime()-lastTimeRested >= 180 && this.isValidActivity("rest")){
+	this.falling();
+	
+	if (this.timeSinceLastRested >= 180 && this.isValidActivity(4)){
 			this.rest();
-			//System.out.println("3 min zijn om");
+			System.out.println("3 min zijn om. Tijd om in bed te gaan.");
 		}
+	
+	if (this.activeActivity == 0 && this.nextActivity != 0){
+		this.startNextActivity();
+	}
 		
-	if (this.activeActivity == null && (this.targetCube != null) && 
+	if (this.activeActivity == 0 && (this.targetCube != null) && 
 				!Vector.equals(this.getCube(), this.targetCube)){
 		doMoveTo();
 	}
@@ -951,16 +991,13 @@ public void advanceTime(double tickTime) {
  * @return 
  *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
 */
-public boolean isValidTickTime(double tickTime) {
-	return ((0 < tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime)));
+private boolean isValidTickTime(double tickTime) {
+	if (!(0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime))){
+		System.out.println(tickTime);
+		// TODO tijd nul lijkt ook te mogen (zie testen twee)
+	}
 
-}
-
-/**
- * Return the current time
- */
-public double getCurrentTime() {
-	return this.currentTime;
+	return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime)));
 }
 
 /**
@@ -973,8 +1010,25 @@ public double getCurrentTime() {
  *  //FIXME moet dit niet checken of het een valid time is en een exception throwen?
  */
 @Raw
-public void setTime(double time) {
-	this.currentTime = time;
+private void setTickTime(double time) {
+	this.tickTime = time;
+}
+
+/**
+ * Check whether the given activity is a valid activity for this unit.
+ * @param  activity
+ *         The activity to check.
+ * @return 
+ *       | result == !(this.isResting() && recoverdPoints<1)
+*/
+private boolean isValidActivity(int activity){
+	if (this.isResting() && recoverdPoints<1)
+		return false;
+	if (this.activeActivity == 3)
+		return false;
+	if (this.activeActivity == 5)
+		return false;
+	return true;
 }
 
 /**
@@ -988,21 +1042,24 @@ public void setTime(double time) {
  * 			| else if nextActivity == "rest"
  * 				isResting == true
  */
-public void startNextActivity(){
-	if (nextActivity == null)
-		activeActivity = null;
-	else if (nextActivity == "work")
-		this.work();
-	else if (nextActivity == "rest")
+private void startNextActivity(){
+	if (nextActivity == 1){
+		activeActivity = 1;
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength());
+		this.face(Vector.getCentreOfCube(this.cubeWorkingOn));
+	}
+	else if (nextActivity == 4)
 		this.rest();
+	else if (nextActivity == 0)
+		this.activeActivity = 0;
 	
-	nextActivity = null;
+	nextActivity = 0;
 }
 
 /**
  * Variable registering the current time
  */
-private double currentTime;
+private double tickTime;
 
 /**
  * Variable registering the maximum time interval
@@ -1011,28 +1068,41 @@ private double maxTimeLapse = 0.2;
 
 /**
  * Variable registering the current activity
+ * <ul>
+ *  	<li>0: nothing</li>
+ *  	<li>1: working</li>
+ *  	<li>2: falling</li>
+ *  	<li>3: moving</li>
+ *  	<li>4: resting</li>
+ *  	<li>5: attacking</li>
+ *  	<li>6: defending</li>
+ *  </ul>
  */
-private String activeActivity;
+private int activeActivity = 0;
 
 /**
  * Variable registering the next activity
+ *  <ul>
+ *  	<li>0: nothing</li>
+ *  	<li>1: working</li>
+ *  	<li>2: falling</li>
+ *  	<li>3: moving</li>
+ *  	<li>4: resting</li>
+ *  	<li>5: attacking</li>
+ *  	<li>6: defending</li>
+ *  </ul>
  */
-private String nextActivity;
+private int nextActivity = 0;
 
 /**
  * Variable registering the end time
  */
-private double endTime;
+private double remainingTimeToFinishWork;
 
 /**
- * Variable registering the start time of the current activity
+ * Variable registering the remaining time the unit is busy attacking.
  */
-private double activityStartTime;
-
-/**
- * Variable registering the last time this unit rested
- */
-private double lastTimeRested =0.2;
+private double remainingTimeToFinishAttack;
 
 ////////////////////////////////////////////////////////////////
 ///////////////////////* BASIC MOVEMENT *///////////////////////
@@ -1057,13 +1127,13 @@ private boolean sprinting;
  * Return the base speed of this unit.
  */
 @Basic @Raw
-public double getBaseSpeed() {
+private double getBaseSpeed() {
 	return this.baseSpeed;
 }
 
 //FIXME da's een louche functienaam, kunnen we 
 //		dat niet beter in getBaseSpeed zetten?
-public void setBaseSpeed(){
+private void setBaseSpeed(){
 	this.baseSpeed = 3*(this.getStrength() + this.getAgility())/(double) (4*this.getTotalWeight());
 }
 
@@ -1084,7 +1154,7 @@ public double getSpeed() {
  * 		| 		then this.isSprinting() == true
  */
 public void startSprinting(){
-	if (this.stamina > 0 && (this.activeActivity == "move" || this.targetCube != null))
+	if (this.stamina > 0 && (this.activeActivity == 3 || this.targetCube != null))
 			this.sprinting = true;
 }
 
@@ -1121,7 +1191,7 @@ public boolean isSprinting() {
  *		|		new.getSpeed() == this.getSpeed()*2
  *				
  */
-public void setSpeed(Vector targetPosition) {
+private void setSpeed(Vector targetPosition) {
 //	if (activeActivity != "move")
 //		this.speed = 0;
 //	else{ 
@@ -1164,12 +1234,12 @@ public void setSpeed(Vector targetPosition) {
 public void moveToAdjacent(Vector positionDifference){
 	Vector targetPosition = Vector.sum(Vector.getCentreOfCube(this.getCube()),
 			positionDifference);
-	if (!isValidActivity("move") || !this.world.isPositionInWorld(targetPosition)){
-		this.nextActivity = "move";
+	if (!isValidActivity(3) || !this.world.isPositionInWorld(targetPosition)
+			|| !this.world.isPassable(targetPosition)){
 		throw new IllegalArgumentException();
 	}
-	if (activeActivity != "move"){
-		activeActivity = "move";
+	if (activeActivity != 3){
+		activeActivity = 3;
 		this.setTargetPosition(targetPosition);
 		this.setBaseSpeed();
 	}
@@ -1197,7 +1267,7 @@ private double exhaustedPoints;
  * 		The new position is not a valid position
  * 		| !isValidPosition(new.getPosition)
  */
-public void doMove(double tickTime){
+private void doMove(double tickTime){
 	if (sprinting){
 		double oldExhaustedPoints = exhaustedPoints;
 		exhaustedPoints = exhaustedPoints + tickTime/0.1;
@@ -1212,6 +1282,7 @@ public void doMove(double tickTime){
 	
 	double movedDistanceRelatieveToRemainingDistance = tickTime*speed/d;
 	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
+		System.out.println(movedDistanceRelatieveToRemainingDistance);
 		this.setPosition(this.targetPosition);
 		if (Arrays.equals(this.getCube(), this.targetCube)){
 			this.increaseExperience(this.executedSteps);
@@ -1220,28 +1291,36 @@ public void doMove(double tickTime){
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
 			this.executedSteps = 0;
+			this.activeActivity = 0;
 		}
-		this.startNextActivity();
+		if (nextActivity != 0){
+			this.startNextActivity();
+		}		
 	}
 	else{
 		Vector difference = Vector.getVectorFromTo(this.position, this.targetPosition);
 		this.position = Vector.sum(this.position, 
-			Vector.multiply(difference, movedDistanceRelatieveToRemainingDistance));
+			difference.scale(movedDistanceRelatieveToRemainingDistance));
 		this.orientation = difference.orientationInXZPlane();
+		// TODO EXTRA Unit stops if he reaches the next checkpoint but should continue walking to the target cube.
 	}
 }
 
+<<<<<<< HEAD
+private int executedSteps;
+=======
 /**
  * Variable registering how many steps this unit has executed since the beginning of
  * its movement.
  */
 public int executedSteps;
+>>>>>>> refs/remotes/origin/Jonas
 
 /**
  * Return whether this unit is moving or not
  */
 public boolean isMoving(){
-	if (activeActivity == "move")
+	if (activeActivity == 3)
 		return true;
 	return false;
 }
@@ -1266,8 +1345,8 @@ public double getOrientation() {
  * 		| new.orientation = Math.atan2(opponent.getDoublePosition()[1] - this.getDoublePosition()[1]
 									, opponent.getDoublePosition()[0] - this.getDoublePosition()[0]);
  */
-public void faceOpponent(Unit opponent){
-	Vector direction = Vector.getVectorFromTo(opponent.position, this.position);
+private void face(Vector point){
+	Vector direction = Vector.getVectorFromTo(this.position, point);
 	this.orientation = direction.orientationInXZPlane();
 }
 
@@ -1324,7 +1403,7 @@ public void moveTo(int[] cube){
 * 		targetPosition is not a valid position
 * 		| !isValidPosition(targetPosition)
 */
-public void doMoveTo(){
+private void doMoveTo(){
 	Vector difference = Vector.getOneCubeCloserToCube(this.position, this.targetCube);
 	this.moveToAdjacent(difference);
 }
@@ -1332,6 +1411,9 @@ public void doMoveTo(){
 
 /* Working */
 
+<<<<<<< HEAD
+private void pickupMaterial(Material material) {
+=======
 /**
  * Change the activity from this unit to work
  * 
@@ -1361,19 +1443,27 @@ public void work() throws IllegalArgumentException {
  * Set the carried material of this unit to the given material.
  */
 public void setCarriedMaterial(Material material) {
+>>>>>>> refs/remotes/origin/Jonas
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
 	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
 	//		een additional weight definieren en een materiaal kapotmaken als het 
 	//		opgerapen wordt en terug maken als het gedropt wordt.
 	if (material instanceof Log)
-		this.carriedMaterial = "Log";
+		this.carriedMaterial = 2;
 	else if (material instanceof Boulder)
-		this.carriedMaterial = "Boulder";
+		this.carriedMaterial = 1;
 	this.setAdditionalWeight(material.getWeight());
 	this.getWorld().removeMaterial(material);
 }
 
+<<<<<<< HEAD
+
+private boolean isCarryingMaterial() {
+	if (carriedMaterial != 0)
+		return true;
+	return false;
+=======
 /**
  * Return the carried material of this unit. 
  * Returns "Log" for a log and "Boulder" for a boulder.
@@ -1390,13 +1480,14 @@ public boolean isCarryingMaterial() {
 	if (carriedMaterial == null)
 		return false;
 	return true;
+>>>>>>> refs/remotes/origin/Jonas
 }
 
 /**
  * Return whether this unit is carrying a log.
  */
 public boolean isCarryingLog() {
-	if (this.getCarriedMaterial() == "Log") 
+	if (this.carriedMaterial == 2) 
 		return true;
 	return false;
 }
@@ -1405,11 +1496,29 @@ public boolean isCarryingLog() {
  * Return whether this unit is carrying a boulder.
  */
 public boolean isCarryingBoulder() {
-	if (this.getCarriedMaterial() == "Boulder")
+	if (this.carriedMaterial == 1)
 		return true;
 	return false;
 }
+/**
+ * loadTypes:
+ * 0: nothing
+ * 1: boulder
+ * 2: log
+ */
+private int carriedMaterial = 0;
+private int[] cubeWorkingOn = null;
 
+<<<<<<< HEAD
+public void workAt(int[] cube){
+	if (!this.position.isNeighbourCube(cube) && !Vector.equals(this.getCube(), cube))
+		return;
+	if (!isValidActivity(1)){
+		if (this.activeActivity != 1){
+			this.nextActivity = 1;
+			this.cubeWorkingOn = cube;
+		}
+=======
 /**
  * Variable registering what material this unit is carrying.
  */
@@ -1424,66 +1533,17 @@ public void workAt(Vector position){
 		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
 	if (!isValidActivity("work")){
 		this.nextActivity = "work";
+>>>>>>> refs/remotes/origin/Jonas
 		throw new IllegalArgumentException();
 	}
-	if (activeActivity != "work"){
-		activeActivity = "work";
-		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+	if (activeActivity != 1 || !cubeWorkingOn.equals(cube)){
+		activeActivity = 1;
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength()*100);
+		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
+		this.cubeWorkingOn = cube;
+		this.face(Vector.getCentreOfCube(cube));
 	}
-	List<Material> materialAtPosition = this.getWorld().getMaterialsAt(position);
-	//TODO in de opdracht lijkt men te suggereren dat dit met switch case moet
-	if (this.isCarryingMaterial()) {
-		this.dropMaterial(position);
-		this.increaseExperience(10); 
-		}
-	else if ((this.getWorld().getTerrainType(position) == 3) 
-		&& this.getWorld().getMaterialsAt(position) instanceof Boulder) { 
-		//TODO en log normaal...
-		//TODO equipment
-		//FIXME
-		this.work();
-		this.increaseExperience(10); 
-		}
-	else if (materialAtPosition.size() !=0 
-			&& materialAtPosition.get(0) instanceof Boulder ) {
-		this.setCarriedMaterial(materialAtPosition.get(0)); 
-		this.increaseExperience(10); 
-		}
-	else if (materialAtPosition.size() !=0 
-			&& materialAtPosition.get(0) instanceof Log) {
-		this.setCarriedMaterial(materialAtPosition.get(0)); //TODO misschien verder itereren
-		//TODO log dissapears in world
-		this.increaseExperience(10);
-		}
-	else if (this.getWorld().getTerrainType(position) == 2) {
-		new Log(position, this.getWorld());
-		this.increaseExperience(10);
-		}
-	else if (this.getWorld().getTerrainType(position) == 1) {
-		new Boulder(position, this.getWorld());
-		this.increaseExperience(10);
-		}
-}
-
-/**
- * Drop the material this unit is carrying.
- * 
- * @post if this unit was carrying a log, this log will now be part of the world 
- * 		with position as position. The same for a boulder.
- * 		This unit is not carrying any material. //TODO of is dit effect?
- */
-public void dropMaterial(Vector position){
-	if (this.getCarriedMaterial() == "Log"){
-		new Log(position, this.getWorld(), this.getAdditionalWeight());
-		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
-		this.setAdditionalWeight(0);
-		}
-	else if (this.getCarriedMaterial() == "Boulder") {
-		new Boulder(position, this.getWorld(), this.getAdditionalWeight());
-		//this.getWorld().addMaterial(boulder);
-		this.setAdditionalWeight(0);
-	}
-	this.setCarriedMaterial(null); 
+	
 }
 
 /**
@@ -1493,16 +1553,68 @@ public void dropMaterial(Vector position){
  *  		| if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
 					this.startNextActivity();
  */
-public void doWork() {
-	if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
+private void doWork() {
+	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - this.tickTime;
+	if (this.remainingTimeToFinishWork < 0){
+		if (this.isCarryingMaterial()) {
+			this.dropMaterial(Vector.getCentreOfCube(cubeWorkingOn));
+			}
+		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
+			//FIXME deze doet het nog niet!
+			}
+		else if (this.world.materialToPickUp(cubeWorkingOn) != null) {
+			System.out.println("pickingMaterialUp");
+			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
+			}
+		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 2) {
+			new Log(cubeWorkingOn, this.getWorld());
+			this.world.setTerrainType(cubeWorkingOn, 0);
+			}
+		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 1) {
+			new Boulder(cubeWorkingOn, this.getWorld());
+			this.world.setTerrainType(cubeWorkingOn, 0);
+			}
+		else{
+			this.increaseExperience(-10); 
+		}
+		this.increaseExperience(10); 
 		this.startNextActivity();
+	}
 }
+
+<<<<<<< HEAD
+private void dropMaterial(Vector position){
+	if (this.carriedMaterial == 2){
+=======
+/**
+ * Drop the material this unit is carrying.
+ * 
+ * @post if this unit was carrying a log, this log will now be part of the world 
+ * 		with position as position. The same for a boulder.
+ * 		This unit is not carrying any material. //TODO of is dit effect?
+ */
+public void dropMaterial(Vector position){
+	if (this.getCarriedMaterial() == "Log"){
+>>>>>>> refs/remotes/origin/Jonas
+		new Log(position, this.getWorld(), this.getAdditionalWeight());
+		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
+		this.setAdditionalWeight(0);
+		}
+	else if (this.carriedMaterial == 1) {
+		new Boulder(position, this.getWorld(), this.getAdditionalWeight());
+		//this.getWorld().addMaterial(boulder);
+		this.setAdditionalWeight(0);
+	}
+	this.carriedMaterial = 0;
+}
+
+
 
 /**
  * Return whether this unit is working or not
  */
 public boolean isWorking() {
-	if (this.activeActivity == "work")
+	if (this.activeActivity == 1)
 		return true;
 	return false;
 }
@@ -1536,10 +1648,11 @@ public void attack(Unit defender){
 		&& !this.isAttacking()){
 		
 		System.out.println("attack");
-		this.activityStartTime = this.getCurrentTime();
-		this.activeActivity = "attack";
-		this.faceOpponent(defender);
-		defender.faceOpponent(this);
+		this.remainingTimeToFinishAttack = 1;
+		this.activeActivity = 5;
+		
+		this.face(defender.getPosition());
+		defender.face(this.getPosition());
 		defender.defenseAgainst(this);
 		// FIXME een methode setActivieActivity maken!
 	}
@@ -1553,8 +1666,9 @@ public void attack(Unit defender){
  *  		| if (this.getCurrentTime() >= activityStartTime + 1){
 					this.startNextActivity()
  */
-public void doAttack(){
-	if (this.getCurrentTime() >= activityStartTime + 1){
+private void doAttack(){
+	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - this.tickTime;
+	if (this.remainingTimeToFinishAttack < 0){
 		this.startNextActivity();
 	}
 }
@@ -1563,21 +1677,12 @@ public void doAttack(){
  * Return whether this unit is attacking or not
  */
 public boolean isAttacking() {
-	if (this.activeActivity == "attack")
+	if (this.activeActivity == 5)
 		return true;
 	else
 		return false;
 }
 
-/**
- * Return whether this unit is under attack or not.
- */
-public boolean isUnderAttack() {
-	if (this.activeActivity == "defend")
-		return true;
-	else
-		return false;
-}
 
 /**
  * Defend against unit
@@ -1593,16 +1698,17 @@ public boolean isUnderAttack() {
  * 				 
  * 		
  */
-public void defenseAgainst(Unit attacker) {	
+private void defenseAgainst(Unit attacker) {	
 	System.out.println("defend");
-	this.activeActivity = "defend";
+	this.activeActivity = 6;
 	double blockChance = 0.25*(attacker.getStrength() + attacker.getAgility())/
 						(this.getAgility() + this.getStrength());
 	double dodgeChance = 0.2*attacker.getAgility()/(double) this.getAgility();
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		Vector newPosition = this.position.getRandomAdjacentDodge(world);
+		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
+		Vector newPosition = Vector.getCentreOfCube(randomCube);
 
 		this.increaseExperience(20);
 		try {
@@ -1610,8 +1716,8 @@ public void defenseAgainst(Unit attacker) {
 		} catch (IllegalArgumentException e) {
 			System.out.println("This chould never fail");
 		}
-		this.faceOpponent(attacker);
-		attacker.faceOpponent(this);
+		this.face(attacker.getPosition());
+		attacker.face(this.getPosition());
 	}
 	else if (!(Math.random() < blockChance)) {
 		this.increaseExperience(20);
@@ -1628,23 +1734,6 @@ public void defenseAgainst(Unit attacker) {
 private double recoverdPoints;
 
 /**
- * Check whether the given activity is a valid activity for this unit.
- * @param  activity
- *         The activity to check.
- * @return 
- *       | result == !(this.isResting() && recoverdPoints<1)
-*/
-public boolean isValidActivity(String activity){
-	if (this.isResting() && recoverdPoints<1)
-		return false;
-	if (this.activeActivity == "move")
-		return false;
-	if (this.activeActivity == "attack")
-		return false;
-	return true;
-}
-
-/**
  * Set the activity of this unit to resting.
  * @post   The activity of this new unit is equal to
  *         resting.
@@ -1654,14 +1743,13 @@ public boolean isValidActivity(String activity){
  *       | ! isValitActivity("rest")
  */
 public void rest() throws IllegalArgumentException{
-	if (!isValidActivity("rest")){
-		this.nextActivity = "rest";
+	if (!isValidActivity(4)){
+		this.nextActivity = 4;
 		throw new IllegalArgumentException();
 	}
-	if (activeActivity != "rest"){
+	if (activeActivity != 4){
 		recoverdPoints = 0;
-		activityStartTime = this.getCurrentTime();
-		this.activeActivity = "rest";
+		this.activeActivity = 4;
 	}
 }
 
@@ -1679,11 +1767,11 @@ public void rest() throws IllegalArgumentException{
  * 		|				== this.getMaxStamina()
  * 		| 		then this.startNextActivity()
  */
-public void doRest() {
+private void doRest() {
 	double oldRecoverdPoints = recoverdPoints;
-	recoverdPoints = (this.getCurrentTime()-activityStartTime)*this.getToughness()/200/0.2;
+	recoverdPoints = this.tickTime*this.getToughness()/200/0.2;
 	if (Util.fuzzyGreaterThanOrEqualTo(recoverdPoints,1)){
-		lastTimeRested = getCurrentTime();
+		this.timeSinceLastRested = 0;
 		if (hitpoints != getMaxHitpoints()){
 			hitpoints = hitpoints - (int) (oldRecoverdPoints) + (int) (recoverdPoints);
 			if (hitpoints > getMaxHitpoints())
@@ -1705,7 +1793,7 @@ public void doRest() {
  * Return whether this unit is resting or not.
  */
 public boolean isResting() {
-	if (this.activeActivity == "rest")
+	if (this.activeActivity == 4)
 		return true;
 	else 
 		return false;
@@ -1747,12 +1835,12 @@ public boolean getDefaultBehavior(){
  * 		if newTargetCube is not a valid cube
  * 		| (!isValidCube(targetCube))
  */
-public void doDefaultBehavior(){
+private void doDefaultBehavior(){
 	
-	if (activeActivity == "move" && !sprinting && Math.random()<0.05){
+	if (activeActivity == 3 && !sprinting && Math.random()<0.05){
 		this.sprinting = true;
 	}
-	else if (activeActivity == null) {
+	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
 			int[] newTargetCube = new int[3];		
@@ -1762,12 +1850,34 @@ public void doDefaultBehavior(){
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
-			this.work();
+			this.workAt(this.position.getRandomAdjacentCubeInWorld(this.world));
 		}else if (randomActivity == 2 && 
 				(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 			this.rest();
 		}else 
 			this.doDefaultBehavior();
 		}
+	}
+
+private int fellFrom;
+private final static Vector fallSpeed = new Vector(0, 0, -3);
+
+private void falling(){
+	if (this.activeActivity != 2){
+		if (!this.position.hasSupportOfSolid(this.world)){
+			this.fellFrom = this.getCube()[2];
+			this.activeActivity = 2;
+		}
 	}	
+	if (this.activeActivity == 2){
+		if (this.position.hasSupportOfSolidUnderneath(this.world)){
+			this.position = Vector.getCentreOfCube(this.getCube());
+			int cubesFallen = this.fellFrom - this.getCube()[2];
+			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
+		}else{
+			this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
+		}
+	}
+		
+}
 }

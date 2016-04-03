@@ -3,6 +3,9 @@ package hillbillies.model;
 
 public class Material {
 	
+<<<<<<< HEAD
+	protected Material(int[] intialCube, World world){
+=======
 	/**
 	 * Initialize this new material with the given position and the given world.
 	 * 
@@ -15,13 +18,20 @@ public class Material {
 	 * 		equal to the given world.
 	 */
 	public Material(Vector initialPosition, World world){
+>>>>>>> refs/remotes/origin/Jonas
 		this.setWeight();
 		this.setWorld(world);
-		this.setPosition(initialPosition);
+		this.setPosition(Vector.getCentreOfCube(intialCube));
 		
 		world.addMaterial(this);
 	}
 	
+<<<<<<< HEAD
+	protected Material(Vector initialPosition, World world, int weight){
+		this.setWorld(world); 
+		this.setWeight(weight);
+		this.setPosition(initialPosition);
+=======
 	/**
 	 * Initialize this new material with the given position, world and weight.
 	 * 
@@ -41,6 +51,7 @@ public class Material {
 		this.setPosition(initialPosition);
 		this.setWorld(world); 
 		
+>>>>>>> refs/remotes/origin/Jonas
 		world.addMaterial(this);
 	}
 	
@@ -92,8 +103,8 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	public void setPosition(Vector position){
-		if (! world.isPositionInWorld(position)) // TODO falling toevoegen
+	private void setPosition(Vector position){
+		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
 		this.position = position;
 	}
@@ -110,10 +121,14 @@ public class Material {
 	 */
 	private Vector position;
 	
+<<<<<<< HEAD
+	private World getWorld() {
+=======
 	/**
 	 * Return the world of this material
 	 */
 	public World getWorld() {
+>>>>>>> refs/remotes/origin/Jonas
 		return this.world;
 	}
 	

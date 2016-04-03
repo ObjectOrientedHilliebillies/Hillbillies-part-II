@@ -2,9 +2,9 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import hillbillies.part2.listener.TerrainChangeListener;
@@ -27,7 +27,6 @@ public class World {
 		this.terrainTypes = new int[NbCubesX][NbCubesY][NbCubesZ];
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
-		// TODO dit is nog slecht dit moet opgesplitst worden in verschillende methodes, en elke cube moet gezet worden niet enkel de solid ones!
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
@@ -64,15 +63,24 @@ public class World {
 		if (position.getXCoord() < 0 || position.getXCoord() > NbCubesX
 			|| position.getYCoord() < 0 || position.getYCoord() > NbCubesY
 			|| position.getZCoord() < 0 || position.getZCoord() > NbCubesZ){
+			System.out.println("Not a vector inside the world");
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isCubeInWorld(int[] cube){
+	boolean isCubeInWorld(int[] cube){
 		if (cube[0] < 0 || cube[0] >= NbCubesX
 			|| cube[1] < 0 || cube[1] >= NbCubesY
 			|| cube[2] < 0 || cube[2] >= NbCubesZ){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isPassable(Vector position){
+		if (isSolid(position.getIntCube())){
+			System.out.println("Cube not passable");
 			return false;
 		}
 		return true;
@@ -86,7 +94,7 @@ public class World {
 	 */
 	private int[][][] terrainTypes; 
 	
-	private boolean isSolid(int[] cube){
+	public boolean isSolid(int[] cube){
 		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
 		if (terrainType != 1 && terrainType != 2){
 			return false;
@@ -94,7 +102,7 @@ public class World {
 		return true;
 	}
 	
-	public int getTerrainType(Vector cube){
+	private int getTerrainType(Vector cube){
 		int[] cubeArray = cube.getIntCube();
 		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
 	}
@@ -103,26 +111,48 @@ public class World {
 		return terrainTypes[cube[0]][cube[1]][cube[2]];
 	}
 	
-	public void setTerrainType(int[] cube, int terrainType){
-		if (!isValidTerrainType(terrainType)){
-			throw new IllegalArgumentException();		
-		}
-		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-		modelListener.notifyTerrainChanged(cube[0], cube[0], cube[0]);
-		if (terrainType != 1 && terrainType != 2){
-			this.changeSolidToPassable(cube);
-		}
-	}
-	
 	private boolean isValidTerrainType (int terrainType){
 		return (terrainType >=0 && terrainType <=3);
 	}
 	
-	private void changeSolidToPassable(int[] cube){
-		connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-		Set<int[]> neighbours = Vector.getNeighbourCubes(cube, this);
-		for (int[] neighbour : neighbours){
-			this.collapseIfFloating(neighbour);
+	public void setTerrainType(int[] cube, int terrainType){
+		if (!isValidTerrainType(terrainType)){
+			throw new IllegalArgumentException();		
+		}
+		if (terrainType != 1 && terrainType != 2 && this.isSolid(cube)){
+			terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
+			modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+			double rand = Math.random();
+			if (rand < 0.125) {
+				new Log(cube, this);
+			} else if (rand < 0.25){
+				new Boulder(cube, this);
+			}
+			connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
+			this.accessibleCubes.add(cube);
+			Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+			Set<int[]> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
+			neighbours.removeAll(solidNeighbours);
+
+			for (int[] neighbour : neighbours){
+				this.changeAccessibilityIfNessesary(neighbour);
+			}
+			for (int[] solidNeighbour : solidNeighbours){
+				this.collapseIfFloating(solidNeighbour);
+			}
+		}
+		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
+		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+		
+	}
+	
+	private void changeAccessibilityIfNessesary(int[] cube){
+		if (!this.isSolid(cube)){
+			if (Vector.hasSupportOfSolid(cube, this)){
+				accessibleCubes.add(cube);
+			} else {
+				accessibleCubes.remove(cube);
+			}
 		}
 	}
 	
@@ -146,11 +176,20 @@ public class World {
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
 					 int[] cube = {x,y,z};
+					 if (!this.isSolid(cube) && Vector.hasSupportOfSolid(cube, this)){
+						 accessibleCubes.add(cube);
+					 }
 					 this.collapseIfFloating(cube);
 				}
 			}
 		}
 	}
+	
+	
+	
+	private Set<int[]> accessibleCubes = new HashSet<>();
+	
+	
 	
 	/**
 	 * Set registering all materials in this world.
@@ -162,6 +201,44 @@ public class World {
 	 */
 	private Set<Log> logs = new HashSet<>();
 	
+<<<<<<< HEAD
+	public boolean isWorkshopWithLogAndBoulder(int[] cube){
+		if (this.getTerrainType(cube) != 3){
+			return false;
+		}
+		List<Material> materialsOnCube = this.getMaterialsAt(cube);
+		boolean logInStock = false;
+		boolean boulderInStock = false;
+		for (Material material : materialsOnCube) {
+			if (!logInStock && material instanceof Log) {
+				logInStock = true;
+			}
+			if (!boulderInStock && material instanceof Boulder) {
+				boulderInStock = true;
+			}
+			if (boulderInStock && logInStock) {
+				return true;
+			}
+		}
+		return false;
+	}	
+	
+	public Material materialToPickUp(int[] cube){
+		List<Material> materialsOnCube = this.getMaterialsAt(cube);
+		Material materialToReturn = null;
+		for (Material material : materialsOnCube) {
+			if (material instanceof Boulder) {
+				return material;
+			}
+			if (material instanceof Log) {
+				materialToReturn = material;
+			}
+		}
+		return materialToReturn;
+	}
+	
+	private List<Material> getMaterialsAt(Vector position) { 
+=======
 	/**
 	 * Set registering all boulders in this world.
 	 */
@@ -174,6 +251,7 @@ public class World {
 	 * 		the position to be checked
 	 */
 	public List<Material> getMaterialsAt(Vector position) { 
+>>>>>>> refs/remotes/origin/Jonas
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition() == position){
@@ -183,9 +261,22 @@ public class World {
 	    return foundMaterials;
 	}
 	
+<<<<<<< HEAD
+	private List<Material> getMaterialsAt(int[] cube) { 
+		List<Material> foundMaterials = new ArrayList<>();
+		for (Material material : materials){
+			if(Vector.equals(material.getPosition().getIntCube(), cube)){
+	        	foundMaterials.add(material); 
+			}
+        }
+	    return foundMaterials;
+	}
+	
+=======
 	/**
 	 * Return all logs in this world.
 	 */
+>>>>>>> refs/remotes/origin/Jonas
 	public Set<Log> getLogs() {
 		Set<Log> logs = new HashSet<>();
 		for (Material material : materials){
@@ -209,7 +300,7 @@ public class World {
 	    return boulders;
 	}
 	
-//	public void setMaterial(Vector position, Material material){
+//	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ //TODO
 //		//	throw new IllegalArgumentException();		
 //		//}
@@ -266,6 +357,12 @@ public class World {
 		return this.factions;
 	}
 	
+<<<<<<< HEAD
+	private int getNbOffFactions() {
+		return this.getActiveFactions().size();
+	}
+	
+=======
 	/**
 	 * Return the number of factions in this world.
 	 */
@@ -289,6 +386,7 @@ public class World {
 	 * @post if there was space for a new faction, the faction is added to 
 	 * 		this world.
 	 */
+>>>>>>> refs/remotes/origin/Jonas
 	private void addFaction(Faction faction) {
 		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
 			throw new IllegalArgumentException();
@@ -311,6 +409,13 @@ public class World {
 		return true;
 	}
 	
+<<<<<<< HEAD
+	private void removeFaction(Faction faction) {
+		factions.remove(faction);
+	}
+
+	private Faction getSmallestFaction() {
+=======
 	/**
 	 * Remove faction from this world.
 	 */
@@ -322,11 +427,11 @@ public class World {
 	 * Return the smallest faction in this world.
 	 */
 	public Faction getSmallestFaction() {
+>>>>>>> refs/remotes/origin/Jonas
 		Faction smallestFaction = null;
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
 	        		< smallestFaction.getNbOffUnitsInFaction())
-				System.out.println(smallestFaction.getNbOffUnitsInFaction());
 	        	smallestFaction = faction;
 		}
 	    return smallestFaction;
@@ -372,6 +477,7 @@ public class World {
 	 */
 	public void addUnit(Unit unit){
 		if (this.getNbOfUnits()!=100){
+			unit.setWorld(this);
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
 				Faction newFaction =  new Faction(this);
@@ -382,6 +488,18 @@ public class World {
 			}
 		}		
 	}
+<<<<<<< HEAD
+
+	/*Time*/
+	
+	public void advanceTime(double dt) {
+		Set<Unit> unitsInWorld = this.getUnits();
+		for (Unit unit : unitsInWorld){
+		}
+	}
+
+	private void removeUnit(Unit unit) {
+=======
 	
 	/**
 	 * Remove this unit from its faction.
@@ -389,9 +507,84 @@ public class World {
 	 * @post this unit doesn't exist anymore //TODO effect?
 	 */
 	public void removeUnit(Unit unit) {
+>>>>>>> refs/remotes/origin/Jonas
 		unit.getFaction().removeUnit(unit);
 	}
 	
+	/*Pathfinding*/
+	
+	private Set<int[]> getAccessibleCubes(){
+		return this.accessibleCubes;
+	}
+	
+	private Set<int[]> getAccessibleNeigbours (int[] cube){
+		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
+		Set<int[]> accessibleNeighbours = new HashSet<>();
+		for (int[] neighbour: neighbours){
+			if (accessibleCubes.contains(neighbour)){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
+	}
+	
+	public void findPath(int[] start, int[] goal){
+    // The set of nodes already evaluated.
+    closedSet := {}
+    // The set of currently discovered nodes still to be evaluated.
+    // Initially, only the start node is known.
+    openSet := {start}
+    // For each node, which node it can most efficiently be reached from.
+    // If a node can be reached from many nodes, cameFrom will eventually contain the
+    // most efficient previous step.
+    cameFrom := the empty map
+
+    // For each node, the cost of getting from the start node to that node.
+    gScore := map with default value of Infinity
+    // The cost of going from start to start is zero.
+    gScore[start] := 0 
+    // For each node, the total cost of getting from the start node to the goal
+    // by passing by that node. That value is partly known, partly heuristic.
+    fScore := map with default value of Infinity
+    // For the first node, that value is completely heuristic.
+    fScore[start] := heuristic_cost_estimate(start, goal)
+
+    while openSet is not empty
+        current := the node in openSet having the lowest fScore[] value
+        if current = goal
+            return reconstruct_path(cameFrom, goal)
+
+        openSet.Remove(current)
+        closedSet.Add(current)
+        for each neighbor of current
+            if neighbor in closedSet
+                continue		// Ignore the neighbor which is already evaluated.
+            // The distance from start to a neighbor
+            tentative_gScore := gScore[current] + dist_between(current, neighbor)
+            if neighbor not in openSet	// Discover a new node
+                openSet.Add(neighbor)
+            else if tentative_gScore >= gScore[neighbor]
+                continue		// This is not a better path.
+
+            // This path is the best until now. Record it!
+            cameFrom[neighbor] := current
+            gScore[neighbor] := tentative_gScore
+            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
+
+    return failure
+	}	
+    	
+
+function reconstruct_path(cameFrom, current)
+    total_path := [current]
+    while current in cameFrom.Keys:
+        current := cameFrom[current]
+        total_path.append(current)
+    return total_path
+    		
+    		
+
 	
 }
 

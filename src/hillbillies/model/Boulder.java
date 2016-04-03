@@ -2,6 +2,11 @@ package hillbillies.model;
 
 
 public class Boulder extends Material {
+<<<<<<< HEAD
+
+	public Boulder(int[] intitialCube, World world){
+		super(intitialCube, world);
+=======
 	
 	/**
 	 * Initialize this new boulder with the given position and the given world.
@@ -18,6 +23,7 @@ public class Boulder extends Material {
 		super(initialPosition, world);
 		
 		this.getWorld().addBoulder(this);
+>>>>>>> refs/remotes/origin/Jonas
 	}
 	
 	/**
