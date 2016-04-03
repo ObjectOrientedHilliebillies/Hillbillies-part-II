@@ -227,6 +227,7 @@ private World world;
 /**
  * Return the world of this unit.
  */
+@Basic @Raw
 public World getWorld(){
 	return this.world;
 }
@@ -241,10 +242,19 @@ public void setWorld(World world){
  */
 private Faction faction;
 
+/**
+ * Set the faction of this unit to the given faction
+ */
+@Raw
 public void setFaction(Faction faction) {
+	//TODO isvalidfaction + @post
 	this.faction = faction;
 }
 
+/**
+ * Return the faction of this unit.
+ */
+@Basic @Raw
 public Faction getFaction(){
 	return this.faction;
 }
@@ -468,6 +478,7 @@ public void setWeight(int weight) {
 		this.weight = this.getMinWeight();
 }
 
+<<<<<<< HEAD
 private int getAdditionalWeight() {
 	return this.additionalWeight;
 }
@@ -477,6 +488,46 @@ private void setAdditionalWeight(int weight) {
 }
 
 private int getTotalWeight() {
+=======
+/**
+ * Return the additional weight (the weight of a carried material) of this unit.
+ */
+public int getAdditionalWeight() {
+	return this.additionalWeight;
+}
+
+/**
+ * Set the additional weight of this unit to the given weight
+ * 
+ * @param weight
+ * 		The weight of a carried material
+ * 
+ * @post if the given weight is a valid weight for every unit, additional weight 
+ * 		equals the given weight.
+ */
+public void setAdditionalWeight(int weight) {
+	if (isValidAdditionalWeight(weight))
+		this.additionalWeight = weight;
+}
+
+/**
+ * Check whether the given weight is a valid additional weight for every unit.
+ * 
+ * @param weight
+ * 		The weight to check
+ * 
+ * @return
+ * 		| 10 <= weight && 50 >= weight;
+ */
+public boolean isValidAdditionalWeight(int weight) {
+	return 10 <= weight && 50 >= weight;
+}
+
+/**
+ * Return the total weight (own weight + weight of a carried material) of this unit.
+ */
+public int getTotalWeight() {
+>>>>>>> refs/remotes/origin/Jonas
 	return this.getWeight() + this.getAdditionalWeight();
 }
 
@@ -491,7 +542,14 @@ private int additionalWeight;
  */
 private static int maxWeight = 200;
 
+<<<<<<< HEAD
 private int getMinWeight() {
+=======
+/**
+ * Return the minimum weight of this unit.
+ */
+public int getMinWeight() {
+>>>>>>> refs/remotes/origin/Jonas
 	return (this.getStrength() + this.getAgility())/2;
 }
 
@@ -669,7 +727,8 @@ private static boolean isValidExperience(int experience) {
  *         The new experience for this unit.
  * @post   If the given experience is a valid experience for any unit,
  *         the experience of this new unit is equal to the given
- *         experience.
+ *         experience. If the experience is higher than 10, strength, agility
+ *         or toughness will be increased with a point.
  *       | if (isValidExperience(experience))
  *       |   then new.getExperience() == experience
  */
@@ -692,7 +751,21 @@ private void setExperience(int experience) {
 			}
 }
 
+<<<<<<< HEAD
 private void increaseExperience(int experience) {
+=======
+/**
+ * Increase the experience of this unit with the given experience.
+ * 
+ * @param experience
+ * 		The experience to increase with.
+ * 
+ * @post experience is increased with the given experience, or if the current
+ * 		experience is greater than 10, strength, agility or toughness will be 
+ * 		increased
+ */
+public void increaseExperience(int experience) {
+>>>>>>> refs/remotes/origin/Jonas
 	this.setExperience(this.getExperience() + experience);
 }
 
@@ -802,13 +875,32 @@ private void setHitpoints(int hitpoints) {
 	}
 }
 
+/**
+ * Return whether this unit is alive or not.
+ */
 public boolean isAlive() {
 	return this.alive;
 }
 
+<<<<<<< HEAD
 private boolean alive = true;
 
 private void die(){
+=======
+/**
+ * Variable registering whether this unit is alive or not.
+ * 		True if alive, false else.
+ */
+public boolean alive = true;
+
+/**
+ * Make this unit die.
+ * 
+ * @post if this unit is carrying any material, this material will be dropped.
+ * 		this unit is removed from its faction.
+ */
+public void die(){
+>>>>>>> refs/remotes/origin/Jonas
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
@@ -1214,7 +1306,15 @@ private void doMove(double tickTime){
 	}
 }
 
+<<<<<<< HEAD
 private int executedSteps;
+=======
+/**
+ * Variable registering how many steps this unit has executed since the beginning of
+ * its movement.
+ */
+public int executedSteps;
+>>>>>>> refs/remotes/origin/Jonas
 
 /**
  * Return whether this unit is moving or not
@@ -1311,7 +1411,39 @@ private void doMoveTo(){
 
 /* Working */
 
+<<<<<<< HEAD
 private void pickupMaterial(Material material) {
+=======
+/**
+ * Change the activity from this unit to work
+ * 
+ * @post If work is a valid activity for this unit and its previous activity 
+ * 			was not work, activeActivity is changed to "work" and endTime 
+ * 			is set to the right value.
+ * 		| if (isValidActivity("work") && activeActivity != "work")
+ * 		| 		then activeActivity = "work"
+ * 		|		new.endTime = this.getCurrentTime() + 
+ * 		|			500/(double)(this.getStrength())
+ * @throws IllegalArgumentException
+ * 		"work" is not a valid activity for this unit
+ * 		| !this.isValidActivity("work")
+ */
+public void work() throws IllegalArgumentException {
+	if (!isValidActivity("work")){
+		this.nextActivity = "work";
+		throw new IllegalArgumentException();
+	}
+	if (activeActivity != "work"){
+		activeActivity = "work";
+		this.endTime = this.getCurrentTime() + 500/(double)(this.getStrength());
+	}
+}
+
+/**
+ * Set the carried material of this unit to the given material.
+ */
+public void setCarriedMaterial(Material material) {
+>>>>>>> refs/remotes/origin/Jonas
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
 	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
@@ -1325,19 +1457,44 @@ private void pickupMaterial(Material material) {
 	this.getWorld().removeMaterial(material);
 }
 
+<<<<<<< HEAD
 
 private boolean isCarryingMaterial() {
 	if (carriedMaterial != 0)
 		return true;
 	return false;
+=======
+/**
+ * Return the carried material of this unit. 
+ * Returns "Log" for a log and "Boulder" for a boulder.
+ * Returns null if this unit is not carrying any material. 
+ */
+public String getCarriedMaterial() {
+	return this.carriedMaterial;
 }
 
+/**
+ * Return whether this unit is carrying material.
+ */
+public boolean isCarryingMaterial() {
+	if (carriedMaterial == null)
+		return false;
+	return true;
+>>>>>>> refs/remotes/origin/Jonas
+}
+
+/**
+ * Return whether this unit is carrying a log.
+ */
 public boolean isCarryingLog() {
 	if (this.carriedMaterial == 2) 
 		return true;
 	return false;
 }
 
+/**
+ * Return whether this unit is carrying a boulder.
+ */
 public boolean isCarryingBoulder() {
 	if (this.carriedMaterial == 1)
 		return true;
@@ -1352,6 +1509,7 @@ public boolean isCarryingBoulder() {
 private int carriedMaterial = 0;
 private int[] cubeWorkingOn = null;
 
+<<<<<<< HEAD
 public void workAt(int[] cube){
 	if (!this.position.isNeighbourCube(cube) && !Vector.equals(this.getCube(), cube))
 		return;
@@ -1360,6 +1518,22 @@ public void workAt(int[] cube){
 			this.nextActivity = 1;
 			this.cubeWorkingOn = cube;
 		}
+=======
+/**
+ * Variable registering what material this unit is carrying.
+ */
+private String carriedMaterial = null;
+
+/**
+ * //TODO
+ * @param position
+ */
+public void workAt(Vector position){
+	if (!position.isNeighbourCube(this.getCube()))
+		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
+	if (!isValidActivity("work")){
+		this.nextActivity = "work";
+>>>>>>> refs/remotes/origin/Jonas
 		throw new IllegalArgumentException();
 	}
 	if (activeActivity != 1 || !cubeWorkingOn.equals(cube)){
@@ -1408,8 +1582,20 @@ private void doWork() {
 	}
 }
 
+<<<<<<< HEAD
 private void dropMaterial(Vector position){
 	if (this.carriedMaterial == 2){
+=======
+/**
+ * Drop the material this unit is carrying.
+ * 
+ * @post if this unit was carrying a log, this log will now be part of the world 
+ * 		with position as position. The same for a boulder.
+ * 		This unit is not carrying any material. //TODO of is dit effect?
+ */
+public void dropMaterial(Vector position){
+	if (this.getCarriedMaterial() == "Log"){
+>>>>>>> refs/remotes/origin/Jonas
 		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
 		this.setAdditionalWeight(0);

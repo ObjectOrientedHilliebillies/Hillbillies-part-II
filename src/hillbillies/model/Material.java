@@ -3,7 +3,22 @@ package hillbillies.model;
 
 public class Material {
 	
+<<<<<<< HEAD
 	protected Material(int[] intialCube, World world){
+=======
+	/**
+	 * Initialize this new material with the given position and the given world.
+	 * 
+	 * @param initialPosition
+	 * @param world
+	 * 
+	 * @post if the given position is a position inside the world, the position of 
+	 * 		this material is equal to the given position.
+	 * @post if the given world is a valid world, the world of this material is 
+	 * 		equal to the given world.
+	 */
+	public Material(Vector initialPosition, World world){
+>>>>>>> refs/remotes/origin/Jonas
 		this.setWeight();
 		this.setWorld(world);
 		this.setPosition(Vector.getCentreOfCube(intialCube));
@@ -11,10 +26,32 @@ public class Material {
 		world.addMaterial(this);
 	}
 	
+<<<<<<< HEAD
 	protected Material(Vector initialPosition, World world, int weight){
 		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
+=======
+	/**
+	 * Initialize this new material with the given position, world and weight.
+	 * 
+	 * @param initialPosition
+	 * @param world
+	 * @param weight
+	 * 
+	 * @post if the given position is a position inside the world, the position of 
+	 * 		this material is equal to the given position.
+	 * @post if the given world is a valid world for any material, the world of 
+	 * 		this material is equal to the given world.
+	 * @post if the given weight is a valid weight for any material, the weight
+	 * 		of this material is equal to the given weight.
+	 */
+	public Material(Vector initialPosition, World world, int weight){
+		this.setWeight(weight);
+		this.setPosition(initialPosition);
+		this.setWorld(world); 
+		
+>>>>>>> refs/remotes/origin/Jonas
 		world.addMaterial(this);
 	}
 	
@@ -28,11 +65,23 @@ public class Material {
 		this.weight = weight;
 	}
 	
+	/**
+	 * Set the weight of this material to the given weight
+	 */
 	private void setWeight(int weight) {
 		if (isValidWeight(weight))
 			this.weight = weight;
 	}
 	
+	/**
+	 * Check whether the given weight is a valid weight for
+	 * any material.
+	 *  
+	 * @param  weight
+	 *         The weight to check.
+	 * @return 
+	 *       | result == maxWeight > weight >= (strength+agility)/2 
+	*/
 	private boolean isValidWeight(int weight) {
 		if (10 <= weight && weight <= 50)
 			return true;
@@ -72,13 +121,26 @@ public class Material {
 	 */
 	private Vector position;
 	
+<<<<<<< HEAD
 	private World getWorld() {
+=======
+	/**
+	 * Return the world of this material
+	 */
+	public World getWorld() {
+>>>>>>> refs/remotes/origin/Jonas
 		return this.world;
 	}
 	
+	/**
+	 * Set the world of this material to the given world
+	 */
 	private void setWorld(World world) {
 		this.world = world;
 	}
 	
+	/**
+	 * Variable registering the world of this material.
+	 */
 	private World world;
 }
