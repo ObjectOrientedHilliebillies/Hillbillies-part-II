@@ -5,6 +5,15 @@ import java.util.Set;
 
 public class Faction {
 	
+	/**
+	 * Initialize this new Faction in the given world.
+	 * 
+	 * @param world
+	 * 		the world for this new faction
+	 * 
+	 * @post 
+	 * 		The world of this faction is equal to the given world.
+	 */
 	public Faction(World world) {
 		this.setWorld(world);
 	}
