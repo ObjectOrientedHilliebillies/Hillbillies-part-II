@@ -238,20 +238,7 @@ public class World {
 	}
 	
 	private List<Material> getMaterialsAt(Vector position) { 
-=======
-	/**
-	 * Set registering all boulders in this world.
-	 */
-	private Set<Boulder> boulders = new HashSet<>();
-	
-	/**
-	 * Return the materials at the given position.
-	 * 
-	 * @param position
-	 * 		the position to be checked
-	 */
-	public List<Material> getMaterialsAt(Vector position) { 
->>>>>>> refs/remotes/origin/Jonas
+
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition() == position){
@@ -261,7 +248,6 @@ public class World {
 	    return foundMaterials;
 	}
 	
-<<<<<<< HEAD
 	private List<Material> getMaterialsAt(int[] cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
@@ -272,11 +258,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-=======
+
 	/**
 	 * Return all logs in this world.
 	 */
->>>>>>> refs/remotes/origin/Jonas
 	public Set<Log> getLogs() {
 		Set<Log> logs = new HashSet<>();
 		for (Material material : materials){
@@ -357,25 +342,13 @@ public class World {
 		return this.factions;
 	}
 	
-<<<<<<< HEAD
+/**
+ * Return the number of factions in this world.
+ */
 	private int getNbOffFactions() {
 		return this.getActiveFactions().size();
 	}
-	
-=======
-	/**
-	 * Return the number of factions in this world.
-	 */
-	public int getNbOffFactions() {
-		return this.getActiveFactions().size();
-	}
-	
-	/**
-	 * Create a new faction. //FIXME dit is vreemd
-	 */
-	private Faction makeFaction(){
-		return new Faction(this);
-	}
+
 	
 	/**
 	 * Add a new faction to this world.
@@ -386,7 +359,6 @@ public class World {
 	 * @post if there was space for a new faction, the faction is added to 
 	 * 		this world.
 	 */
->>>>>>> refs/remotes/origin/Jonas
 	private void addFaction(Faction faction) {
 		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
 			throw new IllegalArgumentException();
@@ -409,25 +381,17 @@ public class World {
 		return true;
 	}
 	
-<<<<<<< HEAD
-	private void removeFaction(Faction faction) {
-		factions.remove(faction);
-	}
-
-	private Faction getSmallestFaction() {
-=======
 	/**
 	 * Remove faction from this world.
 	 */
-	public void removeFaction(Faction faction) {
+	private void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
 	
 	/**
 	 * Return the smallest faction in this world.
 	 */
-	public Faction getSmallestFaction() {
->>>>>>> refs/remotes/origin/Jonas
+	private Faction getSmallestFaction() {
 		Faction smallestFaction = null;
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
@@ -488,7 +452,6 @@ public class World {
 			}
 		}		
 	}
-<<<<<<< HEAD
 
 	/*Time*/
 	
@@ -498,16 +461,13 @@ public class World {
 		}
 	}
 
-	private void removeUnit(Unit unit) {
-=======
 	
 	/**
 	 * Remove this unit from its faction.
 	 * 
 	 * @post this unit doesn't exist anymore //TODO effect?
 	 */
-	public void removeUnit(Unit unit) {
->>>>>>> refs/remotes/origin/Jonas
+	private void removeUnit(Unit unit) {
 		unit.getFaction().removeUnit(unit);
 	}
 	

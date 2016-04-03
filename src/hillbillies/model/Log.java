@@ -2,11 +2,6 @@ package hillbillies.model;
 
 
 public class Log extends Material {
-<<<<<<< HEAD
-
-	public Log(int[] intitialCube, World world){
-		super(intitialCube, world);
-=======
 	
 	/**
 	 * Initialize this new log with the given position and the given world.
@@ -19,12 +14,11 @@ public class Log extends Material {
 	 * @post if the given world is a valid world, the world of this log is 
 	 * 		equal to the given world.
 	 */
-	public Log(Vector initialPosition, World world){
+	public Log(int[] initialPosition, World world){
 		super(initialPosition, world);
 		// TODO Auto-generated constructor stub
 		
 		this.getWorld().addLog(this);
->>>>>>> refs/remotes/origin/Jonas
 	}
 	
 	
@@ -42,7 +36,7 @@ public class Log extends Material {
 	 * @post if the given weight is a valid weight for any log, the weight
 	 * 		of this log is equal to the given weight.
 	 */
-	public Log(Vector initialPosition, World world, int weight){
+	public Log(int[] initialPosition, World world, int weight){
 		super(initialPosition, world, weight);
 	}
 	
