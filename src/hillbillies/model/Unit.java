@@ -225,6 +225,7 @@ private World world;
 /**
  * Return the world of this unit.
  */
+@Basic @Raw
 public World getWorld(){
 	return this.world;
 }
@@ -235,10 +236,19 @@ public World getWorld(){
  */
 private Faction faction;
 
+/**
+ * Set the faction of this unit to the given faction
+ */
+@Raw
 public void setFaction(Faction faction) {
+	//TODO isvalidfaction + @post
 	this.faction = faction;
 }
 
+/**
+ * Return the faction of this unit.
+ */
+@Basic @Raw
 public Faction getFaction(){
 	return this.faction;
 }
@@ -462,14 +472,43 @@ public void setWeight(int weight) {
 		this.weight = this.getMinWeight();
 }
 
+/**
+ * Return the additional weight (the weight of a carried material) of this unit.
+ */
 public int getAdditionalWeight() {
 	return this.additionalWeight;
 }
 
+/**
+ * Set the additional weight of this unit to the given weight
+ * 
+ * @param weight
+ * 		The weight of a carried material
+ * 
+ * @post if the given weight is a valid weight for every unit, additional weight 
+ * 		equals the given weight.
+ */
 public void setAdditionalWeight(int weight) {
-	this.additionalWeight = weight;
+	if (isValidAdditionalWeight(weight))
+		this.additionalWeight = weight;
 }
 
+/**
+ * Check whether the given weight is a valid additional weight for every unit.
+ * 
+ * @param weight
+ * 		The weight to check
+ * 
+ * @return
+ * 		| 10 <= weight && 50 >= weight;
+ */
+public boolean isValidAdditionalWeight(int weight) {
+	return 10 <= weight && 50 >= weight;
+}
+
+/**
+ * Return the total weight (own weight + weight of a carried material) of this unit.
+ */
 public int getTotalWeight() {
 	return this.getWeight() + this.getAdditionalWeight();
 }
@@ -485,6 +524,9 @@ private int additionalWeight;
  */
 private static int maxWeight = 200;
 
+/**
+ * Return the minimum weight of this unit.
+ */
 public int getMinWeight() {
 	return (this.getStrength() + this.getAgility())/2;
 }
@@ -663,7 +705,8 @@ public static boolean isValidExperience(int experience) {
  *         The new experience for this unit.
  * @post   If the given experience is a valid experience for any unit,
  *         the experience of this new unit is equal to the given
- *         experience.
+ *         experience. If the experience is higher than 10, strength, agility
+ *         or toughness will be increased with a point.
  *       | if (isValidExperience(experience))
  *       |   then new.getExperience() == experience
  */
@@ -686,6 +729,16 @@ public void setExperience(int experience) {
 			}
 }
 
+/**
+ * Increase the experience of this unit with the given experience.
+ * 
+ * @param experience
+ * 		The experience to increase with.
+ * 
+ * @post experience is increased with the given experience, or if the current
+ * 		experience is greater than 10, strength, agility or toughness will be 
+ * 		increased
+ */
 public void increaseExperience(int experience) {
 	this.setExperience(this.getExperience() + experience);
 }
@@ -796,12 +849,25 @@ public void setHitpoints(int hitpoints) {
 	}
 }
 
+/**
+ * Return whether this unit is alive or not.
+ */
 public boolean isAlive() {
 	return this.alive;
 }
 
+/**
+ * Variable registering whether this unit is alive or not.
+ * 		True if alive, false else.
+ */
 public boolean alive = true;
 
+/**
+ * Make this unit die.
+ * 
+ * @post if this unit is carrying any material, this material will be dropped.
+ * 		this unit is removed from its faction.
+ */
 public void die(){
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
@@ -1165,6 +1231,10 @@ public void doMove(double tickTime){
 	}
 }
 
+/**
+ * Variable registering how many steps this unit has executed since the beginning of
+ * its movement.
+ */
 public int executedSteps;
 
 /**
@@ -1287,6 +1357,9 @@ public void work() throws IllegalArgumentException {
 	}
 }
 
+/**
+ * Set the carried material of this unit to the given material.
+ */
 public void setCarriedMaterial(Material material) {
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
@@ -1301,31 +1374,51 @@ public void setCarriedMaterial(Material material) {
 	this.getWorld().removeMaterial(material);
 }
 
+/**
+ * Return the carried material of this unit. 
+ * Returns "Log" for a log and "Boulder" for a boulder.
+ * Returns null if this unit is not carrying any material. 
+ */
 public String getCarriedMaterial() {
 	return this.carriedMaterial;
 }
 
+/**
+ * Return whether this unit is carrying material.
+ */
 public boolean isCarryingMaterial() {
 	if (carriedMaterial == null)
 		return false;
 	return true;
 }
 
+/**
+ * Return whether this unit is carrying a log.
+ */
 public boolean isCarryingLog() {
 	if (this.getCarriedMaterial() == "Log") 
 		return true;
 	return false;
 }
 
+/**
+ * Return whether this unit is carrying a boulder.
+ */
 public boolean isCarryingBoulder() {
 	if (this.getCarriedMaterial() == "Boulder")
 		return true;
 	return false;
 }
 
-
+/**
+ * Variable registering what material this unit is carrying.
+ */
 private String carriedMaterial = null;
 
+/**
+ * //TODO
+ * @param position
+ */
 public void workAt(Vector position){
 	if (!position.isNeighbourCube(this.getCube()))
 		//TODO ofwel een exception throwen, ofwel niets, ofwel naar die cube bewegen
@@ -1372,6 +1465,13 @@ public void workAt(Vector position){
 		}
 }
 
+/**
+ * Drop the material this unit is carrying.
+ * 
+ * @post if this unit was carrying a log, this log will now be part of the world 
+ * 		with position as position. The same for a boulder.
+ * 		This unit is not carrying any material. //TODO of is dit effect?
+ */
 public void dropMaterial(Vector position){
 	if (this.getCarriedMaterial() == "Log"){
 		new Log(position, this.getWorld(), this.getAdditionalWeight());

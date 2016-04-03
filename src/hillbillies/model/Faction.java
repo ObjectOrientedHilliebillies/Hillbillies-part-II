@@ -36,5 +36,7 @@ public class Faction {
 
 	public void removeUnit(Unit unit) {
 		this.getUnitsInFaction().remove(unit);
+		if (this.getNbOffUnitsInFaction() == 0)
+				this.getWorld().removeFaction(this);
 	}
 }
