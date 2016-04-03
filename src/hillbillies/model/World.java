@@ -228,6 +228,14 @@ public class World {
 		materials.add(material);
 	}
 	
+	public void addLog(Log log) {
+		logs.add(log);
+	}
+	
+	public void addBoulder(Boulder boulder) {
+		boulders.add(boulder);
+	}
+	
 	/**
 	 * Remove material from this world
 	 * 
