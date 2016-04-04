@@ -77,7 +77,7 @@ public class World {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Check whether the given position of a cube is inside this world.
 	 * @param cubePosition
 	 * 		The position of a cube to check.
@@ -86,7 +86,8 @@ public class World {
 			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
 	 */
-	boolean isCubeInWorld(List<Integer> cubePosition){
+	boolean isCubeInWorld(Cube Cube){
+		List<Integer> cubePosition = Cube.getPosition();
 		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
 			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
@@ -95,7 +96,7 @@ public class World {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Check whether the given terrain type is a valid terrain type.
 	 * @param terrainType
 	 * 		The terrain type to check.
@@ -106,24 +107,14 @@ public class World {
 		return (terrainType >=0 && terrainType <=3);
 	}
 	
-	/*
+	/**
 	 * Return the cube at the given position.
 	 * @param position
 	 * 		The position of the requested cube.
-	 * @return the cube at the given position.
+	 * @return The cube at the given position.
 	 */
 	public Cube getCube(List<Integer> position){
 		return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
-	}
-	
-	
-	
-	public boolean isPassable(Vector position){
-		if (isSolid(position.getIntCube())){
-			System.out.println("Cube not passable");
-			return false;
-		}
-		return true;
 	}
 	
 	/**
@@ -136,24 +127,7 @@ public class World {
 	 */
 	private List<List<List<Cube>>> terrainTypes = new ArrayList<>(); 
 	
-	public boolean isSolid(Cube cube){
-		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
-		if (terrainType != 1 && terrainType != 2){
-			return false;
-		}
-		return true;
-	}
-	
-	private int getTerrainType(Cube cube){
-		List<Integer> cubeArray = cube.getIntCube();
-		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
-	}
-	
-	public int getTerrainType(Cube cube){
-		return terrainTypes[cube[0]][cube[1]][cube[2]];
-	}
-	
-	public void setTerrainType(List<Integer> cube, int terrainType){
+	public void setTerrainType(Cube cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
@@ -237,7 +211,7 @@ public class World {
 		return false;
 	}	
 	
-	public Material materialToPickUp(List<Integer> cube){
+	public Material materialToPickUp(Cube cube){
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
 		Material materialToReturn = null;
 		for (Material material : materialsOnCube) {
@@ -262,10 +236,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-	private List<Material> getMaterialsAt(List<Integer> cube) { 
+	private List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
-			if(Vector.equals(material.getPosition().getIntCube(), cube)){
+			if(Vector.equals(material.getPosition().getEnclosingCube(), cube)){
 	        	foundMaterials.add(material); 
 			}
         }
@@ -440,7 +414,7 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		List<Integer> initialCube = {10,9,12}; 
+		Cube initialCube = {10,9,12}; 
 		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
 		this.addUnit(newUnit);
 		return newUnit;
@@ -481,46 +455,33 @@ public class World {
 		}
 	}
 
-<<<<<<< HEAD
-	
-	/**
-	 * Remove this unit from its faction.
-	 * 
-	 * @post this unit doesn't exist anymore //TODO effect?
-	 */
-	private void removeUnit(Unit unit) {
-		unit.getFaction().removeUnit(unit);
-	}
-	
-=======
->>>>>>> refs/remotes/origin/PathfindingTryout
 	/*Pathfinding*/
-	public List<List<Integer>> getPath(List<Integer> start, List<Integer> goal){
+	public List<Cube> getPath(Cube start, Cube goal){
 		
     // The set of nodes already evaluated.
-		Set<List<Integer>> closedSet = new HashSet<>();
+		Set<Cube> closedSet = new HashSet<>();
 		//closedSet := {}
 		
     // The set of currently discovered nodes still to be evaluated.
     // Initially, only the start node is known.
-		Set<List<Integer>> openSet = new HashSet<>();
+		Set<Cube> openSet = new HashSet<>();
 		openSet.add(start);
 		//openSet := {start}
 		
     // For each node, which node it can most efficiently be reached from.
     // If a node can be reached from many nodes, cameFrom will eventually contain the
     // most efficient previous step.
-		HashMap<List<Integer>, List<Integer>> cameFrom=new HashMap<>();
+		HashMap<Cube, Cube> cameFrom=new HashMap<>();
 		//cameFrom := the empty map
 
     // For each node, the cost of getting from the start node to that node.
-		HashMap<List<Integer>, Double> gScore=new HashMap<>();
+		HashMap<Cube, Double> gScore=new HashMap<>();
 		//gScore := map with default value of Infinity
 
 		
     // For each node, the total cost of getting from the start node to the goal
     // by passing by that node. That value is partly known, partly heuristic.
-		HashMap<List<Integer>, Double> fScore=new HashMap<List<Integer>, Double>();
+		HashMap<Cube, Double> fScore=new HashMap<Cube, Double>();
 		
 	//gScore := map with default value of Infinity
 	//fScore := map with default value of Infinity	
@@ -591,12 +552,12 @@ public class World {
 		return null;
 	}	
 	
-	private double heuristic_cost_estimate(List<Integer> start, List<Integer> goal){
-		return Vector.distanceBetween(Vector.getCentreOfCube(start), Vector.getCentreOfCube(goal));
+	private double heuristic_cost_estimate(Cube start, Cube goal){
+		return Vector.distanceBetween(start.getCenterOfCube(), goal.getCenterOfCube());
 	}
 	
-	private List<List<Integer>> reconstruct_path(HashMap<List<Integer>, List<Integer>> cameFrom, List<Integer> current){
-		List<List<Integer>> total_path = new ArrayList<>();
+	private List<Cube> reconstruct_path(HashMap<Cube, Cube> cameFrom, Cube current){
+		List<Cube> total_path = new ArrayList<>();
 	    total_path.add(current);
 	    while (cameFrom.containsKey(current)){
 	    	current = cameFrom.get(current);
@@ -605,11 +566,11 @@ public class World {
 	    return total_path;
 	}
 
-	private Set<List<Integer>> getAccessibleNeigbours (List<Integer> cube){
-		Set<List<Integer>> neighbours = Vector.getNeighbourCubes(cube, this);
+	private Set<Cube> getAccessibleNeigbours (Cube cube){
+		Set<Cube> neighbours = Vector.getNeighbourCubes(cube, this);
 		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
-		Set<List<Integer>> accessibleNeighbours = new HashSet<>();
-		for (List<Integer> neighbour: neighbours){
+		Set<Cube> accessibleNeighbours = new HashSet<>();
+		for (Cube neighbour: neighbours){
 			if (Vector.hasSupportOfSolid(neighbour, this)){
 				accessibleNeighbours.add(neighbour);
 			}

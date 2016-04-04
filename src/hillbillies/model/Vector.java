@@ -26,7 +26,6 @@ public class Vector {
 		
 	}
 	
-	
 	private void setVector(double coordX, double coordY, double coordZ) {
 		setXcoord(coordX);
 		setYcoord(coordY);
@@ -45,14 +44,6 @@ public class Vector {
 		vectorArray[1] = this.getYCoord();
 		vectorArray[2] = this.getZCoord();
 		return vectorArray;
-	}
-	
-	public Cube getCube(){
-		List<Integer> cubeArray = new ArrayList<>();
-		cubeArray.add((int) this.getXCoord());
-		cubeArray.add((int) this.getYCoord());
-		cubeArray.add((int) this.getZCoord());
-		return cubeArray;
 	}
 	
 	private void setXcoord(double coordX) {
@@ -80,26 +71,19 @@ public class Vector {
 	}
 	
 	/**
-	 * Check whether the given cube is a neighbour cube of this cube
-	 *  
-	 * @param  otherCube
-	 *         The Cube to check.
-	 * @return 
-	 *       | result == //FIXME
-	*/
-	public boolean isNeighbourCube(List<Integer> otherCube){
-		List<Integer> thisCube = this.getIntCube();
-		boolean neighbourForAtleastOneComponent = false;
-		for (int i = 0; i != 3; i++) {
-			int difference = Math.abs(thisCube.get(i) - otherCube.get(i));
-		    if (difference == 1)
-		    	neighbourForAtleastOneComponent = true;
-		    else if (difference != 0)
-		    	return false;
-		}
-		return neighbourForAtleastOneComponent;
+	 * Return the cube that is enclosing the given vector.
+	 * @param vector
+	 * 		The vector of wish the enclosing cube will be returned.
+	 * @return The cube enclosing the given vector.
+	 */
+	public Cube getEnclosingCube(World world){
+		List<Integer> position = new ArrayList<>();
+		position.add((int) getXCoord());
+		position.add((int) getYCoord());
+		position.add((int) getZCoord());		
+		return world.getCube(position);
 	}
-		
+	
 	public static Set<List<Integer>> filterPassableCubes(Set<List<Integer>> unfilterdCubes, World world){
 		Set<List<Integer>> remainingCubes = new HashSet<>();
 		for (List<Integer> cube : unfilterdCubes){

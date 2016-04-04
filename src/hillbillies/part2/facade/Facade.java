@@ -3,6 +3,7 @@ package hillbillies.part2.facade;
 import java.util.Set;
 
 import hillbillies.model.Boulder;
+import hillbillies.model.Cube;
 import hillbillies.model.Faction;
 import hillbillies.model.Log;
 import hillbillies.model.Unit;
@@ -29,7 +30,11 @@ public class Facade implements IFacade {
 	@Override
 	public int[] getCubeCoordinate(Unit unit) throws ModelException {
 		System.out.println("getCubeCoordinate");
-		return unit.getCube();
+		Cube unitCube = unit.getCube();
+		int[] result = {unitCube.getPosition().get(0),
+						unitCube.getPosition().get(1),
+						unitCube.getPosition().get(2)};
+		return result;
 	}
 
 	@Override

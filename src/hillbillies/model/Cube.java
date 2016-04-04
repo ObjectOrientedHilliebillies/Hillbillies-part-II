@@ -10,7 +10,7 @@ import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
-/*
+/**
  * A class of cubes involving a position, terrain type and world.
  * @invar The position of the cube must be a valid position.
  * 		| isValidPosition()
@@ -24,7 +24,7 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  */
 @Value
 public class Cube{
-	/*
+	/**
 	 * Initialize this new cube with the given position, terrainType and world.
 	 * @param position
 	 * 		The position of this new cube.
@@ -61,7 +61,7 @@ public class Cube{
 		this.terrainType = terrainType;
 	}
 	
-	/*
+	/**
 	 * Initialise this new cube with given position, given world en terrain type air.
 	 * @param position
 	 * 		The position of this new cube.
@@ -74,7 +74,7 @@ public class Cube{
 	public Cube(List<Integer> position, World world){
 		this(position, 0, world);
 	}
-	/*
+	/**
 	 * Return the world of this cube
 	 */
 	@Basic @Raw @Immutable
@@ -82,7 +82,7 @@ public class Cube{
 		return this.world;
 	}
 	
-	/*
+	/**
 	 * Check whether the given world is a valid world for any cube.
 	 * @param world
 	 * 		The world to check.
@@ -93,12 +93,12 @@ public class Cube{
 		return (world != null);
 	}
 	
-	/*
+	/**
 	 * Variable referencing the world of this cube.
 	 */
 	private final World world;
 	
-	/* 
+	/** 
 	 * Return the position of this cube
 	 */
 	@Basic @Raw @Immutable
@@ -106,7 +106,7 @@ public class Cube{
 		return this.position;
 	}
 	
-	/*
+	/**
 	 *Check whether the given position is a valid position for this cube. 
 	 *@param position
 	 *		The position to check.
@@ -114,15 +114,15 @@ public class Cube{
 	 *		| result == world.isCubeInWorld()
 	 */
 	public static boolean isValidPosition(List<Integer> position, World world){
-		return world.isCubeInWorld(position);
+		return world.isCubeInWorld(new Cube(position, world));
 	}
 	
-	/*
+	/**
 	 * Variable referencing the position of this Cube.
 	 */
 	private final List<Integer> position;
 	
-	/*
+	/**
 	 * Return the terrain type of this cube.
 	 */
 	@Basic @Raw @Immutable
@@ -130,7 +130,7 @@ public class Cube{
 		return this.terrainType;
 	}
 	
-	/*
+	/**
 	 * Check whether the given terrain type is a valid terrain type for any cube.
 	 * @param terrainType
 	 * 		The terrain type to check
@@ -141,12 +141,12 @@ public class Cube{
 		return world.isValidTerrainType(terrainType);
 	}
 	
-	/*
+	/**
 	 * Variable referencing the terrain type of this cube.
 	 */
 	private final int terrainType;
 	
-	/*
+	/**
 	 * Return the centre of this cube.
 	 * @return The resulting vector point to the middle of this cube.
 	 */
@@ -156,7 +156,7 @@ public class Cube{
 							getPosition().get(2) + 0.5);
 	}
 	
-	/*
+	/**
 	 * Return the adjenct cubes of this cube.
 	 * @return The cubes adjenct to this cube.
 	 */
@@ -168,7 +168,7 @@ public class Cube{
 				for (int z=-1; z!=2; z++){
 					Integer[] offset = {x,y,z};
 					List<Integer> neighbour = Arrays.asList(Vector.sum(thisCube, offset));
-					if (world.isCubeInWorld(neighbour)){
+					if (world.isCubeInWorld(new Cube(neighbour, getWorld()))){
 						neighbourCubes.add(getWorld().getCube(neighbour));
 					}
 				}
@@ -178,13 +178,13 @@ public class Cube{
 		return neighbourCubes;
 	}
 	
-	/*
+	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.
 	 */
 	private final Integer[][] directAdjacentOffsets = new Integer[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
 		{ 0, -1, 0 }, { 0, +1, 0 },{ 0, 0, -1 }, { 0, 0, +1 } };
 	
-	/*
+	/**
 	 * Return the directly adjenct cubes of this cube
 	 * @return The cubes directly adjenct to this cube.
 	 */
@@ -193,14 +193,52 @@ public class Cube{
 		Set<Cube> directAdjectCubes = new HashSet<>();
 		for (Integer[] offset : directAdjacentOffsets){
 			List<Integer> directAdject = Arrays.asList(Vector.sum(thisCube, offset));
-			if (world.isCubeInWorld(directAdject)){
+			if (world.isCubeInWorld(new Cube(directAdject, getWorld()))){
 				directAdjectCubes.add(getWorld().getCube(directAdject));
 			}
 		}
 		return directAdjectCubes;
 	}
 	
-	/*
+	/**
+	 * Check whether this cube is a neighbour of the given cube.
+	 * @param otherCube
+	 * 		The potential neighbour cube.
+	 * @return True if and only if the cubes are neighbours.
+	 * @throws ClassCastException
+	 * 		The otherCube is not effective
+	 */
+	public boolean isNeighbourCube(Cube otherCube){
+		if (otherCube == null)
+			throw new ClassCastException();
+		boolean neighbourForAtleastOneComponent = false;
+		for (int i = 0; i != 3; i++) {
+			int difference = Math.abs(getPosition().get(i) - otherCube.getPosition().get(i));
+		    if (difference == 1)
+		    	neighbourForAtleastOneComponent = true;
+		    else if (difference != 0)
+		    	return false;
+		}
+		return neighbourForAtleastOneComponent;
+	}
+	
+	/**
+	 * Return whether this cube is solid or not.
+	 * @return True if and only if this cube is not made of dirt of wood.
+	 */
+	public boolean isSolid(){
+		return !(getTerrainType() != 1 && getTerrainType() != 2);
+	}
+	
+	/**
+	 * Return whether this cube is passable or not.
+	 * @return True if and only if this cube is not solid.
+	 */
+	public boolean isPassable(){
+		return !isSolid();
+	}
+	
+	/**
 	 * Return a textual representation of this cube
 	 * 
 	 * @return A string consisting of a textual representation of the position
@@ -213,7 +251,8 @@ public class Cube{
 				  +getPosition().get(0)+", "+"]";
 	}
 	
-	/* Check whether this cube is equal to the given object.
+	/** 
+	 * Check whether this cube is equal to the given object.
 	 * @return True if and only if the given object is effective,
 	 * 		   if this cube and the given object belong to the same class,
 	 * 		   and if this cube and the given object have the same position.
@@ -228,7 +267,7 @@ public class Cube{
 		return getPosition() == otherCube.getPosition();
 	}
 	
-	/*
+	/**
 	 * Returns the hash code of this cube.
 	 */
 	@Override
@@ -236,7 +275,7 @@ public class Cube{
 		return this.position.hashCode();
 	}
 	
-	/*
+	/**
 	 * Returns the centre of this cube.
 	 * @return
 	 * 		| new Vector(getPosition().get(0) + 0.5,
@@ -248,7 +287,4 @@ public class Cube{
 						  getPosition().get(1) + 0.5,
 						  getPosition().get(2) + 0.5);
 	}
-	
-	
 }
-
