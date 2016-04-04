@@ -18,7 +18,7 @@ public class Log extends Material {
 		super(initialPosition, world);
 		// TODO Auto-generated constructor stub
 		
-		this.getWorld().addLog(this);
+		//this.getWorld().addLog(this);
 	}
 	
 	

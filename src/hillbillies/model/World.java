@@ -69,7 +69,7 @@ public class World {
 		return true;
 	}
 	
-	boolean isCubeInWorld(int[] cube){
+	public boolean isCubeInWorld(int[] cube){
 		if (cube[0] < 0 || cube[0] >= NbCubesX
 			|| cube[1] < 0 || cube[1] >= NbCubesY
 			|| cube[2] < 0 || cube[2] >= NbCubesZ){
@@ -78,7 +78,7 @@ public class World {
 		return true;
 	}
 	
-	public boolean isPassable(Vector position){
+	public boolean isPassable(Vector position){ //TODO Ik vind het vreemd dat isPassable Vector is en isSolid cube...
 		if (isSolid(position.getIntCube())){
 			System.out.println("Cube not passable");
 			return false;
@@ -201,7 +201,7 @@ public class World {
 	 */
 	private Set<Log> logs = new HashSet<>();
 	
-<<<<<<< HEAD
+
 	public boolean isWorkshopWithLogAndBoulder(int[] cube){
 		if (this.getTerrainType(cube) != 3){
 			return false;
@@ -304,13 +304,13 @@ public class World {
 		materials.add(material);
 	}
 	
-	public void addLog(Log log) {
-		logs.add(log);
-	}
+	//public void addLog(Log log) {
+	//	logs.add(log);
+	//}
 	
-	public void addBoulder(Boulder boulder) {
-		boulders.add(boulder);
-	}
+	//public void addBoulder(Boulder boulder) {
+	//	boulders.add(boulder);
+	//}
 	
 	/**
 	 * Remove material from this world
@@ -359,7 +359,7 @@ public class World {
 	 * @post if there was space for a new faction, the faction is added to 
 	 * 		this world.
 	 */
-	private void addFaction(Faction faction) {
+	public void addFaction(Faction faction) {
 		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
 			throw new IllegalArgumentException();
 		}
@@ -384,7 +384,7 @@ public class World {
 	/**
 	 * Remove faction from this world.
 	 */
-	private void removeFaction(Faction faction) {
+	public void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
 	
@@ -489,60 +489,60 @@ public class World {
 		return accessibleNeighbours;
 	}
 	
-	public void findPath(int[] start, int[] goal){
-    // The set of nodes already evaluated.
-    closedSet := {}
-    // The set of currently discovered nodes still to be evaluated.
-    // Initially, only the start node is known.
-    openSet := {start}
-    // For each node, which node it can most efficiently be reached from.
-    // If a node can be reached from many nodes, cameFrom will eventually contain the
-    // most efficient previous step.
-    cameFrom := the empty map
-
-    // For each node, the cost of getting from the start node to that node.
-    gScore := map with default value of Infinity
-    // The cost of going from start to start is zero.
-    gScore[start] := 0 
-    // For each node, the total cost of getting from the start node to the goal
-    // by passing by that node. That value is partly known, partly heuristic.
-    fScore := map with default value of Infinity
-    // For the first node, that value is completely heuristic.
-    fScore[start] := heuristic_cost_estimate(start, goal)
-
-    while openSet is not empty
-        current := the node in openSet having the lowest fScore[] value
-        if current = goal
-            return reconstruct_path(cameFrom, goal)
-
-        openSet.Remove(current)
-        closedSet.Add(current)
-        for each neighbor of current
-            if neighbor in closedSet
-                continue		// Ignore the neighbor which is already evaluated.
-            // The distance from start to a neighbor
-            tentative_gScore := gScore[current] + dist_between(current, neighbor)
-            if neighbor not in openSet	// Discover a new node
-                openSet.Add(neighbor)
-            else if tentative_gScore >= gScore[neighbor]
-                continue		// This is not a better path.
-
-            // This path is the best until now. Record it!
-            cameFrom[neighbor] := current
-            gScore[neighbor] := tentative_gScore
-            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-
-    return failure
-	}	
-    	
-
-function reconstruct_path(cameFrom, current)
-    total_path := [current]
-    while current in cameFrom.Keys:
-        current := cameFrom[current]
-        total_path.append(current)
-    return total_path
-    		
+//	public void findPath(int[] start, int[] goal){
+//    // The set of nodes already evaluated.
+//    closedSet := {}
+//    // The set of currently discovered nodes still to be evaluated.
+//    // Initially, only the start node is known.
+//    openSet := {start}
+//    // For each node, which node it can most efficiently be reached from.
+//    // If a node can be reached from many nodes, cameFrom will eventually contain the
+//    // most efficient previous step.
+//    cameFrom := the empty map
+//
+//    // For each node, the cost of getting from the start node to that node.
+//    gScore := map with default value of Infinity
+//    // The cost of going from start to start is zero.
+//    gScore[start] := 0 
+//    // For each node, the total cost of getting from the start node to the goal
+//    // by passing by that node. That value is partly known, partly heuristic.
+//    fScore := map with default value of Infinity
+//    // For the first node, that value is completely heuristic.
+//    fScore[start] := heuristic_cost_estimate(start, goal)
+//
+//    while openSet is not empty
+//        current := the node in openSet having the lowest fScore[] value
+//        if current = goal
+//            return reconstruct_path(cameFrom, goal)
+//
+//        openSet.Remove(current)
+//        closedSet.Add(current)
+//        for each neighbor of current
+//            if neighbor in closedSet
+//                continue		// Ignore the neighbor which is already evaluated.
+//            // The distance from start to a neighbor
+//            tentative_gScore := gScore[current] + dist_between(current, neighbor)
+//            if neighbor not in openSet	// Discover a new node
+//                openSet.Add(neighbor)
+//            else if tentative_gScore >= gScore[neighbor]
+//                continue		// This is not a better path.
+//
+//            // This path is the best until now. Record it!
+//            cameFrom[neighbor] := current
+//            gScore[neighbor] := tentative_gScore
+//            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
+//
+//    return failure
+//	}	
+//    	
+//
+//function reconstruct_path(cameFrom, current)
+//    total_path := [current]
+//    while current in cameFrom.Keys:
+//        current := cameFrom[current]
+//        total_path.append(current)
+//    return total_path
+//    		
     		
 
 	
