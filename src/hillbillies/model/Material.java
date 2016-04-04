@@ -19,7 +19,7 @@ public class Material {
 		this.setWorld(world);
 		this.setPosition(Vector.getCentreOfCube(intialCube));
 		
-		world.addMaterial(this);
+		this.getWorld().addMaterial(this);
 	}
 	
 
@@ -43,7 +43,8 @@ public class Material {
 		this.setPosition(initialPosition);
 		world.addMaterial(this);
 	}
-	
+
+
 	/**
 	 * Set the weight of this material to a random weight between 10 and 50.
 	 */

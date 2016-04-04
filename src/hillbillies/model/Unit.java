@@ -205,13 +205,13 @@ public Unit(String name, int[] initialCube, boolean enableDefaultBehavior, World
 	
 	this.setAgility((int) (Math.random() * 200));	
 	this.setStrength((int) (Math.random() * 200));
-	this.setToughness((int) (Math.random() * 200));
+	this.setToughness((int) (Math.random() * 200)); 
 	
 	this.weight = this.getMinWeight();
 	this.setWeight((int) (Math.random() * 200));
 		
 	
-	setHitpoints(getMaxHitpoints()-5);
+	setHitpoints(getMaxHitpoints()-5); //FIXME door de random weight en toughness kan dit negatief geïnitialiseerd worden.
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
@@ -878,7 +878,11 @@ private void die(){
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
+	//try {
 	this.getFaction().removeUnit(this); 
+	//}
+	//catch (NullPointerException exc) {
+	//}
 }
 
 /**
