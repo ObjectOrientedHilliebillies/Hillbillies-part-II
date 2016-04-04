@@ -1,7 +1,9 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Log extends Material {
+<<<<<<< HEAD
 	
 	/**
 	 * Initialize this new log with the given position and the given world.
@@ -19,6 +21,11 @@ public class Log extends Material {
 		// TODO Auto-generated constructor stub
 		
 		this.getWorld().addLog(this);
+=======
+
+	public Log(List<Integer> intitialCube, World world){
+		super(intitialCube, world);
+>>>>>>> refs/remotes/origin/PathfindingTryout
 	}
 	
 	

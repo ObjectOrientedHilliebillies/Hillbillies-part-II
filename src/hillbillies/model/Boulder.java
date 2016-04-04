@@ -1,7 +1,9 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Boulder extends Material {
+<<<<<<< HEAD
 	
 	/**
 	 * Initialize this new boulder with the given position and the given world.
@@ -18,6 +20,11 @@ public class Boulder extends Material {
 		super(initialPosition, world);
 		
 		this.getWorld().addBoulder(this);
+=======
+
+	public Boulder(List<Integer> intitialCube, World world){
+		super(intitialCube, world);
+>>>>>>> refs/remotes/origin/PathfindingTryout
 	}
 	
 	/**
