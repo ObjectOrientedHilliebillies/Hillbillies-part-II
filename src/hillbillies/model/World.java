@@ -150,30 +150,37 @@ public class World {
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
-		if (terrainType != 1 && terrainType != 2 && this.isSolid(cube)){
-			terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-			modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+		if (terrainType != 1 && terrainType != 2 && cube.isSolid()){
+			terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
+							.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
+			modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
+												cube.getPosition().get(1),
+												cube.getPosition().get(2));
 			double rand = Math.random();
 			if (rand < 0.125) {
-				new Log(cube, this);
+				new Log(cube.getCenterOfCube(), this);
 			} else if (rand < 0.25){
-				new Boulder(cube, this);
+				new Boulder(cube.getCenterOfCube(), this);
 			}
-			connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-			Set<Cube> neighbours = Vector.getDirectAdjenctCubes(cube, this);
-			Set<Cube> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
+			connectedToBorder.changeSolidToPassable(cube.getPosition().get(0), 
+													cube.getPosition().get(1),
+													cube.getPosition().get(2));
+			Set<Cube> neighbours = cube.getDirectAdjenctCubes();
+			Set<Cube> solidNeighbours = filterPassableCubes(neighbours);
 			neighbours.removeAll(solidNeighbours);
 			for (Cube solidNeighbour : solidNeighbours){
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
-		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
-		
+		terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
+						.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
+				cube.getPosition().get(1),
+				cube.getPosition().get(2));		
 	}
 	
 	private void collapseIfFloating(Cube cube){
-		if (this.isSolid(cube)){
+		if (cube.isSolid()){
 			if (!this.isSolidConnectedToBorder(cube)){
 				this.setTerrainType(cube, 0);
 			}
@@ -181,8 +188,10 @@ public class World {
 	}
 	
 	public boolean isSolidConnectedToBorder(Cube cube){
-		if (this.isSolid(cube)){
-			return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
+		if (cube.isSolid()){
+			return connectedToBorder.isSolidConnectedToBorder(cube.getPosition().get(0), 
+																cube.getPosition().get(1),
+																cube.getPosition().get(2));
 		}
 		return true;
 	}
@@ -210,7 +219,7 @@ public class World {
 	
 
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
-		if (this.getTerrainType(cube) != 3){
+		if (cube.getTerrainType() != 3){
 			return false;
 		}
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);

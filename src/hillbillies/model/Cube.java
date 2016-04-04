@@ -8,6 +8,7 @@ import java.util.Set;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
+import javafx.collections.ListChangeListener.Change;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
@@ -62,17 +63,30 @@ public class Cube{
 	}
 	
 	/**
-	 * Initialise this new cube with given position, given world en terrain type air.
+	 * Initialise this new cube with given position, given world and terrain type air.
 	 * @param position
 	 * 		The position of this new cube.
 	 * @param world
-	 * 		The world of this cube.
+	 * 		The world of this new cube.
 	 * @effect This new cube is initialised with the given position and world 
 	 * 			and terrain type air.
 	 * 		| this(position, 0, world)
 	 */
 	public Cube(List<Integer> position, World world){
 		this(position, 0, world);
+	}
+	
+	/**
+	 * Initialise this new cube with the position and world of the given cube and the given terrain type.
+	 * @param otherCube
+	 * 		The other cube of wish the position en world will be copieed.
+	 * @param terraintype
+	 * 		The terrain type of this new cube
+	 * @effect This new cube is initialised with the position and world of the given cube and the
+	 * 			given terrain type.
+	 */
+	public Cube changeTerrainType( int terrainType){
+		return new Cube(getPosition(), terrainType, getWorld());
 	}
 	/**
 	 * Return the world of this cube

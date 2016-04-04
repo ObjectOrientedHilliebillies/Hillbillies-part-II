@@ -1,5 +1,7 @@
 package hillbillies.part2.facade;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import hillbillies.model.Boulder;
@@ -158,7 +160,12 @@ public class Facade implements IFacade {
 	@Override
 	public void moveTo(Unit unit, int[] cube) throws ModelException {
 		System.out.println("moveTo");
-		unit.moveTo(cube);		
+		List<Integer> cubePosition = new ArrayList<>();
+		cubePosition.add(cube[0]);
+		cubePosition.add(cube[1]);
+		cubePosition.add(cube[2]);
+		Cube cubeCube = unit.getWorld().getCube(cubePosition);
+		unit.moveTo(cubeCube);		
 	}
 	
 	@Override
