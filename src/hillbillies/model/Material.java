@@ -1,8 +1,10 @@
 package hillbillies.model;
 
+import java.util.List;
 
 public class Material {
 	
+<<<<<<< HEAD
 /**
  * Initialize this new material with the given position and the given world.
  * 
@@ -15,6 +17,9 @@ public class Material {
  * 		equal to the given world.
  */
 	protected Material(int[] intialCube, World world){
+=======
+	protected Material(List<Integer> intialCube, World world){
+>>>>>>> refs/remotes/origin/PathfindingTryout
 		this.setWeight();
 		this.setWorld(world);
 		this.setPosition(Vector.getCentreOfCube(intialCube));
