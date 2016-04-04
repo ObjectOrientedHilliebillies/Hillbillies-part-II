@@ -36,6 +36,7 @@ import java.util.ArrayList;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.experimental.theories.Theories;
@@ -162,15 +163,16 @@ public class Unit {
  *       | if (isValidOrientation(orientation))
  *       | new.getOrientation() == PI/2
  */
-public Unit(String name, List<Integer> initialCube, int weight, int agility, int strength, int toughness,
+public Unit(String name, int[] initialCube, int weight, int agility, int strength, int toughness,
 		boolean enableDefaultBehavior){
 	this.setName(name);
 	
 	try {
-		Vector position = Vector.getCentreOfCube(initialCube);
+		Vector position = new Vector(initialCube[0]+0.5, 
+									 initialCube[1]+0.5, 
+									 initialCube[2]+0.5);
 		this.setPosition(position);
 	} catch (IllegalArgumentException e) {
-		// TODO Auto-generated catch block. EN GAAN WE DAN GEEN DEFAULT POSITIE SETTEN?
 		e.printStackTrace();
 	}
 	
@@ -200,12 +202,14 @@ public Unit(String name, List<Integer> initialCube, int weight, int agility, int
 	this.getWorld().addUnit(this);
 }
 
-public Unit(String name, List<Integer> initialCube, boolean enableDefaultBehavior, World world){
+public Unit(String name, int[] initialCube, boolean enableDefaultBehavior, World world){
 	this.world = world;
 	this.setName("Name");  //FIXME not final!
 	
 	try {
-		Vector position = Vector.getCentreOfCube(initialCube);
+		Vector position = new Vector(initialCube[0]+0.5, 
+				 initialCube[1]+0.5, 
+				 initialCube[2]+0.5);
 		this.setPosition(position);
 	} catch (IllegalArgumentException e) {
 		e.printStackTrace();
@@ -280,7 +284,7 @@ private Vector position;
 /**
  * Variable registering the target cube of this Unit.
  */
-private List<Integer> targetCube;
+private Cube targetCube;
 
 /**
  * Variable registering the target position of this Unit.
@@ -319,7 +323,9 @@ public double[] getDoublePosition() { //TODO private?
  */
 @Raw
 private void setPosition(Vector position){
-	if (this.world != null && !this.world.isPositionInWorld(position))
+	if (this.world == null)
+		throw new ClassCastException();
+	if (!this.world.isPositionInWorld(position) || !isValidPositionForUnit())
 		throw new IllegalArgumentException();
 	this.position = position;
 }
@@ -356,15 +362,19 @@ private void setTargetPosition(Vector targetPosition){
  * Return the cube of this unit.
  */
 @Basic @Raw
-public List<Integer> getCube() {
-	return this.position.getIntCube();
+public Cube getCube() {
+	List<Integer> cubeCoord = new ArrayList<>();
+	cubeCoord.add((int) getPosition().getXCoord());
+	cubeCoord.add((int) getPosition().getYCoord());
+	cubeCoord.add((int) getPosition().getZCoord());
+	return getWorld().getCube(cubeCoord);
 }
 
 /**
  * Return the target cube of this unit.
  */
 @Basic @Raw
-private List<Integer> getTargetCube() {
+private Cube getTargetCube() {
 	return this.targetCube;
 }
 
@@ -382,9 +392,9 @@ private List<Integer> getTargetCube() {
  *       | ! isValidPosition(getCube())
  */
 @Raw
-private void setTargetCube(List<Integer> cube) {
-	if (! this.world.isCubeInWorld(cube))
-		throw new IllegalArgumentException();
+private void setTargetCube(Cube cube) {
+	if (cube == null)
+			throw new ClassCastException();
 	this.targetCube = cube;
 }
 
@@ -955,7 +965,7 @@ public void advanceTime(double tickTime) {
 	}
 		
 	if (this.activeActivity == 0 && (this.targetCube != null) && 
-				!Vector.equals(this.getCube(), this.targetCube)){
+				!getCube().equals(this.targetCube)){
 		doMoveTo();
 	}
 	
@@ -1039,7 +1049,7 @@ private void startNextActivity(){
 	if (nextActivity == 1){
 		activeActivity = 1;
 		this.remainingTimeToFinishWork = 500/(double)(this.getStrength());
-		this.face(Vector.getCentreOfCube(this.cubeWorkingOn));
+		this.face(this.cubeWorkingOn.getCenterOfCube());
 	}
 	else if (nextActivity == 4)
 		this.rest();
@@ -1225,10 +1235,10 @@ private void setSpeed(Vector targetPosition) {
  * 		| !isValidPosition(targetPosition)
  */
 public void moveToAdjacent(Vector positionDifference){
-	Vector targetPosition = Vector.sum(Vector.getCentreOfCube(this.getCube()),
+	Vector targetPosition = Vector.sum(getCube().getCenterOfCube(),
 			positionDifference);
 	if (!isValidActivity(3) || !this.world.isPositionInWorld(targetPosition)
-			|| !this.world.isPassable(targetPosition)){
+			|| !targetPosition.getEnclosingCube(getWorld()).isPassable()){
 		throw new IllegalArgumentException();
 	}
 	if (activeActivity != 3){
@@ -1357,9 +1367,9 @@ private double orientation;
  * 		| !isValidCube(cube)
  * 		
  */
-public void moveTo(List<Integer> cube){
-	if (!this.world.isCubeInWorld(cube))
-		throw new IllegalArgumentException();
+public void moveTo(Cube cube){
+	if (cube == null)
+		throw new ClassCastException();
 	this.setTargetCube(cube);
 	System.out.println("target set");
 }
@@ -1389,8 +1399,8 @@ public void moveTo(List<Integer> cube){
 */
 private void doMoveTo(){
 	System.out.println("Starting pathfinding");
-	List<List<Integer>> path = world.getPath(this.getCube(), this.targetCube);
-	Vector difference = Vector.getCentreOfCube(path.get(path.size()));
+	List<Cube> path = world.getPath(this.getCube(), this.targetCube);
+	Vector difference = path.get(path.size()).getCenterOfCube();
 	this.moveToAdjacent(difference);
 }
 
@@ -1487,10 +1497,10 @@ public boolean isCarryingBoulder() {
  * 2: log
  */
 private int carriedMaterial = 0;
-private List<Integer> cubeWorkingOn = null;
+private Cube cubeWorkingOn = null;
 
-public void workAt(List<Integer> cube){
-	if (!this.position.isNeighbourCube(cube) && !Vector.equals(this.getCube(), cube))
+public void workAt(Cube cube){
+	if (!getCube().isNeighbourCube(cube) && !getCube().equals(cube))
 		return;
 	if (!isValidActivity(1)){
 		if (this.activeActivity != 1){
@@ -1504,7 +1514,7 @@ public void workAt(List<Integer> cube){
 		this.remainingTimeToFinishWork = 500/(double)(this.getStrength()*100);
 		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
 		this.cubeWorkingOn = cube;
-		this.face(Vector.getCentreOfCube(cube));
+		this.face(cube.getCenterOfCube());
 	}
 	
 }
@@ -1520,7 +1530,7 @@ private void doWork() {
 	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - this.tickTime;
 	if (this.remainingTimeToFinishWork < 0){
 		if (this.isCarryingMaterial()) {
-			this.dropMaterial(Vector.getCentreOfCube(cubeWorkingOn));
+			this.dropMaterial(cubeWorkingOn.getCenterOfCube());
 			}
 		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
 			//FIXME deze doet het nog niet!
@@ -1529,12 +1539,12 @@ private void doWork() {
 			System.out.println("pickingMaterialUp");
 			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
 			}
-		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 2) {
-			new Log(cubeWorkingOn, this.getWorld());
+		else if (cubeWorkingOn.getTerrainType() == 2) {
+			new Log(cubeWorkingOn.getCenterOfCube(), this.getWorld());
 			this.world.setTerrainType(cubeWorkingOn, 0);
 			}
-		else if (this.getWorld().getTerrainType(cubeWorkingOn) == 1) {
-			new Boulder(cubeWorkingOn, this.getWorld());
+		else if (cubeWorkingOn.getTerrainType() == 1) {
+			new Boulder(cubeWorkingOn.getCenterOfCube(), this.getWorld());
 			this.world.setTerrainType(cubeWorkingOn, 0);
 			}
 		else{
@@ -1602,7 +1612,7 @@ public boolean isWorking() {
 public void attack(Unit defender){
 	if (defender != this 
 		&& (this.getCube() == defender.getCube() 
-			|| this.position.isNeighbourCube(defender.getCube())) 
+			|| this.getCube().isNeighbourCube(defender.getCube())) 
 		&& !this.isAttacking()){
 		
 		System.out.println("attack");
@@ -1665,6 +1675,7 @@ private void defenseAgainst(Unit attacker) {
 	if (Math.random() <  dodgeChance){
 <<<<<<< HEAD
 		this.setExperience(this.getExperience() + 20);
+<<<<<<< HEAD
 		List<Integer> randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
 =======
 		//this.setExperience(this.getExperience() + 20);
@@ -1677,9 +1688,24 @@ private void defenseAgainst(Unit attacker) {
 			this.setPosition(newPosition);
 		} catch (IllegalArgumentException e) {
 			System.out.println("This should never fail");
+=======
+		
+		List<Cube> randomCubesList = new ArrayList<Cube>();
+		randomCubesList.addAll(this.getCube().getNeighbourCubes());
+		Collections.shuffle(randomCubesList);
+		
+		for (Cube cube : randomCubesList){
+			Vector newPosition = cube.getCentreOfCube();
+			try {
+				this.setPosition(newPosition);
+				break;
+			} catch (IllegalArgumentException e) {
+			}
+>>>>>>> refs/remotes/origin/VictorLaptop
 		}
 		this.face(attacker.getPosition());
 		attacker.face(this.getPosition());
+		this.increaseExperience(20);
 	}
 	else if (!(Math.random() < blockChance)) {
 		attacker.increaseExperience(20);
@@ -1805,14 +1831,14 @@ private void doDefaultBehavior(){
 	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
-			List<Integer> newTargetCube = new ArrayList<Integer>();		
-			for (int i=0; i != 3; i++){
-				newTargetCube.add((int) (Math.random() * 50));
-				}
+			Cube newTargetCube = world.generateRandomAccessibleCube();
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
-			this.workAt(this.position.getRandomAdjacentCubeInWorld(this.world));
+			List<Cube> randomCubesList = new ArrayList<Cube>();
+			randomCubesList.addAll(this.getCube().getNeighbourCubes());
+			Collections.shuffle(randomCubesList);
+			this.workAt(randomCubesList.get(0));
 		}else if (randomActivity == 2 && 
 				(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 			this.rest();
@@ -1828,14 +1854,14 @@ private void falling(){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");
-			this.fellFrom = this.getCube().get(2);
+			this.fellFrom = getCube().getPosition().get(2);
 			this.activeActivity = 2;
 		}
 	}	
 	if (this.activeActivity == 2){
 		if (this.position.hasSupportOfSolidUnderneath(this.world)){
-			this.position = Vector.getCentreOfCube(this.getCube());
-			int cubesFallen = this.fellFrom - this.getCube().get(2);
+			this.position = getCube().getCenterOfCube();
+			int cubesFallen = this.fellFrom - getCube().getPosition().get(2);
 			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
 			this.startNextActivity();
 			System.out.println("Stopped falling");

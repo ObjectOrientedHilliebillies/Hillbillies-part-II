@@ -11,10 +11,8 @@ public class SyntaxTest {
 	
 	@Test
 	public final void test(){
-	double klein = 23;
-	Double groot = (double) 23;
-	System.out.println(klein == groot);
-		
+		int[] test = new int[3];
+		test.h
 	}
 
 }

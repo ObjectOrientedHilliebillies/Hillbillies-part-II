@@ -1,10 +1,7 @@
 package hillbillies.model;
 
-import java.util.List;
-
 public class Material {
 	
-<<<<<<< HEAD
 /**
  * Initialize this new material with the given position and the given world.
  * 
@@ -16,13 +13,10 @@ public class Material {
  * @post if the given world is a valid world, the world of this material is 
  * 		equal to the given world.
  */
-	protected Material(int[] intialCube, World world){
-=======
-	protected Material(List<Integer> intialCube, World world){
->>>>>>> refs/remotes/origin/PathfindingTryout
+	protected Material(Vector initialPosition, World world){
 		this.setWeight();
 		this.setWorld(world);
-		this.setPosition(Vector.getCentreOfCube(intialCube));
+		this.setPosition(initialPosition);
 		
 		this.getWorld().addMaterial(this);
 	}
@@ -42,7 +36,11 @@ public class Material {
  * @post if the given weight is a valid weight for any material, the weight
  * 		of this material is equal to the given weight.
  */
+<<<<<<< HEAD
 	protected Material(int[] initialCube, World world, int weight){
+=======
+	protected Material(Vector initialPosition, World world, int weight){
+>>>>>>> refs/remotes/origin/VictorLaptop
 		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(Vector.getCentreOfCube(initialCube));
@@ -116,13 +114,6 @@ public class Material {
 	 * Variable registering the position of this material.
 	 */
 	private Vector position;
-
-	/**
-	 * Return the world of this material
-	 */
-	private World getWorld() {
-		return this.world;
-	}
 	
 	/**
 	 * Set the world of this material to the given world
