@@ -260,7 +260,7 @@ public class Cube{
 	 * Check whether this cube is equal to the given object.
 	 * @return True if and only if the given object is effective,
 	 * 		   if this cube and the given object belong to the same class,
-	 * 		   and if this cube and the given object have the same position.
+	 * 		   and if this cube and the given object have the same position and world.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -269,7 +269,7 @@ public class Cube{
 		if (other.getClass() != this.getClass())
 			return false;
 		Cube otherCube = (Cube)other; 
-		return getPosition() == otherCube.getPosition();
+		return (getPosition() == otherCube.getPosition() && getWorld() == otherCube.getWorld());
 	}
 	
 	/**
@@ -277,7 +277,7 @@ public class Cube{
 	 */
 	@Override
 	public int hashCode(){
-		return this.position.hashCode();
+		return getPosition().hashCode() + this.getWorld().hashCode();
 	}
 	
 	/**

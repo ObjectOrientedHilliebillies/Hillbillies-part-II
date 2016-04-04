@@ -112,9 +112,28 @@ public class World {
 	 * @param position
 	 * 		The position of the requested cube.
 	 * @return The cube at the given position.
+	 * @return If the cube does not exist null is returned.
 	 */
 	public Cube getCube(List<Integer> position){
-		return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
+		try{
+			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param unfilterdCubes
+	 * 		The set of wish we need to filter the passable cubes.
+	 * @return The set that contains only the passable cubes of the unfilterdCubes set.
+	 */
+	public static Set<Cube> filterPassableCubes(Set<Cube> unfilterdCubes){
+		Set<Cube> remainingCubes = new HashSet<>();
+		for (Cube cube : unfilterdCubes){
+			if (cube.isSolid())
+				remainingCubes.add(cube);
+		}
+		return remainingCubes;
 	}
 	
 	/**
@@ -141,10 +160,10 @@ public class World {
 				new Boulder(cube, this);
 			}
 			connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-			Set<List<Integer>> neighbours = Vector.getDirectAdjenctCubes(cube, this);
-			Set<List<Integer>> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
+			Set<Cube> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+			Set<Cube> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
 			neighbours.removeAll(solidNeighbours);
-			for (List<Integer> solidNeighbour : solidNeighbours){
+			for (Cube solidNeighbour : solidNeighbours){
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
@@ -153,7 +172,7 @@ public class World {
 		
 	}
 	
-	private void collapseIfFloating(List<Integer> cube){
+	private void collapseIfFloating(Cube cube){
 		if (this.isSolid(cube)){
 			if (!this.isSolidConnectedToBorder(cube)){
 				this.setTerrainType(cube, 0);
@@ -161,7 +180,7 @@ public class World {
 		}
 	}
 	
-	public boolean isSolidConnectedToBorder(List<Integer> cube){
+	public boolean isSolidConnectedToBorder(Cube cube){
 		if (this.isSolid(cube)){
 			return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
 		}
@@ -172,7 +191,7 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 List<Integer> cube = {x,y,z};
+					 Cube cube = {x,y,z};
 					 this.collapseIfFloating(cube);
 				}
 			}
