@@ -202,5 +202,12 @@ public class WorldTest {
 		Unit unit1 = new Unit("Name", position, false, world);
 		assertEquals(world.getUnits().contains(unit1), true); //FIXME unit wordt geïnitialiseerd met negatieve waarde hitpoints? Dus hij gaat dood voordat hij heeft geleefd...
 	}
+	
+	@Test
+	public void addUnitTest() throws ModelException {
+		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
+		Unit unit1 = new Unit("Name", position, false, world);
+		assertEquals(world.getUnits().contains(unit1), true);
+	}	
 
 }

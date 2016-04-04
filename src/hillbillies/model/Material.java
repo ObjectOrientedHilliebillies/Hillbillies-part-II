@@ -42,10 +42,10 @@ public class Material {
  * @post if the given weight is a valid weight for any material, the weight
  * 		of this material is equal to the given weight.
  */
-	protected Material(int[] initialPosition, World world, int weight){
+	protected Material(int[] initialCube, World world, int weight){
 		this.setWorld(world); 
 		this.setWeight(weight);
-		this.setPosition(initialPosition);
+		this.setPosition(Vector.getCentreOfCube(initialCube));
 		world.addMaterial(this);
 	}
 
@@ -63,9 +63,10 @@ public class Material {
 	/**
 	 * Set the weight of this material to the given weight
 	 */
-	private void setWeight(int weight) {
+	private void setWeight(int weight) throws IllegalArgumentException {
 		if (isValidWeight(weight))
 			this.weight = weight;
+		else throw new IllegalArgumentException();
 	}
 	
 	/**
@@ -98,10 +99,10 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	private void setPosition(Vector position){
-		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
+	private void setPosition(Vector vector){
+		if (! this.world.isPositionInWorld(vector)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
-		this.position = position;
+		this.position = vector;
 	}
 	
 	/**

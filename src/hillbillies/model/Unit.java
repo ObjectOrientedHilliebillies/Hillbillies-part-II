@@ -196,6 +196,8 @@ public Unit(String name, List<Integer> initialCube, int weight, int agility, int
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
+	
+	this.getWorld().addUnit(this);
 }
 
 public Unit(String name, List<Integer> initialCube, boolean enableDefaultBehavior, World world){
@@ -223,6 +225,7 @@ public Unit(String name, List<Integer> initialCube, boolean enableDefaultBehavio
 	this.orientation = (Math.PI/2);
 	
 	this.setDefaultBehavior(enableDefaultBehavior);
+	this.getWorld().addUnit(this);
 }
 
 /**
@@ -297,7 +300,7 @@ private Vector getPosition() {
  * Return the position of this unit.
  */
 @Basic @Raw
-public double[] getDoublePosition() {
+public double[] getDoublePosition() { //TODO private?
 	return this.position.getVector();
 }
 
@@ -691,7 +694,7 @@ private static int maxToughness = 200;
 /**
  * Return the experience of this unit.
  */
-public int getExperience() {
+private int getExperience() {
 	return this.experience;
 }
 
@@ -1656,29 +1659,33 @@ public boolean isAttacking() {
 private void defenseAgainst(Unit attacker) {	
 	System.out.println("defend");
 	this.activeActivity = 6;
-	double blockChance = 0.25*(attacker.getStrength() + attacker.getAgility())/
-						(this.getAgility() + this.getStrength());
-	double dodgeChance = 0.2*attacker.getAgility()/(double) this.getAgility();
-	
+	double blockChance = 0.25*(this.getStrength() + this.getAgility())/ 
+						(attacker.getAgility() + attacker.getStrength());
+	double dodgeChance = 0.2*this.getAgility()/(double) attacker.getAgility();
 	if (Math.random() <  dodgeChance){
+<<<<<<< HEAD
 		this.setExperience(this.getExperience() + 20);
 		List<Integer> randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
+=======
+		//this.setExperience(this.getExperience() + 20);
+		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
+>>>>>>> refs/remotes/origin/Jonas
 		Vector newPosition = Vector.getCentreOfCube(randomCube);
 
 		this.increaseExperience(20);
 		try {
 			this.setPosition(newPosition);
 		} catch (IllegalArgumentException e) {
-			System.out.println("This chould never fail");
+			System.out.println("This should never fail");
 		}
 		this.face(attacker.getPosition());
 		attacker.face(this.getPosition());
 	}
 	else if (!(Math.random() < blockChance)) {
-		this.increaseExperience(20);
+		attacker.increaseExperience(20);
 		this.setHitpoints(this.getHitpoints() - attacker.getStrength()/10);}
 	else
-		attacker.increaseExperience(20);
+		this.increaseExperience(20);
 }
 
 /* Resting */
