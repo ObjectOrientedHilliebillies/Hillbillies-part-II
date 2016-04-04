@@ -1,0 +1,254 @@
+package hillbillies.model;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
+import be.kuleuven.cs.som.annotate.Value;
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
+/*
+ * A class of cubes involving a position, terrain type and world.
+ * @invar The position of the cube must be a valid position.
+ * 		| isValidPosition()
+ * @invar The terrain type of the cube most be a valid terrain type.
+ * 		| isValidTerrainType()
+ * @invar The world of this cube must be a valid world.
+ * 		| isValidWorld()
+ * 
+ * @version 1.0
+ * @author Jonas Vantrappen & Victor Van Eetvelt
+ */
+@Value
+public class Cube{
+	/*
+	 * Initialize this new cube with the given position, terrainType and world.
+	 * @param position
+	 * 		The position of this new cube.
+	 * @param terrainType
+	 * 		The terrainType of this new cube.
+	 * @param world
+	 * 		The world of this cube.
+	 * @post The position of this new cube is equal to the given position.
+	 * 		| new.getPosition() == position
+	 * @post The terrain type of this new cube is equal to the given terrain type.
+	 * 		| new.getTerrainType() == terainType
+	 * @post The world of this new cube is equal to the given world.
+	 * 		| new.getWorld() == world
+	 * @throws IllegalArgumentException
+	 * 		The given position is not a valid position
+	 * 		| ! isValidPosition(position)
+	 * @throws IllegalArgumentException
+	 * 		The given terrain type is not a valid terrain type for any cube.
+	 * 		| ! isValidTerrainType
+	 * @throws ClassCastException
+	 *  	The given world is not effective.
+	 *  	| ! isValidWorld
+	 */
+	public Cube(List<Integer> position, int terrainType, World world){
+		if (! isValidWorld(world))
+			throw new ClassCastException("Non-effective world");
+		this.world = world;
+		
+		if (!isValidPosition(position, this.world))
+			throw new IllegalArgumentException("Invalid Position");
+		if (!isValidTerrainType(terrainType, this.world))
+			throw new IllegalArgumentException("Invalid terrain type");
+		this.position = position;
+		this.terrainType = terrainType;
+	}
+	
+	/*
+	 * Initialise this new cube with given position, given world en terrain type air.
+	 * @param position
+	 * 		The position of this new cube.
+	 * @param world
+	 * 		The world of this cube.
+	 * @effect This new cube is initialised with the given position and world 
+	 * 			and terrain type air.
+	 * 		| this(position, 0, world)
+	 */
+	public Cube(List<Integer> position, World world){
+		this(position, 0, world);
+	}
+	/*
+	 * Return the world of this cube
+	 */
+	@Basic @Raw @Immutable
+	public World getWorld(){
+		return this.world;
+	}
+	
+	/*
+	 * Check whether the given world is a valid world for any cube.
+	 * @param world
+	 * 		The world to check.
+	 * @return True if and only if the given world is not null.
+	 * 		| result == (world != 0)
+	 */
+	public static boolean isValidWorld(World world){
+		return (world != null);
+	}
+	
+	/*
+	 * Variable referencing the world of this cube.
+	 */
+	private final World world;
+	
+	/* 
+	 * Return the position of this cube
+	 */
+	@Basic @Raw @Immutable
+	public List<Integer> getPosition(){
+		return this.position;
+	}
+	
+	/*
+	 *Check whether the given position is a valid position for this cube. 
+	 *@param position
+	 *		The position to check.
+	 *@return True if and only if the position is inside the world of this cube.
+	 *		| result == world.isCubeInWorld()
+	 */
+	public static boolean isValidPosition(List<Integer> position, World world){
+		return world.isCubeInWorld(position);
+	}
+	
+	/*
+	 * Variable referencing the position of this Cube.
+	 */
+	private final List<Integer> position;
+	
+	/*
+	 * Return the terrain type of this cube.
+	 */
+	@Basic @Raw @Immutable
+	public int getTerrainType(){
+		return this.terrainType;
+	}
+	
+	/*
+	 * Check whether the given terrain type is a valid terrain type for any cube.
+	 * @param terrainType
+	 * 		The terrain type to check
+	 * @return True if and only of the terrain type is an effective terrain type.
+	 * 		| result == world.isValidTerrainType
+	 */
+	public static boolean isValidTerrainType(int terrainType, World world){
+		return world.isValidTerrainType(terrainType);
+	}
+	
+	/*
+	 * Variable referencing the terrain type of this cube.
+	 */
+	private final int terrainType;
+	
+	/*
+	 * Return the centre of this cube.
+	 * @return The resulting vector point to the middle of this cube.
+	 */
+	public Vector getCenterOfCube(){
+		return new Vector(getPosition().get(0) + 0.5, 
+							getPosition().get(1) + 0.5, 
+							getPosition().get(2) + 0.5);
+	}
+	
+	/*
+	 * Return the adjenct cubes of this cube.
+	 * @return The cubes adjenct to this cube.
+	 */
+	public Set<Cube> getNeighbourCubes(){
+		Integer[] thisCube = {getPosition().get(0),getPosition().get(1),getPosition().get(2)};
+		Set<Cube> neighbourCubes = new HashSet<Cube>();
+		for (int x=-1; x!=2; x++){
+			for (int y=-1; y!=2; y++){
+				for (int z=-1; z!=2; z++){
+					Integer[] offset = {x,y,z};
+					List<Integer> neighbour = Arrays.asList(Vector.sum(thisCube, offset));
+					if (world.isCubeInWorld(neighbour)){
+						neighbourCubes.add(getWorld().getCube(neighbour));
+					}
+				}
+			}
+		}
+		neighbourCubes.remove(thisCube);
+		return neighbourCubes;
+	}
+	
+	/*
+	 * Variable referring the to offsets of direct adjenct neighbours.
+	 */
+	private final Integer[][] directAdjacentOffsets = new Integer[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
+		{ 0, -1, 0 }, { 0, +1, 0 },{ 0, 0, -1 }, { 0, 0, +1 } };
+	
+	/*
+	 * Return the directly adjenct cubes of this cube
+	 * @return The cubes directly adjenct to this cube.
+	 */
+	public Set<Cube> getDirectAdjenctCubes(){
+		Integer[] thisCube = {getPosition().get(0),getPosition().get(1),getPosition().get(2)};
+		Set<Cube> directAdjectCubes = new HashSet<>();
+		for (Integer[] offset : directAdjacentOffsets){
+			List<Integer> directAdject = Arrays.asList(Vector.sum(thisCube, offset));
+			if (world.isCubeInWorld(directAdject)){
+				directAdjectCubes.add(getWorld().getCube(directAdject));
+			}
+		}
+		return directAdjectCubes;
+	}
+	
+	/*
+	 * Return a textual representation of this cube
+	 * 
+	 * @return A string consisting of a textual representation of the position
+	 * 			enclosed in square brackets.
+	 */
+	@Override
+	public String toString(){
+		return "["+getPosition().get(0)+", "
+				  +getPosition().get(0)+", "
+				  +getPosition().get(0)+", "+"]";
+	}
+	
+	/* Check whether this cube is equal to the given object.
+	 * @return True if and only if the given object is effective,
+	 * 		   if this cube and the given object belong to the same class,
+	 * 		   and if this cube and the given object have the same position.
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other.getClass() != this.getClass())
+			return false;
+		Cube otherCube = (Cube)other; 
+		return getPosition() == otherCube.getPosition();
+	}
+	
+	/*
+	 * Returns the hash code of this cube.
+	 */
+	@Override
+	public int hashCode(){
+		return this.position.hashCode();
+	}
+	
+	/*
+	 * Returns the centre of this cube.
+	 * @return
+	 * 		| new Vector(getPosition().get(0) + 0.5,
+	 * 					 getPosition().get(1) + 0.5,
+	 * 					 getPosition().get(2) + 0.5)
+	 */
+	public Vector getCentreOfCube(){
+		return new Vector(getPosition().get(0) + 0.5,
+						  getPosition().get(1) + 0.5,
+						  getPosition().get(2) + 0.5);
+	}
+	
+	
+}
+

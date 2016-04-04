@@ -23,18 +23,7 @@ public class Vector {
 		setXcoord(coordX); //TODO Is hetzelfde als setVector
 		setYcoord(coordY);
 		setZcoord(coordZ);
-	}
-	
-	private Vector(double[] position){
-		this.setXcoord(position[0]);
-		this.setYcoord(position[1]);
-		this.setZcoord(position[2]);
-	}
-	
-	private Vector(List<Integer> cube){
-		this.setXcoord(cube.get(0));
-		this.setYcoord(cube.get(1));
-		this.setZcoord(cube.get(2));
+		
 	}
 	
 	
@@ -58,7 +47,7 @@ public class Vector {
 		return vectorArray;
 	}
 	
-	public List<Integer> getIntCube(){
+	public Cube getCube(){
 		List<Integer> cubeArray = new ArrayList<>();
 		cubeArray.add((int) this.getXCoord());
 		cubeArray.add((int) this.getYCoord());
@@ -110,30 +99,6 @@ public class Vector {
 		}
 		return neighbourForAtleastOneComponent;
 	}
-	
-	private final int[][] directAdjacentOffsets = new int[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
-		{ 0, -1, 0 }, { 0, +1, 0 },{ 0, 0, -1 }, { 0, 0, +1 } };
-		
-		List<int[]> shuffledOffsets = new ArrayList<>(Arrays.asList(directAdjacentOffsets));
-		
-	private Set<List<Integer>> getDirectAdjenctCubes(List<Integer> coord) {
-		List<int[]> shuffledOffsets = new ArrayList<>(Arrays.asList(directAdjacentOffsets));
-		Collections.shuffle(shuffledOffsets);
-		return shuffledOffsets.stream().map(
-				offset -> Arrays.asList(coord.get(0) + offset[0], 
-						coord.get(1) + offset[1], coord.get(2) + offset[2])).collect(Collectors.toList()));
-	}
-	
-	public static Set<List<Integer>> getDirectAdjenctCubes(List<Integer> thisCube, World world){
-		Set<List<Integer>> directAdjectCubes = new HashSet<>();
-		for (List<Integer> offset : directAdjacentOffsets){
-			List<Integer> directAdject = Vector.sum(thisCube, offset);
-			if (world.isCubeInWorld(directAdject)){
-				directAdjectCubes.add(directAdject);
-			}
-		}
-		return directAdjectCubes;
-	}
 		
 	public static Set<List<Integer>> filterPassableCubes(Set<List<Integer>> unfilterdCubes, World world){
 		Set<List<Integer>> remainingCubes = new HashSet<>();
@@ -159,23 +124,6 @@ public class Vector {
 		    	return false;
 		}
 		return neighbourForAtleastOneComponent;
-	}
-	
-	public static Set<List<Integer>> getNeighbourCubes(List<Integer> thisCube, World world){
-		Set<List<Integer>> neighbourCubes = new HashSet<List<Integer>>();
-		for (int x=-1; x!=2; x++){
-			for (int y=-1; y!=2; y++){
-				for (int z=-1; z!=2; z++){
-					List<Integer> offset = {x,y,z};
-					List<Integer> neighbourCube = Vector.sum(thisCube, offset);
-					if (world.isCubeInWorld(neighbourCube)){
-						neighbourCubes.add(Vector.sum(thisCube, offset));
-					}
-				}
-			}
-		}
-		neighbourCubes.remove(thisCube);
-		return neighbourCubes;
 	}
 
 	/**
@@ -227,20 +175,16 @@ public class Vector {
 		return (it.getYCoord() - comparedTo.getYCoord());
 	}
 	
-	public static Vector getCentreOfCube(List<Integer> cube){
-		return new Vector(cube.get(0)+0.5, cube.get(1)+0.5, cube.get(2)+0.5);
-	}
-	
 	public static Vector sum(Vector vector1, Vector vector2){
 		return new Vector(vector1.compX + vector2.compX, 
 				vector1.compY + vector2.compY,
 				vector1.compZ + vector2.compZ);
 	}
 	
-	private static List<Integer> sum(List<Integer> thisCube, List<Integer> otherCube){
-		List<Integer> result = {thisCube.get(0) + otherCube.get(0), 
-						thisCube.get(1) + otherCube.get(1),
-						thisCube.get(2) + otherCube.get(2)};
+	public static Integer[] sum(Integer[] thisCube, Integer[] otherCube){
+		Integer[] result = {thisCube[0] + otherCube[0], 
+						thisCube[1] + otherCube[1],
+						thisCube[2] + otherCube[2]};
 		return result;
 	}
 	
@@ -267,7 +211,7 @@ public class Vector {
 	}
 	
 	public static Vector getOneCubeCloserToCube(Vector currentPosition, List<Integer> target){
-		List<Integer> currentCube = currentPosition.getIntCube();
+		Cube currentCube = currentPosition.getIntCube();
 		List<Integer> difference = new int[3];
 		for (int i=0; i != 3; i++){
 			if (currentCube[i] == target[i])

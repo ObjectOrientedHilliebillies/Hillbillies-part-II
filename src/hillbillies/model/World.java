@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
@@ -17,24 +18,27 @@ import jdk.nashorn.internal.ir.BreakableNode;
 
 public class World {
 	/**
-	 * Initialize this new world with given terrain.
+	 * Initialise this new world with given terrain.
 	 * 
 	 * @param  terrainTypes
 	 *         The terrain of this new world.
 	 **/         
 	private ConnectedToBorder connectedToBorder;
-	public World(List<Integer>[][] initialTerrainTypes, TerrainChangeListener givenModelListener){
+	public World(int[][][] initialTerrainTypes, TerrainChangeListener givenModelListener){
 		NbCubesX = initialTerrainTypes.length;
 		NbCubesY = initialTerrainTypes[0].length;
 		NbCubesZ = initialTerrainTypes[0][0].length;
-		
-		this.terrainTypes = new int[NbCubesX][NbCubesY][NbCubesZ];
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					terrainTypes[x][y][z] = initialTerrainTypes[x][y][z];
+					ArrayList<Integer> position = new ArrayList<>();
+					position.add(x);
+					position.add(y);
+					position.add(z);
+					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
+					terrainTypes.get(x).get(y).set(z, cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -73,14 +77,46 @@ public class World {
 		return true;
 	}
 	
-	boolean isCubeInWorld(List<Integer> cube){
-		if (cube[0] < 0 || cube[0] >= NbCubesX
-			|| cube[1] < 0 || cube[1] >= NbCubesY
-			|| cube[2] < 0 || cube[2] >= NbCubesZ){
+	/*
+	 * Check whether the given position of a cube is inside this world.
+	 * @param cubePosition
+	 * 		The position of a cube to check.
+	 * @return True if and only if the given position is inside this world.
+	 * 		| result != (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
+			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
+			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
+	 */
+	boolean isCubeInWorld(List<Integer> cubePosition){
+		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
+			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
+			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
 			return false;
 		}
 		return true;
 	}
+	
+	/*
+	 * Check whether the given terrain type is a valid terrain type.
+	 * @param terrainType
+	 * 		The terrain type to check.
+	 * @return True if and only if the given terrain type is an effective terrain type.
+	 * 		| result == terrainType >=0 && terrainType <=3
+	 */
+	public boolean isValidTerrainType (int terrainType){
+		return (terrainType >=0 && terrainType <=3);
+	}
+	
+	/*
+	 * Return the cube at the given position.
+	 * @param position
+	 * 		The position of the requested cube.
+	 * @return the cube at the given position.
+	 */
+	public Cube getCube(List<Integer> position){
+		return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
+	}
+	
+	
 	
 	public boolean isPassable(Vector position){
 		if (isSolid(position.getIntCube())){
@@ -95,10 +131,12 @@ public class World {
 	 * 1: Rock
 	 * 2: Wood
 	 * 3: Workshop
+	 * 
+	 * Variable referencing the terrain of this world.
 	 */
-	private List<Integer>[][] terrainTypes; 
+	private List<List<List<Cube>>> terrainTypes = new ArrayList<>(); 
 	
-	public boolean isSolid(List<Integer> cube){
+	public boolean isSolid(Cube cube){
 		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
 		if (terrainType != 1 && terrainType != 2){
 			return false;
@@ -106,17 +144,13 @@ public class World {
 		return true;
 	}
 	
-	private int getTerrainType(Vector cube){
+	private int getTerrainType(Cube cube){
 		List<Integer> cubeArray = cube.getIntCube();
 		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
 	}
 	
-	public int getTerrainType(List<Integer> cube){
+	public int getTerrainType(Cube cube){
 		return terrainTypes[cube[0]][cube[1]][cube[2]];
-	}
-	
-	private boolean isValidTerrainType (int terrainType){
-		return (terrainType >=0 && terrainType <=3);
 	}
 	
 	public void setTerrainType(List<Integer> cube, int terrainType){
@@ -181,12 +215,8 @@ public class World {
 	 */
 	private Set<Log> logs = new HashSet<>();
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public boolean isWorkshopWithLogAndBoulder(int[] cube){
-=======
-	public boolean isWorkshopWithLogAndBoulder(List<Integer> cube){
->>>>>>> refs/remotes/origin/PathfindingTryout
+
+	public boolean isWorkshopWithLogAndBoulder(Cube cube){
 		if (this.getTerrainType(cube) != 3){
 			return false;
 		}
