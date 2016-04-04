@@ -36,6 +36,7 @@ import java.util.ArrayList;
 //Dodge: dodge to passable terrain.
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.experimental.theories.Theories;
@@ -319,7 +320,9 @@ public double[] getDoublePosition() {
  */
 @Raw
 private void setPosition(Vector position){
-	if (this.world != null && !this.world.isPositionInWorld(position))
+	if (this.world == null)
+		throw new ClassCastException();
+	if (!this.world.isPositionInWorld(position) || !isValidPositionForUnit())
 		throw new IllegalArgumentException();
 	this.position = position;
 }
@@ -1662,17 +1665,22 @@ private void defenseAgainst(Unit attacker) {
 	
 	if (Math.random() <  dodgeChance){
 		this.setExperience(this.getExperience() + 20);
-		Cube randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
-		Vector newPosition = Vector.getCentreOfCube(randomCube);
-
-		this.increaseExperience(20);
-		try {
-			this.setPosition(newPosition);
-		} catch (IllegalArgumentException e) {
-			System.out.println("This chould never fail");
+		
+		List<Cube> randomCubesList = new ArrayList<Cube>();
+		randomCubesList.addAll(this.getCube().getNeighbourCubes());
+		Collections.shuffle(randomCubesList);
+		
+		for (Cube cube : randomCubesList){
+			Vector newPosition = cube.getCentreOfCube();
+			try {
+				this.setPosition(newPosition);
+				break;
+			} catch (IllegalArgumentException e) {
+			}
 		}
 		this.face(attacker.getPosition());
 		attacker.face(this.getPosition());
+		this.increaseExperience(20);
 	}
 	else if (!(Math.random() < blockChance)) {
 		this.increaseExperience(20);
@@ -1798,14 +1806,14 @@ private void doDefaultBehavior(){
 	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
-			Cube newTargetCube = new ArrayCube();		
-			for (int i=0; i != 3; i++){
-				newTargetCube.add((int) (Math.random() * 50));
-				}
+			Cube newTargetCube = world.generateRandomAccessibleCube
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
-			this.workAt(this.position.getRandomAdjacentCubeInWorld(this.world));
+			List<Cube> randomCubesList = new ArrayList<Cube>();
+			randomCubesList.addAll(this.getCube().getNeighbourCubes());
+			Collections.shuffle(randomCubesList);
+			this.workAt(randomCubesList.get(0));
 		}else if (randomActivity == 2 && 
 				(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 			this.rest();

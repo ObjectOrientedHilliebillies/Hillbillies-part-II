@@ -179,6 +179,11 @@ public class Cube{
 	}
 	
 	/**
+	 * Return a random cube that is adjenct to this cube.
+	 * @return A random adjenct cube that is adjencto to this cube.
+	 */
+	
+	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.
 	 */
 	private final Integer[][] directAdjacentOffsets = new Integer[][] { { -1, 0, 0 }, { +1, 0, 0 }, 
