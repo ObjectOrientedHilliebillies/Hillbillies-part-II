@@ -445,7 +445,7 @@ public class World {
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
 				Faction newFaction =  new Faction(this);
-				this.addFaction(newFaction);
+				//this.addFaction(newFaction);
 				newFaction.addUnit(unit);
 			} else {
 				this.getSmallestFaction().addUnit(unit);
