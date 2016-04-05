@@ -200,8 +200,12 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 Cube cube = {x,y,z};
-					 this.collapseIfFloating(cube);
+					List<Integer> cubeList = new ArrayList<>();
+					cubeList.add(x);
+					cubeList.add(y);
+					cubeList.add(z);
+					Cube cube = new Cube(cubeList, this);
+					this.collapseIfFloating(cube);
 				}
 			}
 		}
@@ -266,7 +270,7 @@ public class World {
 	private List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
-			if(Vector.equals(material.getPosition().getEnclosingCube(), cube)){
+			if(material.getPosition().getEnclosingCube(this).equals(cube)){
 	        	foundMaterials.add(material); 
 			}
         }
