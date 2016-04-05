@@ -1,5 +1,6 @@
 package hillbillies.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -54,11 +55,13 @@ public class Cube{
 			throw new ClassCastException("Non-effective world");
 		this.world = world;
 		
-		if (!isValidPosition(position, this.world))
+		List<Integer> coordinate = new ArrayList<>(position);
+		
+		if (!isValidPosition(coordinate, this.world))
 			throw new IllegalArgumentException("Invalid Position");
 		if (!isValidTerrainType(terrainType, this.world))
 			throw new IllegalArgumentException("Invalid terrain type");
-		this.position = position;
+		this.position = coordinate;
 		this.terrainType = terrainType;
 	}
 	
@@ -194,8 +197,9 @@ public class Cube{
 	
 	/**
 	 * Return a random cube that is adjenct to this cube.
-	 * @return A random adjenct cube that is adjencto to this cube.
+	 * @return A random adjenct cube that is adjenct to this cube.
 	 */
+	
 	
 	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.

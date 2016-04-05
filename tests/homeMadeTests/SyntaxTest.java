@@ -11,8 +11,13 @@ public class SyntaxTest {
 	
 	@Test
 	public final void test(){
-		int[] test = new int[3];
-		test.h
+		
+	}
+	
+	private List<Integer> attributeOfObject;
+	
+	public void object(List<Integer> attribute){
+		
 	}
 
 }

@@ -200,8 +200,11 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 Cube cube = {x,y,z};
-					 this.collapseIfFloating(cube);
+					 List<Integer> cubeList = new ArrayList<>();
+					 cubeList.add(x);
+					 cubeList.add(y);
+					 cubeList.add(z);
+					 this.collapseIfFloating(getCube(cubeList));
 				}
 			}
 		}
@@ -216,6 +219,11 @@ public class World {
 	 * Set registering all logs in this world.
 	 */
 	private Set<Log> logs = new HashSet<>();
+	
+	/**
+	 * Set registering all boulders in this world.
+	 */
+	private Set<Boulder> boulders = new HashSet<>();
 	
 
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
@@ -267,7 +275,7 @@ public class World {
 	private List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
-			if(Vector.equals(material.getPosition().getEnclosingCube(), cube)){
+			if(material.getPosition().getEnclosingCube(this).equals(cube)){
 	        	foundMaterials.add(material); 
 			}
         }
@@ -442,8 +450,15 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		Cube initialCube = {10,9,12}; 
-		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
+		Vector initialPosition;
+		do{
+		List<Integer> initialCubeList = new ArrayList<>();
+		initialCubeList.add((int) (Math.random() * getNbCubesX()));
+		initialCubeList.add((int) (Math.random() * getNbCubesY()));
+		initialCubeList.add((int) (Math.random() * getNbCubesZ()));
+		initialPosition = (new Cube(initialCubeList, this)).getCenterOfCube(); 
+		}while (initialPosition.hasSupportOfSolidUnderneath(this));
+		Unit newUnit =  new Unit("Harry", initialPosition, enableDefaultBehavior, this); //TODO name not final
 		this.addUnit(newUnit);
 		return newUnit;
 	}
@@ -527,9 +542,9 @@ public class World {
 		while (openSet.size() != 0 && stop != 10){
 			stop = stop+1;
 //	        current := the node in openSet having the lowest fScore[] value
-			List<Integer> currentNode = new ArrayList<>();
+			Cube currentNode = null;
 			Double lowestF = null;
-			for (List<Integer> node : openSet){
+			for (Cube node : openSet){
 				if (lowestF == null){
 					currentNode = node;
 					lowestF = fScore.get(node);
@@ -548,11 +563,11 @@ public class World {
 //	        closedSet.Add(current)
 			closedSet.add(currentNode);
 //	        for each neighbor of current
-			Set<List<Integer>> accessibleNeigbours = this.getAccessibleNeigbours(currentNode);
-			for (List<Integer> neighbour : accessibleNeigbours){
+			Set<Cube> accessibleNeigbours = this.getAccessibleNeigbours(currentNode);
+			for (Cube neighbour : accessibleNeigbours){
 //	            if neighbor in closedSet
 				if (closedSet.contains(neighbour)){
-					System.out.println("neigbour skiped = " + Arrays.toString(neighbour));
+					System.out.println("neigbour skiped = " + neighbour.toString());
 	                continue;		// Ignore the neighbor which is already evaluated.
 				}
 	            // The distance from start to a neighbor
@@ -595,19 +610,15 @@ public class World {
 	}
 
 	private Set<Cube> getAccessibleNeigbours (Cube cube){
-		Set<Cube> neighbours = Vector.getNeighbourCubes(cube, this);
-		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
+		Set<Cube> neighbours = cube.getNeighbourCubes();
+		neighbours.removeAll(filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();
 		for (Cube neighbour: neighbours){
-			if (Vector.hasSupportOfSolid(neighbour, this)){
+			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
 				accessibleNeighbours.add(neighbour);
 			}
 		}
 		return accessibleNeighbours;
-	}
-	
-	private List<Integer> asList(List<Integer> array){
-		return Arrays.asList(array[0], array[1], array[2]);
 	}
 }
 
