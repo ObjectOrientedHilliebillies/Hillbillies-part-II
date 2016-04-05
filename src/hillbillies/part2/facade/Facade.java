@@ -13,6 +13,7 @@ import hillbillies.model.Vector;
 import hillbillies.model.World;
 import hillbillies.part2.listener.TerrainChangeListener;
 import ogp.framework.util.ModelException;
+import sun.java2d.cmm.kcms.KcmsServiceProvider;
 
 public class Facade implements IFacade {
 
@@ -238,22 +239,30 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-		int[] cube = {x,y,z};
-		return world.getTerrainType(cube);
+		List<Integer> cubeList = new ArrayList<>();
+		cubeList.add(x);
+		cubeList.add(y);
+		cubeList.add(z);
+		return world.getCube(cubeList).getTerrainType();
 
 	}
 
 	@Override
 	public void setCubeType(World world, int x, int y, int z, int value) throws ModelException {
-		int[] cube = {x,y,z};
-		world.setTerrainType(cube, value);
-
+		List<Integer> cubeList = new ArrayList<>();
+		cubeList.add(x);
+		cubeList.add(y);
+		cubeList.add(z);
+		world.setTerrainType(world.getCube(cubeList), value);
 	}
 
 	@Override
 	public boolean isSolidConnectedToBorder(World world, int x, int y, int z) throws ModelException {
-		int[] cube = {x,y,z};
-		return world.isSolidConnectedToBorder(cube);
+		List<Integer> cubeList = new ArrayList<>();
+		cubeList.add(x);
+		cubeList.add(y);
+		cubeList.add(z);
+		return world.isSolidConnectedToBorder(world.getCube(cubeList));
 	}
 
 	@Override
@@ -297,9 +306,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public void workAt(Unit unit, int x, int y, int z) throws ModelException {
-		int[] cube = {x,y,z};
+		List<Integer> cubeList = new ArrayList<>();
+		cubeList.add(x);
+		cubeList.add(y);
+		cubeList.add(z);
 		try{
-		unit.workAt(cube);
+		unit.workAt(unit.getWorld().getCube(cubeList));
 		}catch (IllegalArgumentException e){
 			throw new ModelException();
 		}

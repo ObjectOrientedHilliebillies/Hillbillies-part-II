@@ -1,5 +1,6 @@
 package hillbillies.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +59,7 @@ public class Cube{
 			throw new IllegalArgumentException("Invalid Position");
 		if (!isValidTerrainType(terrainType, this.world))
 			throw new IllegalArgumentException("Invalid terrain type");
-		this.position = position;
+		this.position = new ArrayList<>(position);
 		this.terrainType = terrainType;
 	}
 	
@@ -128,7 +129,7 @@ public class Cube{
 	 *		| result == world.isCubeInWorld()
 	 */
 	public static boolean isValidPosition(List<Integer> position, World world){
-		return world.isCubeInWorld(new Cube(position, world));
+		return world.isCubeInWorld(position);
 	}
 	
 	/**
@@ -175,27 +176,30 @@ public class Cube{
 	 * @return The cubes adjenct to this cube.
 	 */
 	public Set<Cube> getNeighbourCubes(){
-		Integer[] thisCube = {getPosition().get(0),getPosition().get(1),getPosition().get(2)};
+		List<Integer> thisCube = new ArrayList<>(getPosition());
 		Set<Cube> neighbourCubes = new HashSet<Cube>();
 		for (int x=-1; x!=2; x++){
+			thisCube.set(0, getPosition().get(0) + x); 
 			for (int y=-1; y!=2; y++){
+				thisCube.set(1, getPosition().get(1) + y); 
 				for (int z=-1; z!=2; z++){
-					Integer[] offset = {x,y,z};
-					List<Integer> neighbour = Arrays.asList(Vector.sum(thisCube, offset));
-					if (world.isCubeInWorld(new Cube(neighbour, getWorld()))){
-						neighbourCubes.add(getWorld().getCube(neighbour));
+					thisCube.set(2, getPosition().get(2) + z); 
+					Cube neighbour = getWorld().getCube(thisCube);
+					if (neighbour != null){
+						neighbourCubes.add(neighbour);
 					}
 				}
 			}
 		}
-		neighbourCubes.remove(thisCube);
+		neighbourCubes.remove(this);
 		return neighbourCubes;
 	}
 	
 	/**
 	 * Return a random cube that is adjenct to this cube.
-	 * @return A random adjenct cube that is adjencto to this cube.
+	 * @return A random adjenct cube that is adjenct to this cube.
 	 */
+	
 	
 	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.
@@ -212,7 +216,7 @@ public class Cube{
 		Set<Cube> directAdjectCubes = new HashSet<>();
 		for (Integer[] offset : directAdjacentOffsets){
 			List<Integer> directAdject = Arrays.asList(Vector.sum(thisCube, offset));
-			if (world.isCubeInWorld(new Cube(directAdject, getWorld()))){
+			if (world.isCubeInWorld(directAdject)){
 				directAdjectCubes.add(getWorld().getCube(directAdject));
 			}
 		}
@@ -266,8 +270,8 @@ public class Cube{
 	@Override
 	public String toString(){
 		return "["+getPosition().get(0)+", "
-				  +getPosition().get(0)+", "
-				  +getPosition().get(0)+", "+"]";
+				  +getPosition().get(1)+", "
+				  +getPosition().get(2)+"]";
 	}
 	
 	/** 

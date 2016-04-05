@@ -202,15 +202,12 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	this.getWorld().addUnit(this);
 }
 
-public Unit(String name, int[] initialCube, boolean enableDefaultBehavior, World world){
+public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, World world){
 	this.world = world;
 	this.setName("Name");  //FIXME not final!
 	
 	try {
-		Vector position = new Vector(initialCube[0]+0.5, 
-				 initialCube[1]+0.5, 
-				 initialCube[2]+0.5);
-		this.setPosition(position);
+		this.setPosition(initialPosition);
 	} catch (IllegalArgumentException e) {
 		e.printStackTrace();
 	}
@@ -325,7 +322,7 @@ public double[] getDoublePosition() { //TODO private?
 private void setPosition(Vector position){
 	if (this.world == null)
 		throw new ClassCastException();
-	if (!this.world.isPositionInWorld(position) || !isValidPositionForUnit())
+	if (!this.world.isPositionInWorld(position))
 		throw new IllegalArgumentException();
 	this.position = position;
 }
@@ -1850,7 +1847,7 @@ private void doDefaultBehavior(){
 private int fellFrom;
 private final static Vector fallSpeed = new Vector(0, 0, -3);
 
-private void falling(){
+private void falling(){ // FIXME materials can fall to (but not yet)
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");

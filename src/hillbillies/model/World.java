@@ -2,18 +2,13 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
-
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
-import jdk.nashorn.internal.ir.BreakableNode;
 
 
 public class World {
@@ -30,15 +25,20 @@ public class World {
 		NbCubesZ = initialTerrainTypes[0][0].length;
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
+		ArrayList<Integer> position = new ArrayList<>();
+		position.add(0);
+		position.add(0);
+		position.add(0);
 		for (int x=0 ; x != NbCubesX ; x++){
+			position.set(0, x);
+			terrainTypes.add(new ArrayList<>());
 			for (int y=0 ; y != NbCubesY; y++){
+				position.set(1, y);
+				terrainTypes.get(x).add(new ArrayList<>());
 				for  (int z=0 ; z != NbCubesZ; z++){
-					ArrayList<Integer> position = new ArrayList<>();
-					position.add(x);
-					position.add(y);
-					position.add(z);
+					position.set(2, z);
 					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
-					terrainTypes.get(x).get(y).set(z, cube);
+					terrainTypes.get(x).get(y).add(cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -86,8 +86,7 @@ public class World {
 			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
 	 */
-	boolean isCubeInWorld(Cube Cube){
-		List<Integer> cubePosition = Cube.getPosition();
+	boolean isCubeInWorld(List<Integer> cubePosition){
 		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
 			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
@@ -117,7 +116,7 @@ public class World {
 	public Cube getCube(List<Integer> position){
 		try{
 			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
-		} catch (IllegalArgumentException e) {
+		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
 	}
@@ -200,12 +199,20 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
+<<<<<<< HEAD
 					List<Integer> cubeList = new ArrayList<>();
 					cubeList.add(x);
 					cubeList.add(y);
 					cubeList.add(z);
 					Cube cube = new Cube(cubeList, this);
 					this.collapseIfFloating(cube);
+=======
+					 List<Integer> cubeList = new ArrayList<>();
+					 cubeList.add(x);
+					 cubeList.add(y);
+					 cubeList.add(z);
+					 this.collapseIfFloating(getCube(cubeList));
+>>>>>>> refs/remotes/origin/VictorLaptop
 				}
 			}
 		}
@@ -220,6 +227,15 @@ public class World {
 	 * Set registering all logs in this world.
 	 */
 	private Set<Log> logs = new HashSet<>();
+<<<<<<< HEAD
+=======
+	
+	/**
+	 * Set registering all boulders in this world.
+	 */
+	private Set<Boulder> boulders = new HashSet<>();
+	
+>>>>>>> refs/remotes/origin/VictorLaptop
 
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
 		if (cube.getTerrainType() != 3){
@@ -445,8 +461,15 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		Cube initialCube = {10,9,12}; 
-		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
+		Vector initialPosition;
+		do{
+		List<Integer> initialCubeList = new ArrayList<>();
+		initialCubeList.add((int) (Math.random() * getNbCubesX()));
+		initialCubeList.add((int) (Math.random() * getNbCubesY()));
+		initialCubeList.add((int) (Math.random() * getNbCubesZ()));
+		initialPosition = (new Cube(initialCubeList, this)).getCenterOfCube(); 
+		}while (initialPosition.hasSupportOfSolidUnderneath(this));
+		Unit newUnit =  new Unit("Harry", initialPosition, enableDefaultBehavior, this); //TODO name not final
 		this.addUnit(newUnit);
 		return newUnit;
 	}
@@ -547,9 +570,9 @@ public class World {
 		while (openSet.size() != 0 && stop != 10){
 			stop = stop+1;
 //	        current := the node in openSet having the lowest fScore[] value
-			List<Integer> currentNode = new ArrayList<>();
+			Cube currentNode = null;
 			Double lowestF = null;
-			for (List<Integer> node : openSet){
+			for (Cube node : openSet){
 				if (lowestF == null){
 					currentNode = node;
 					lowestF = fScore.get(node);
@@ -558,23 +581,34 @@ public class World {
 					lowestF = fScore.get(node);
 				}
 			}
+			System.out.println("Chosen node"+ currentNode.toString());
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)
+			System.out.println("openSet length before"+ openSet.size());
 			openSet.remove(currentNode);
+			System.out.println("openSet length after"+ openSet.size());
 //	        closedSet.Add(current)
 			closedSet.add(currentNode);
+			String print = "";
+			for (Cube s : closedSet){
+				print += s.toString() + "/t";
+			}
+			System.out.println(print);
+			System.out.println(closedSet.contains(currentNode));
 //	        for each neighbor of current
-			Set<List<Integer>> accessibleNeigbours = this.getAccessibleNeigbours(currentNode);
-			for (List<Integer> neighbour : accessibleNeigbours){
+			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
+			System.out.println(accessibleNeigbours.contains(currentNode));
+			for (Cube neighbour : accessibleNeigbours){
 //	            if neighbor in closedSet
 				if (closedSet.contains(neighbour)){
-					System.out.println("neigbour skiped = " + Arrays.toString(neighbour));
+					System.out.println("neigbour skiped = " + neighbour.toString());
 	                continue;		// Ignore the neighbor which is already evaluated.
 				}
+				System.out.println("neigbour not skiped = " + neighbour.toString());
 	            // The distance from start to a neighbor
 //	            tentative_gScore := gScore[current] + dist_between(current, neighbor)
 				double tentative_gScore = gScore.get(currentNode) + Vector.distanceBetween(currentNode, neighbour);
@@ -615,19 +649,15 @@ public class World {
 	}
 
 	private Set<Cube> getAccessibleNeigbours (Cube cube){
-		Set<Cube> neighbours = Vector.getNeighbourCubes(cube, this);
-		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
+		Set<Cube> neighbours = cube.getNeighbourCubes();
+		neighbours.removeAll(filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();
 		for (Cube neighbour: neighbours){
-			if (Vector.hasSupportOfSolid(neighbour, this)){
+			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
 				accessibleNeighbours.add(neighbour);
 			}
 		}
 		return accessibleNeighbours;
-	}
-	
-	private List<Integer> asList(List<Integer> array){
-		return Arrays.asList(array[0], array[1], array[2]);
 	}
 }
 
