@@ -2,18 +2,13 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
-
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
-import jdk.nashorn.internal.ir.BreakableNode;
 
 
 public class World {
@@ -30,15 +25,20 @@ public class World {
 		NbCubesZ = initialTerrainTypes[0][0].length;
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
+		ArrayList<Integer> position = new ArrayList<>();
+		position.add(0);
+		position.add(0);
+		position.add(0);
 		for (int x=0 ; x != NbCubesX ; x++){
+			position.set(0, x);
+			terrainTypes.add(new ArrayList<>());
 			for (int y=0 ; y != NbCubesY; y++){
+				position.set(1, y);
+				terrainTypes.get(x).add(new ArrayList<>());
 				for  (int z=0 ; z != NbCubesZ; z++){
-					ArrayList<Integer> position = new ArrayList<>();
-					position.add(x);
-					position.add(y);
-					position.add(z);
+					position.set(2, z);
 					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
-					terrainTypes.get(x).get(y).set(z, cube);
+					terrainTypes.get(x).get(y).add(cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -86,8 +86,7 @@ public class World {
 			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
 	 */
-	boolean isCubeInWorld(Cube Cube){
-		List<Integer> cubePosition = Cube.getPosition();
+	boolean isCubeInWorld(List<Integer> cubePosition){
 		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
 			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
@@ -117,7 +116,7 @@ public class World {
 	public Cube getCube(List<Integer> position){
 		try{
 			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
-		} catch (IllegalArgumentException e) {
+		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
 	}
@@ -408,7 +407,7 @@ public class World {
 	/**
 	 * Remove faction from this world.
 	 */
-	private void removeFaction(Faction faction) {
+	public void removeFaction(Faction faction) {
 		factions.remove(faction);
 	}
 	
@@ -553,23 +552,34 @@ public class World {
 					lowestF = fScore.get(node);
 				}
 			}
+			System.out.println("Chosen node"+ currentNode.toString());
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)
+			System.out.println("openSet length before"+ openSet.size());
 			openSet.remove(currentNode);
+			System.out.println("openSet length after"+ openSet.size());
 //	        closedSet.Add(current)
 			closedSet.add(currentNode);
+			String print = "";
+			for (Cube s : closedSet){
+				print += s.toString() + "/t";
+			}
+			System.out.println(print);
+			System.out.println(closedSet.contains(currentNode));
 //	        for each neighbor of current
-			Set<Cube> accessibleNeigbours = this.getAccessibleNeigbours(currentNode);
+			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
+			System.out.println(accessibleNeigbours.contains(currentNode));
 			for (Cube neighbour : accessibleNeigbours){
 //	            if neighbor in closedSet
 				if (closedSet.contains(neighbour)){
 					System.out.println("neigbour skiped = " + neighbour.toString());
 	                continue;		// Ignore the neighbor which is already evaluated.
 				}
+				System.out.println("neigbour not skiped = " + neighbour.toString());
 	            // The distance from start to a neighbor
 //	            tentative_gScore := gScore[current] + dist_between(current, neighbor)
 				double tentative_gScore = gScore.get(currentNode) + Vector.distanceBetween(currentNode, neighbour);
