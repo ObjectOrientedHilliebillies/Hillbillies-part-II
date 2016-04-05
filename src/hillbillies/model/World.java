@@ -77,16 +77,6 @@ public class World {
 		return true;
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public boolean isCubeInWorld(int[] cube){
-=======
-	boolean isCubeInWorld(List<Integer> cube){
->>>>>>> origin/master
-		if (cube[0] < 0 || cube[0] >= NbCubesX
-			|| cube[1] < 0 || cube[1] >= NbCubesY
-			|| cube[2] < 0 || cube[2] >= NbCubesZ){
-=======
 	/**
 	 * Check whether the given position of a cube is inside this world.
 	 * @param cubePosition
@@ -101,20 +91,11 @@ public class World {
 		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
 			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
->>>>>>> refs/remotes/origin/VictorLaptop
 			return false;
 		}
 		return true;
 	}
 	
-<<<<<<< HEAD
-	public boolean isPassable(Vector position){ //TODO Ik vind het vreemd dat isPassable Vector is en isSolid cube...
-		if (isSolid(position.getIntCube())){
-			System.out.println("Cube not passable");
-			return false;
-		}
-		return true;
-=======
 	/**
 	 * Check whether the given terrain type is a valid terrain type.
 	 * @param terrainType
@@ -124,7 +105,6 @@ public class World {
 	 */
 	public boolean isValidTerrainType (int terrainType){
 		return (terrainType >=0 && terrainType <=3);
->>>>>>> refs/remotes/origin/VictorLaptop
 	}
 	
 	/**
@@ -236,24 +216,9 @@ public class World {
 	 * Set registering all logs in this world.
 	 */
 	private Set<Log> logs = new HashSet<>();
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> origin/master
-	public boolean isWorkshopWithLogAndBoulder(int[] cube){
-=======
-	public boolean isWorkshopWithLogAndBoulder(List<Integer> cube){
->>>>>>> refs/remotes/origin/PathfindingTryout
-		if (this.getTerrainType(cube) != 3){
-=======
 
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
 		if (cube.getTerrainType() != 3){
->>>>>>> refs/remotes/origin/VictorLaptop
 			return false;
 		}
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
@@ -517,10 +482,7 @@ public class World {
 		}
 	}
 
-	/*Pathfinding*/
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
+	/*Pathfinding*/	
 	private Set<int[]> getAccessibleCubes(){
 		return this.accessibleCubes;
 	}
@@ -537,66 +499,8 @@ public class World {
 		return accessibleNeighbours;
 	}
 	
-//	public void findPath(int[] start, int[] goal){
-//    // The set of nodes already evaluated.
-//    closedSet := {}
-//    // The set of currently discovered nodes still to be evaluated.
-//    // Initially, only the start node is known.
-//    openSet := {start}
-//    // For each node, which node it can most efficiently be reached from.
-//    // If a node can be reached from many nodes, cameFrom will eventually contain the
-//    // most efficient previous step.
-//    cameFrom := the empty map
-//
-//    // For each node, the cost of getting from the start node to that node.
-//    gScore := map with default value of Infinity
-//    // The cost of going from start to start is zero.
-//    gScore[start] := 0 
-//    // For each node, the total cost of getting from the start node to the goal
-//    // by passing by that node. That value is partly known, partly heuristic.
-//    fScore := map with default value of Infinity
-//    // For the first node, that value is completely heuristic.
-//    fScore[start] := heuristic_cost_estimate(start, goal)
-//
-//    while openSet is not empty
-//        current := the node in openSet having the lowest fScore[] value
-//        if current = goal
-//            return reconstruct_path(cameFrom, goal)
-//
-//        openSet.Remove(current)
-//        closedSet.Add(current)
-//        for each neighbor of current
-//            if neighbor in closedSet
-//                continue		// Ignore the neighbor which is already evaluated.
-//            // The distance from start to a neighbor
-//            tentative_gScore := gScore[current] + dist_between(current, neighbor)
-//            if neighbor not in openSet	// Discover a new node
-//                openSet.Add(neighbor)
-//            else if tentative_gScore >= gScore[neighbor]
-//                continue		// This is not a better path.
-//
-//            // This path is the best until now. Record it!
-//            cameFrom[neighbor] := current
-//            gScore[neighbor] := tentative_gScore
-//            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-//
-//    return failure
-//	}	
-//    	
-//
-//function reconstruct_path(cameFrom, current)
-//    total_path := [current]
-//    while current in cameFrom.Keys:
-//        current := cameFrom[current]
-//        total_path.append(current)
-//    return total_path
-//    		
-    		
-=======
-	public List<List<Integer>> getPath(List<Integer> start, List<Integer> goal){
-=======
+
 	public List<Cube> getPath(Cube start, Cube goal){
->>>>>>> refs/remotes/origin/VictorLaptop
 		
     // The set of nodes already evaluated.
 		Set<Cube> closedSet = new HashSet<>();
@@ -705,7 +609,6 @@ public class World {
 	    }
 	    return total_path;
 	}
->>>>>>> origin/master
 
 	private Set<Cube> getAccessibleNeigbours (Cube cube){
 		Set<Cube> neighbours = Vector.getNeighbourCubes(cube, this);
