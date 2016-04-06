@@ -1806,7 +1806,7 @@ private void doDefaultBehavior(){
 	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
-			Cube newTargetCube = world.generateRandomAccessibleCube();
+			Cube newTargetCube = world.generateRandomValidPosition();
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
