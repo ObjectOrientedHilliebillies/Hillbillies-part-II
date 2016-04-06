@@ -281,7 +281,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-
+	public Set<Material> getMaterials() {
+		return this.materials;
+	}
+	
 	/**
 	 * Return all logs in this world.
 	 */
@@ -492,8 +495,12 @@ public class World {
 	
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
+		Set<Material> materialsInWorld = this.getMaterials();
 		for (Unit unit : unitsInWorld){
 			unit.advanceTime(dt);
+		}
+		for (Material material : materialsInWorld) {
+			material.advanceTime(dt);
 		}
 	}
 
@@ -535,13 +542,7 @@ public class World {
 		fScore.put(start, this.heuristic_cost_estimate(start, goal));
 		//fScore[start] := heuristic_cost_estimate(start, goal)
     //while openSet is not empty
-<<<<<<< HEAD
-		int stop = 0; // FIXME moet nog weg
-		while (openSet.size() != 0 && stop != 10){
-			stop = stop+1;
-=======
 		while (openSet.size() != 0){
->>>>>>> refs/remotes/origin/master
 //	        current := the node in openSet having the lowest fScore[] value
 			Cube currentNode = null;
 			Double lowestF = null;

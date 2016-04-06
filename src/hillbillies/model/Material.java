@@ -104,6 +104,7 @@ public class Material {
 		this.position = vector;
 	}
 	
+	//No documentation needed
 	public void advanceTime(double tickTime) {
 		if (!isValidTickTime(tickTime)){
 			throw new IllegalArgumentException();
@@ -114,15 +115,34 @@ public class Material {
 		this.falling();
 	}
 	
+	/**
+	 * Returns whether this unit is falling or not.
+	 */
 	private boolean isFalling() {
 		return this.falling;
 	}
 	
-	
+	/**
+	 * Variable registering whether this unit is falling or not.
+	 */
 	private boolean falling;
+	
+	/**
+	 * Variable registering the fall speed.
+	 */
 	private final static Vector fallSpeed = new Vector(0, 0, -3);
-
-	private void falling(){ // FIXME materials can fall to (but not yet)
+	
+	/**
+	 * If this material is not falling, check whether it should be falling 
+	 * 	and initiate the fall.
+	 * If this material is falling, check whether it should stop falling
+	 * 	and stop the fall.
+	 * 
+	 * @post if this material was falling and had a solid block underneath, 
+	 * 		it is not falling anymore. If this material was not falling and
+	 * 		hadn't a solid block underneath, it is falling.
+	 */
+	private void falling(){
 		if (!this.isFalling()){
 			if (!this.position.hasSupportOfSolidUnderneath(this.getWorld())){
 				System.out.println("Material started falling");
@@ -138,7 +158,9 @@ public class Material {
 			}}
 		}
 	
-	
+	/**
+	 * Return the cube this material is in.
+	 */
 	private Cube getCube() {
 		List<Integer> cubeCoord = new ArrayList<>();
 		cubeCoord.add((int) getPosition().getXCoord());
