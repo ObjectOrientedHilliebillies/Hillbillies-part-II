@@ -199,11 +199,20 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
+<<<<<<< HEAD
+					List<Integer> cubeList = new ArrayList<>();
+					cubeList.add(x);
+					cubeList.add(y);
+					cubeList.add(z);
+					Cube cube = new Cube(cubeList, this);
+					this.collapseIfFloating(cube);
+=======
 					 List<Integer> cubeList = new ArrayList<>();
 					 cubeList.add(x);
 					 cubeList.add(y);
 					 cubeList.add(z);
 					 this.collapseIfFloating(getCube(cubeList));
+>>>>>>> refs/remotes/origin/VictorLaptop
 				}
 			}
 		}
@@ -218,12 +227,15 @@ public class World {
 	 * Set registering all logs in this world.
 	 */
 	private Set<Log> logs = new HashSet<>();
+<<<<<<< HEAD
+=======
 	
 	/**
 	 * Set registering all boulders in this world.
 	 */
 	private Set<Boulder> boulders = new HashSet<>();
 	
+>>>>>>> refs/remotes/origin/VictorLaptop
 
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
 		if (cube.getTerrainType() != 3){
@@ -327,13 +339,13 @@ public class World {
 		materials.add(material);
 	}
 	
-	public void addLog(Log log) {
-		logs.add(log);
-	}
+	//public void addLog(Log log) {
+	//	logs.add(log);
+	//}
 	
-	public void addBoulder(Boulder boulder) {
-		boulders.add(boulder);
-	}
+	//public void addBoulder(Boulder boulder) {
+	//	boulders.add(boulder);
+	//}
 	
 	/**
 	 * Remove material from this world
@@ -382,7 +394,7 @@ public class World {
 	 * @post if there was space for a new faction, the faction is added to 
 	 * 		this world.
 	 */
-	private void addFaction(Faction faction) {
+	public void addFaction(Faction faction) {
 		if (!isValidNbOfFactions(this.getNbOffFactions()+1)){
 			throw new IllegalArgumentException();
 		}
@@ -475,7 +487,7 @@ public class World {
 			if (this.getNbOffFactions() != 5){
 				System.out.print("new faction");
 				Faction newFaction =  new Faction(this);
-				this.addFaction(newFaction);
+				//this.addFaction(newFaction);
 				newFaction.addUnit(unit);
 			} else {
 				this.getSmallestFaction().addUnit(unit);
@@ -497,7 +509,24 @@ public class World {
 		}
 	}
 
-	/*Pathfinding*/
+	/*Pathfinding*/	
+	private Set<int[]> getAccessibleCubes(){
+		return this.accessibleCubes;
+	}
+	
+	private Set<int[]> getAccessibleNeigbours (int[] cube){
+		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
+		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
+		Set<int[]> accessibleNeighbours = new HashSet<>();
+		for (int[] neighbour: neighbours){
+			if (accessibleCubes.contains(neighbour)){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
+	}
+	
+
 	public List<Cube> getPath(Cube start, Cube goal){
 		
     // The set of nodes already evaluated.

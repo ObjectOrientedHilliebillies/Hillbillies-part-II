@@ -13,9 +13,25 @@ public class Boulder extends Material {
 	 * @post if the given world is a valid world, the world of this boulder is 
 	 * 		equal to the given world.
 	 */
+<<<<<<< HEAD
+	public Boulder(int[] initialPosition, World world){
+		super(initialPosition, world);
+		
+<<<<<<< HEAD
+		//this.getWorld().addMaterial(this);
+=======
+		this.getWorld().addBoulder(this);
+=======
+
+	public Boulder(List<Integer> intitialCube, World world){
+		super(intitialCube, world);
+>>>>>>> refs/remotes/origin/PathfindingTryout
+>>>>>>> origin/master
+=======
 	public Boulder(Vector intitialPosition, World world){
 		super(intitialPosition, world);
 		world.addBoulder(this);
+>>>>>>> refs/remotes/origin/VictorLaptop
 	}
 	
 	/**

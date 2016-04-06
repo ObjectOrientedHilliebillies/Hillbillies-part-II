@@ -13,10 +13,27 @@ public class Log extends Material {
 	 * @post if the given world is a valid world, the world of this log is 
 	 * 		equal to the given world.
 	 */
+<<<<<<< HEAD
+	public Log(int[] initialPosition, World world){
+		super(initialPosition, world);
+		// TODO Auto-generated constructor stub
+		
+<<<<<<< HEAD
+		//this.getWorld().addLog(this);
+=======
+		this.getWorld().addLog(this);
+=======
+
+	public Log(List<Integer> intitialCube, World world){
+		super(intitialCube, world);
+>>>>>>> refs/remotes/origin/PathfindingTryout
+>>>>>>> origin/master
+=======
 	public Log(Vector intitialPosition, World world){
 		super(intitialPosition, world);
 		world.addLog(this);
 
+>>>>>>> refs/remotes/origin/VictorLaptop
 	}
 	
 	
