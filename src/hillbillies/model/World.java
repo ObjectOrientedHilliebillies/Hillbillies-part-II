@@ -281,7 +281,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-
+	public Set<Material> getMaterials() {
+		return this.materials;
+	}
+	
 	/**
 	 * Return all logs in this world.
 	 */
@@ -492,8 +495,12 @@ public class World {
 	
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
+		Set<Material> materialsInWorld = this.getMaterials();
 		for (Unit unit : unitsInWorld){
 			unit.advanceTime(dt);
+		}
+		for (Material material : materialsInWorld) {
+			material.advanceTime(dt);
 		}
 	}
 
@@ -551,6 +558,7 @@ public class World {
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
+				System.out.println("Arrived");
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)
