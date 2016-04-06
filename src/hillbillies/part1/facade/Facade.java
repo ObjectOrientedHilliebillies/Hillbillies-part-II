@@ -1,6 +1,7 @@
 package hillbillies.part1.facade;
 
 import hillbillies.model.Unit;
+import hillbillies.model.Vector;
 import ogp.framework.util.ModelException;
 
 public class Facade implements IFacade {
@@ -14,7 +15,7 @@ public class Facade implements IFacade {
 	
 	@Override
 	public double[] getPosition(Unit unit) throws ModelException {
-		return unit.getPosition();
+		return unit.getDoublePosition();
 	}
 
 	@Override
@@ -103,7 +104,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void moveToAdjacent(Unit unit, int dx, int dy, int dz) throws ModelException {
-			unit.moveToAdjacent(dx, dy, dz);
+		Vector positionDifference = new Vector(dx, dy, dz);	
+		unit.moveToAdjacent(positionDifference);
 	}
 
 	@Override
@@ -144,7 +146,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void work(Unit unit) throws ModelException {
-		unit.work();
+		//unit.work();
 	}
 
 	@Override

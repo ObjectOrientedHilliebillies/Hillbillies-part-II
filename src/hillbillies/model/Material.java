@@ -1,9 +1,19 @@
 package hillbillies.model;
 
-
 public class Material {
 	
-	public Material(Vector initialPosition, World world){
+/**
+ * Initialize this new material with the given position and the given world.
+ * 
+ * @param initialPosition
+ * @param world
+ * 
+ * @post if the given position is a position inside the world, the position of 
+ * 		this material is equal to the given position.
+ * @post if the given world is a valid world, the world of this material is 
+ * 		equal to the given world.
+ */
+	protected Material(Vector initialPosition, World world){
 		this.setWeight();
 		this.setWorld(world);
 		this.setPosition(initialPosition);
@@ -11,10 +21,25 @@ public class Material {
 		world.addMaterial(this);
 	}
 	
-	public Material(Vector initialPosition, World world, int weight){
+
+/**
+ * Initialize this new material with the given position, world and weight.
+ * 
+ * @param initialPosition
+ * @param world
+ * @param weight
+ * 
+ * @post if the given position is a position inside the world, the position of 
+ * 		this material is equal to the given position.
+ * @post if the given world is a valid world for any material, the world of 
+ * 		this material is equal to the given world.
+ * @post if the given weight is a valid weight for any material, the weight
+ * 		of this material is equal to the given weight.
+ */
+	protected Material(Vector initialPosition, World world, int weight){
+		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(initialPosition);
-		this.setWorld(world); 
 		world.addMaterial(this);
 	}
 	
@@ -28,11 +53,23 @@ public class Material {
 		this.weight = weight;
 	}
 	
+	/**
+	 * Set the weight of this material to the given weight
+	 */
 	private void setWeight(int weight) {
 		if (isValidWeight(weight))
 			this.weight = weight;
 	}
 	
+	/**
+	 * Check whether the given weight is a valid weight for
+	 * any material.
+	 *  
+	 * @param  weight
+	 *         The weight to check.
+	 * @return 
+	 *       | result == maxWeight > weight >= (strength+agility)/2 
+	*/
 	private boolean isValidWeight(int weight) {
 		if (10 <= weight && weight <= 50)
 			return true;
@@ -54,8 +91,8 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	public void setPosition(Vector position){
-		if (! world.isPositionInWorld(position)) // TODO falling toevoegen
+	private void setPosition(Vector position){
+		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
 		this.position = position;
 	}
@@ -72,13 +109,15 @@ public class Material {
 	 */
 	private Vector position;
 	
-	public World getWorld() {
-		return this.world;
-	}
-	
+	/**
+	 * Set the world of this material to the given world
+	 */
 	private void setWorld(World world) {
 		this.world = world;
 	}
 	
+	/**
+	 * Variable registering the world of this material.
+	 */
 	private World world;
 }
