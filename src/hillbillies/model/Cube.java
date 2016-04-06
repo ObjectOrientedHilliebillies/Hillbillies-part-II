@@ -185,13 +185,23 @@ public class Cube{
 				for (int z=-1; z!=2; z++){
 					thisCube.set(2, getPosition().get(2) + z); 
 					Cube neighbour = getWorld().getCube(thisCube);
-					if (neighbour != null){
+					if (neighbour != null && !(x == 0 && y==0 && z==0)){
 						neighbourCubes.add(neighbour);
 					}
 				}
 			}
 		}
+		String print = "";
+		for (Cube s : neighbourCubes){
+			print += s.toString() + "\t";
+		}
+		System.out.println(print);
 		neighbourCubes.remove(this);
+		print = "";
+		for (Cube s : neighbourCubes){
+			print += s.toString()+ "\t";
+		}
+		System.out.println(print);
 		return neighbourCubes;
 	}
 	

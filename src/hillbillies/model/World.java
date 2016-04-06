@@ -499,8 +499,6 @@ public class World {
 
 	/*Pathfinding*/	
 
-	
-
 	public List<Cube> getPath(Cube start, Cube goal){
 		
     // The set of nodes already evaluated.
@@ -541,7 +539,7 @@ public class World {
 	System.out.println("Variables set commancing pathfinding while");
     //while openSet is not empty
 		int stop = 0; // FIXME moet nog weg
-		while (openSet.size() != 0 && stop != 10){
+		while (openSet.size() != 0 && stop != 20){
 			stop = stop+1;
 //	        current := the node in openSet having the lowest fScore[] value
 			Cube currentNode = null;
@@ -555,16 +553,14 @@ public class World {
 					lowestF = fScore.get(node);
 				}
 			}
-			System.out.println("Chosen node"+ currentNode.toString());
+			System.out.println("Chosen node"+ currentNode);
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)
-			System.out.println("openSet length before"+ openSet.size());
 			openSet.remove(currentNode);
-			System.out.println("openSet length after"+ openSet.size());
 //	        closedSet.Add(current)
 			closedSet.add(currentNode);
 			String print = "";
@@ -572,10 +568,8 @@ public class World {
 				print += s.toString() + "\t";
 			}
 			System.out.println(print);
-			System.out.println(closedSet.contains(currentNode));
 //	        for each neighbor of current
 			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
-			System.out.println(accessibleNeigbours.contains(currentNode));
 			for (Cube neighbour : accessibleNeigbours){
 //	            if neighbor in closedSet
 				if (closedSet.contains(neighbour)){

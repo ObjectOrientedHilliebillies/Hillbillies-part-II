@@ -701,7 +701,7 @@ private static int maxToughness = 200;
 /**
  * Return the experience of this unit.
  */
-private int getExperience() {
+public int getExperience() {
 	return this.experience;
 }
 
