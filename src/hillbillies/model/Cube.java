@@ -286,8 +286,7 @@ public class Cube{
 		if (other.getClass() != this.getClass())
 			return false;
 		Cube otherCube = (Cube)other; 
-		return getPosition() == otherCube.getPosition();
-				//&& getWorld() == otherCube.getWorld()); FIXME
+		return (getPosition() == otherCube.getPosition()&& getWorld() == otherCube.getWorld());
 	}
 	
 	/**
