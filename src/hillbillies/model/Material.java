@@ -152,7 +152,6 @@ public class Material {
 		if (this.isFalling()){
 			if (this.position.hasSupportOfSolidUnderneath(this.getWorld())){
 				this.position = getCube().getCenterOfCube();
-				System.out.println("Material stopped falling");
 			}else{
 				this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
 			}}

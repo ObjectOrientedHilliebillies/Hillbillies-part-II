@@ -1435,18 +1435,14 @@ private boolean isCarryingMaterial() {
  * Return whether this unit is carrying a log.
  */
 public boolean isCarryingLog() {
-	if (this.carriedMaterial == 2) 
-		return true;
-	return false;
+	return (this.carriedMaterial == 2) ;
 }
 
 /**
  * Return whether this unit is carrying a boulder.
  */
 public boolean isCarryingBoulder() {
-	if (this.carriedMaterial == 1)
-		return true;
-	return false;
+	return (this.carriedMaterial == 1);
 }
 /**
  * Variable registering what material this unit is carrying.
@@ -1523,6 +1519,7 @@ private void doWork() {
  * 		This unit is not carrying any material. //TODO of is dit effect?
  */
 private void dropMaterial(Vector position){
+	if (!position.getEnclosingCube(this.getWorld()).isSolid()){
 	if (this.getCarriedMaterial() == 2){
 		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
@@ -1534,6 +1531,7 @@ private void dropMaterial(Vector position){
 		this.setAdditionalWeight(0);
 	}
 	this.carriedMaterial = 0;
+	}
 }
 
 

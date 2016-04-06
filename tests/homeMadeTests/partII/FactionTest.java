@@ -2,12 +2,15 @@ package homeMadeTests.partII;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import hillbillies.model.Cube;
 import hillbillies.model.Faction;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
@@ -26,8 +29,14 @@ public class FactionTest {
 	public void setup() {
 		this.facade = new Facade();
 	}
-
-	int[] position = {5,5,5};
+	
+//	List<Integer> cubeList = new ArrayList<>();
+//	cubeList.add(5);
+//	cubeList.add(5);
+//	cubeList.add(5);
+//	Cube position = new Cube(cubeList, world);
+	
+	Vector position = new Vector(5,5,5);
 	
 //	@Test
 //	public void MaxNbFactionsTest() throws ModelException {
