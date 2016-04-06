@@ -723,6 +723,7 @@ private void setExperience(int experience) {
 		if (!(experience >= 10))
 			this.experience = experience;
 		else{
+			this.experience = experience;
 			int points;
 			points = this.getExperience()/10;
 			this.setExperience(this.getExperience()%10);
@@ -1226,7 +1227,7 @@ private double exhaustedPoints;
  * @param tickTime
  * 		The time the tick lasts.
  * 
- * @post The unit has moved a step to its target position. //TODO experience ophogen
+ * @post The unit has moved a step to its target position.
  * 		| new.getPosition() == this.getPosition
  * 								+ (this.speed * this.getTargetPosition - this.getPosition)
  *									/ distance
@@ -1250,13 +1251,14 @@ private void doMove(double tickTime){
 	double movedDistanceRelatieveToRemainingDistance = tickTime*speed/d;
 	if (Util.fuzzyGreaterThanOrEqualTo(movedDistanceRelatieveToRemainingDistance, 1)){
 		this.setPosition(this.targetPosition);
+		this.increaseExperience(1);
+		this.exhaustedPoints = 0;
 		if (this.getCube().equals(this.targetCube)){
-			this.increaseExperience(this.executedSteps);
+			this.increaseExperience(1);
 			System.out.println("targetCube op null zetten");
 			this.sprinting = false;
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
-			this.executedSteps = 0;
 			this.activeActivity = 0;
 		}
 		this.startNextActivity();
@@ -1266,15 +1268,8 @@ private void doMove(double tickTime){
 		this.position = Vector.sum(this.position, 
 			difference.scale(movedDistanceRelatieveToRemainingDistance));
 		this.orientation = difference.orientationInXZPlane();
-		// TODO EXTRA Unit stops if he reaches the next checkpoint but should continue walking to the target cube.
 	}
 }
-
-/**
- * Variable registering how many steps this unit has executed since the beginning of
- * its movement.
- */
-private int executedSteps;
 
 /**
  * Return whether this unit is moving or not
@@ -1376,7 +1371,6 @@ private void doMoveTo(){
 
 
 private void pickupMaterial(Material material) {
-//=======
 ///**
 // * Change the activity from this unit to work
 // * 
@@ -1406,7 +1400,6 @@ private void pickupMaterial(Material material) {
 // * Set the carried material of this unit to the given material.
 // */
 //public void setCarriedMaterial(Material material) {
-//>>>>>>> refs/remotes/origin/Jonas
 	//TODO defensive
 	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
 	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
