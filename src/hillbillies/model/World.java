@@ -2,9 +2,9 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import hillbillies.part2.listener.TerrainChangeListener;
@@ -13,7 +13,7 @@ import hillbillies.util.ConnectedToBorder;
 
 public class World {
 	/**
-	 * Initialize this new world with given terrain.
+	 * Initialise this new world with given terrain.
 	 * 
 	 * @param  terrainTypes
 	 *         The terrain of this new world.
@@ -23,14 +23,22 @@ public class World {
 		NbCubesX = initialTerrainTypes.length;
 		NbCubesY = initialTerrainTypes[0].length;
 		NbCubesZ = initialTerrainTypes[0][0].length;
-		
-		this.terrainTypes = new int[NbCubesX][NbCubesY][NbCubesZ];
 		connectedToBorder = new ConnectedToBorder(NbCubesX, NbCubesY, NbCubesZ);
 		modelListener = givenModelListener;
+		ArrayList<Integer> position = new ArrayList<>();
+		position.add(0);
+		position.add(0);
+		position.add(0);
 		for (int x=0 ; x != NbCubesX ; x++){
+			position.set(0, x);
+			terrainTypes.add(new ArrayList<>());
 			for (int y=0 ; y != NbCubesY; y++){
+				position.set(1, y);
+				terrainTypes.get(x).add(new ArrayList<>());
 				for  (int z=0 ; z != NbCubesZ; z++){
-					terrainTypes[x][y][z] = initialTerrainTypes[x][y][z];
+					position.set(2, z);
+					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
+					terrainTypes.get(x).get(y).add(cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -69,21 +77,62 @@ public class World {
 		return true;
 	}
 	
-	public boolean isCubeInWorld(int[] cube){
-		if (cube[0] < 0 || cube[0] >= NbCubesX
-			|| cube[1] < 0 || cube[1] >= NbCubesY
-			|| cube[2] < 0 || cube[2] >= NbCubesZ){
+	/**
+	 * Check whether the given position of a cube is inside this world.
+	 * @param cubePosition
+	 * 		The position of a cube to check.
+	 * @return True if and only if the given position is inside this world.
+	 * 		| result != (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
+			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
+			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
+	 */
+	boolean isCubeInWorld(List<Integer> cubePosition){
+		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
+			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
+			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isPassable(Vector position){ //TODO Ik vind het vreemd dat isPassable Vector is en isSolid cube...
-		if (isSolid(position.getIntCube())){
-			System.out.println("Cube not passable");
-			return false;
+	/**
+	 * Check whether the given terrain type is a valid terrain type.
+	 * @param terrainType
+	 * 		The terrain type to check.
+	 * @return True if and only if the given terrain type is an effective terrain type.
+	 * 		| result == terrainType >=0 && terrainType <=3
+	 */
+	public boolean isValidTerrainType (int terrainType){
+		return (terrainType >=0 && terrainType <=3);
+	}
+	
+	/**
+	 * Return the cube at the given position.
+	 * @param position
+	 * 		The position of the requested cube.
+	 * @return The cube at the given position.
+	 * @return If the cube does not exist null is returned.
+	 */
+	public Cube getCube(List<Integer> position){
+		try{
+			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
+		} catch (IndexOutOfBoundsException e) {
+			return null;
 		}
-		return true;
+	}
+	
+	/**
+	 * @param unfilterdCubes
+	 * 		The set of wish we need to filter the passable cubes.
+	 * @return The set that contains only the passable cubes of the unfilterdCubes set.
+	 */
+	public static Set<Cube> filterPassableCubes(Set<Cube> unfilterdCubes){
+		Set<Cube> remainingCubes = new HashSet<>();
+		for (Cube cube : unfilterdCubes){
+			if (cube.isSolid())
+				remainingCubes.add(cube);
+		}
+		return remainingCubes;
 	}
 	
 	/**
@@ -91,82 +140,57 @@ public class World {
 	 * 1: Rock
 	 * 2: Wood
 	 * 3: Workshop
+	 * 
+	 * Variable referencing the terrain of this world.
 	 */
-	private int[][][] terrainTypes; 
+	private List<List<List<Cube>>> terrainTypes = new ArrayList<>(); 
 	
-	public boolean isSolid(int[] cube){
-		int terrainType = terrainTypes[cube[0]][cube[1]][cube[2]];
-		if (terrainType != 1 && terrainType != 2){
-			return false;
-		}
-		return true;
-	}
-	
-	private int getTerrainType(Vector cube){
-		int[] cubeArray = cube.getIntCube();
-		return terrainTypes[cubeArray[0]][cubeArray[1]][cubeArray[2]];
-	}
-	
-	public int getTerrainType(int[] cube){
-		return terrainTypes[cube[0]][cube[1]][cube[2]];
-	}
-	
-	private boolean isValidTerrainType (int terrainType){
-		return (terrainType >=0 && terrainType <=3);
-	}
-	
-	public void setTerrainType(int[] cube, int terrainType){
+	public void setTerrainType(Cube cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
-		if (terrainType != 1 && terrainType != 2 && this.isSolid(cube)){
-			terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-			modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
+		if (terrainType != 1 && terrainType != 2 && cube.isSolid()){
+			terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
+							.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
+			modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
+												cube.getPosition().get(1),
+												cube.getPosition().get(2));
 			double rand = Math.random();
 			if (rand < 0.125) {
-				new Log(cube, this);
+				new Log(cube.getCenterOfCube(), this);
 			} else if (rand < 0.25){
-				new Boulder(cube, this);
+				new Boulder(cube.getCenterOfCube(), this);
 			}
-			connectedToBorder.changeSolidToPassable(cube[0], cube[1], cube[2]);
-			this.accessibleCubes.add(cube);
-			Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
-			Set<int[]> solidNeighbours = Vector.filterPassableCubes(neighbours, this);
+			connectedToBorder.changeSolidToPassable(cube.getPosition().get(0), 
+													cube.getPosition().get(1),
+													cube.getPosition().get(2));
+			Set<Cube> neighbours = cube.getDirectAdjenctCubes();
+			Set<Cube> solidNeighbours = filterPassableCubes(neighbours);
 			neighbours.removeAll(solidNeighbours);
-
-			for (int[] neighbour : neighbours){
-				this.changeAccessibilityIfNessesary(neighbour);
-			}
-			for (int[] solidNeighbour : solidNeighbours){
+			for (Cube solidNeighbour : solidNeighbours){
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
-		terrainTypes[cube[0]][cube[1]][cube[2]] = terrainType;
-		modelListener.notifyTerrainChanged(cube[0], cube[1], cube[2]);
-		
+		terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
+						.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
+				cube.getPosition().get(1),
+				cube.getPosition().get(2));		
 	}
 	
-	private void changeAccessibilityIfNessesary(int[] cube){
-		if (!this.isSolid(cube)){
-			if (Vector.hasSupportOfSolid(cube, this)){
-				accessibleCubes.add(cube);
-			} else {
-				accessibleCubes.remove(cube);
-			}
-		}
-	}
-	
-	private void collapseIfFloating(int[] cube){
-		if (this.isSolid(cube)){
+	private void collapseIfFloating(Cube cube){
+		if (cube.isSolid()){
 			if (!this.isSolidConnectedToBorder(cube)){
 				this.setTerrainType(cube, 0);
 			}
 		}
 	}
 	
-	public boolean isSolidConnectedToBorder(int[] cube){
-		if (this.isSolid(cube)){
-			return connectedToBorder.isSolidConnectedToBorder(cube[0], cube[1], cube[2]);
+	public boolean isSolidConnectedToBorder(Cube cube){
+		if (cube.isSolid()){
+			return connectedToBorder.isSolidConnectedToBorder(cube.getPosition().get(0), 
+																cube.getPosition().get(1),
+																cube.getPosition().get(2));
 		}
 		return true;
 	}
@@ -175,22 +199,17 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 int[] cube = {x,y,z};
-					 if (!this.isSolid(cube) && Vector.hasSupportOfSolid(cube, this)){
-						 accessibleCubes.add(cube);
-					 }
-					 this.collapseIfFloating(cube);
+					 List<Integer> cubeList = new ArrayList<>();
+					 cubeList.add(x);
+					 cubeList.add(y);
+					 cubeList.add(z);
+					 this.collapseIfFloating(getCube(cubeList));
+
 				}
 			}
 		}
 	}
-	
-	
-	
-	private Set<int[]> accessibleCubes = new HashSet<>();
-	
-	
-	
+
 	/**
 	 * Set registering all materials in this world.
 	 */
@@ -200,10 +219,14 @@ public class World {
 	 * Set registering all logs in this world.
 	 */
 	private Set<Log> logs = new HashSet<>();
-	
 
-	public boolean isWorkshopWithLogAndBoulder(int[] cube){
-		if (this.getTerrainType(cube) != 3){
+	/**
+	 * Set registering all boulders in this world.
+	 */
+	private Set<Boulder> boulders = new HashSet<>();
+
+	public boolean isWorkshopWithLogAndBoulder(Cube cube){
+		if (cube.getTerrainType() != 3){
 			return false;
 		}
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
@@ -223,7 +246,7 @@ public class World {
 		return false;
 	}	
 	
-	public Material materialToPickUp(int[] cube){
+	public Material materialToPickUp(Cube cube){
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
 		Material materialToReturn = null;
 		for (Material material : materialsOnCube) {
@@ -248,10 +271,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-	private List<Material> getMaterialsAt(int[] cube) { 
+	private List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
-			if(Vector.equals(material.getPosition().getIntCube(), cube)){
+			if(material.getPosition().getEnclosingCube(this).equals(cube)){
 	        	foundMaterials.add(material); 
 			}
         }
@@ -426,8 +449,15 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		int[] initialCube = {10,10,10}; 
-		Unit newUnit =  new Unit("Test", initialCube, enableDefaultBehavior, this);
+		Vector initialPosition;
+		do{
+		List<Integer> initialCubeList = new ArrayList<>();
+		initialCubeList.add((int) (Math.random() * getNbCubesX()));
+		initialCubeList.add((int) (Math.random() * getNbCubesY()));
+		initialCubeList.add((int) (Math.random() * getNbCubesZ()));
+		initialPosition = (new Cube(initialCubeList, this)).getCenterOfCube(); 
+		}while (initialPosition.hasSupportOfSolidUnderneath(this));
+		Unit newUnit =  new Unit("Harry", initialPosition, enableDefaultBehavior, this); //TODO name not final
 		this.addUnit(newUnit);
 		return newUnit;
 	}
@@ -452,100 +482,157 @@ public class World {
 			}
 		}		
 	}
+	
+	private void removeUnit(Unit unit) {
+		unit.getFaction().removeUnit(unit);
+	}
+	
 
 	/*Time*/
 	
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
 		for (Unit unit : unitsInWorld){
+			unit.advanceTime(dt);
 		}
 	}
 
+	/*Pathfinding*/	
+
 	
-	/**
-	 * Remove this unit from its faction.
-	 * 
-	 * @post this unit doesn't exist anymore //TODO effect?
-	 */
-	private void removeUnit(Unit unit) {
-		unit.getFaction().removeUnit(unit);
+
+	public List<Cube> getPath(Cube start, Cube goal){
+		
+    // The set of nodes already evaluated.
+		Set<Cube> closedSet = new HashSet<>();
+		//closedSet := {}
+		
+    // The set of currently discovered nodes still to be evaluated.
+    // Initially, only the start node is known.
+		Set<Cube> openSet = new HashSet<>();
+		openSet.add(start);
+		//openSet := {start}
+		
+    // For each node, which node it can most efficiently be reached from.
+    // If a node can be reached from many nodes, cameFrom will eventually contain the
+    // most efficient previous step.
+		HashMap<Cube, Cube> cameFrom=new HashMap<>();
+		//cameFrom := the empty map
+
+    // For each node, the cost of getting from the start node to that node.
+		HashMap<Cube, Double> gScore=new HashMap<>();
+		//gScore := map with default value of Infinity
+
+		
+    // For each node, the total cost of getting from the start node to the goal
+    // by passing by that node. That value is partly known, partly heuristic.
+		HashMap<Cube, Double> fScore=new HashMap<Cube, Double>();
+		
+	//gScore := map with default value of Infinity
+	//fScore := map with default value of Infinity	
+    // The cost of going from start to start is zero.
+		gScore.put(start,  new Double(0));
+		//gScore[start] := 0
+    		
+    // For the first node, that value is completely heuristic.
+		fScore.put(start, this.heuristic_cost_estimate(start, goal));
+		//fScore[start] := heuristic_cost_estimate(start, goal)
+
+	System.out.println("Variables set commancing pathfinding while");
+    //while openSet is not empty
+		int stop = 0; // FIXME moet nog weg
+		while (openSet.size() != 0 && stop != 10){
+			stop = stop+1;
+//	        current := the node in openSet having the lowest fScore[] value
+			Cube currentNode = null;
+			Double lowestF = null;
+			for (Cube node : openSet){
+				if (lowestF == null){
+					currentNode = node;
+					lowestF = fScore.get(node);
+				} else if (lowestF > fScore.get(node)){
+					currentNode = node;
+					lowestF = fScore.get(node);
+				}
+			}
+			System.out.println("Chosen node"+ currentNode.toString());
+//	        if current = goal
+//	            return reconstruct_path(cameFrom, goal)
+			if (currentNode.equals(goal)){
+				return this.reconstruct_path(cameFrom, goal);
+			}
+//	        openSet.Remove(current)
+			System.out.println("openSet length before"+ openSet.size());
+			openSet.remove(currentNode);
+			System.out.println("openSet length after"+ openSet.size());
+//	        closedSet.Add(current)
+			closedSet.add(currentNode);
+			String print = "";
+			for (Cube s : closedSet){
+				print += s.toString() + "\t";
+			}
+			System.out.println(print);
+			System.out.println(closedSet.contains(currentNode));
+//	        for each neighbor of current
+			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
+			System.out.println(accessibleNeigbours.contains(currentNode));
+			for (Cube neighbour : accessibleNeigbours){
+//	            if neighbor in closedSet
+				if (closedSet.contains(neighbour)){
+					System.out.println("neigbour skiped = " + neighbour.toString());
+	                continue;		// Ignore the neighbor which is already evaluated.
+				}
+				System.out.println("neigbour not skiped = " + neighbour.toString());
+	            // The distance from start to a neighbor
+//	            tentative_gScore := gScore[current] + dist_between(current, neighbor)
+				double tentative_gScore = gScore.get(currentNode) + Vector.distanceBetween(currentNode, neighbour);
+//	            if neighbor not in openSet	// Discover a new node
+				if (!openSet.contains(neighbour)){
+//	                openSet.Add(neighbor)
+					openSet.add(neighbour);
+// 					else if tentative_gScore >= gScore[neighbor]
+					
+				}else if (tentative_gScore >= gScore.get(neighbour)){  
+	                continue;		// This is not a better path.
+				}
+	            // This path is the best until now. Record it!
+//	            cameFrom[neighbor] := current
+				cameFrom.put(neighbour, currentNode);
+//	            gScore[neighbor] := tentative_gScore
+				gScore.put(neighbour, tentative_gScore);
+//	            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
+				fScore.put(neighbour, tentative_gScore+this.heuristic_cost_estimate(neighbour, goal));
+				this.setTerrainType(neighbour, 3);
+			}
+		}
+		return null;
+	}	
+	
+	private double heuristic_cost_estimate(Cube start, Cube goal){
+		return Vector.distanceBetween(start.getCenterOfCube(), goal.getCenterOfCube());
 	}
 	
-	/*Pathfinding*/
-	
-	private Set<int[]> getAccessibleCubes(){
-		return this.accessibleCubes;
+	private List<Cube> reconstruct_path(HashMap<Cube, Cube> cameFrom, Cube current){
+		List<Cube> total_path = new ArrayList<>();
+	    total_path.add(current);
+	    while (cameFrom.containsKey(current)){
+	    	current = cameFrom.get(current);
+	    	total_path.add(current);
+	    }
+	    return total_path;
 	}
-	
-	private Set<int[]> getAccessibleNeigbours (int[] cube){
-		Set<int[]> neighbours = Vector.getDirectAdjenctCubes(cube, this);
-		neighbours.removeAll(Vector.filterPassableCubes(neighbours, this));
-		Set<int[]> accessibleNeighbours = new HashSet<>();
-		for (int[] neighbour: neighbours){
-			if (accessibleCubes.contains(neighbour)){
+
+	private Set<Cube> getAccessibleNeigbours (Cube cube){
+		Set<Cube> neighbours = cube.getNeighbourCubes();
+		neighbours.removeAll(filterPassableCubes(neighbours));
+		Set<Cube> accessibleNeighbours = new HashSet<>();
+		for (Cube neighbour: neighbours){
+			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
 				accessibleNeighbours.add(neighbour);
 			}
 		}
 		return accessibleNeighbours;
 	}
-	
-//	public void findPath(int[] start, int[] goal){
-//    // The set of nodes already evaluated.
-//    closedSet := {}
-//    // The set of currently discovered nodes still to be evaluated.
-//    // Initially, only the start node is known.
-//    openSet := {start}
-//    // For each node, which node it can most efficiently be reached from.
-//    // If a node can be reached from many nodes, cameFrom will eventually contain the
-//    // most efficient previous step.
-//    cameFrom := the empty map
-//
-//    // For each node, the cost of getting from the start node to that node.
-//    gScore := map with default value of Infinity
-//    // The cost of going from start to start is zero.
-//    gScore[start] := 0 
-//    // For each node, the total cost of getting from the start node to the goal
-//    // by passing by that node. That value is partly known, partly heuristic.
-//    fScore := map with default value of Infinity
-//    // For the first node, that value is completely heuristic.
-//    fScore[start] := heuristic_cost_estimate(start, goal)
-//
-//    while openSet is not empty
-//        current := the node in openSet having the lowest fScore[] value
-//        if current = goal
-//            return reconstruct_path(cameFrom, goal)
-//
-//        openSet.Remove(current)
-//        closedSet.Add(current)
-//        for each neighbor of current
-//            if neighbor in closedSet
-//                continue		// Ignore the neighbor which is already evaluated.
-//            // The distance from start to a neighbor
-//            tentative_gScore := gScore[current] + dist_between(current, neighbor)
-//            if neighbor not in openSet	// Discover a new node
-//                openSet.Add(neighbor)
-//            else if tentative_gScore >= gScore[neighbor]
-//                continue		// This is not a better path.
-//
-//            // This path is the best until now. Record it!
-//            cameFrom[neighbor] := current
-//            gScore[neighbor] := tentative_gScore
-//            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-//
-//    return failure
-//	}	
-//    	
-//
-//function reconstruct_path(cameFrom, current)
-//    total_path := [current]
-//    while current in cameFrom.Keys:
-//        current := cameFrom[current]
-//        total_path.append(current)
-//    return total_path
-//    		
-    		
-
-	
 }
 
 
