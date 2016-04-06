@@ -39,7 +39,7 @@ public class MaterialTest {
 	@Test
 	public void getPositionTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Vector vector = new Vector(5,5,5);
+		Vector vector = new Vector(5,0,5);
 		Material material1 = new Log(vector, world);
 		assertTrue(material1.getPosition().equals(vector)); //FIXME
 	}

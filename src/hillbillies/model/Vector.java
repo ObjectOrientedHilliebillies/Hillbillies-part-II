@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import ogp.framework.util.Util;
+
 public class Vector {
 	private double compX;
 	private double compY;
@@ -91,9 +93,9 @@ public class Vector {
 		if (other.getClass() != this.getClass())
 			return false;
 		Vector otherVector = (Vector)other; 
-		return (getXCoord() == otherVector.getXCoord()
-				&& getYCoord() == otherVector.getYCoord() 
-				&& getZCoord() == otherVector.getZCoord() );
+		return (Util.fuzzyGreaterThanOrEqualTo(getXCoord(),otherVector.getXCoord())
+				&& Util.fuzzyGreaterThanOrEqualTo(getYCoord(),otherVector.getYCoord()) 
+				&& Util.fuzzyGreaterThanOrEqualTo(getZCoord(),otherVector.getZCoord()) );
 	}
 	
 	public static double distanceBetween(Cube cube1, Cube cube2){
