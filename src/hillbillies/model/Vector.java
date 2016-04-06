@@ -89,6 +89,7 @@ public class Vector {
 	@Override
 	public boolean equals(Object other) {
 		if (other == null)
+			
 			return false;
 		if (other.getClass() != this.getClass())
 			return false;
@@ -97,7 +98,6 @@ public class Vector {
 				&& Util.fuzzyGreaterThanOrEqualTo(getYCoord(),otherVector.getYCoord()) 
 				&& Util.fuzzyGreaterThanOrEqualTo(getZCoord(),otherVector.getZCoord()) );
 	}
-	
 	public static double distanceBetween(Cube cube1, Cube cube2){
 		return Math.sqrt(Math.pow(cube1.getPosition().get(0)-cube2.getPosition().get(0),2) 
 				+Math.pow(cube1.getPosition().get(1)-cube2.getPosition().get(1),2)
@@ -176,4 +176,18 @@ public class Vector {
 		Cube cubeBenath = world.getCube(makeCube);
 		return (cubeBenath == null || cubeBenath.isSolid());
 	}	
+	
+	/**
+	 * Return a textual representation of this vector.
+	 * 
+	 * @return A string consisting of a textual representation of the position
+	 * 			enclosed in square brackets.
+	 */
+	@Override
+	public String toString(){
+		return "["+getXCoord()+", "
+				  +getYCoord()+", "
+				  +getZCoord()+"]";
+	}
+	
 }
