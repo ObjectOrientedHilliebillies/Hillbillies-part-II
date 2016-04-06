@@ -537,7 +537,7 @@ public class World {
 
 	System.out.println("Variables set commancing pathfinding while");
     //while openSet is not empty
-		int stop = 0;
+		int stop = 0; // FIXME moet nog weg
 		while (openSet.size() != 0 && stop != 10){
 			stop = stop+1;
 //	        current := the node in openSet having the lowest fScore[] value
@@ -566,7 +566,7 @@ public class World {
 			closedSet.add(currentNode);
 			String print = "";
 			for (Cube s : closedSet){
-				print += s.toString() + "/t";
+				print += s.toString() + "\t";
 			}
 			System.out.println(print);
 			System.out.println(closedSet.contains(currentNode));
