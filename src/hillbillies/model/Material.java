@@ -1,23 +1,53 @@
 package hillbillies.model;
 
-
 public class Material {
 	
-	protected Material(int[] intialCube, World world){
+/**
+ * Initialize this new material with the given position and the given world.
+ * 
+ * @param initialPosition
+ * @param world
+ * 
+ * @post if the given position is a position inside the world, the position of 
+ * 		this material is equal to the given position.
+ * @post if the given world is a valid world, the world of this material is 
+ * 		equal to the given world.
+ */
+	protected Material(Vector initialPosition, World world){
 		this.setWeight();
 		this.setWorld(world);
-		this.setPosition(Vector.getCentreOfCube(intialCube));
+		this.setPosition(initialPosition);
 		
-		world.addMaterial(this);
+		this.getWorld().addMaterial(this);
 	}
 	
+
+/**
+ * Initialize this new material with the given position, world and weight.
+ * 
+ * @param initialPosition
+ * @param world
+ * @param weight
+ * 
+ * @post if the given position is a position inside the world, the position of 
+ * 		this material is equal to the given position.
+ * @post if the given world is a valid world for any material, the world of 
+ * 		this material is equal to the given world.
+ * @post if the given weight is a valid weight for any material, the weight
+ * 		of this material is equal to the given weight.
+ */
+<<<<<<< HEAD
+	protected Material(int[] initialCube, World world, int weight){
+=======
 	protected Material(Vector initialPosition, World world, int weight){
+>>>>>>> refs/remotes/origin/VictorLaptop
 		this.setWorld(world); 
 		this.setWeight(weight);
-		this.setPosition(initialPosition);
+		this.setPosition(Vector.getCentreOfCube(initialCube));
 		world.addMaterial(this);
 	}
-	
+
+
 	/**
 	 * Set the weight of this material to a random weight between 10 and 50.
 	 */
@@ -28,11 +58,24 @@ public class Material {
 		this.weight = weight;
 	}
 	
-	private void setWeight(int weight) {
+	/**
+	 * Set the weight of this material to the given weight
+	 */
+	private void setWeight(int weight) throws IllegalArgumentException {
 		if (isValidWeight(weight))
 			this.weight = weight;
+		else throw new IllegalArgumentException();
 	}
 	
+	/**
+	 * Check whether the given weight is a valid weight for
+	 * any material.
+	 *  
+	 * @param  weight
+	 *         The weight to check.
+	 * @return 
+	 *       | result == maxWeight > weight >= (strength+agility)/2 
+	*/
 	private boolean isValidWeight(int weight) {
 		if (10 <= weight && weight <= 50)
 			return true;
@@ -54,10 +97,10 @@ public class Material {
 	/**
 	 * Set the position of this material to the given position.
 	 */
-	private void setPosition(Vector position){
-		if (! this.world.isPositionInWorld(position)) // TODO falling toevoegen
+	private void setPosition(Vector vector){
+		if (! this.world.isPositionInWorld(vector)) // TODO falling toevoegen
 			throw new IllegalArgumentException();
-		this.position = position;
+		this.position = vector;
 	}
 	
 	/**
@@ -72,13 +115,15 @@ public class Material {
 	 */
 	private Vector position;
 	
-	private World getWorld() {
-		return this.world;
-	}
-	
+	/**
+	 * Set the world of this material to the given world
+	 */
 	private void setWorld(World world) {
 		this.world = world;
 	}
 	
+	/**
+	 * Variable registering the world of this material.
+	 */
 	private World world;
 }
