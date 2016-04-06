@@ -894,15 +894,8 @@ private void die(){
 	if (this.isCarryingMaterial())
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
-	//try {
 	this.getFaction().removeUnit(this); 
-<<<<<<< HEAD
-	//}
-	//catch (NullPointerException exc) {
-	//}
-=======
 	// TODO grondig testen ik kreeg hier nog een bug!
->>>>>>> origin/master
 }
 
 /**
@@ -1669,24 +1662,7 @@ private void defenseAgainst(Unit attacker) {
 	double blockChance = 0.25*(this.getStrength() + this.getAgility())/ 
 						(attacker.getAgility() + attacker.getStrength());
 	double dodgeChance = 0.2*this.getAgility()/(double) attacker.getAgility();
-	if (Math.random() <  dodgeChance){
-<<<<<<< HEAD
-		this.setExperience(this.getExperience() + 20);
-<<<<<<< HEAD
-		List<Integer> randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
-=======
-		//this.setExperience(this.getExperience() + 20);
-		int[] randomCube = this.position.getRandomAdjacentCubeInWorld(this.world);
->>>>>>> refs/remotes/origin/Jonas
-		Vector newPosition = Vector.getCentreOfCube(randomCube);
-
-		this.increaseExperience(20);
-		try {
-			this.setPosition(newPosition);
-		} catch (IllegalArgumentException e) {
-			System.out.println("This should never fail");
-=======
-		
+	if (Math.random() <  dodgeChance){		
 		List<Cube> randomCubesList = new ArrayList<Cube>();
 		randomCubesList.addAll(this.getCube().getNeighbourCubes());
 		Collections.shuffle(randomCubesList);
@@ -1698,7 +1674,6 @@ private void defenseAgainst(Unit attacker) {
 				break;
 			} catch (IllegalArgumentException e) {
 			}
->>>>>>> refs/remotes/origin/VictorLaptop
 		}
 		this.face(attacker.getPosition());
 		attacker.face(this.getPosition());
