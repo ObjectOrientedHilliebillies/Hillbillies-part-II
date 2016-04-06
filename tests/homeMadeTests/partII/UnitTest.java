@@ -87,7 +87,7 @@ public class UnitTest {
 	public void getCubeTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
 		Unit unit = new Unit("Name", position, false, world);
-		assertEquals(unit.getCube(), position); //FIXME
+		assertEquals(true, position.getEnclosingCube(world).equals(unit.getCube())); //FIXME
 	}
 	
 //	@Test
@@ -136,13 +136,11 @@ public class UnitTest {
 		Unit unit1 = new Unit("Name", position, false, world);
 		Log log = new Log(position, world);
 		Cube position1 = new Cube(this.getPosition1(), world);
-		System.out.println(log.getPosition().getXCoord());
-		System.out.println(log.getPosition().getYCoord());
-		System.out.println(log.getPosition().getZCoord());
+		System.out.println(position1.toString());
+		System.out.println(position.toString());
 		unit1.workAt(position1);
 		for (int i = 1; i<100;i++){
 			unit1.advanceTime(0.2);} //unit1 is carrying a log now
-		
 		assertEquals(unit1.isCarryingLog(), true);
 		Cube position2 = new Cube(this.getPosition2(), world);
 		unit1.workAt(position2);

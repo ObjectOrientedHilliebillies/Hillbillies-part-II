@@ -1526,6 +1526,7 @@ private void doWork() {
  * 		This unit is not carrying any material. //TODO of is dit effect?
  */
 private void dropMaterial(Vector position){
+	if (!position.getEnclosingCube(this.getWorld()).isSolid()){
 	if (this.getCarriedMaterial() == 2){
 		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
@@ -1537,6 +1538,7 @@ private void dropMaterial(Vector position){
 		this.setAdditionalWeight(0);
 	}
 	this.carriedMaterial = 0;
+	}
 }
 
 
