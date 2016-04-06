@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Generated;
+
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
 
@@ -246,6 +248,18 @@ public class World {
 		return false;
 	}	
 	
+	public Cube generateRandomValidPosition(){
+		Cube cube;
+		do{
+			List<Integer> cubeList = new ArrayList<>();
+			cubeList.add((int) (Math.random() * getNbCubesX()));
+			cubeList.add((int) (Math.random() * getNbCubesY()));
+			cubeList.add((int) (Math.random() * getNbCubesZ()));
+			cube = getCube(cubeList); 
+			}while (cube.isSolid() || !cube.getCenterOfCube().hasSupportOfSolidUnderneath(this));
+		return cube;
+	}
+	
 	public Material materialToPickUp(Cube cube){
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
 		Material materialToReturn = null;
@@ -281,7 +295,10 @@ public class World {
 	    return foundMaterials;
 	}
 	
-
+	public Set<Material> getMaterials() {
+		return this.materials;
+	}
+	
 	/**
 	 * Return all logs in this world.
 	 */
@@ -449,15 +466,8 @@ public class World {
 	}
 	
 	public Unit spawnUnit(boolean enableDefaultBehavior){
-		Vector initialPosition;
-		do{
-		List<Integer> initialCubeList = new ArrayList<>();
-		initialCubeList.add((int) (Math.random() * getNbCubesX()));
-		initialCubeList.add((int) (Math.random() * getNbCubesY()));
-		initialCubeList.add((int) (Math.random() * getNbCubesZ()));
-		initialPosition = (new Cube(initialCubeList, this)).getCenterOfCube(); 
-		}while (initialPosition.hasSupportOfSolidUnderneath(this));
-		Unit newUnit =  new Unit("Harry", initialPosition, enableDefaultBehavior, this); //TODO name not final
+		Unit newUnit =  new Unit("Harry", generateRandomValidPosition().getCenterOfCube(), 
+				enableDefaultBehavior, this); //TODO name not final
 		this.addUnit(newUnit);
 		return newUnit;
 	}
@@ -492,8 +502,12 @@ public class World {
 	
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
+		Set<Material> materialsInWorld = this.getMaterials();
 		for (Unit unit : unitsInWorld){
 			unit.advanceTime(dt);
+		}
+		for (Material material : materialsInWorld) {
+			material.advanceTime(dt);
 		}
 	}
 
@@ -551,6 +565,7 @@ public class World {
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
+				System.out.println("Arrived");
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)

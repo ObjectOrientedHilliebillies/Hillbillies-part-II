@@ -27,7 +27,7 @@ public class MaterialTest {
 	@Test
 	public void getWeightTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		int[] position = {5,5,5};
+		Vector position = new Vector(5, 5, 5);
 		Material material1 = new Log(position, world, 40);
 		assertEquals(material1.getWeight(), 40);
 		try {
@@ -39,10 +39,9 @@ public class MaterialTest {
 	@Test
 	public void getPositionTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		int[] position = {5,5,5};
 		Vector vector = new Vector(5,5,5);
-		Material material1 = new Log(position, world);
-		assertEquals(material1.getPosition(), vector); //FIXME
+		Material material1 = new Log(vector, world);
+		assertTrue(material1.getPosition().equals(vector)); //FIXME
 	}
 
 }

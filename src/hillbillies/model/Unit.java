@@ -1806,7 +1806,7 @@ private void doDefaultBehavior(){
 	else if (activeActivity == 0) {
 		int randomActivity = (int) (Math.random() * 3);
 		if (randomActivity == 0){
-			Cube newTargetCube = world.generateRandomAccessibleCube();
+			Cube newTargetCube = world.generateRandomValidPosition();
 			this.setTargetCube(newTargetCube);
 					
 		}else if (randomActivity == 1) {
@@ -1822,9 +1822,28 @@ private void doDefaultBehavior(){
 		}
 	}
 
+/**
+ * Variable registering the Y-component of the beginning cube.
+ */
 private int fellFrom;
+
+/**
+ * Variable registering fall speed.
+ */
 private final static Vector fallSpeed = new Vector(0, 0, -3);
 
+/**
+ * If this unit is not falling, check whether it should be falling 
+ * 	and initiate the fall if needed.
+ * If this unit is falling, check whether it should stop falling
+ * 	and stop the fall if needed.
+ * 
+ * @post if this unit was falling and had a solid block underneath, 
+ * 		it is not falling anymore. Its hitpoints will be decreased
+ * 		with 10 times the fallen cubes. 
+ * 		If this unit was not falling and hadn't a solid block underneath, 
+ * 		it is falling.
+ */
 private void falling(){ // FIXME materials can fall to (but not yet)
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
