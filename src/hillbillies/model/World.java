@@ -541,7 +541,7 @@ public class World {
 	System.out.println("Variables set commancing pathfinding while");
     //while openSet is not empty
 		int stop = 0; // FIXME moet nog weg
-		while (openSet.size() != 0 && stop != 10){
+		while (openSet.size() != 0 && stop != 100){
 			stop = stop+1;
 //	        current := the node in openSet having the lowest fScore[] value
 			Cube currentNode = null;
