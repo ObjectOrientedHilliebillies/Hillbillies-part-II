@@ -285,7 +285,7 @@ public class World {
 	    return foundMaterials;
 	}
 	
-	private List<Material> getMaterialsAt(Cube cube) { 
+	public List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
 			if(material.getPosition().getEnclosingCube(this).equals(cube)){

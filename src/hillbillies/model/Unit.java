@@ -1488,20 +1488,34 @@ private void doWork() {
 		if (this.isCarryingMaterial()) {
 			this.dropMaterial(cubeWorkingOn.getCenterOfCube());
 			}
-		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
-			//FIXME deze doet het nog niet!
+		else if (this.getWorld().isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
+			List<Material> materialsAtCube = this.getWorld().getMaterialsAt(cubeWorkingOn);
+			Log log = null;
+			Boulder boulder = null;
+			for (Material material:materialsAtCube) {
+				if (material instanceof Log)
+					log = (Log)material;
+				if (material instanceof Boulder)
+					boulder = (Boulder)material;
 			}
-		else if (this.world.materialToPickUp(cubeWorkingOn) != null) {
+			if (!(boulder == null || log == null)) {
+				this.getWorld().removeMaterial(boulder);
+				this.getWorld().removeMaterial(log);
+				this.setWeight(this.getWeight() + 5);
+				this.setToughness(this.getToughness() + 5);
+			}
+			}
+		else if (this.getWorld().materialToPickUp(cubeWorkingOn) != null) {
 			System.out.println("pickingMaterialUp");
-			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
+			this.pickupMaterial(this.getWorld().materialToPickUp(cubeWorkingOn)); 
 			}
 		else if (cubeWorkingOn.getTerrainType() == 2) {
 			new Log(cubeWorkingOn.getCenterOfCube(), this.getWorld());
-			this.world.setTerrainType(cubeWorkingOn, 0);
+			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else if (cubeWorkingOn.getTerrainType() == 1) {
 			new Boulder(cubeWorkingOn.getCenterOfCube(), this.getWorld());
-			this.world.setTerrainType(cubeWorkingOn, 0);
+			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else{
 			this.increaseExperience(-10); 
