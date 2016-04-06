@@ -9,7 +9,6 @@ import java.util.Set;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
-import javafx.collections.ListChangeListener.Change;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
@@ -86,7 +85,7 @@ public class Cube{
 	 * @effect This new cube is initialised with the position and world of the given cube and the
 	 * 			given terrain type.
 	 */
-	public Cube changeTerrainType( int terrainType){
+	public Cube changeTerrainType(int terrainType){
 		return new Cube(getPosition(), terrainType, getWorld());
 	}
 	/**
@@ -185,23 +184,13 @@ public class Cube{
 				for (int z=-1; z!=2; z++){
 					thisCube.set(2, getPosition().get(2) + z); 
 					Cube neighbour = getWorld().getCube(thisCube);
-					if (neighbour != null && !(x == 0 && y==0 && z==0)){
+					if (neighbour != null){
 						neighbourCubes.add(neighbour);
 					}
 				}
 			}
 		}
-		String print = "";
-		for (Cube s : neighbourCubes){
-			print += s.toString() + "\t";
-		}
-		System.out.println(print);
 		neighbourCubes.remove(this);
-		print = "";
-		for (Cube s : neighbourCubes){
-			print += s.toString()+ "\t";
-		}
-		System.out.println(print);
 		return neighbourCubes;
 	}
 	
@@ -297,7 +286,8 @@ public class Cube{
 		if (other.getClass() != this.getClass())
 			return false;
 		Cube otherCube = (Cube)other; 
-		return (getPosition() == otherCube.getPosition() && getWorld() == otherCube.getWorld());
+		return getPosition() == otherCube.getPosition();
+				//&& getWorld() == otherCube.getWorld()); FIXME
 	}
 	
 	/**

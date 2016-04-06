@@ -1388,10 +1388,13 @@ public void moveTo(Cube cube){
 * 		| !isValidPosition(targetPosition)
 */
 private void doMoveTo(){
-	System.out.println("Starting pathfinding");
 	List<Cube> path = world.getPath(this.getCube(), this.targetCube);
-	Vector difference = path.get(path.size()).getCenterOfCube();
-	this.moveToAdjacent(difference);
+	if (path == null){
+		this.targetCube = null;
+	}else{
+		Vector next = path.get(path.size()-2).getCenterOfCube();
+		this.moveToAdjacent(Vector.getVectorFromTo(getPosition(), next));
+	}
 }
 
 
