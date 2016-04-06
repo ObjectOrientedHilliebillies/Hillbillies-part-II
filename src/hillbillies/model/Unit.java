@@ -1,6 +1,5 @@
 package hillbillies.model;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 //New classes: boulder, log, world
@@ -35,29 +34,12 @@ import java.util.ArrayList;
 
 //Dodge: dodge to passable terrain.
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.experimental.theories.Theories;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.Util;
-
-// FIXME Als de strength ofzo veranderd kan het zijn dat de unit zijn weight 
-//			niet meer legaal is.
-// FIXME Er zijn bugs als je meerder units hebt
-// FIXME Als je omhoog gaat veranderd alles in Nan !?
-// FIXME Na 3 min gameTime crashed het
-// FIXME MoveTo start niet zo gemakkelijk.
-// TODO Defence is nog niet echt getest
-// FIXME isSprinting geeft soms fout aan
-// FIXME Een unit kan nog niet sterven.
-// FIXME ALLE PUBLIEKE METHODEN MOETEN EEN TEST HEBBEN!!!
-
 
 /**
  * @invar  The position of each unit must be a valid position for any
@@ -191,7 +173,7 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	if (!isValidWeight(weight))
 		this.weight = this.getMinWeight();
 	else 
-		this.setWeight(weight); //TODO da's hier vreemd met die weight's
+		this.setWeight(weight);
 	this.setDefaultBehavior(enableDefaultBehavior);
 	
 	setHitpoints(getMaxHitpoints()-5);
@@ -204,7 +186,7 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 
 public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, World world){
 	this.world = world;
-	this.setName("Name");  //FIXME not final!
+	this.setName("Name");
 	
 	try {
 		this.setPosition(initialPosition);
@@ -220,8 +202,8 @@ public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, 
 	this.setWeight((int) (Math.random() * 200));
 		
 	
-	setHitpoints(getMaxHitpoints()-5); //FIXME door de random weight en toughness kan dit negatief geïnitialiseerd worden.
-	setStamina(getMaxStamina()-5);
+	setHitpoints(getMaxHitpoints());
+	setStamina(getMaxStamina());
 	
 	this.orientation = (Math.PI/2);
 	
@@ -257,7 +239,6 @@ private Faction faction;
  */
 @Raw
 public void setFaction(Faction faction) {
-	//TODO isvalidfaction + @post
 	this.faction = faction;
 }
 
@@ -301,7 +282,7 @@ private Vector getPosition() {
  * Return the position of this unit.
  */
 @Basic @Raw
-public double[] getDoublePosition() { //TODO private?
+public double[] getDoublePosition() {
 	return this.position.getVector();
 }
 
@@ -587,8 +568,10 @@ private static boolean isValidStrength(int strength) {
  */
 @Raw
 public void setStrength(int strength) {
-	if (isValidStrength(strength))
+	if (isValidStrength(strength)){
 		this.strength = strength;
+		setWeight(getWeight());
+	}
 }
 
 
@@ -636,8 +619,10 @@ private static boolean isValidAgility(int agility) {
  */
 @Raw
 public void setAgility(int agility) {
-	if (isValidAgility(agility))
+	if (isValidAgility(agility)){
 		this.agility = agility;
+		this.setWeight(getWeight());
+	}
 }
 
 /**
@@ -737,7 +722,7 @@ private void setExperience(int experience) {
 	if (isValidExperience(experience))
 		if (!(experience >= 10))
 			this.experience = experience;
-		else{ // FIXME random eentje ophogen
+		else{
 			int points;
 			points = this.getExperience()/10;
 			this.setExperience(this.getExperience()%10);
@@ -866,7 +851,7 @@ private void setHitpoints(int hitpoints) {
 	if (hitpoints <= 0)
 		this.die();
 	else {
-		assert isValidHitpoints(hitpoints); //TODO check wegdoen
+		assert isValidHitpoints(hitpoints); 
 		this.hitpoints = hitpoints;
 	}
 }
@@ -895,7 +880,6 @@ private void die(){
 		this.dropMaterial(this.getPosition());
 	this.alive = false;
 	this.getFaction().removeUnit(this); 
-	// TODO grondig testen ik kreeg hier nog een bug!
 }
 
 /**
@@ -935,11 +919,7 @@ private double timeSinceLastRested = 0;
 
 // No documentation required for advanceTime
 public void advanceTime(double tickTime) {
-	if (!isValidTickTime(tickTime)){
-		throw new IllegalArgumentException();
-	}
-	else{
-		this.setTickTime(tickTime);
+	this.setTickTime(tickTime);
 		
 	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
@@ -969,7 +949,6 @@ public void advanceTime(double tickTime) {
 		doMove(tickTime);
 	else 
 		this.speed=0;
-	}
 	if (this.getDefaultBehavior())
 		doDefaultBehavior();
 }
@@ -983,11 +962,6 @@ public void advanceTime(double tickTime) {
  *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
 */
 private boolean isValidTickTime(double tickTime) {
-	if (!(0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime))){
-		System.out.println(tickTime);
-		// TODO tijd nul lijkt ook te mogen (zie testen twee)
-	}
-
 	return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime)));
 }
 
@@ -998,10 +972,12 @@ private boolean isValidTickTime(double tickTime) {
  *         The new time.
  * @post   The time is equal to the given time
  *       | new.getTime() == time
- *  //FIXME moet dit niet checken of het een valid time is en een exception throwen?
+ * @throws IllegalArgumentException if the tick time is to long or to short.
  */
 @Raw
 private void setTickTime(double time) {
+	if (!isValidTickTime(time))	
+		throw new IllegalArgumentException("Invalid tickTime");
 	this.tickTime = time;
 }
 
@@ -1124,8 +1100,6 @@ private double getBaseSpeed() {
 	return this.baseSpeed;
 }
 
-//FIXME da's een louche functienaam, kunnen we 
-//		dat niet beter in getBaseSpeed zetten?
 private void setBaseSpeed(){
 	this.baseSpeed = 3*(this.getStrength() + this.getAgility())/(double) (4*this.getTotalWeight());
 }
@@ -1174,7 +1148,7 @@ public boolean isSprinting() {
  * 		| if (activeActivity != "move")
  *		|		then this.speed = 0; 
  *		| else
- *		|		if zDifference == -1 //TODO ik weet niet of dit mag
+ *		|		if zDifference == -1 
  *		|			then new.getSpeed() == this.getBaseSpeed()/2
  *		|		else if zDifference == 1
  *		|			then new.getSpeed() == this.getBaseSpeed()*1.2
@@ -1575,10 +1549,8 @@ private void dropMaterial(Vector position){
  * Return whether this unit is working or not
  */
 public boolean isWorking() {
-	if (this.activeActivity == 1)
-		return true;
-	return false;
-}
+	return (this.activeActivity == 1);
+	}
 
 
 
@@ -1638,10 +1610,7 @@ private void doAttack(){
  * Return whether this unit is attacking or not
  */
 public boolean isAttacking() {
-	if (this.activeActivity == 5)
-		return true;
-	else
-		return false;
+	return (this.activeActivity == 5);
 }
 
 
@@ -1711,8 +1680,10 @@ public void rest() throws IllegalArgumentException{
 		throw new IllegalArgumentException();
 	}
 	if (activeActivity != 4){
+		System.out.println("begin te pitten");
 		recoverdPoints = 0;
 		this.activeActivity = 4;
+		this.doRest();
 	}
 }
 
@@ -1732,7 +1703,7 @@ public void rest() throws IllegalArgumentException{
  */
 private void doRest() {
 	double oldRecoverdPoints = recoverdPoints;
-	recoverdPoints = this.tickTime*this.getToughness()/200/0.2;
+	recoverdPoints = oldRecoverdPoints + this.tickTime*this.getToughness()/200/0.2;
 	if (Util.fuzzyGreaterThanOrEqualTo(recoverdPoints,1)){
 		this.timeSinceLastRested = 0;
 		if (hitpoints != getMaxHitpoints()){
@@ -1756,10 +1727,7 @@ private void doRest() {
  * Return whether this unit is resting or not.
  */
 public boolean isResting() {
-	if (this.activeActivity == 4)
-		return true;
-	else 
-		return false;
+	return (this.activeActivity == 4);
 }
 
 /* Default behavior */
