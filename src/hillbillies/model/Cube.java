@@ -9,7 +9,6 @@ import java.util.Set;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
-import javafx.collections.ListChangeListener.Change;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
@@ -86,7 +85,7 @@ public class Cube{
 	 * @effect This new cube is initialised with the position and world of the given cube and the
 	 * 			given terrain type.
 	 */
-	public Cube changeTerrainType( int terrainType){
+	public Cube changeTerrainType(int terrainType){
 		return new Cube(getPosition(), terrainType, getWorld());
 	}
 	/**
@@ -287,7 +286,8 @@ public class Cube{
 		if (other.getClass() != this.getClass())
 			return false;
 		Cube otherCube = (Cube)other; 
-		return (getPosition() == otherCube.getPosition() && getWorld() == otherCube.getWorld());
+		return getPosition() == otherCube.getPosition();
+				//&& getWorld() == otherCube.getWorld()); FIXME
 	}
 	
 	/**

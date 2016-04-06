@@ -499,10 +499,7 @@ public class World {
 
 	/*Pathfinding*/	
 
-	
-
 	public List<Cube> getPath(Cube start, Cube goal){
-		
     // The set of nodes already evaluated.
 		Set<Cube> closedSet = new HashSet<>();
 		//closedSet := {}
@@ -537,12 +534,14 @@ public class World {
     // For the first node, that value is completely heuristic.
 		fScore.put(start, this.heuristic_cost_estimate(start, goal));
 		//fScore[start] := heuristic_cost_estimate(start, goal)
-
-	System.out.println("Variables set commancing pathfinding while");
     //while openSet is not empty
+<<<<<<< HEAD
 		int stop = 0; // FIXME moet nog weg
 		while (openSet.size() != 0 && stop != 10){
 			stop = stop+1;
+=======
+		while (openSet.size() != 0){
+>>>>>>> refs/remotes/origin/master
 //	        current := the node in openSet having the lowest fScore[] value
 			Cube currentNode = null;
 			Double lowestF = null;
@@ -555,7 +554,6 @@ public class World {
 					lowestF = fScore.get(node);
 				}
 			}
-			System.out.println("Chosen node"+ currentNode.toString());
 //	        if current = goal
 //	            return reconstruct_path(cameFrom, goal)
 			if (currentNode.equals(goal)){
@@ -563,27 +561,20 @@ public class World {
 				return this.reconstruct_path(cameFrom, goal);
 			}
 //	        openSet.Remove(current)
-			System.out.println("openSet length before"+ openSet.size());
 			openSet.remove(currentNode);
-			System.out.println("openSet length after"+ openSet.size());
 //	        closedSet.Add(current)
 			closedSet.add(currentNode);
 			String print = "";
 			for (Cube s : closedSet){
-				print += s.toString() + "\t";
+				print += s.toString() + " ";
 			}
-			System.out.println(print);
-			System.out.println(closedSet.contains(currentNode));
 //	        for each neighbor of current
 			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
-			System.out.println(accessibleNeigbours.contains(currentNode));
 			for (Cube neighbour : accessibleNeigbours){
 //	            if neighbor in closedSet
 				if (closedSet.contains(neighbour)){
-					System.out.println("neigbour skiped = " + neighbour.toString());
 	                continue;		// Ignore the neighbor which is already evaluated.
 				}
-				System.out.println("neigbour not skiped = " + neighbour.toString());
 	            // The distance from start to a neighbor
 //	            tentative_gScore := gScore[current] + dist_between(current, neighbor)
 				double tentative_gScore = gScore.get(currentNode) + Vector.distanceBetween(currentNode, neighbour);
@@ -603,9 +594,9 @@ public class World {
 				gScore.put(neighbour, tentative_gScore);
 //	            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
 				fScore.put(neighbour, tentative_gScore+this.heuristic_cost_estimate(neighbour, goal));
-				this.setTerrainType(neighbour, 3);
 			}
 		}
+		System.out.println("Impossible to get there!");
 		return null;
 	}	
 	
