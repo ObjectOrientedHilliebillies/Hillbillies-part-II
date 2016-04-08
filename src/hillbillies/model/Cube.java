@@ -249,7 +249,7 @@ public class Cube{
 	 * @return True if and only if this cube is not made of dirt of wood.
 	 */
 	public boolean isSolid(){
-		return !(getTerrainType() != 1 && getTerrainType() != 2);
+		return !(getTerrainType() == 0);
 	}
 	
 	/**
