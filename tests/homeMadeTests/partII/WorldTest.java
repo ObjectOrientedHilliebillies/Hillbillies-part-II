@@ -2,6 +2,9 @@ package homeMadeTests.partII;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,9 +44,12 @@ public class WorldTest {
 	
 	@Test
 	public void isCubeInsideWorldTest() throws ModelException {
-		int[] position1 = {5,5,5};
 		int[] position2 = {10,10,10};
 		int[] position3 = {15,15,15};
+		List<Integer> position1 = new ArrayList<>();
+		position1.add(5);
+		position1.add(5);
+		position1.add(5);
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
 		assertEquals(world.isCubeInWorld(position1), true);
 		assertEquals(world.isCubeInWorld(position2), true); //FIXME
