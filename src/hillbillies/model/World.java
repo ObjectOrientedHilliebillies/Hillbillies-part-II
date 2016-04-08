@@ -608,7 +608,7 @@ public class World {
 		return null;
 	}	
 	
-	public double heuristic_cost_estimate(Cube start, Cube goal){
+	private double heuristic_cost_estimate(Cube start, Cube goal){
 		return Vector.distanceBetween(start.getCenterOfCube(), goal.getCenterOfCube());
 	}
 	
@@ -622,7 +622,7 @@ public class World {
 	    return total_path;
 	}
 
-	public Set<Cube> getAccessibleNeigbours (Cube cube){
+	private Set<Cube> getAccessibleNeigbours (Cube cube){
 		Set<Cube> neighbours = cube.getNeighbourCubes();
 		neighbours.removeAll(filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();

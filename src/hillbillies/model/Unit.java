@@ -1457,20 +1457,7 @@ private Cube cubeWorkingOn = null;
 
 public void workAt(Cube cube){
 	if (!getCube().isNeighbourCube(cube) && !getCube().equals(cube))
-		this.cubeWorkingOn = cube;
-		this.nextActivity=1;
-		Cube bestNeighbour = null;
-		Double bestEstimatedDistance = null;
-		for (Cube neigbour : getWorld().getAccessibleNeigbours(cube)){
-			if (bestEstimatedDistance == null){
-				bestNeighbour = neigbour;
-				bestEstimatedDistance = getWorld().heuristic_cost_estimate(this.getCube(), neigbour);
-			} else if (bestEstimatedDistance > getWorld().heuristic_cost_estimate(this.getCube(), neigbour)){
-				bestNeighbour = neigbour;
-				bestEstimatedDistance = getWorld().heuristic_cost_estimate(this.getCube(), neigbour);
-			}
-		}
-		this.moveTo(bestNeighbour);
+		return;
 	if (!isValidActivity(1)){
 		if (this.activeActivity != 1){
 			this.nextActivity = 1;
