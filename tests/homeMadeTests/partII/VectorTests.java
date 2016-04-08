@@ -1,4 +1,4 @@
-package homeMadeTests;
+package homeMadeTests.partII;
 
 import static org.junit.Assert.*;
 
