@@ -15,12 +15,11 @@ import hillbillies.util.ConnectedToBorder;
 
 public class World {
 	/**
-	 * Initialise this new world with given terrain.
+	 * Initialize this new world with given terrain.
 	 * 
 	 * @param  terrainTypes
 	 *         The terrain of this new world.
 	 **/         
-	private ConnectedToBorder connectedToBorder;
 	public World(int[][][] initialTerrainTypes, TerrainChangeListener givenModelListener){
 		NbCubesX = initialTerrainTypes.length;
 		NbCubesY = initialTerrainTypes[0].length;
@@ -51,24 +50,59 @@ public class World {
 		}
 		this.collapseAllFloatingCubes();
 	}
-
+	
+	/**
+	 * Variable registering whether a cube is connected with the border or not.
+	 */
+	private ConnectedToBorder connectedToBorder;
+	
+	/**
+	 * Variable registering the number of cubes in x-direction
+	 */
 	private final int NbCubesX;
+	
+	/**
+	 * Variable registering the number of cubes in y-direction
+	 */
 	private final int NbCubesY;
+	
+	/**
+	 * Variable registering the number of cubes in z-direction
+	 */
 	private final int NbCubesZ;
+	
+	/**
+	 * Variable registering the change of terrain
+	 */
 	private final TerrainChangeListener modelListener;
 	
+	/**
+	 * Returns the number of cubes in x-direction
+	 */
 	public int getNbCubesX(){
 		return NbCubesX;
 	}
 	
+	/**
+	 * Returns the number of cubes in y-direction
+	 */
 	public int getNbCubesY(){
 		return NbCubesY;
 	}
 	
+	/**
+	 * Returns the number of cubes in z-direction
+	 */
 	public int getNbCubesZ(){
 		return NbCubesZ;
 	}
 	
+	/**
+	 * Returns whether the vector position is a position inside the world.
+	 * 
+	 * @param position
+	 * 		The position to be checked
+	 */
 	public boolean isPositionInWorld(Vector position){
 		if (position.getXCoord() < 0 || position.getXCoord() > NbCubesX
 			|| position.getYCoord() < 0 || position.getYCoord() > NbCubesY
@@ -180,6 +214,12 @@ public class World {
 				cube.getPosition().get(2));		
 	}
 	
+	/**
+	 * Collapse the cube cube if floating.
+	 * 
+	 * @post If this cube was not connected to a border,
+	 * 		its terraintype is air.
+	 */
 	private void collapseIfFloating(Cube cube){
 		if (cube.isSolid()){
 			if (!this.isSolidConnectedToBorder(cube)){
@@ -188,6 +228,12 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Returns whether the cube cube is connected with the border.
+	 * 
+	 * @param cube
+	 * 		The cube to be checked.
+	 */
 	public boolean isSolidConnectedToBorder(Cube cube){
 		if (cube.isSolid()){
 			return connectedToBorder.isSolidConnectedToBorder(cube.getPosition().get(0), 
@@ -197,6 +243,13 @@ public class World {
 		return true;
 	}
 	
+	/**
+	 * Collapse all the cubes who are floating.
+	 * 
+	 * @effect All terraintypes of cubes who are not connected to 
+	 * 		the border are changed in air.
+	 * 		
+	 */
 	private void collapseAllFloatingCubes(){
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
@@ -226,7 +279,14 @@ public class World {
 	 * Set registering all boulders in this world.
 	 */
 	private Set<Boulder> boulders = new HashSet<>();
-
+	
+	/**
+	 * Returns whether the cube cube is a workshop with a log and a
+	 * boulder
+	 * 
+	 * @param cube
+	 * 		The cube to be checked.
+	 */
 	public boolean isWorkshopWithLogAndBoulder(Cube cube){
 		if (cube.getTerrainType() != 3){
 			return false;
@@ -248,6 +308,9 @@ public class World {
 		return false;
 	}	
 	
+	/**
+	 * Returns a random valid position inside this world.
+	 */
 	public Cube generateRandomValidPosition(){
 		Cube cube;
 		do{
@@ -260,6 +323,13 @@ public class World {
 		return cube;
 	}
 	
+	/**
+	 * Returns the material at the cube cube which should be picked up.
+	 * If no such material exists, returns null.
+	 * 
+	 * @param cube
+	 * 		The cube to be checked.
+	 */
 	public Material materialToPickUp(Cube cube){
 		List<Material> materialsOnCube = this.getMaterialsAt(cube);
 		Material materialToReturn = null;
@@ -274,6 +344,12 @@ public class World {
 		return materialToReturn;
 	}
 	
+	/**
+	 * Returns a list with all materials who are at the vector position.
+	 * 
+	 * @param position
+	 * 		the position to be checked.
+	 */
 	private List<Material> getMaterialsAt(Vector position) { 
 
 		List<Material> foundMaterials = new ArrayList<>();
@@ -285,6 +361,12 @@ public class World {
 	    return foundMaterials;
 	}
 	
+	/**
+	 * Returns a list with all materials who are at the cube cube.
+	 * 
+	 * @param cube
+	 * 		The cube to be checked.
+	 */
 	public List<Material> getMaterialsAt(Cube cube) { 
 		List<Material> foundMaterials = new ArrayList<>();
 		for (Material material : materials){
@@ -295,12 +377,15 @@ public class World {
 	    return foundMaterials;
 	}
 	
+	/**
+	 * Returns a set with all materials in this world.
+	 */
 	public Set<Material> getMaterials() {
 		return this.materials;
 	}
 	
 	/**
-	 * Return all logs in this world.
+	 * Returns all logs in this world.
 	 */
 	public Set<Log> getLogs() {
 		Set<Log> logs = new HashSet<>();
@@ -465,6 +550,11 @@ public class World {
 	    return nbUnitsInWorld;
 	}
 	
+	/**
+	 * Returns a unit in this world.
+	 * 
+	 * @post a new unit is added to this world.
+	 */
 	public Unit spawnUnit(boolean enableDefaultBehavior){
 		Unit newUnit =  new Unit("Harry", generateRandomValidPosition().getCenterOfCube(), 
 				enableDefaultBehavior, this); //TODO name not final
@@ -493,6 +583,14 @@ public class World {
 		}		
 	}
 	
+	/**
+	 * Remove the unit unit from this world.
+	 * 
+	 * @param unit
+	 * 		The unit to be removed.
+	 * 
+	 * @post The unit unit doesn't exist in this world.
+	 */
 	private void removeUnit(Unit unit) {
 		unit.getFaction().removeUnit(unit);
 	}
@@ -500,6 +598,7 @@ public class World {
 
 	/*Time*/
 	
+	// No documentation required
 	public void advanceTime(double dt) {
 		Set<Unit> unitsInWorld = this.getUnits();
 		Set<Material> materialsInWorld = this.getMaterials();
@@ -512,7 +611,21 @@ public class World {
 	}
 
 	/*Pathfinding*/	
-
+	
+	/**
+	 * Returns the most efficient path between start and goal 
+	 * 	according the A* algorithm.
+	 * 
+	 * @param start
+	 * 		The cube the path starts from.
+	 * 
+	 * @param goal
+	 * 		The cube to be reached
+	 * 
+	 * @return
+	 * 		A list of cubes to follow if goal can be reached.
+	 * 		Null if the goal can't be reached.
+	 */
 	public List<Cube> getPath(Cube start, Cube goal){
     // The set of nodes already evaluated.
 		Set<Cube> closedSet = new HashSet<>();
@@ -608,10 +721,27 @@ public class World {
 		return null;
 	}	
 	
+	/**
+	 * Returns the estimated 'heuristic cost' to get form start to goal.
+	 * @param start
+	 * 		The cube the path starts on
+	 * @param goal
+	 * 		The cube to get to
+	 * @return
+	 * 		The distance between start and goal.
+	 */
 	private double heuristic_cost_estimate(Cube start, Cube goal){
 		return Vector.distanceBetween(start.getCenterOfCube(), goal.getCenterOfCube());
 	}
 	
+	/**
+	 * Returns the reconstructed path
+	 * 
+	 * @param cameFrom
+	 * 		//TODO
+	 * @param current
+	 * @return
+	 */
 	private List<Cube> reconstruct_path(HashMap<Cube, Cube> cameFrom, Cube current){
 		List<Cube> total_path = new ArrayList<>();
 	    total_path.add(current);
@@ -621,7 +751,13 @@ public class World {
 	    }
 	    return total_path;
 	}
-
+	
+	/**
+	 * Returns a set with all the neighbours from the cube cube 
+	 * who are passable(air or workshop).
+	 * @param cube
+	 * 		The cube to get the neighbours from.
+	 */
 	private Set<Cube> getAccessibleNeigbours (Cube cube){
 		Set<Cube> neighbours = cube.getNeighbourCubes();
 		neighbours.removeAll(filterPassableCubes(neighbours));

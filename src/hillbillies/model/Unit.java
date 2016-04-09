@@ -184,6 +184,24 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	this.getWorld().addUnit(this);
 }
 
+/**
+ * Initialize this unit with the given name, position and world.
+ * 
+ * @param name
+ * 		The name for this new unit.
+ * @param initialPosition
+ * 		The initial position for this new unit.
+ * @param enableDefaultBehavior
+ * 		The behavior for this new unit.
+ * @param world
+ * 		The world for this new unit.
+ * @effect The position of this new unit is set to
+ *         the given position.
+ *       | this.setPosition(position)
+ * @post The world of this unit is the world world.
+ * @effect The strength, agility, toughness and weight of this unit
+ * 			are a random integer between 0 and 200.
+ */
 public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, World world){
 	this.world = world;
 	this.setName("Name");
@@ -224,6 +242,9 @@ public World getWorld(){
 	return this.world;
 }
 
+/**
+ * Set the world of this unit to the given world.
+ */
 public void setWorld(World world){
 	this.world = world;
 }
@@ -916,6 +937,9 @@ private double getCurrentSpeed() {
 /////////////////////* TIME */////////////////////
 //////////////////////////////////////////////////
 
+/**
+ * Variable registering the time since the last rest.
+ */
 private double timeSinceLastRested = 0;
 
 // No documentation required for advanceTime
@@ -1369,7 +1393,17 @@ private void doMoveTo(){
 
 /* Working */
 
-
+/**
+ * Pick up the given material
+ * 
+ * @param material
+ * 		The material to pick up
+ * 
+ * @post this material is no longer in the world of this unit.
+ * 
+ * @post this unit's weight is the sum of its own weight and 
+ * 		the material's weight.
+ */
 private void pickupMaterial(Material material) {
 ///**
 // * Change the activity from this unit to work
@@ -1401,10 +1435,6 @@ private void pickupMaterial(Material material) {
 // */
 //public void setCarriedMaterial(Material material) {
 	//TODO defensive
-	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
-	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
-	//		een additional weight definieren en een materiaal kapotmaken als het 
-	//		opgerapen wordt en terug maken als het gedropt wordt.
 	if (material instanceof Log)
 		this.carriedMaterial = 2;
 	else if (material instanceof Boulder)
@@ -1467,8 +1497,7 @@ public void workAt(Cube cube){
 	}
 	if (activeActivity != 1 || !cubeWorkingOn.equals(cube)){
 		activeActivity = 1;
-		this.remainingTimeToFinishWork = 500/(double)(this.getStrength()*100);
-		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength());
 		this.cubeWorkingOn = cube;
 		this.face(cube.getCenterOfCube());
 	}
@@ -1592,7 +1621,6 @@ public void attack(Unit defender){
 		this.face(defender.getPosition());
 		defender.face(this.getPosition());
 		defender.defenseAgainst(this);
-		// FIXME een methode setActivieActivity maken!
 	}
 }
 
@@ -1624,13 +1652,14 @@ public boolean isAttacking() {
  * 
  * @param unit
  * 		the unit who is attacking this unit
- * @post //TODO experience toevoegen aan post
+ * @post
  * 		| if Math.random() < dodgeChance 
  * 				 new.getPosition == this.getPosition + random
  * 				 this.getOrientation = unit.getOrientation
+ * 				 this.increaseExperience(20)
  * 		| else if (!Math.random() < blockChance)
  * 				 new.getHitpoints() == this.getHitpoints() - unit.getStrength()/10
- * 				 
+ * 		| else this.increaseExperience(20)
  * 		
  */
 private void defenseAgainst(Unit attacker) {	
@@ -1817,7 +1846,7 @@ private final static Vector fallSpeed = new Vector(0, 0, -3);
  * 		If this unit was not falling and hadn't a solid block underneath, 
  * 		it is falling.
  */
-private void falling(){ // FIXME materials can fall to (but not yet)
+private void falling(){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");
