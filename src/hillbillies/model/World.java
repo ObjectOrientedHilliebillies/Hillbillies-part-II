@@ -411,7 +411,7 @@ public class World {
 	}
 	
 //	private void setMaterial(Vector position, Material material){
-//		//if (!isValidMaterialType(materialType)){ //TODO
+//		//if (!isValidMaterialType(materialType)){ 
 //		//	throw new IllegalArgumentException();		
 //		//}
 //		
