@@ -168,7 +168,9 @@ public class Material {
 		return getWorld().getCube(cubeCoord);
 	}
 
-
+	/**
+	 * Returns the world of this material.
+	 */
 	private World getWorld() {
 		return this.world;
 	}
