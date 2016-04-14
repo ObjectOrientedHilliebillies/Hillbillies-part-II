@@ -35,7 +35,6 @@ public class Log extends Material {
 	 */
 	public Log(Vector initialPosition, World world, int weight){
 		super(initialPosition, world, weight);
-		// FIXME Why is there no "world.addLog(this)" here?
 	}
 	
 	

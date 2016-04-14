@@ -184,6 +184,24 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	this.getWorld().addUnit(this);
 }
 
+/**
+ * Initialize this unit with the given name, position and world.
+ * 
+ * @param name
+ * 		The name for this new unit.
+ * @param initialPosition
+ * 		The initial position for this new unit.
+ * @param enableDefaultBehavior
+ * 		The behavior for this new unit.
+ * @param world
+ * 		The world for this new unit.
+ * @effect The position of this new unit is set to
+ *         the given position.
+ *       | this.setPosition(position)
+ * @post The world of this unit is the world world.
+ * @effect The strength, agility, toughness and weight of this unit
+ * 			are a random integer between 0 and 200.
+ */
 public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, World world){
 	this.world = world;
 	this.setName("Name");
@@ -224,6 +242,9 @@ public World getWorld(){
 	return this.world;
 }
 
+/**
+ * Set the world of this unit to the given world.
+ */
 public void setWorld(World world){
 	this.world = world;
 }
@@ -916,15 +937,16 @@ private double getCurrentSpeed() {
 /////////////////////* TIME */////////////////////
 //////////////////////////////////////////////////
 
+/**
+ * Variable registering the time since the last rest.
+ */
 private double timeSinceLastRested = 0;
 
 // No documentation required for advanceTime
-public void advanceTime(double tickTime) {
-	this.setTickTime(tickTime);
-		
+public void advanceTime(double tickTime) {		
 	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
-	this.falling();
+	this.falling(tickTime);
 	
 	if (this.timeSinceLastRested >= 180 && this.isValidActivity(4)){
 			this.rest();
@@ -941,45 +963,17 @@ public void advanceTime(double tickTime) {
 	}
 	
 	if (isWorking())
-		doWork();
+		doWork(tickTime);
 	else if (isResting())
-		doRest();
+		doRest(tickTime);
 	else if (this.isAttacking())
-		this.doAttack();
+		this.doAttack(tickTime);
 	else if (this.isMoving())
 		doMove(tickTime);
 	else 
 		this.speed=0;
 	if (this.getDefaultBehavior())
 		doDefaultBehavior();
-}
-
-/**
- * Check whether the given tick time is a valid tick time.
- *  
- * @param  tickTime
- *         The tick time to check.
- * @return 
- *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
-*/
-private boolean isValidTickTime(double tickTime) {
-	return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime)));
-}
-
-/**
- * Set the time to the given time.
- * 
- * @param  time
- *         The new time.
- * @post   The time is equal to the given time
- *       | new.getTime() == time
- * @throws IllegalArgumentException if the tick time is to long or to short.
- */
-@Raw
-private void setTickTime(double time) {
-	if (!isValidTickTime(time))	
-		throw new IllegalArgumentException("Invalid tickTime");
-	this.tickTime = time;
 }
 
 /**
@@ -1025,16 +1019,6 @@ private void startNextActivity(){
 	
 	nextActivity = 0;
 }
-
-/**
- * Variable registering the current time
- */
-private double tickTime;
-
-/**
- * Variable registering the maximum time interval
- */
-private double maxTimeLapse = 0.2;
 
 /**
  * Variable registering the current activity
@@ -1369,7 +1353,17 @@ private void doMoveTo(){
 
 /* Working */
 
-
+/**
+ * Pick up the given material
+ * 
+ * @param material
+ * 		The material to pick up
+ * 
+ * @post this material is no longer in the world of this unit.
+ * 
+ * @post this unit's weight is the sum of its own weight and 
+ * 		the material's weight.
+ */
 private void pickupMaterial(Material material) {
 ///**
 // * Change the activity from this unit to work
@@ -1401,10 +1395,6 @@ private void pickupMaterial(Material material) {
 // */
 //public void setCarriedMaterial(Material material) {
 	//TODO defensive
-	//FIXME materiaal moet verdwijenen vanaf dat dat opgerapen wordt.
-	//		ofwel lukt dat op deze manier (betwijfel ik) ofwel moeten we 
-	//		een additional weight definieren en een materiaal kapotmaken als het 
-	//		opgerapen wordt en terug maken als het gedropt wordt.
 	if (material instanceof Log)
 		this.carriedMaterial = 2;
 	else if (material instanceof Boulder)
@@ -1435,18 +1425,14 @@ private boolean isCarryingMaterial() {
  * Return whether this unit is carrying a log.
  */
 public boolean isCarryingLog() {
-	if (this.carriedMaterial == 2) 
-		return true;
-	return false;
+	return (this.carriedMaterial == 2) ;
 }
 
 /**
  * Return whether this unit is carrying a boulder.
  */
 public boolean isCarryingBoulder() {
-	if (this.carriedMaterial == 1)
-		return true;
-	return false;
+	return (this.carriedMaterial == 1);
 }
 /**
  * Variable registering what material this unit is carrying.
@@ -1471,8 +1457,7 @@ public void workAt(Cube cube){
 	}
 	if (activeActivity != 1 || !cubeWorkingOn.equals(cube)){
 		activeActivity = 1;
-		this.remainingTimeToFinishWork = 500/(double)(this.getStrength()*100);
-		// FIXME De maal 100 hierboven moet weg, dit is gwn om snel te kunnen testen!
+		this.remainingTimeToFinishWork = 500/(double)(this.getStrength());
 		this.cubeWorkingOn = cube;
 		this.face(cube.getCenterOfCube());
 	}
@@ -1486,26 +1471,40 @@ public void workAt(Cube cube){
  *  		| if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
 					this.startNextActivity();
  */
-private void doWork() {
-	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - this.tickTime;
+private void doWork(double tickTime) {
+	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - tickTime;
 	if (this.remainingTimeToFinishWork < 0){
 		if (this.isCarryingMaterial()) {
 			this.dropMaterial(cubeWorkingOn.getCenterOfCube());
 			}
-		else if (this.world.isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
-			//FIXME deze doet het nog niet!
+		else if (this.getWorld().isWorkshopWithLogAndBoulder(cubeWorkingOn)) {
+			List<Material> materialsAtCube = this.getWorld().getMaterialsAt(cubeWorkingOn);
+			Log log = null;
+			Boulder boulder = null;
+			for (Material material:materialsAtCube) {
+				if (material instanceof Log)
+					log = (Log)material;
+				if (material instanceof Boulder)
+					boulder = (Boulder)material;
 			}
-		else if (this.world.materialToPickUp(cubeWorkingOn) != null) {
+			if (!(boulder == null || log == null)) {
+				this.getWorld().removeMaterial(boulder);
+				this.getWorld().removeMaterial(log);
+				this.setWeight(this.getWeight() + 5);
+				this.setToughness(this.getToughness() + 5);
+			}
+			}
+		else if (this.getWorld().materialToPickUp(cubeWorkingOn) != null) {
 			System.out.println("pickingMaterialUp");
-			this.pickupMaterial(this.world.materialToPickUp(cubeWorkingOn)); 
+			this.pickupMaterial(this.getWorld().materialToPickUp(cubeWorkingOn)); 
 			}
 		else if (cubeWorkingOn.getTerrainType() == 2) {
 			new Log(cubeWorkingOn.getCenterOfCube(), this.getWorld());
-			this.world.setTerrainType(cubeWorkingOn, 0);
+			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else if (cubeWorkingOn.getTerrainType() == 1) {
 			new Boulder(cubeWorkingOn.getCenterOfCube(), this.getWorld());
-			this.world.setTerrainType(cubeWorkingOn, 0);
+			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else{
 			this.increaseExperience(-10); 
@@ -1523,6 +1522,7 @@ private void doWork() {
  * 		This unit is not carrying any material. //TODO of is dit effect?
  */
 private void dropMaterial(Vector position){
+	if (!position.getEnclosingCube(this.getWorld()).isSolid()){
 	if (this.getCarriedMaterial() == 2){
 		new Log(position, this.getWorld(), this.getAdditionalWeight());
 		//this.getWorld().addMaterial(log); //gebeurt al in Log zelf
@@ -1534,6 +1534,7 @@ private void dropMaterial(Vector position){
 		this.setAdditionalWeight(0);
 	}
 	this.carriedMaterial = 0;
+	}
 }
 
 
@@ -1580,7 +1581,6 @@ public void attack(Unit defender){
 		this.face(defender.getPosition());
 		defender.face(this.getPosition());
 		defender.defenseAgainst(this);
-		// FIXME een methode setActivieActivity maken!
 	}
 }
 
@@ -1592,8 +1592,8 @@ public void attack(Unit defender){
  *  		| if (this.getCurrentTime() >= activityStartTime + 1){
 					this.startNextActivity()
  */
-private void doAttack(){
-	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - this.tickTime;
+private void doAttack(double tickTime){
+	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - tickTime;
 	if (this.remainingTimeToFinishAttack < 0){
 		this.startNextActivity();
 	}
@@ -1612,13 +1612,14 @@ public boolean isAttacking() {
  * 
  * @param unit
  * 		the unit who is attacking this unit
- * @post //TODO experience toevoegen aan post
+ * @post
  * 		| if Math.random() < dodgeChance 
  * 				 new.getPosition == this.getPosition + random
  * 				 this.getOrientation = unit.getOrientation
+ * 				 this.increaseExperience(20)
  * 		| else if (!Math.random() < blockChance)
  * 				 new.getHitpoints() == this.getHitpoints() - unit.getStrength()/10
- * 				 
+ * 		| else this.increaseExperience(20)
  * 		
  */
 private void defenseAgainst(Unit attacker) {	
@@ -1676,7 +1677,6 @@ public void rest() throws IllegalArgumentException{
 		System.out.println("begin te pitten");
 		recoverdPoints = 0;
 		this.activeActivity = 4;
-		this.doRest();
 	}
 }
 
@@ -1694,9 +1694,9 @@ public void rest() throws IllegalArgumentException{
  * 		|				== this.getMaxStamina()
  * 		| 		then this.startNextActivity()
  */
-private void doRest() {
+private void doRest(double tickTime) {
 	double oldRecoverdPoints = recoverdPoints;
-	recoverdPoints = oldRecoverdPoints + this.tickTime*this.getToughness()/200/0.2;
+	recoverdPoints = oldRecoverdPoints + tickTime*this.getToughness()/200/0.2;
 	if (Util.fuzzyGreaterThanOrEqualTo(recoverdPoints,1)){
 		this.timeSinceLastRested = 0;
 		if (hitpoints != getMaxHitpoints()){
@@ -1805,7 +1805,7 @@ private final static Vector fallSpeed = new Vector(0, 0, -3);
  * 		If this unit was not falling and hadn't a solid block underneath, 
  * 		it is falling.
  */
-private void falling(){ // FIXME materials can fall to (but not yet)
+private void falling(double tickTime){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");
@@ -1821,7 +1821,7 @@ private void falling(){ // FIXME materials can fall to (but not yet)
 			this.startNextActivity();
 			System.out.println("Stopped falling");
 		}else{
-			this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
+			this.position = Vector.sum(this.position, fallSpeed.scale(tickTime));
 		}
 	}
 		

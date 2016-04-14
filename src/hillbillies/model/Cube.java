@@ -88,6 +88,7 @@ public class Cube{
 	public Cube changeTerrainType(int terrainType){
 		return new Cube(getPosition(), terrainType, getWorld());
 	}
+	
 	/**
 	 * Return the world of this cube
 	 */
@@ -286,7 +287,7 @@ public class Cube{
 		if (other.getClass() != this.getClass())
 			return false;
 		Cube otherCube = (Cube)other; 
-		return (getPosition() == otherCube.getPosition()&& getWorld() == otherCube.getWorld());
+		return (this.getPosition() == otherCube.getPosition()&& this.getWorld() == otherCube.getWorld());
 	}
 	
 	/**

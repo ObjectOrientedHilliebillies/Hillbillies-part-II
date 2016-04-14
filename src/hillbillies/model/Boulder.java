@@ -34,7 +34,6 @@ public class Boulder extends Material {
 	 */
 	public Boulder(Vector initialPosition, World world, int weight){
 		super(initialPosition, world, weight);
-		// FIXME Why is there nog world.addBoulder(this) here?
 	}
 	
 	
