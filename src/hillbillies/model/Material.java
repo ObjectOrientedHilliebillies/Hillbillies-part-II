@@ -3,9 +3,6 @@ package hillbillies.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.som.annotate.Raw;
-import ogp.framework.util.Util;
-
 public class Material {
 	
 /**
@@ -104,13 +101,7 @@ public class Material {
 	
 	//No documentation needed
 	public void advanceTime(double tickTime) {
-		if (!isValidTickTime(tickTime)){
-			throw new IllegalArgumentException();
-		}
-		else{
-			this.setTickTime(tickTime);
-		}
-		this.falling();
+		this.falling(tickTime);
 	}
 	
 	/**
@@ -140,7 +131,7 @@ public class Material {
 	 * 		it is not falling anymore. If this material was not falling and
 	 * 		hadn't a solid block underneath, it is falling.
 	 */
-	private void falling(){
+	private void falling(double tickTime){
 		if (!this.isFalling()){
 			if (!this.position.hasSupportOfSolidUnderneath(this.getWorld())){
 				System.out.println("Material started falling");
@@ -151,7 +142,7 @@ public class Material {
 			if (this.position.hasSupportOfSolidUnderneath(this.getWorld())){
 				this.position = getCube().getCenterOfCube();
 			}else{
-				this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
+				this.position = Vector.sum(this.position, fallSpeed.scale(tickTime));
 			}}
 		}
 	
@@ -172,47 +163,6 @@ public class Material {
 	private World getWorld() {
 		return this.world;
 	}
-
-	/**
-	 * Check whether the given tick time is a valid tick time.
-	 *  
-	 * @param  tickTime
-	 *         The tick time to check.
-	 * @return 
-	 *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
-	*/
-	private boolean isValidTickTime(double tickTime) {
-		if (!(0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo(maxTimeLapse, tickTime))){
-			System.out.println(tickTime);
-			// TODO tijd nul lijkt ook te mogen (zie testen twee)
-		}
-
-		return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo(maxTimeLapse, tickTime)));
-	}
-	
-	/**
-	 * Set the time to the given time.
-	 * 
-	 * @param  time
-	 *         The new time.
-	 * @post   The time is equal to the given time
-	 *       | new.getTime() == time
-	 *  //FIXME moet dit niet checken of het een valid time is en een exception throwen?
-	 */
-	@Raw
-	private void setTickTime(double time) {
-		this.tickTime = time;
-	}
-	
-	/**
-	 * Variable registering the current time
-	 */
-	private double tickTime;
-
-	/**
-	 * Variable registering the maximum time interval
-	 */
-	private double maxTimeLapse = 0.2;
 	
 	/**
 	 * Returns the position of this material.
