@@ -9,7 +9,7 @@ import ogp.framework.util.Util;
 public class Material {
 	
 /**
- * Initialize this new material with the given position and the given world.
+ 	* Initialize this new material with the given position and the given world.
  * 
  * @param initialPosition
  * @param world
@@ -26,9 +26,8 @@ public class Material {
 		world.addMaterial(this);
 	}
 	
-
 /**
- * Initialize this new material with the given position, world and weight.
+ 	* Initialize this new material with the given position, world and weight.
  * 
  * @param initialPosition
  * @param world
@@ -47,7 +46,6 @@ public class Material {
 		this.setPosition(initialPosition.getEnclosingCube(world).getCentreOfCube());
 		world.addMaterial(this);
 	}
-
 
 	/**
 	 * Set the weight of this material to a random weight between 10 and 50.
@@ -174,7 +172,6 @@ public class Material {
 	private World getWorld() {
 		return this.world;
 	}
-
 
 	/**
 	 * Check whether the given tick time is a valid tick time.
