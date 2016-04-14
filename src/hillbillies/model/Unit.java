@@ -1341,7 +1341,7 @@ public void moveTo(Cube cube){
 * 		| !isValidPosition(targetPosition)
 */
 private void doMoveTo(){
-	List<Cube> path = world.getPath(this.getCube(), this.targetCube);
+	List<Cube> path = Pathfinding.getPath(getCube(), this.targetCube, getWorld());
 	if (path == null){
 		this.targetCube = null;
 	}else{
