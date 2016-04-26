@@ -20,6 +20,7 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  * @invar The world of this cube must be a valid world.
  * 		| isValidWorld()
  * 
+ * https://github.com/ObjectOrientedHilliebillies/Hillbillies-part-II.git
  * @version 1.0
  * @author Jonas Vantrappen & Victor Van Eetvelt
  */
