@@ -1342,7 +1342,7 @@ public void moveTo(Cube cube){
 * 		| !isValidPosition(targetPosition)
 */
 private void doMoveTo(){
-	List<Cube> path = world.getPath(this.getCube(), this.targetCube);
+	List<Cube> path = Pathfinding.getPath(getCube(), this.targetCube, getWorld());
 	if (path == null){
 		this.targetCube = null;
 	}else{
@@ -1508,7 +1508,8 @@ private void doWork(double tickTime) {
 			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else{
-			this.increaseExperience(-10); 
+			this.startNextActivity();
+			return;
 		}
 		this.increaseExperience(10); 
 		this.startNextActivity();
