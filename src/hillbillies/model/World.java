@@ -11,6 +11,7 @@ import javax.annotation.Generated;
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
+import ogp.framework.util.Util;
 
 
 public class World {
@@ -271,16 +272,6 @@ public class World {
 	private Set<Material> materials = new HashSet<>();
 	
 	/**
-	 * Set registering all logs in this world.
-	 */
-	private Set<Log> logs = new HashSet<>();
-
-	/**
-	 * Set registering all boulders in this world.
-	 */
-	private Set<Boulder> boulders = new HashSet<>();
-	
-	/**
 	 * Returns whether the cube cube is a workshop with a log and a
 	 * boulder
 	 * 
@@ -343,24 +334,7 @@ public class World {
 		}
 		return materialToReturn;
 	}
-	
-	/**
-	 * Returns a list with all materials who are at the vector position.
-	 * 
-	 * @param position
-	 * 		the position to be checked.
-	 */
-	private List<Material> getMaterialsAt(Vector position) { 
-
-		List<Material> foundMaterials = new ArrayList<>();
-		for (Material material : materials){
-			if(material.getPosition() == position){
-	        	foundMaterials.add(material); 
-			}
-        }
-	    return foundMaterials;
-	}
-	
+		
 	/**
 	 * Returns a list with all materials who are at the cube cube.
 	 * 
@@ -600,6 +574,9 @@ public class World {
 	
 	// No documentation required
 	public void advanceTime(double dt) {
+		if (!isValidTickTime(dt)){
+			throw new IllegalArgumentException("Invalid tick time");
+		}
 		Set<Unit> unitsInWorld = this.getUnits();
 		Set<Material> materialsInWorld = this.getMaterials();
 		for (Unit unit : unitsInWorld){
@@ -609,6 +586,23 @@ public class World {
 			material.advanceTime(dt);
 		}
 	}
+	
+	/**
+	 * Check whether the given tick time is a valid tick time.
+	 *  
+	 * @param  tickTime
+	 *         The tick time to check.
+	 * @return 
+	 *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
+	*/
+	private boolean isValidTickTime(double tickTime) {
+		return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo(maxTimeLapse, tickTime)));
+	}
+
+	/**
+	 * Variable registering the maximum time interval
+	 */
+	private final static double maxTimeLapse = 0.2;
 
 	/*Pathfinding*/	
 	

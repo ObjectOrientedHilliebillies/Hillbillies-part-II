@@ -72,6 +72,7 @@ import ogp.framework.util.Util;
  *         unit.
  *       | isValidOrientation(getOrientation())
  *       
+ * https://github.com/ObjectOrientedHilliebillies/Hillbillies-part-II.git
  * @version 1.0
  * @author  Jonas Vantrappen & Victor Van Eetvelt
  */
@@ -943,12 +944,10 @@ private double getCurrentSpeed() {
 private double timeSinceLastRested = 0;
 
 // No documentation required for advanceTime
-public void advanceTime(double tickTime) {
-	this.setTickTime(tickTime);
-		
+public void advanceTime(double tickTime) {		
 	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
-	this.falling();
+	this.falling(tickTime);
 	
 	if (this.timeSinceLastRested >= 180 && this.isValidActivity(4)){
 			this.rest();
@@ -965,45 +964,17 @@ public void advanceTime(double tickTime) {
 	}
 	
 	if (isWorking())
-		doWork();
+		doWork(tickTime);
 	else if (isResting())
-		doRest();
+		doRest(tickTime);
 	else if (this.isAttacking())
-		this.doAttack();
+		this.doAttack(tickTime);
 	else if (this.isMoving())
 		doMove(tickTime);
 	else 
 		this.speed=0;
 	if (this.getDefaultBehavior())
 		doDefaultBehavior();
-}
-
-/**
- * Check whether the given tick time is a valid tick time.
- *  
- * @param  tickTime
- *         The tick time to check.
- * @return 
- *       |  | result == (0 < tickTime) && (tickTime < maxTimeLapse)
-*/
-private boolean isValidTickTime(double tickTime) {
-	return ((0 <= tickTime) && (Util.fuzzyGreaterThanOrEqualTo( maxTimeLapse, tickTime)));
-}
-
-/**
- * Set the time to the given time.
- * 
- * @param  time
- *         The new time.
- * @post   The time is equal to the given time
- *       | new.getTime() == time
- * @throws IllegalArgumentException if the tick time is to long or to short.
- */
-@Raw
-private void setTickTime(double time) {
-	if (!isValidTickTime(time))	
-		throw new IllegalArgumentException("Invalid tickTime");
-	this.tickTime = time;
 }
 
 /**
@@ -1049,16 +1020,6 @@ private void startNextActivity(){
 	
 	nextActivity = 0;
 }
-
-/**
- * Variable registering the current time
- */
-private double tickTime;
-
-/**
- * Variable registering the maximum time interval
- */
-private double maxTimeLapse = 0.2;
 
 /**
  * Variable registering the current activity
@@ -1511,8 +1472,8 @@ public void workAt(Cube cube){
  *  		| if (Util.fuzzyGreaterThanOrEqualTo(this.getCurrentTime(), endTime))
 					this.startNextActivity();
  */
-private void doWork() {
-	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - this.tickTime;
+private void doWork(double tickTime) {
+	this.remainingTimeToFinishWork = this.remainingTimeToFinishWork - tickTime;
 	if (this.remainingTimeToFinishWork < 0){
 		if (this.isCarryingMaterial()) {
 			this.dropMaterial(cubeWorkingOn.getCenterOfCube());
@@ -1632,8 +1593,8 @@ public void attack(Unit defender){
  *  		| if (this.getCurrentTime() >= activityStartTime + 1){
 					this.startNextActivity()
  */
-private void doAttack(){
-	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - this.tickTime;
+private void doAttack(double tickTime){
+	this.remainingTimeToFinishAttack = this.remainingTimeToFinishAttack - tickTime;
 	if (this.remainingTimeToFinishAttack < 0){
 		this.startNextActivity();
 	}
@@ -1717,7 +1678,6 @@ public void rest() throws IllegalArgumentException{
 		System.out.println("begin te pitten");
 		recoverdPoints = 0;
 		this.activeActivity = 4;
-		this.doRest();
 	}
 }
 
@@ -1735,9 +1695,9 @@ public void rest() throws IllegalArgumentException{
  * 		|				== this.getMaxStamina()
  * 		| 		then this.startNextActivity()
  */
-private void doRest() {
+private void doRest(double tickTime) {
 	double oldRecoverdPoints = recoverdPoints;
-	recoverdPoints = oldRecoverdPoints + this.tickTime*this.getToughness()/200/0.2;
+	recoverdPoints = oldRecoverdPoints + tickTime*this.getToughness()/200/0.2;
 	if (Util.fuzzyGreaterThanOrEqualTo(recoverdPoints,1)){
 		this.timeSinceLastRested = 0;
 		if (hitpoints != getMaxHitpoints()){
@@ -1846,7 +1806,7 @@ private final static Vector fallSpeed = new Vector(0, 0, -3);
  * 		If this unit was not falling and hadn't a solid block underneath, 
  * 		it is falling.
  */
-private void falling(){
+private void falling(double tickTime){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
 			System.out.println("Started falling");
@@ -1862,7 +1822,7 @@ private void falling(){
 			this.startNextActivity();
 			System.out.println("Stopped falling");
 		}else{
-			this.position = Vector.sum(this.position, fallSpeed.scale(this.tickTime));
+			this.position = Vector.sum(this.position, fallSpeed.scale(tickTime));
 		}
 	}
 		
