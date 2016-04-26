@@ -1,5 +1,6 @@
 /*
- * Een unit moet steeds een factie hebben. Dit zorgt er al voor dat de eerste functie van de facade niet kan werken.
+ * Een unit moet steeds een factie hebben. Dit zorgt er al voor 
+ * dat de eerste functie van de facade niet kan werken.
  * Als je dit probleem oplost door te stellen dat een factie niet moet afhangen van een wereld dan impliceerd dit dat
  * je geen functie addUnit kan maken omdat je dan niet een enkele unit kan toevoegen. Je moet dan direct zijn hele 
  * factie toevoegen.

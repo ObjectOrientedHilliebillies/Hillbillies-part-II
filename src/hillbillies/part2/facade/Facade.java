@@ -13,7 +13,6 @@ import hillbillies.model.Vector;
 import hillbillies.model.World;
 import hillbillies.part2.listener.TerrainChangeListener;
 import ogp.framework.util.ModelException;
-import sun.java2d.cmm.kcms.KcmsServiceProvider;
 
 public class Facade implements IFacade {
 

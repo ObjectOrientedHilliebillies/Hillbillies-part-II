@@ -1508,7 +1508,8 @@ private void doWork(double tickTime) {
 			this.getWorld().setTerrainType(cubeWorkingOn, 0);
 			}
 		else{
-			this.increaseExperience(-10); 
+			this.startNextActivity();
+			return;
 		}
 		this.increaseExperience(10); 
 		this.startNextActivity();
