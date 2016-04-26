@@ -517,7 +517,7 @@ public class World {
 	 * Return the smallest faction in this world.
 	 */
 	private Faction getSmallestFaction() {
-		Faction smallestFaction = null;
+		Faction smallestFaction = (Faction) this.getActiveFactions().toArray()[0];
 		for (Faction faction : factions){
 			if (faction.getNbOffUnitsInFaction() 
 	        		< smallestFaction.getNbOffUnitsInFaction())
