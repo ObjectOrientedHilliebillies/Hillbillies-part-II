@@ -11,14 +11,13 @@ import hillbillies.model.Cube;
 import hillbillies.model.Faction;
 import hillbillies.model.Log;
 import hillbillies.model.Scheduler;
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
 import hillbillies.model.World;
+import hillbillies.model.tasks.Task;
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.part3.programs.ITaskFactory;
 import ogp.framework.util.ModelException;
-import sun.java2d.cmm.kcms.KcmsServiceProvider;
 
 public class Facade implements IFacade {
 
@@ -422,32 +421,27 @@ public class Facade implements IFacade {
 
 	@Override
 	public Set<Scheduler> getSchedulersForTask(Task task) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return task.getSchedulers();
 	}
 
 	@Override
 	public Unit getAssignedUnit(Task task) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return task.getExecutor();
 	}
 
 	@Override
 	public Task getAssignedTask(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return unit.getTask();
 	}
 
 	@Override
 	public String getName(Task task) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return task.getName();
 	}
 
 	@Override
 	public int getPriority(Task task) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return task.getPriority();
 	}
 
 }

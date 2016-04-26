@@ -1,4 +1,9 @@
-package hillbillies.model;
+package hillbillies.model.tasks;
+
+import java.util.Set;
+
+import hillbillies.model.Scheduler;
+import hillbillies.model.Unit;
 
 public class Task { //implements Comparable<Task>{
 	
@@ -22,6 +27,7 @@ public class Task { //implements Comparable<Task>{
 	
 	public void setExecutor(Unit unit){
 		this.executor = unit;
+		unit.setTask(this);
 	}
 	
 	public Unit getExecutor(){
@@ -51,6 +57,17 @@ public class Task { //implements Comparable<Task>{
 	public String getName()  {
 		return this.name;
 	}
+	
+	public void addScheduler(Scheduler scheduler) {
+		this.schedulers.add(scheduler);
+	}
+	
+	private Set<Scheduler> schedulers;
+	
+	public Set<Scheduler> getSchedulers() {
+		return this.schedulers;
+	}
+	
 	
 	/** 
 	 * Check whether this task is equal to the given object.
