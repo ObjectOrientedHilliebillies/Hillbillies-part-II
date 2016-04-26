@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import hillbillies.model.tasks.Task;
 import ogp.framework.util.ModelException;
 
 public class Scheduler {

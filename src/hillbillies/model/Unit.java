@@ -39,6 +39,7 @@ import java.util.List;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
+import hillbillies.model.tasks.Task;
 import ogp.framework.util.Util;
 
 /**
@@ -1827,5 +1828,15 @@ private void falling(double tickTime){
 		}
 	}
 		
+}
+
+public Task task;
+
+public void setTask(Task task) {
+	this.task = task;
+}
+
+public Task getTask() {
+	return this.task;
 }
 }
