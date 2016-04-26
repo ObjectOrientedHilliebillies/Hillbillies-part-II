@@ -1,7 +1,7 @@
 package hillbillies.part3.internal.ui.viewparts;
 
 import hillbillies.common.internal.ui.viewparts.ControlArea;
-import hillbillies.model.tasks.Task;
+import hillbillies.model.Task;
 import hillbillies.part2.internal.ui.viewparts.UnitControlArea2;
 import hillbillies.part2.internal.ui.viewparts.UnitInfoAreaPart2;
 import hillbillies.part3.internal.controller.ActionExecutorPart3;

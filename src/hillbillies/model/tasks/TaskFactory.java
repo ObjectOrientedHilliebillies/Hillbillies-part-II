@@ -2,25 +2,22 @@ package hillbillies.model.tasks;
 
 import java.util.List;
 
+import hillbillies.model.Cube;
 import hillbillies.part3.programs.ITaskFactory;
 import hillbillies.part3.programs.SourceLocation;
-
+/**
+ * 
+ * @author victo
+ *
+ */
 public class TaskFactory implements ITaskFactory {
 
-	public TaskFactory() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	/*TASKS*/
-	
 	@Override
 	public List createTasks(String name, int priority, Object activity, List selectedCubes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/* STATEMENTS */
-	
+
 	@Override
 	public Object createAssignment(String variableName, Object value, SourceLocation sourceLocation) {
 		// TODO Auto-generated method stub
@@ -80,8 +77,6 @@ public class TaskFactory implements ITaskFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/* EXPRESSIONS */
 
 	@Override
 	public Object createReadVariable(String variableName, SourceLocation sourceLocation) {
@@ -180,6 +175,12 @@ public class TaskFactory implements ITaskFactory {
 	}
 
 	@Override
+	public Object createPositionOf(Object unit, SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Object createLiteralPosition(int x, int y, int z, SourceLocation sourceLocation) {
 		// TODO Auto-generated method stub
 		return null;
@@ -220,5 +221,4 @@ public class TaskFactory implements ITaskFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

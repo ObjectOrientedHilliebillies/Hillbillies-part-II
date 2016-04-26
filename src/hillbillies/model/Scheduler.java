@@ -26,7 +26,6 @@ public class Scheduler {
 	
 	private ArrayList<Task> activeList = new ArrayList<>();
 	
-	
 	Comparator<Task> comparator = new PriorityComparator();
 	private  PriorityQueue<Task> scheduledTaskQue = new PriorityQueue<>(comparator);
 	

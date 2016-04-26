@@ -2,6 +2,8 @@ package hillbillies.model;
 
 import java.util.Comparator;
 
+import hillbillies.model.tasks.Task;
+
 public class PriorityComparator implements Comparator<Task>{
 
 	@Override
