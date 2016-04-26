@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-import hillbillies.model.tasks.Task;
 import ogp.framework.util.ModelException;
 
 public class Scheduler {
@@ -25,7 +24,6 @@ public class Scheduler {
 	private Faction faction;
 	
 	private ArrayList<Task> activeList = new ArrayList<>();
-	
 	
 	Comparator<Task> comparator = new PriorityComparator();
 	private  PriorityQueue<Task> scheduledTaskQue = new PriorityQueue<>(comparator);
