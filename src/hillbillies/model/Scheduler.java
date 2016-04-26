@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import hillbillies.model.tasks.Task;
 import ogp.framework.util.ModelException;
 
 public class Scheduler {
