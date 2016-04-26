@@ -72,6 +72,7 @@ import ogp.framework.util.Util;
  *         unit.
  *       | isValidOrientation(getOrientation())
  *       
+ * https://github.com/ObjectOrientedHilliebillies/Hillbillies-part-II.git
  * @version 1.0
  * @author  Jonas Vantrappen & Victor Van Eetvelt
  */

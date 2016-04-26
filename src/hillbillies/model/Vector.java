@@ -7,7 +7,8 @@ import java.util.Set;
 import ogp.framework.util.Util;
 
 /**
- * 
+ * https://github.com/ObjectOrientedHilliebillies/Hillbillies-part-II.git
+ * @version 1.0
  * @author Victor Van Eetvelt en Jonas Vantrappen
  *
  */
