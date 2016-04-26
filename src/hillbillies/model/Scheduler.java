@@ -1,7 +1,10 @@
 package hillbillies.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+
+import ogp.framework.util.ModelException;
 
 public class Scheduler {
 	public Scheduler(Faction faction) {
@@ -20,6 +23,14 @@ public class Scheduler {
 	
 	private ArrayList<Task> scheduledList = new ArrayList<>();
 	private ArrayList<Task> activeList = new ArrayList<>();
+	
+	private ArrayList<Task> getScheduledTasks() {
+		return this.scheduledList;
+	}
+	
+	private ArrayList<Task> getActiveTasks() {
+		return this.activeList;
+	}
 	
 	private void addTask(Task newTask) {
 //		int pos = Collections.binarySearch(taskList, newTask.getPriority());
@@ -57,13 +68,19 @@ public class Scheduler {
 		throw new IllegalArgumentException("Given task is not in scheduler.");		
 	}
 	
-	private void replace(Task oldTask, Task newTask){
+	public void replace(Task oldTask, Task newTask){
 		removeTask(oldTask);
 		addTask(newTask);
 	}
 	
 	private void ascribeTask(Unit unit) {
 		
+	}
+	
+	public boolean areTasksPartOf(Collection<Task> tasks) throws ModelException {
+		ArrayList<Task> allTasks = this.getScheduledTasks();
+		allTasks.addAll(this.getActiveTasks());
+		return allTasks.containsAll(tasks);
 	}
 
 }
