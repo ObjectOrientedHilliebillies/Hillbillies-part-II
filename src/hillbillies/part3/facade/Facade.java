@@ -400,7 +400,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void schedule(Scheduler scheduler, Task task) throws ModelException {
-		// TODO Auto-generated method stub
+		scheduler.addTask(task);
 		
 	}
 

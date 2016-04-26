@@ -32,7 +32,7 @@ public class Scheduler {
 		return this.activeList;
 	}
 	
-	private void addTask(Task newTask) {
+	public void addTask(Task newTask) {
 //		int pos = Collections.binarySearch(taskList, newTask.getPriority());
 		if (this.scheduledList.size() == 0){
 			scheduledList.add(newTask);
