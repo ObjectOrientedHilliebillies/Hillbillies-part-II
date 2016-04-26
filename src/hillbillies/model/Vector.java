@@ -242,16 +242,6 @@ public class Vector {
 		return true;
 	}
 	
-//	public static boolean hasSupportOfSolid(Cube cube, World world){
-//		Set<Cube> directAdjenctCubes = Vector.getDirectAdjenctCubes(cube, world) ;
-//		if (directAdjenctCubes.size() == 6){
-//			if (Vector.filterPassableCubes(directAdjenctCubes, world).size() == 0){
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-	
 	/**
 	 * Returns whether the cube this vector is part of has a solid cube
 	 * 	beneath it. 

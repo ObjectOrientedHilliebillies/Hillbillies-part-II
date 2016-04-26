@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  * A class of cubes involving a position, terrain type and world.

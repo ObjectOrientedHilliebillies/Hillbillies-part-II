@@ -1,3 +1,16 @@
+/*
+ * Een unit moet steeds een factie hebben. Dit zorgt er al voor 
+ * dat de eerste functie van de facade niet kan werken.
+ * Als je dit probleem oplost door te stellen dat een factie niet moet afhangen van een wereld dan impliceerd dit dat
+ * je geen functie addUnit kan maken omdat je dan niet een enkele unit kan toevoegen. Je moet dan direct zijn hele 
+ * factie toevoegen.
+ * Een andere mogelijkheid is dat een unit steeds moet aangemaakt worden door een wereld. Die wereld zorgt er dan voor
+ * dat de unit en een correcte factie zit. Maar bij deze oplossing kan er ook geen addUnit bestaan omdat de unit dan
+ * per definitie al in de wereld zit.
+ * Hierdoor staan wij toe dat een een unit geen factie heeft als er geen enkele wereld is die van zijn bestaan afweet.
+ */
+
+
 package hillbillies.model;
 
 
@@ -604,155 +617,7 @@ public class World {
 	 */
 	private final static double maxTimeLapse = 0.2;
 
-	/*Pathfinding*/	
-	
-	/**
-	 * Returns the most efficient path between start and goal 
-	 * 	according the A* algorithm.
-	 * 
-	 * @param start
-	 * 		The cube the path starts from.
-	 * 
-	 * @param goal
-	 * 		The cube to be reached
-	 * 
-	 * @return
-	 * 		A list of cubes to follow if goal can be reached.
-	 * 		Null if the goal can't be reached.
-	 */
-	public List<Cube> getPath(Cube start, Cube goal){
-    // The set of nodes already evaluated.
-		Set<Cube> closedSet = new HashSet<>();
-		//closedSet := {}
-		
-    // The set of currently discovered nodes still to be evaluated.
-    // Initially, only the start node is known.
-		Set<Cube> openSet = new HashSet<>();
-		openSet.add(start);
-		//openSet := {start}
-		
-    // For each node, which node it can most efficiently be reached from.
-    // If a node can be reached from many nodes, cameFrom will eventually contain the
-    // most efficient previous step.
-		HashMap<Cube, Cube> cameFrom=new HashMap<>();
-		//cameFrom := the empty map
-
-    // For each node, the cost of getting from the start node to that node.
-		HashMap<Cube, Double> gScore=new HashMap<>();
-		//gScore := map with default value of Infinity
-
-		
-    // For each node, the total cost of getting from the start node to the goal
-    // by passing by that node. That value is partly known, partly heuristic.
-		HashMap<Cube, Double> fScore=new HashMap<Cube, Double>();
-		
-	//gScore := map with default value of Infinity
-	//fScore := map with default value of Infinity	
-    // The cost of going from start to start is zero.
-		gScore.put(start,  new Double(0));
-		//gScore[start] := 0
-    		
-    // For the first node, that value is completely heuristic.
-		fScore.put(start, this.heuristic_cost_estimate(start, goal));
-		//fScore[start] := heuristic_cost_estimate(start, goal)
-    //while openSet is not empty
-		while (openSet.size() != 0){
-//	        current := the node in openSet having the lowest fScore[] value
-			Cube currentNode = null;
-			Double lowestF = null;
-			for (Cube node : openSet){
-				if (lowestF == null){
-					currentNode = node;
-					lowestF = fScore.get(node);
-				} else if (lowestF > fScore.get(node)){
-					currentNode = node;
-					lowestF = fScore.get(node);
-				}
-			}
-//	        if current = goal
-//	            return reconstruct_path(cameFrom, goal)
-			if (currentNode.equals(goal)){
-				System.out.println("Arrived");
-				return this.reconstruct_path(cameFrom, goal);
-			}
-//	        openSet.Remove(current)
-			openSet.remove(currentNode);
-//	        closedSet.Add(current)
-			closedSet.add(currentNode);
-			String print = "";
-			for (Cube s : closedSet){
-				print += s.toString() + " ";
-			}
-//	        for each neighbor of current
-			Set<Cube> accessibleNeigbours =	new HashSet<>(getAccessibleNeigbours(currentNode));
-			for (Cube neighbour : accessibleNeigbours){
-//	            if neighbor in closedSet
-				if (closedSet.contains(neighbour)){
-	                continue;		// Ignore the neighbor which is already evaluated.
-				}
-	            // The distance from start to a neighbor
-//	            tentative_gScore := gScore[current] + dist_between(current, neighbor)
-				double tentative_gScore = gScore.get(currentNode) + Vector.distanceBetween(currentNode, neighbour);
-//	            if neighbor not in openSet	// Discover a new node
-				if (!openSet.contains(neighbour)){
-//	                openSet.Add(neighbor)
-					openSet.add(neighbour);
-// 					else if tentative_gScore >= gScore[neighbor]
-					
-				}else if (tentative_gScore >= gScore.get(neighbour)){  
-	                continue;		// This is not a better path.
-				}
-	            // This path is the best until now. Record it!
-//	            cameFrom[neighbor] := current
-				cameFrom.put(neighbour, currentNode);
-//	            gScore[neighbor] := tentative_gScore
-				gScore.put(neighbour, tentative_gScore);
-//	            fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-				fScore.put(neighbour, tentative_gScore+this.heuristic_cost_estimate(neighbour, goal));
-			}
-		}
-		System.out.println("Impossible to get there!");
-		return null;
-	}	
-	
-	/**
-	 * Returns the estimated 'heuristic cost' to get form start to goal.
-	 * @param start
-	 * 		The cube the path starts on
-	 * @param goal
-	 * 		The cube to get to
-	 * @return
-	 * 		The distance between start and goal.
-	 */
-	private double heuristic_cost_estimate(Cube start, Cube goal){
-		return Vector.distanceBetween(start.getCenterOfCube(), goal.getCenterOfCube());
-	}
-	
-	/**
-	 * Returns the reconstructed path
-	 * 
-	 * @param cameFrom
-	 * 		//TODO
-	 * @param current
-	 * @return
-	 */
-	private List<Cube> reconstruct_path(HashMap<Cube, Cube> cameFrom, Cube current){
-		List<Cube> total_path = new ArrayList<>();
-	    total_path.add(current);
-	    while (cameFrom.containsKey(current)){
-	    	current = cameFrom.get(current);
-	    	total_path.add(current);
-	    }
-	    return total_path;
-	}
-	
-	/**
-	 * Returns a set with all the neighbours from the cube cube 
-	 * who are passable(air or workshop).
-	 * @param cube
-	 * 		The cube to get the neighbours from.
-	 */
-	private Set<Cube> getAccessibleNeigbours (Cube cube){
+	public Set<Cube> getAccessibleNeigbours (Cube cube){
 		Set<Cube> neighbours = cube.getNeighbourCubes();
 		neighbours.removeAll(filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();
