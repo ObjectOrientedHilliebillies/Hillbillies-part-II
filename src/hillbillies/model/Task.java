@@ -1,6 +1,18 @@
 package hillbillies.model;
 
 public class Task { //implements Comparable<Task>{
+	
+	/**
+	 * Initialize this new task with the given name and priority.
+	 * @param name
+	 * 		The name of this new task.
+	 * @param priority
+	 * 		The priority of this new task.
+	 * @post The name of this new task is equal to the given name.
+	 * 		| new.getName() == name
+	 * @post The priority of this new task is equal to the given priority.
+	 * 		| new.getPriority() == priority
+	 */
 	public Task(String name, int priority) {
 		this.setName(name);
 		this.setPriority(priority);
@@ -16,11 +28,15 @@ public class Task { //implements Comparable<Task>{
 		return this.executor;
 	}
 	
+	
+	private Integer priority;
+	
+	
 	private void setPriority(int priority) {
 		this.priority = priority;
 	}
 	
-	private Integer priority;
+	
 	
 	public Integer getPriority() {
 		return this.priority;
