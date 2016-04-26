@@ -10,6 +10,8 @@ import hillbillies.model.Boulder;
 import hillbillies.model.Cube;
 import hillbillies.model.Faction;
 import hillbillies.model.Log;
+import hillbillies.model.Scheduler;
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
 import hillbillies.model.World;
@@ -397,20 +399,19 @@ public class Facade implements IFacade {
 
 	@Override
 	public void schedule(Scheduler scheduler, Task task) throws ModelException {
-		// TODO Auto-generated method stub
+		scheduler.addTask(task);
 		
 	}
 
 	@Override
 	public void replace(Scheduler scheduler, Task original, Task replacement) throws ModelException {
-		// TODO Auto-generated method stub
+		scheduler.replace(original, replacement);
 		
 	}
 
 	@Override
 	public boolean areTasksPartOf(Scheduler scheduler, Collection<Task> tasks) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return scheduler.areTasksPartOf(tasks);
 	}
 
 	@Override
