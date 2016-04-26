@@ -1,9 +1,6 @@
-package hillbillies.model.tasks;
+package hillbillies.model;
 
 import java.util.Set;
-
-import hillbillies.model.Scheduler;
-import hillbillies.model.Unit;
 
 public class Task { //implements Comparable<Task>{
 	
