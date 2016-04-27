@@ -1,4 +1,4 @@
-package hillbillies.model;
+package hillbillies.model.statements;
 
 /**
  * Class for representing statements
@@ -6,9 +6,9 @@ package hillbillies.model;
  * @author Jonas
  *
  */
-public class MyStatement {
+public abstract class Statement {
 
-	public MyStatement() {
+	public Statement() {
 		// TODO Auto-generated constructor stub
 	}
 
