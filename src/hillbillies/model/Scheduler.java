@@ -3,8 +3,9 @@ package hillbillies.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
-import hillbillies.model.tasks.Task;
 import ogp.framework.util.ModelException;
 
 public class Scheduler {
@@ -22,51 +23,23 @@ public class Scheduler {
 	
 	private Faction faction;
 	
-	private ArrayList<Task> scheduledList = new ArrayList<>();
 	private ArrayList<Task> activeList = new ArrayList<>();
 	
-	private ArrayList<Task> getScheduledTasks() {
-		return this.scheduledList;
-	}
-	
-	private ArrayList<Task> getActiveTasks() {
-		return this.activeList;
-	}
+	Comparator<Task> comparator = new PriorityComparator();
+	private  PriorityQueue<Task> scheduledTaskQue = new PriorityQueue<>(comparator);
 	
 	public void addTask(Task newTask) {
-//		int pos = Collections.binarySearch(taskList, newTask.getPriority());
-		if (this.scheduledList.size() == 0){
-			scheduledList.add(newTask);
-		}
-		else {
-			for (int i=0; i!=scheduledList.size(); i++){
-				if (scheduledList.get(i).getPriority() < newTask.getPriority()){
-					scheduledList.add(i, newTask);
-					return;
-				}
-				if (scheduledList.get(i) == newTask){ //FIXME 
-					return;
-				}
-			}
-			scheduledList.add(newTask);	
-		}
+		this.scheduledTaskQue.add(newTask);
+		newTask.addScheduler(this);
 	}
 	
 	private void removeTask(Task oldTask) {
-		int index = activeList.indexOf(oldTask);
-		if (index != -1){
+		if (activeList.remove(oldTask)){
 			oldTask.getExecutor().setTask(null);
 			oldTask.setExecutor(null);
-			activeList.remove(index);
-			return;
-		}
-		index = scheduledList.indexOf(oldTask);
-		if (index != -1){
-			scheduledList.remove(index);
-			return;
-		}
-		
-		throw new IllegalArgumentException("Given task is not in scheduler.");		
+		} else if (!scheduledTaskQue.remove(oldTask)){
+			throw new IllegalArgumentException("Given task is not in scheduler.");
+		}		
 	}
 	
 	public void replace(Task oldTask, Task newTask){

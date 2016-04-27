@@ -10,11 +10,14 @@ import hillbillies.model.Boulder;
 import hillbillies.model.Cube;
 import hillbillies.model.Faction;
 import hillbillies.model.Log;
+import hillbillies.model.MyExpression;
+import hillbillies.model.MyStatement;
 import hillbillies.model.Scheduler;
+import hillbillies.model.Task;
+import hillbillies.model.TaskFactory;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
 import hillbillies.model.World;
-import hillbillies.model.tasks.Task;
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.part3.programs.ITaskFactory;
 import ogp.framework.util.ModelException;
@@ -380,9 +383,8 @@ public class Facade implements IFacade {
 	}
 
 	@Override
-	public ITaskFactory<?, ?, Task> createTaskFactory() {
-		// TODO Auto-generated method stub
-		return null;
+	public ITaskFactory<MyExpression, MyStatement, Task> createTaskFactory() {
+		return new TaskFactory<>();
 	}
 
 	@Override

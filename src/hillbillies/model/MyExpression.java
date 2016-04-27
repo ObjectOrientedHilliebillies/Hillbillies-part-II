@@ -1,4 +1,4 @@
-package hillbillies.model.tasks;
+package hillbillies.model;
 
 /**
  * Class for representing expressions
