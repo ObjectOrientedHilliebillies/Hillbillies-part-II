@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.booleanExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.TrueExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
@@ -226,14 +227,12 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createTrue(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return TrueExpression.returns();
+		return new TrueExpression();
 	}
 
 	@Override
 	public Expression createFalse(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new FalseExpression();
 	}
 }
 	

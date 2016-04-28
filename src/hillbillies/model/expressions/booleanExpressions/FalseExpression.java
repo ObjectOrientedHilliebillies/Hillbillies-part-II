@@ -7,8 +7,18 @@ public class FalseExpression extends BooleanExpression {
 	}
 
 	@Override
-	public Boolean returns() {
-		return false;
+	public FalseExpression eval() {
+		return this;
 	}
 
 }
+
+//
+//true ->
+//
+//
+//Expressions
+//
+//values
+//
+//statement

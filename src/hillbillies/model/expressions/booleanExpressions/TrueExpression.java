@@ -1,14 +1,12 @@
 package hillbillies.model.expressions.booleanExpressions;
 
+import hillbillies.model.expressions.Expression;
+
 public class TrueExpression extends BooleanExpression{
 
-	public TrueExpression() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
-	public TrueExpression returns() {
-		return true;
+	public Expression eval() {
+		return this;
 	}
 
 }
