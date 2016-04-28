@@ -1,9 +1,25 @@
 package hillbillies.model.expressions.isExpressions;
 
-public class IsAliveExpression {
+import hillbillies.model.Unit;
+import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.booleanExpressions.FalseExpression;
+import hillbillies.model.expressions.booleanExpressions.TrueExpression;
 
-	public IsAliveExpression() {
-		// TODO Auto-generated constructor stub
+public class IsAliveExpression extends Expression{
+
+	public IsAliveExpression(Unit unit) {
+		this.unit = unit;
+	}
+	
+	private Unit unit;
+	
+	@Override
+	public Expression eval() {
+		if(unit.isAlive())
+			return new TrueExpression();
+		
+		
+		return new FalseExpression();
 	}
 
 }

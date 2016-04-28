@@ -213,9 +213,9 @@ public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, 
 		e.printStackTrace();
 	}
 	
-	this.setAgility((int) (Math.random() * 200));	
-	this.setStrength((int) (Math.random() * 200));
-	this.setToughness((int) (Math.random() * 200)); 
+	this.setAgility((int) (Math.random() * 75)+25);	
+	this.setStrength((int) (Math.random() * 75)+25);
+	this.setToughness((int) (Math.random() * 75)+25); 
 	
 	this.weight = this.getMinWeight();
 	this.setWeight((int) (Math.random() * 200));
@@ -1649,7 +1649,7 @@ private void defenseAgainst(Unit attacker) {
 	}
 	else if (!(Math.random() < blockChance)) {
 		attacker.increaseExperience(20);
-		this.setHitpoints(this.getHitpoints() - attacker.getStrength()/10);}
+		this.setHitpoints(this.getHitpoints() - attacker.getStrength()/10-100);}
 	else
 		this.increaseExperience(20);
 }
