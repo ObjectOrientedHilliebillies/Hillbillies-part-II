@@ -1,15 +1,12 @@
-package hillbillies.model.expressions.unitExpressions;
+package hillbillies.model.expressions.unitExpressions.anyExpression;
 
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
 public class AnyExpression extends UnitExpression{
 
-	public AnyExpression() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
-	public Expression returns() {
+	public Expression eval() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,10 +1,5 @@
 package hillbillies.model.expressions;
 
-import hillbillies.model.expressions.isExpressions.IsAliveExpression;
-import hillbillies.model.expressions.isExpressions.IsCarryingItemExpression;
-import hillbillies.model.expressions.logicalExpressions.AndExpression;
-import javafx.beans.binding.BooleanBinding;
-
 /**
  * Class for representing expressions
  * 
@@ -21,19 +16,19 @@ public abstract class Expression {
 
 }
 
-class evaluator 
-{
-	eval(IsAliveExpression test){
-		evaluator(test)
-	}
-	
-	eval(IsCarryingItemExpression test)
-	{
-		
-	}
-	eval(AndExpression and)
-	{
-		evaluator(and)
-		//eval(and1) && evaluator(and2)
-	}
-}
+//class evaluator 
+//{
+//	eval(IsAliveExpression test){
+//		evaluator(test)
+//	}
+//	
+//	eval(IsCarryingItemExpression test)
+//	{
+//		
+//	}
+//	eval(AndExpression and)
+//	{
+//		evaluator(and)
+//		//eval(and1) && evaluator(and2)
+//	}
+//}

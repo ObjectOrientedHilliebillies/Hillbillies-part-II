@@ -1,10 +1,15 @@
 package hillbillies.model.expressions.booleanExpressions;
 
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.BooleanValueExpression;
 
 public abstract class BooleanExpression extends Expression {
 
 	public BooleanExpression() {
-		// TODO Auto-generated constructor stub
+		
 	}
+	
+	@Override
+	public abstract BooleanValueExpression eval();
+	
 }

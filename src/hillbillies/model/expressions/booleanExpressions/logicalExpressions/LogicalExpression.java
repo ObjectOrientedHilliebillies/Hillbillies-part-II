@@ -1,4 +1,4 @@
-package hillbillies.model.expressions.logicalExpressions;
+package hillbillies.model.expressions.booleanExpressions.logicalExpressions;
 
 public abstract class LogicalExpression {
 

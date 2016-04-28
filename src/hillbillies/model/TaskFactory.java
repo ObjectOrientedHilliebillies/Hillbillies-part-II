@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hillbillies.model.expressions.Expression;
-import hillbillies.model.expressions.booleanExpressions.FalseExpression;
-import hillbillies.model.expressions.booleanExpressions.TrueExpression;
+import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
+import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
 import hillbillies.part3.programs.SourceLocation;
+
 /**
  * 
  * @author victo
