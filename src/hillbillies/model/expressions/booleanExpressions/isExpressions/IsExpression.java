@@ -1,4 +1,4 @@
-package hillbillies.model.expressions.isExpressions;
+package hillbillies.model.expressions.booleanExpressions.isExpressions;
 
 public abstract class IsExpression {
 

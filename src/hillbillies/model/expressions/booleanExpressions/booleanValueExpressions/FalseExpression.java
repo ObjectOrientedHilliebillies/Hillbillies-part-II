@@ -1,6 +1,6 @@
-package hillbillies.model.expressions.booleanExpressions;
+package hillbillies.model.expressions.booleanExpressions.booleanValueExpressions;
 
-public class FalseExpression extends BooleanExpression {
+public class FalseExpression extends BooleanValueExpression {
 
 	public FalseExpression() {
 		// TODO Auto-generated constructor stub
