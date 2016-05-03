@@ -4,14 +4,17 @@ import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.booleanExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.TrueExpression;
+import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-public class IsAliveExpression extends Expression{
+public class IsAliveExpression extends IsExpression{
 
-	public IsAliveExpression(Unit unit) {
+	public IsAliveExpression(UnitExpression unit) {
 		this.unit = unit;
 	}
 	
-	private Unit unit;
+	private UnitExpression unit;
+	
+	private Unit thisUnit = (Unit) unit;
 	
 	@Override
 	public Expression eval() {

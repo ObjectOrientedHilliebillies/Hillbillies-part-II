@@ -1,9 +1,12 @@
 package hillbillies.model.expressions.isExpressions;
 
-public abstract class IsUnitExpression {
+public abstract class IsUnitExpression extends IsExpression {
 
-	public IsUnitExpression() {
+	public IsUnitExpression(Object object) {
+		super(object);
 		// TODO Auto-generated constructor stub
+	}
+
 	}
 
 }

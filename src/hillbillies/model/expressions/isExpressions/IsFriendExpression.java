@@ -1,9 +1,21 @@
 package hillbillies.model.expressions.isExpressions;
 
-public class IsFriendExpression {
+import hillbillies.model.Unit;
+import hillbillies.model.expressions.Expression;
 
-	public IsFriendExpression() {
-		// TODO Auto-generated constructor stub
+public class IsFriendExpression extends IsUnitExpression {
+
+	public IsFriendExpression(Unit unit) {
+		this.unit = unit;
 	}
+	
+	private Unit unit;
 
+	@Override
+	public Expression eval() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

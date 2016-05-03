@@ -1,9 +1,10 @@
 package hillbillies.model.expressions.isExpressions;
 
-public abstract class IsExpression {
+import hillbillies.model.expressions.Expression;
 
-	public IsExpression() {
-		// TODO Auto-generated constructor stub
+public abstract class IsExpression extends Expression {
+
+	public IsExpression(Object object) {
 	}
 
 }

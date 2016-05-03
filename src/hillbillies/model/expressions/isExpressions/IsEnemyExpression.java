@@ -1,9 +1,19 @@
 package hillbillies.model.expressions.isExpressions;
 
-public class IsEnemyExpression {
+import hillbillies.model.expressions.Expression;
 
-	public IsEnemyExpression() {
+public class IsEnemyExpression extends IsUnitExpression{
+
+
+	public IsEnemyExpression(Object object) {
+		super(object);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public Expression eval() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

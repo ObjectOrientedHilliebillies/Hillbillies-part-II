@@ -6,6 +6,8 @@ import java.util.List;
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.booleanExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.TrueExpression;
+import hillbillies.model.expressions.isExpressions.IsAliveExpression;
+import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
 import hillbillies.part3.programs.SourceLocation;
@@ -125,8 +127,9 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createIsAlive(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return unit.eval();
+		
 	}
 
 	@Override
