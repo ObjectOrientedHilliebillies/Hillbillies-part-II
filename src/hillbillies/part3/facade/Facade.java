@@ -372,8 +372,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void advanceTime(Unit unit, double dt) throws ModelException {
-		// TODO Auto-generated method stub
-		
+		unit.advanceTime(dt);
 	}
 
 	@Override
@@ -384,7 +383,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public ITaskFactory<Expression, Statement, Task> createTaskFactory() {
-		return new TaskFactory<>();
+		return new TaskFactory();
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package hillbillies.model;
 
 import java.util.Set;
 
+import hillbillies.model.statements.Statement;
+
 public class Task { //implements Comparable<Task>{
 	
 	/**
@@ -15,9 +17,10 @@ public class Task { //implements Comparable<Task>{
 	 * @post The priority of this new task is equal to the given priority.
 	 * 		| new.getPriority() == priority
 	 */
-	public Task(String name, int priority) {
+	public Task(String name, int priority, Statement activity) {
 		this.setName(name);
 		this.setPriority(priority);
+		this.setActivity(activity);
 	}
 	
 	private Unit executor;
@@ -34,12 +37,9 @@ public class Task { //implements Comparable<Task>{
 	
 	private Integer priority;
 	
-	
 	private void setPriority(int priority) {
 		this.priority = priority;
 	}
-	
-	
 	
 	public Integer getPriority() {
 		return this.priority;
@@ -53,6 +53,16 @@ public class Task { //implements Comparable<Task>{
 	
 	public String getName()  {
 		return this.name;
+	}
+	
+	private void setActivity(Statement activity) {
+		this.activity = activity;
+	}
+	
+	private Statement activity;
+	
+	private Statement getActivity() {
+		return this.activity;
 	}
 	
 	public void addScheduler(Scheduler scheduler) {
