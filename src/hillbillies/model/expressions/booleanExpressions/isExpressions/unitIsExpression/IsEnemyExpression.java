@@ -1,4 +1,4 @@
-package hillbillies.model.expressions.booleanExpressions.isExpressions;
+package hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression;
 
 public class IsEnemyExpression {
 
