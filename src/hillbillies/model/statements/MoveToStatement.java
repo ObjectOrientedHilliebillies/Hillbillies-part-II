@@ -5,7 +5,7 @@ import hillbillies.model.Cube;
 import hillbillies.model.Task;
 
 public class MoveToStatement extends ActivityStatement{
-
+	//TODO position een Cube maken
 	public MoveToStatement(Expression<Cube> position) {
 		this.position = position;
 	}
@@ -14,11 +14,14 @@ public class MoveToStatement extends ActivityStatement{
 
 	@Override
 	public void execute(Task task) { //FIXME Hoe geraakt ge juist aan uw task?
-		task.getExecutor().moveTo(position);
+		Cube cube = position.eval();
+		task.getExecutor().moveTo(cube);
 	}
 
 	@Override
-	public void execute() {	
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
