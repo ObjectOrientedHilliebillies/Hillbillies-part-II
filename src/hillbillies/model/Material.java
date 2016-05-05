@@ -149,7 +149,7 @@ public class Material {
 	/**
 	 * Return the cube this material is in.
 	 */
-	private Cube getCube() {
+	public Cube getCube() {
 		List<Integer> cubeCoord = new ArrayList<>();
 		cubeCoord.add((int) getPosition().getXCoord());
 		cubeCoord.add((int) getPosition().getYCoord());

@@ -22,6 +22,8 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
+import org.junit.Test.None;
+
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
 import ogp.framework.util.Util;
@@ -396,7 +398,60 @@ public class World {
         }
 	    return boulders;
 	}
+
+	/**
+	 * Return the Log closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Log
+	 * 		The log closest to the given cube. If no such log
+	 * 		exists null is returned.
+	 */
+	public Log getNearestLog(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Log> logs = this.getLogs();
+		Log nearestLog = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Log log : logs){
+			thisDistance = Vector.distanceBetween(position, log.getPosition());
+			if (nearestLog == null){
+				nearestLog = log;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestLog = log;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestLog;
+	}
 	
+	/**
+	 * Return the boulder closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Boulder
+	 * 		The boulder closest to the given cube. If no such boulder
+	 * 		exists null is returned.
+	 */
+	public Boulder getNearestBoulder(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Boulder> boulders = this.getBoulders();
+		Boulder nearestBoulder = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Boulder boulder : boulders){
+			thisDistance = Vector.distanceBetween(position, boulder.getPosition());
+			if (nearestBoulder == null){
+				nearestBoulder = boulder;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestBoulder = boulder;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestBoulder;
+	}
 //	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ 
 //		//	throw new IllegalArgumentException();		
