@@ -1,14 +1,16 @@
 package hillbillies.model.expressions.booleanExpressions.isExpressions;
 
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
-import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.BooleanValueExpression;
 
-public abstract class IsExpression extends BooleanExpression{
-
-	public IsExpression() {
-		// TODO Auto-generated constructor stub
+public abstract class IsExpression<T> extends BooleanExpression{
+	
+	public void setExpression(T e){
+		this.expression = e;
 	}
-
-	public abstract BooleanValueExpression eval();
-
+	
+	public T getExpression(){
+		return this.expression;
+	}
+	
+	private T expression;
 }
