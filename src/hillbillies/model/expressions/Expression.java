@@ -1,19 +1,16 @@
 package hillbillies.model.expressions;
 
-/**
- * Class for representing expressions
- * 
- * @author Jonas
- *
- */
-public abstract class Expression {
-
-	public Expression() {
-		// TODO Auto-generated constructor stub
+public abstract class Expression<T> {
+	
+	public void setValue(T object){
+		this.object = object;
 	}
 	
-	public abstract Expression eval();
-
+	public T eval(){
+		return this.object;
+	}
+	
+	private T object;
 }
 
 //class evaluator 
