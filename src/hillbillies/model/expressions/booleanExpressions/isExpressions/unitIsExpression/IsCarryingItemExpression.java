@@ -7,10 +7,10 @@ import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-public class IsAliveExpression extends UnitIsExpression{
-	public IsAliveExpression(UnitExpression unit){
+public class IsCarryingItemExpression extends UnitIsExpression{
+	public IsCarryingItemExpression(UnitExpression unit){
 		super(unit);
 		Unit thisUnit = (Unit) unit.getValue();
-		setValue(thisUnit.isAlive());
+		setValue(thisUnit.isCarryingBoulder() || thisUnit.isCarryingLog());
 	}
 }

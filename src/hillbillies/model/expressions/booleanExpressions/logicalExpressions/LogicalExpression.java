@@ -1,9 +1,6 @@
 package hillbillies.model.expressions.booleanExpressions.logicalExpressions;
 
-public abstract class LogicalExpression {
+import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 
-	public LogicalExpression() {
-		// TODO Auto-generated constructor stub
-	}
-
+public abstract class LogicalExpression extends BooleanExpression{
 }

@@ -6,7 +6,7 @@ public abstract class Expression<T> {
 		this.object = object;
 	}
 	
-	public T eval(){
+	public T getValue(){
 		return this.object;
 	}
 	

@@ -1,9 +1,9 @@
 package hillbillies.model.expressions.booleanExpressions.logicalExpressions;
 
-public class NotExpression {
+import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 
-	public NotExpression() {
-		// TODO Auto-generated constructor stub
+public class NotExpression extends BooleanExpression{
+	public NotExpression(BooleanExpression e){
+		setValue(!e.getValue());
 	}
-
 }
