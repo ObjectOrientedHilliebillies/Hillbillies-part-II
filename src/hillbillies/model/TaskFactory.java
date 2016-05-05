@@ -7,6 +7,7 @@ import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsAliveExpression;
+import hillbillies.model.expressions.booleanExpressions.isExpressions.IsCarryingItemExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
@@ -14,7 +15,7 @@ import hillbillies.part3.programs.SourceLocation;
 
 /**
  * 
- * @author victo
+ * @author Victor
  * @param <E>
  * @param <S>
  * @param <T>
@@ -116,28 +117,26 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createIsFriend(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		UnitExpression givenUnit = (UnitExpression) unit;
+			
 	}
 
 	@Override
 	public Expression createIsEnemy(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		UnitExpression givenUnit = (UnitExpression) unit;
+		
 	}
 
 	@Override
 	public Expression createIsAlive(Expression unit, SourceLocation sourceLocation) {
-		
 		UnitExpression givenUnit = (UnitExpression) unit;
-		
 		return new IsAliveExpression(givenUnit);
 	}
 
 	@Override
 	public Expression createCarriesItem(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		UnitExpression givenUnit = (UnitExpression) unit;
+		return new IsCarryingItemExpression(givenUnit);
 	}
 
 	@Override
@@ -196,8 +195,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createPositionOf(Expression unit, SourceLocation sourceLocation) {
-		// TODO convert the given expression unit to a unitexpression. If this fails throw an exeption and give the source location.
-		return null;
+		UnitExpression givenUnit = (UnitExpression) unit;
 	}
 
 	@Override
