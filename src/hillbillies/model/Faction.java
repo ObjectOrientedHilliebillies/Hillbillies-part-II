@@ -81,4 +81,14 @@ public class Faction {
 		if (this.getNbOffUnitsInFaction() == 0)
 				this.getWorld().removeFaction(this);
 	}
+
+	public Scheduler getScheduler() {
+		return this.scheduler;
+	}
+	
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+	
+	private Scheduler scheduler;
 }
