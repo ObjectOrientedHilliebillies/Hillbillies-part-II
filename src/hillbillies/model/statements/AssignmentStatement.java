@@ -2,20 +2,13 @@ package hillbillies.model.statements;
 
 import hillbillies.model.expressions.Expression;
 
-/**
- * Class for representing statements
- * 
- * @author Jonas
- *
- */
-public abstract class Statement {
+public class AssignmentStatement extends Statement{
 
-	public Statement() {
+	public AssignmentStatement() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public abstract <Statement, Expression> void evaluate();
 
+	@Override
 	public Statement evaluate(String name, Expression value) {
 		// TODO Auto-generated method stub
 		return null;
