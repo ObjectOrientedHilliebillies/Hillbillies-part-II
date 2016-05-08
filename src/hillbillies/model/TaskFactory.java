@@ -173,7 +173,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public Expression createLogPosition(SourceLocation sourceLocation) {
 		return new LogPosition();
