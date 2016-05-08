@@ -6,6 +6,7 @@ import java.util.List;
 import org.stringtemplate.v4.compiler.STParser.namedArg_return;
 
 import hillbillies.model.expressions.Expression;
+<<<<<<< HEAD
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
@@ -22,6 +23,11 @@ import hillbillies.model.expressions.positionExpressions.BoulderPosition;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
+=======
+import hillbillies.model.expressions.booleanExpressions.FalseExpression;
+import hillbillies.model.expressions.booleanExpressions.TrueExpression;
+import hillbillies.model.expressions.isExpressions.IsAliveExpression;
+>>>>>>> refs/remotes/origin/Jonas
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
@@ -143,8 +149,14 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createIsAlive(Expression unit, SourceLocation sourceLocation) {
+<<<<<<< HEAD
 		UnitExpression givenUnit = (UnitExpression) unit;
 		return new IsAliveExpression(givenUnit);
+=======
+		
+		return unit.eval();
+		
+>>>>>>> refs/remotes/origin/Jonas
 	}
 
 	@Override
