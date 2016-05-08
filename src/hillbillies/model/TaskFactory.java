@@ -23,6 +23,15 @@ import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
+import hillbillies.model.statements.AssignmentStatement;
+import hillbillies.model.statements.AttackStatement;
+import hillbillies.model.statements.FollowStatement;
+import hillbillies.model.statements.IfStatement;
+import hillbillies.model.statements.WhileStatement;
+import hillbillies.model.statements.WorkStatement;
+import hillbillies.model.statements.MoveToStatement;
+import hillbillies.model.statements.PrintStatement;
+import hillbillies.model.statements.SequenceStatement;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
 import hillbillies.part3.programs.SourceLocation;
@@ -52,21 +61,19 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Statement createAssignment(String variableName, Expression value, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AssignmentStatement(variableName, value);
+		//FIXME
 	}
 
 	@Override
 	public Statement createWhile(Expression condition, Statement body, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new WhileStatement(condition, body);
 	}
 
 	@Override
 	public Statement createIf(Expression condition, Statement ifBody, Statement elseBody,
 			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IfStatement(condition, ifBody, elseBody);
 	}
 
 	@Override
@@ -77,38 +84,32 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Statement createPrint(Expression value, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PrintStatement(value);
 	}
 
 	@Override
 	public Statement createSequence(List<Statement> statements, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SequenceStatement(statements);
 	}
 
 	@Override
 	public Statement createMoveTo(Expression position, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MoveToStatement(position);
 	}
 
 	@Override
 	public Statement createWork(Expression position, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new WorkStatement(position);
 	}
 
 	@Override
 	public Statement createFollow(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new FollowStatement(unit);
 	}
 
 	@Override
 	public Statement createAttack(Expression unit, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AttackStatement(unit);
 	}
 
 	@Override

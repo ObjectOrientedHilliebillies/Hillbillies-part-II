@@ -11,6 +11,7 @@ import ogp.framework.util.ModelException;
 public class Scheduler {
 	public Scheduler(Faction faction) {
 		this.setFaction(faction);
+		this.getFaction().setScheduler(this);
 	}
 	
 	private void setFaction(Faction faction) {

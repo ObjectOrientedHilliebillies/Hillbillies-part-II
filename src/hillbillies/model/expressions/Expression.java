@@ -1,6 +1,11 @@
 package hillbillies.model.expressions;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import hillbillies.model.statements.Statement;
+
+>>>>>>> refs/remotes/origin/master
 public abstract class Expression<T> {
 	
 	public void setValue(T object){
@@ -11,7 +16,13 @@ public abstract class Expression<T> {
 		return this.object;
 	}
 	
+	private Statement getStatement() {
+		return this.statement;
+	}
+	
 	private T object;
+	private Statement statement;
+	
 }
 
 //class evaluator 
