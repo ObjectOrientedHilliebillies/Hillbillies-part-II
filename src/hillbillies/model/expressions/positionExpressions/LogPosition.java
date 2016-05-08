@@ -11,6 +11,6 @@ public class LogPosition extends CubeExpression{
 		Cube thisCube = thisUnit.getCube();
 		World thisWorld = thisUnit.getWorld();
 		Log nearestLog = thisWorld.getNearestLog(thisCube);
-		Cube logCube = nearestLog.getCube();
+		setValue(nearestLog.getCube());
 	}
 }

@@ -18,7 +18,10 @@ import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpr
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.AndExpression;
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.NotExpression;
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.OrExpression;
+import hillbillies.model.expressions.positionExpressions.BoulderPosition;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.expressions.positionExpressions.LogPosition;
+import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
@@ -173,20 +176,17 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createLogPosition(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new LogPosition();
 	}
 
 	@Override
 	public Expression createBoulderPosition(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new BoulderPosition();
 	}
 
 	@Override
 	public Expression createWorkshopPosition(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new WorkshopPosition();
 	}
 
 	@Override

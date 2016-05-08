@@ -5,14 +5,4 @@ import hillbillies.model.expressions.Expression;
 
 public abstract class UnitExpression extends Expression<Unit>{
 
-	public UnitExpression(Unit unit) {
-		this.unit = unit;
-	}
-	
-	private Unit unit;
-	
-	public Unit getUnit() {
-		return this.unit;
-	}
-
 }

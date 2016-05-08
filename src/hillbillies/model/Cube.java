@@ -140,6 +140,10 @@ public class Cube{
 	
 	/**
 	 * Return the terrain type of this cube.
+	 * 0: Air
+	 * 1: Rock
+	 * 2: Wood
+	 * 3: Workshop
 	 */
 	@Basic @Raw @Immutable
 	public int getTerrainType(){

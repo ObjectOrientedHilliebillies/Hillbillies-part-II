@@ -270,12 +270,8 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 List<Integer> cubeList = new ArrayList<>();
-					 cubeList.add(x);
-					 cubeList.add(y);
-					 cubeList.add(z);
-					 this.collapseIfFloating(getCube(cubeList));
-
+					Cube thisCube = terrainTypes.get(x).get(y).get(z);
+					this.collapseIfFloating(thisCube);
 				}
 			}
 		}
@@ -398,6 +394,24 @@ public class World {
         }
 	    return boulders;
 	}
+	
+	/**
+	 * Return all workshops in this world.
+	 */
+	public Set<Cube> getWorkshops() {
+		Set<Cube> workshops = new HashSet<>();
+		for (int x=0 ; x != NbCubesX ; x++){
+			for (int y=0 ; y != NbCubesY; y++){
+				for  (int z=0 ; z != NbCubesZ; z++){
+					Cube thisCube = this.terrainTypes.get(x).get(y).get(z);
+					if (thisCube.getTerrainType() == 3){
+						workshops.add(thisCube);						
+					}
+				}
+			}
+		}
+		return workshops;
+	}
 
 	/**
 	 * Return the Log closest to the given cube.
@@ -451,6 +465,34 @@ public class World {
 			}
 		}
 		return nearestBoulder;
+	}
+	
+	/**
+	 * Return the workshop closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Cube
+	 * 		The cube that represents the  workshop closest 
+	 * 		to the given cube. If no such boulder exists 
+	 * 		null is returned.
+	 */
+	public Cube getNearestWorkshop(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Cube> workshops = this.getWorkshops();
+		Cube nearestWorkshop = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Cube workshop : workshops){
+			thisDistance = Vector.distanceBetween(position, workshop.getCenterOfCube());
+			if (nearestWorkshop == null){
+				nearestWorkshop = workshop;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestWorkshop = workshop;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestWorkshop;
 	}
 //	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ 
