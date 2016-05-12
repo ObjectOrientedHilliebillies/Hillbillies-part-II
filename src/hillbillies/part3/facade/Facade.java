@@ -406,7 +406,6 @@ public class Facade implements IFacade {
 	@Override
 	public void replace(Scheduler scheduler, Task original, Task replacement) throws ModelException {
 		scheduler.replace(original, replacement);
-		
 	}
 
 	@Override

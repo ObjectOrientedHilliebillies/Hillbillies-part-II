@@ -5,7 +5,6 @@ import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
 
 public class WorkStatement extends ActivityStatement{
-	//TODO position een Cube maken
 	public WorkStatement(Expression<Cube> position) {
 		setPosition(position);
 	}
