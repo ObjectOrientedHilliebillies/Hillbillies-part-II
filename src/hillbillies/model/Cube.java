@@ -123,6 +123,30 @@ public class Cube{
 	}
 	
 	/**
+	 * Return the x position on the grit.
+	 */
+	@Basic @Raw @Immutable
+	public int getXGrit(){
+		return this.position.get(0);
+	}
+	
+	/**
+	 * Return the y position on the grit.
+	 */
+	@Basic @Raw @Immutable
+	public int getYGrit(){
+		return this.position.get(1);
+	}
+	
+	/**
+	 * Return the z position on the grit.
+	 */
+	@Basic @Raw @Immutable
+	public int getZGrit(){
+		return this.position.get(2);
+	}
+	
+	/**
 	 *Check whether the given position is a valid position for this cube. 
 	 *@param position
 	 *		The position to check.

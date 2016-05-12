@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Generated;
@@ -48,14 +49,14 @@ public class World {
 		position.add(0);
 		for (int x=0 ; x != NbCubesX ; x++){
 			position.set(0, x);
-			terrainTypes.add(new ArrayList<>());
+			terrainTypes.put(x, new HashMap<>());
 			for (int y=0 ; y != NbCubesY; y++){
 				position.set(1, y);
-				terrainTypes.get(x).add(new ArrayList<>());
+				terrainTypes.get(x).put(y, new HashMap<>());
 				for  (int z=0 ; z != NbCubesZ; z++){
 					position.set(2, z);
 					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
-					terrainTypes.get(x).get(y).add(cube);
+					terrainTypes.get(x).get(y).put(z,cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -195,18 +196,19 @@ public class World {
 	 * 
 	 * Variable referencing the terrain of this world.
 	 */
-	private List<List<List<Cube>>> terrainTypes = new ArrayList<>(); 
+	private Map<Integer, Map<Integer, Map<Integer, Cube>>> terrainTypes 
+		= new HashMap<>();
 	
 	public void setTerrainType(Cube cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
 		if (terrainType != 1 && terrainType != 2 && cube.isSolid()){
-			terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
-							.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
-			modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
-												cube.getPosition().get(1),
-												cube.getPosition().get(2));
+			terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
+							.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
+			modelListener.notifyTerrainChanged(cube.getXGrit(), 
+												cube.getYGrit(),
+												cube.getZGrit());
 			double rand = Math.random();
 			if (rand < 0.125) {
 				new Log(cube.getCenterOfCube(), this);
@@ -223,11 +225,11 @@ public class World {
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
-		terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
-						.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
-		modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
-				cube.getPosition().get(1),
-				cube.getPosition().get(2));		
+		terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
+						.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(cube.getXGrit(), 
+							cube.getYGrit(),
+							cube.getZGrit());		
 	}
 	
 	/**
