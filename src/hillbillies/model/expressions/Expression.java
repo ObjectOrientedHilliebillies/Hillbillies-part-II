@@ -1,14 +1,18 @@
 package hillbillies.model.expressions;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 import hillbillies.model.statements.Statement;
 
+>>>>>>> refs/remotes/origin/master
 public abstract class Expression<T> {
 	
 	public void setValue(T object){
 		this.object = object;
 	}
 	
-	public T eval(){
+	public T getValue(){
 		return this.object;
 	}
 	
@@ -37,3 +41,23 @@ public abstract class Expression<T> {
 //		//eval(and1) && evaluator(and2)
 //	}
 //}
+=======
+import hillbillies.model.expressions.isExpressions.IsAliveExpression;
+import hillbillies.model.expressions.isExpressions.IsCarryingItemExpression;
+import hillbillies.model.expressions.logicalExpressions.AndExpression;
+
+/**
+ * Class for representing expressions
+ * 
+ * @author Jonas
+ *
+ */
+public abstract class Expression {
+
+	public Expression() {
+	}
+	
+	public abstract Expression eval();
+
+}
+>>>>>>> refs/remotes/origin/Jonas
