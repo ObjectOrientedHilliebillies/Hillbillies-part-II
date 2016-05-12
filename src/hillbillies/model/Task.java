@@ -23,6 +23,15 @@ public class Task implements Comparable<Task>{
 		this.setActivity(activity);
 	}
 	
+	public Task(String name, int priority, Statement activity, int[] pos) {
+		this.setName(name);
+		this.setPriority(priority);
+		this.setActivity(activity);
+		World world = this.getExecutor().getWorld();
+		Cube cube = world.getCube(pos);
+		this.setCube(cube);
+	}
+	
 	private Unit executor;
 	
 	public void setExecutor(Unit unit){
@@ -65,6 +74,16 @@ public class Task implements Comparable<Task>{
 		return this.activity;
 	}
 	
+	private Cube cube;
+	
+	private void setCube(Cube cube) {
+		this.cube = cube;
+	}
+	
+	private Cube getCube() {
+		return this.cube;
+	}
+	
 	public void addScheduler(Scheduler scheduler) {
 		this.schedulers.add(scheduler);
 	}
@@ -75,6 +94,7 @@ public class Task implements Comparable<Task>{
 		return this.schedulers;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Compare this money amount with the other money amount.
 	 * 
@@ -84,6 +104,31 @@ public class Task implements Comparable<Task>{
 	 * 			of this task and the other task.
 	 * @throws ClassCastException
 	 * 			The other task is not effective.
+=======
+	public void reducePriority() {
+		this.setPriority(this.getPriority()/2);
+	}
+	
+	public boolean isOccupied() {
+		return this.isOccupied;
+	}
+	
+	private boolean isOccupied;
+	
+	public void setOccupied() {
+		this.isOccupied = true;
+	}
+	
+	public void setAvailable() {
+		this.isOccupied = false;
+	}
+	
+	/** 
+	 * Check whether this task is equal to the given object.
+	 * @return True if and only if the given object is effective,
+	 * 		   if this task and the given object belong to the same class,
+	 * 		   and if this task and the given object have the same name, priority.
+>>>>>>> refs/remotes/origin/master
 	 */
 	@Override
 	public int compareTo(Task other) {

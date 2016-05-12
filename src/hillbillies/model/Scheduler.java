@@ -61,4 +61,35 @@ public class Scheduler {
 		return managedTasks.containsAll(tasks);
 	}
 
+	private PriorityQueue<Task> getScheduledTasks() {
+		return this.scheduledTaskQue;
+	}
+
+	private ArrayList<Task> getActiveTasks() {
+		return this.activeList;
+	}
+	
+	public Task assignHighestPriorityTask() {
+		Task highestPriorityTask = this.getScheduledTasks().peek();
+		//FIXME iterator van priorityQue overschrijven
+		if (highestPriorityTask.isOccupied()) {
+			
+		}
+		else {	
+		this.activeList.add(highestPriorityTask);
+		this.scheduledTaskQue.remove();
+		highestPriorityTask.setOccupied();
+		return highestPriorityTask; }
+		
+	}
+	
+	public void taskSucceeded(Task task) {
+		this.activeList.remove(task);
+	}
+	
+	public void taskFailed(Task task) {
+		task.reducePriority();
+		this.scheduledTaskQue.add(task);
+	}
+
 }

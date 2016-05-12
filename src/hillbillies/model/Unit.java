@@ -1762,7 +1762,7 @@ public boolean getDefaultBehavior(){
  * 		| (!isValidCube(targetCube))
  */
 private void doDefaultBehavior(){
-	
+	if this.getFaction().getScheduler().
 	if (activeActivity == 3 && !sprinting && Math.random()<0.05){
 		this.sprinting = true;
 	}
@@ -1838,4 +1838,19 @@ public void setTask(Task task) {
 public Task getTask() {
 	return this.task;
 }
+
+public void follow(Unit unit) {
+	Cube otherTargetCube = unit.getTargetCube();
+	this.moveTo(otherTargetCube);
+}
+
+public void digTunnel() {
+	//FIXME
+}
+
+public void executeTask() {
+	this.getTask().
+}
+
+
 }
