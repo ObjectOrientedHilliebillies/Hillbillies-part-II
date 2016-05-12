@@ -61,8 +61,8 @@ public class Scheduler {
 		return managedTasks.containsAll(tasks);
 	}
 
-	private PriorityQueue<Task> getScheduledTasks() {
-		return this.scheduledTaskQue;
+	private ArrayList<Task> getScheduledTasks() {
+		return this.managedTasks;
 	}
 
 	private ArrayList<Task> getActiveTasks() {
@@ -77,7 +77,7 @@ public class Scheduler {
 		}
 		else {	
 		this.activeList.add(highestPriorityTask);
-		this.scheduledTaskQue.remove();
+		this.managedTasks.remove();
 		highestPriorityTask.setOccupied();
 		return highestPriorityTask; }
 		

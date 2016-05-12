@@ -94,17 +94,6 @@ public class Task implements Comparable<Task>{
 		return this.schedulers;
 	}
 	
-<<<<<<< HEAD
-	/**
-	 * Compare this money amount with the other money amount.
-	 * 
-	 * @param other
-	 * 		The other task
-	 * @return The result is equal to the  comparison of the priority
-	 * 			of this task and the other task.
-	 * @throws ClassCastException
-	 * 			The other task is not effective.
-=======
 	public void reducePriority() {
 		this.setPriority(this.getPriority()/2);
 	}
@@ -123,12 +112,15 @@ public class Task implements Comparable<Task>{
 		this.isOccupied = false;
 	}
 	
-	/** 
-	 * Check whether this task is equal to the given object.
-	 * @return True if and only if the given object is effective,
-	 * 		   if this task and the given object belong to the same class,
-	 * 		   and if this task and the given object have the same name, priority.
->>>>>>> refs/remotes/origin/master
+	/**
+	 * Compare this task amount with the other task.
+	 * 
+	 * @param other
+	 * 		The other task
+	 * @return The result is equal to the  comparison of the priority
+	 * 			of this task and the other task.
+	 * @throws ClassCastException
+	 * 			The other task is not effective.
 	 */
 	@Override
 	public int compareTo(Task other) {
