@@ -171,6 +171,14 @@ public class World {
 		}
 	}
 	
+	public Cube getCube(int[] position) {
+		try{
+			return terrainTypes.get(position[0]).get(position[1]).get(position[2]);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * @param unfilterdCubes
 	 * 		The set of wish we need to filter the passable cubes.
@@ -628,6 +636,7 @@ public class World {
 		}
 		return accessibleNeighbours;
 	}
+
 }
 
 

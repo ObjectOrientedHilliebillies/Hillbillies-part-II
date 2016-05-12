@@ -23,6 +23,15 @@ public class Task { //implements Comparable<Task>{
 		this.setActivity(activity);
 	}
 	
+	public Task(String name, int priority, Statement activity, int[] pos) {
+		this.setName(name);
+		this.setPriority(priority);
+		this.setActivity(activity);
+		World world = this.getExecutor().getWorld();
+		Cube cube = world.getCube(pos);
+		this.setCube(cube);
+	}
+	
 	private Unit executor;
 	
 	public void setExecutor(Unit unit){
@@ -65,6 +74,16 @@ public class Task { //implements Comparable<Task>{
 		return this.activity;
 	}
 	
+	private Cube cube;
+	
+	private void setCube(Cube cube) {
+		this.cube = cube;
+	}
+	
+	private Cube getCube() {
+		return this.cube;
+	}
+	
 	public void addScheduler(Scheduler scheduler) {
 		this.schedulers.add(scheduler);
 	}
@@ -75,6 +94,23 @@ public class Task { //implements Comparable<Task>{
 		return this.schedulers;
 	}
 	
+	public void reducePriority() {
+		this.setPriority(this.getPriority()/2);
+	}
+	
+	public boolean isOccupied() {
+		return this.isOccupied;
+	}
+	
+	private boolean isOccupied;
+	
+	public void setOccupied() {
+		this.isOccupied = true;
+	}
+	
+	public void setAvailable() {
+		this.isOccupied = false;
+	}
 	
 	/** 
 	 * Check whether this task is equal to the given object.
