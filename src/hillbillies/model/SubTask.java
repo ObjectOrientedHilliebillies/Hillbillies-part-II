@@ -15,23 +15,52 @@ public class SubTask {
 		}
 	}
 	
-	public boolean advance(double consumedTime){
+	public double advance(double timeLeft){
 		if (isSequence){
-			for (Statement subStatement : statements){
-				SubTask subTask = new SubTask(subStatement, cube, task);
-				subTask.advance(consumedTime);
+			if (subTask == null){
+				subTask = new SubTask(statements.get(0), cube, task);
 			}
+			while (true){
+				timeLeft = subTask.advance(timeLeft);
+				if (timeLeft == notFinished){
+					return notFinished;
+				}
+				if (timeLeft == finishedWithNoTimeLeft){
+					if (index == statements.size()-1){
+						// Each steatement done.
+						return finishedWithNoTimeLeft;
+					}
+					return notFinished;
+				}
+								
+				index++;
+				if (index == statements.size()){
+					// Each steatement done.
+					return timeLeft;
+				}
+				SubTask subTask = new SubTask(statements.get(index), cube, task);
+			}	
+			
+				
+				
 		}else{
-			// TODO de tijd nog controleren.
 			statement.execute(task);
+			timeLeft = timeLeft-0.001;
+			if (timeLeft <= 0){
+				return finishedWithNoTimeLeft;
+			}
+			return timeLeft;
 		}
 	}
 	
+	private final static int finishedWithNoTimeLeft = 0;
+	private final static int notFinished = -1;
 	private Statement statement;
 	private Cube cube;
 	private double consumedTime;
 	private List<Statement> statements;
 	private boolean isSequence = false;
 	private Task task;
-	
+	private int index = 0;	
+	private SubTask subTask = null;
 }
