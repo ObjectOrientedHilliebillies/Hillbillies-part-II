@@ -39,7 +39,7 @@ public class Scheduler implements Iterable<Task> {
 		newTask.addScheduler(this);
 	}
 	
-	private void removeTask(Task oldTask) {
+	public void removeTask(Task oldTask) {
 		if (activeList.remove(oldTask)){
 			oldTask.getExecutor().setTask(null);
 			oldTask.setExecutor(null);
@@ -52,6 +52,16 @@ public class Scheduler implements Iterable<Task> {
 	public void replace(Task oldTask, Task newTask){
 		removeTask(oldTask);
 		addTask(newTask);
+	}
+	
+	public void taskFailed(Task task){
+		if (activeList.remove(task)){
+			task.getExecutor().setTask(null);
+			task.setExecutor(null);
+			task.taskFailed();
+		}else{
+			throw new IllegalArgumentException("Given task is not in active in scheduler.");
+		}
 	}
 	
 	
