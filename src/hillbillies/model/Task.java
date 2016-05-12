@@ -70,7 +70,7 @@ public class Task { //implements Comparable<Task>{
 	
 	private Statement activity;
 	
-	private Statement getActivity() {
+	public Statement getActivity() {
 		return this.activity;
 	}
 	
