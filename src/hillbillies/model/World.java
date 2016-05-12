@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Generated;
+
+import org.junit.Test.None;
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
@@ -46,14 +49,14 @@ public class World {
 		position.add(0);
 		for (int x=0 ; x != NbCubesX ; x++){
 			position.set(0, x);
-			terrainTypes.add(new ArrayList<>());
+			terrainTypes.put(x, new HashMap<>());
 			for (int y=0 ; y != NbCubesY; y++){
 				position.set(1, y);
-				terrainTypes.get(x).add(new ArrayList<>());
+				terrainTypes.get(x).put(y, new HashMap<>());
 				for  (int z=0 ; z != NbCubesZ; z++){
 					position.set(2, z);
 					Cube cube = new Cube(position, initialTerrainTypes[x][y][z], this);
-					terrainTypes.get(x).get(y).add(cube);
+					terrainTypes.get(x).get(y).put(z,cube);
 					modelListener.notifyTerrainChanged(x,y,z);
 					if (initialTerrainTypes[x][y][z] != 1 
 							&& initialTerrainTypes[x][y][z] != 2){
@@ -201,18 +204,19 @@ public class World {
 	 * 
 	 * Variable referencing the terrain of this world.
 	 */
-	private List<List<List<Cube>>> terrainTypes = new ArrayList<>(); 
+	private Map<Integer, Map<Integer, Map<Integer, Cube>>> terrainTypes 
+		= new HashMap<>();
 	
 	public void setTerrainType(Cube cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
 		if (terrainType != 1 && terrainType != 2 && cube.isSolid()){
-			terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
-							.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
-			modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
-												cube.getPosition().get(1),
-												cube.getPosition().get(2));
+			terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
+							.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
+			modelListener.notifyTerrainChanged(cube.getXGrit(), 
+												cube.getYGrit(),
+												cube.getZGrit());
 			double rand = Math.random();
 			if (rand < 0.125) {
 				new Log(cube.getCenterOfCube(), this);
@@ -229,11 +233,11 @@ public class World {
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
-		terrainTypes.get(cube.getPosition().get(0)).get(cube.getPosition().get(1))
-						.set(cube.getPosition().get(2), cube.changeTerrainType(terrainType));
-		modelListener.notifyTerrainChanged(cube.getPosition().get(0), 
-				cube.getPosition().get(1),
-				cube.getPosition().get(2));		
+		terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
+						.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(cube.getXGrit(), 
+							cube.getYGrit(),
+							cube.getZGrit());		
 	}
 	
 	/**
@@ -276,12 +280,8 @@ public class World {
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
-					 List<Integer> cubeList = new ArrayList<>();
-					 cubeList.add(x);
-					 cubeList.add(y);
-					 cubeList.add(z);
-					 this.collapseIfFloating(getCube(cubeList));
-
+					Cube thisCube = terrainTypes.get(x).get(y).get(z);
+					this.collapseIfFloating(thisCube);
 				}
 			}
 		}
@@ -405,6 +405,105 @@ public class World {
 	    return boulders;
 	}
 	
+	/**
+	 * Return all workshops in this world.
+	 */
+	public Set<Cube> getWorkshops() {
+		Set<Cube> workshops = new HashSet<>();
+		for (int x=0 ; x != NbCubesX ; x++){
+			for (int y=0 ; y != NbCubesY; y++){
+				for  (int z=0 ; z != NbCubesZ; z++){
+					Cube thisCube = this.terrainTypes.get(x).get(y).get(z);
+					if (thisCube.getTerrainType() == 3){
+						workshops.add(thisCube);						
+					}
+				}
+			}
+		}
+		return workshops;
+	}
+
+	/**
+	 * Return the Log closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Log
+	 * 		The log closest to the given cube. If no such log
+	 * 		exists null is returned.
+	 */
+	public Log getNearestLog(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Log> logs = this.getLogs();
+		Log nearestLog = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Log log : logs){
+			thisDistance = Vector.distanceBetween(position, log.getPosition());
+			if (nearestLog == null){
+				nearestLog = log;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestLog = log;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestLog;
+	}
+	
+	/**
+	 * Return the boulder closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Boulder
+	 * 		The boulder closest to the given cube. If no such boulder
+	 * 		exists null is returned.
+	 */
+	public Boulder getNearestBoulder(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Boulder> boulders = this.getBoulders();
+		Boulder nearestBoulder = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Boulder boulder : boulders){
+			thisDistance = Vector.distanceBetween(position, boulder.getPosition());
+			if (nearestBoulder == null){
+				nearestBoulder = boulder;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestBoulder = boulder;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestBoulder;
+	}
+	
+	/**
+	 * Return the workshop closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Cube
+	 * 		The cube that represents the  workshop closest 
+	 * 		to the given cube. If no such boulder exists 
+	 * 		null is returned.
+	 */
+	public Cube getNearestWorkshop(Cube thisCube) {
+		Vector position = thisCube.getCenterOfCube();
+		Set<Cube> workshops = this.getWorkshops();
+		Cube nearestWorkshop = null;
+		double shortestDistance = 0;
+		double thisDistance;
+		for (Cube workshop : workshops){
+			thisDistance = Vector.distanceBetween(position, workshop.getCenterOfCube());
+			if (nearestWorkshop == null){
+				nearestWorkshop = workshop;
+				shortestDistance = thisDistance;
+			}else if(thisDistance<shortestDistance){
+				nearestWorkshop = workshop;
+				shortestDistance = thisDistance;
+			}
+		}
+		return nearestWorkshop;
+	}
 //	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ 
 //		//	throw new IllegalArgumentException();		

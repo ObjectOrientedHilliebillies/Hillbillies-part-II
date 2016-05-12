@@ -1,9 +1,17 @@
 package hillbillies.model.expressions.positionExpressions;
 
-public class WorkshopPosition {
+import hillbillies.model.Boulder;
+import hillbillies.model.Cube;
+import hillbillies.model.Unit;
+import hillbillies.model.World;
+
+public class WorkshopPosition extends CubeExpression{
 
 	public WorkshopPosition() {
-		// TODO Auto-generated constructor stub
+		Unit thisUnit = this.getStatement().getTask().getUnit();
+		Cube thisCube = thisUnit.getCube();
+		World thisWorld = thisUnit.getWorld();
+		Cube nearestWorkshop = thisWorld.getNearestWorkshop(thisCube);
+		setValue(nearestWorkshop);
 	}
-
 }

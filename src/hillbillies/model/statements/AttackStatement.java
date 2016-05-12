@@ -23,13 +23,5 @@ public class AttackStatement extends ActivityStatement{
 	@Override
 	public void execute(Task task) {
 		task.getExecutor().attack(this.getUnit());
-		
 	}
-
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

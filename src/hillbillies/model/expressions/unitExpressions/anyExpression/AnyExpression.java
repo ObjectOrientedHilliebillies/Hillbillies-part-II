@@ -12,7 +12,7 @@ public class AnyExpression extends UnitExpression{
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression getValue() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -5,22 +5,8 @@ import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
 
-public class AndExpression extends BooleanExpression{
-
-	public AndExpression(BooleanExpression left, BooleanExpression right) {
-		this.left = left;
-		this.right = right;
+public class AndExpression extends LogicalExpression{
+	public AndExpression(BooleanExpression e1, BooleanExpression e2) {
+		setValue(e1.getValue() && e2.getValue());
 	}
-	
-	private BooleanExpression left;
-	private BooleanExpression right;
-
-	
-	@Override
-	public BooleanValueExpression eval() {
-		if (left.eval() instanceof TrueExpression && right.eval() instanceof TrueExpression)
-			return new TrueExpression();
-		return new FalseExpression();
-	}
-
 }
