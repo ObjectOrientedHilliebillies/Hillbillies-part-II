@@ -26,11 +26,15 @@ public class Scheduler {
 	
 	private ArrayList<Task> activeList = new ArrayList<>();
 	
-	Comparator<Task> comparator = new PriorityComparator();
-	private  PriorityQueue<Task> scheduledTaskQue = new PriorityQueue<>(comparator);
+	private ArrayList<Task> managedTasks = new ArrayList<>();
+	
+	private void sortManagedTasks(){
+		managedTasks.sort(null);
+	}
 	
 	public void addTask(Task newTask) {
-		this.scheduledTaskQue.add(newTask);
+		this.managedTasks.add(newTask);
+		sortManagedTasks();
 		newTask.addScheduler(this);
 	}
 	
@@ -38,7 +42,8 @@ public class Scheduler {
 		if (activeList.remove(oldTask)){
 			oldTask.getExecutor().setTask(null);
 			oldTask.setExecutor(null);
-		} else if (!scheduledTaskQue.remove(oldTask)){
+		}
+		if (!managedTasks.remove(oldTask)){
 			throw new IllegalArgumentException("Given task is not in scheduler.");
 		}		
 	}
@@ -53,9 +58,7 @@ public class Scheduler {
 	}
 	
 	public boolean areTasksPartOf(Collection<Task> tasks) throws ModelException {
-		ArrayList<Task> allTasks = this.getScheduledTasks();
-		allTasks.addAll(this.getActiveTasks());
-		return allTasks.containsAll(tasks);
+		return managedTasks.containsAll(tasks);
 	}
 
 }

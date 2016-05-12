@@ -4,7 +4,7 @@ import java.util.Set;
 
 import hillbillies.model.statements.Statement;
 
-public class Task { //implements Comparable<Task>{
+public class Task implements Comparable<Task>{
 	
 	/**
 	 * Initialize this new task with the given name and priority.
@@ -75,26 +75,21 @@ public class Task { //implements Comparable<Task>{
 		return this.schedulers;
 	}
 	
-	
-	/** 
-	 * Check whether this task is equal to the given object.
-	 * @return True if and only if the given object is effective,
-	 * 		   if this task and the given object belong to the same class,
-	 * 		   and if this task and the given object have the same name, priority.
+	/**
+	 * Compare this money amount with the other money amount.
+	 * 
+	 * @param other
+	 * 		The other task
+	 * @return The result is equal to the  comparison of the priority
+	 * 			of this task and the other task.
+	 * @throws ClassCastException
+	 * 			The other task is not effective.
 	 */
 	@Override
-	public boolean equals(Object other) {
-		if (other == null)
-			return false;
-		if (other.getClass() != this.getClass())
-			return false;
-		Task otherTask = (Task)other; 
-		return (this.getName() == otherTask.getName() 
-					&& this.getPriority() == otherTask.getPriority());
+	public int compareTo(Task other) {
+		if (other == null){
+			throw new ClassCastException();
+		}
+		return getPriority().compareTo(other.getPriority())
 	}
-
-//	@Override
-//	public int compareTo(Task otherTask) {
-//		return(this.getPriority().compareTo(otherTask.getPriority()));
-//	}
 }
