@@ -1767,7 +1767,7 @@ private void doDefaultBehavior(){
 	}else{
 		this.setTask(this.getFaction().getScheduler().assignHighestPriorityTask());
 		if (this.getTask() != null) {
-			this.getTask().getActivity().execute();
+			this.getTask().getActivity().execute(this.getTask());
 		}else {//TODO komt die hier ooit?
 			if (activeActivity == 3 && !sprinting && Math.random()<0.05){
 				this.sprinting = true;
