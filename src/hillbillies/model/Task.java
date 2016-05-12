@@ -1,7 +1,10 @@
 package hillbillies.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import hillbillies.model.statements.SequenceStatement;
 import hillbillies.model.statements.Statement;
 
 public class Task implements Comparable<Task>{
@@ -64,14 +67,10 @@ public class Task implements Comparable<Task>{
 		return this.name;
 	}
 	
-	private void setActivity(Statement activity) {
-		this.activity = activity;
-	}
+	private List<Statement> statements;
 	
-	private Statement activity;
-	
-	public Statement getActivity() {
-		return this.activity;
+	public Statement getNextStatement() {
+		return statementes.get(next).execute(this);
 	}
 	
 	private Cube cube;
@@ -98,6 +97,10 @@ public class Task implements Comparable<Task>{
 		this.setPriority(this.getPriority()/2);
 	}
 	
+	/**
+	 * Returns whether this task is already being executed or not.
+	 * @return True if the task is already being executed.
+	 */
 	public boolean isOccupied() {
 		return this.isOccupied;
 	}
@@ -129,4 +132,32 @@ public class Task implements Comparable<Task>{
 		}
 		return getPriority().compareTo(other.getPriority())
 	}
+
+	public void taskSucceeded(Task task) {
+		this.activeList.remove(task);
+		this.managedTasks.remove(task);
+	}
+	
+	public void taskFailed(Task task) {
+		this.activeList.remove(task);
+		task.reducePriority();
+		this.addTask(task);
+	}
+	
+	public void setActivitys(Statement statement) {
+		if (statement instanceof SequenceStatement) {
+			statements= statement.getAsList();
+			for (Statement subStatement : statements){
+				SubTask subTask = new SubTask(subStatement, getCube(), this);
+				subTask.advance(consumedTime);
+			}
+		}
+	}
+	
+	private 
+	
+	public void advanceProgram(){
+		
+	}
+
 }

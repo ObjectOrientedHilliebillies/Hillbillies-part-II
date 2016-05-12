@@ -1,6 +1,9 @@
 package hillbillies.model.statements;
 
-import hillbillies.model.expressions.Expression;
+import java.util.ArrayList;
+import java.util.List;
+
+import hillbillies.model.Task;
 
 /**
  * Class for representing statements
@@ -10,6 +13,16 @@ import hillbillies.model.expressions.Expression;
  */
 public abstract class Statement {
 	
-	public abstract void execute();
-
+	public void execute(Task task){
+		this.parentTask = task;
+	}
+	
+	public List<Statement> getAsList(){
+		List<Statement> list = new ArrayList<>();
+		list.add(this);
+		return list;
+	}
+	
+	private Task parentTask;
 }
+
