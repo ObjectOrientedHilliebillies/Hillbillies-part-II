@@ -1762,28 +1762,37 @@ public boolean getDefaultBehavior(){
  * 		| (!isValidCube(targetCube))
  */
 private void doDefaultBehavior(){
-	if this.getFaction().getScheduler().
-	if (activeActivity == 3 && !sprinting && Math.random()<0.05){
-		this.sprinting = true;
+	if (this.getTask() != null) {
+		this.getTask().getActivity().execute();
+	}else{
+		this.setTask(this.getFaction().getScheduler().assignHighestPriorityTask());
+		if (this.getTask() != null) {
+			this.getTask().getActivity().execute();
+		}else {//TODO komt die hier ooit?
+			if (activeActivity == 3 && !sprinting && Math.random()<0.05){
+				this.sprinting = true;
+			}
+			else if (activeActivity == 0) {
+				int randomActivity = (int) (Math.random() * 3);
+				if (randomActivity == 0){
+					Cube newTargetCube = world.generateRandomValidPosition();
+					this.setTargetCube(newTargetCube);
+							
+				}else if (randomActivity == 1) {
+					List<Cube> randomCubesList = new ArrayList<Cube>();
+					randomCubesList.addAll(this.getCube().getNeighbourCubes());
+					Collections.shuffle(randomCubesList);
+					this.workAt(randomCubesList.get(0));
+				}else if (randomActivity == 2 && 
+						(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
+					this.rest();
+				}else 
+					this.doDefaultBehavior();
+				}
+			}
+
 	}
-	else if (activeActivity == 0) {
-		int randomActivity = (int) (Math.random() * 3);
-		if (randomActivity == 0){
-			Cube newTargetCube = world.generateRandomValidPosition();
-			this.setTargetCube(newTargetCube);
-					
-		}else if (randomActivity == 1) {
-			List<Cube> randomCubesList = new ArrayList<Cube>();
-			randomCubesList.addAll(this.getCube().getNeighbourCubes());
-			Collections.shuffle(randomCubesList);
-			this.workAt(randomCubesList.get(0));
-		}else if (randomActivity == 2 && 
-				(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
-			this.rest();
-		}else 
-			this.doDefaultBehavior();
 		}
-	}
 
 /**
  * Variable registering the Y-component of the beginning cube.
