@@ -15,10 +15,12 @@ package hillbillies.model;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Generated;
@@ -450,6 +452,12 @@ public class World {
 		return nearestLog;
 	}
 	
+	public Optional<Log> getClosestLog(Cube thisCube) {
+		return this.getLogs().stream()
+			.min(Comparator.comparing(i -> 
+			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()));
+	}
+	
 	/**
 	 * Return the boulder closest to the given cube.
 	 * @param thisCube
@@ -475,6 +483,12 @@ public class World {
 			}
 		}
 		return nearestBoulder;
+	}
+	
+	public Optional<Boulder> getClosestBoulder(Cube thisCube) {
+		return this.getBoulders().stream()
+			.min(Comparator.comparing(i -> 
+			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()));
 	}
 	
 	/**
@@ -503,6 +517,12 @@ public class World {
 			}
 		}
 		return nearestWorkshop;
+	}
+	
+	public Optional<Cube> getClosestWorkshop(Cube thisCube) {
+		return this.getWorkshops().stream()
+			.min(Comparator.comparing(i -> 
+			(int)Pathfinding.getPath(thisCube, i, this).size()));
 	}
 //	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ 
