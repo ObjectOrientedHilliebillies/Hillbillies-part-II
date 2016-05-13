@@ -30,7 +30,7 @@ public class WhileStatement extends Statement{
 	
 	@Override
 	public void execute() {
-		while (this.getCondition().eval()) {
+		while (this.getCondition().getValue()) {
 			this.getBody().execute();
 		}
 		
