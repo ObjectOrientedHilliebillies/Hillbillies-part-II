@@ -13,15 +13,9 @@ public class MoveToStatement extends ActivityStatement{
 	private Expression<Cube> position;
 
 	@Override
-	public void execute(Task task) { //FIXME Hoe geraakt ge juist aan uw task?
-		Cube cube = position.eval();
-		task.getExecutor().moveTo(cube);
-	}
-
-	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		Cube cube = position.getValue();
+		this.getTask().getExecutor().moveTo(cube);
 	}
 	
 	

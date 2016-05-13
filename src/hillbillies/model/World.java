@@ -452,10 +452,11 @@ public class World {
 		return nearestLog;
 	}
 	
-	public Optional<Log> getClosestLog(Cube thisCube) {
+	public Log getClosestLog(Cube thisCube) {
 		return this.getLogs().stream()
 			.min(Comparator.comparing(i -> 
-			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()));
+			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()))
+			.orElse(null);
 	}
 	
 	/**
@@ -485,10 +486,11 @@ public class World {
 		return nearestBoulder;
 	}
 	
-	public Optional<Boulder> getClosestBoulder(Cube thisCube) {
+	public Boulder getClosestBoulder(Cube thisCube) {
 		return this.getBoulders().stream()
 			.min(Comparator.comparing(i -> 
-			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()));
+			(int)Pathfinding.getPath(thisCube, i.getCube(), this).size()))
+			.orElse(null);
 	}
 	
 	/**
@@ -519,10 +521,11 @@ public class World {
 		return nearestWorkshop;
 	}
 	
-	public Optional<Cube> getClosestWorkshop(Cube thisCube) {
+	public Cube getClosestWorkshop(Cube thisCube) {
 		return this.getWorkshops().stream()
 			.min(Comparator.comparing(i -> 
-			(int)Pathfinding.getPath(thisCube, i, this).size()));
+			(int)Pathfinding.getPath(thisCube, i, this).size()))
+			.orElse(null);
 	}
 //	private void setMaterial(Vector position, Material material){
 //		//if (!isValidMaterialType(materialType)){ 

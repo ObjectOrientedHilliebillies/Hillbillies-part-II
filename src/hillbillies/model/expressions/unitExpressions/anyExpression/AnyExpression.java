@@ -1,20 +1,14 @@
 package hillbillies.model.expressions.unitExpressions.anyExpression;
 
 import hillbillies.model.Unit;
+import hillbillies.model.World;
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
 public class AnyExpression extends UnitExpression{
 
-	public AnyExpression(Unit unit) {
-		super(unit);
-		// TODO Auto-generated constructor stub
+	public AnyExpression() {
+		this.setValue(this.getWorld().getUnits().stream().findAny().orElse(null));
 	}
-
-	@Override
-	public Expression getValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }

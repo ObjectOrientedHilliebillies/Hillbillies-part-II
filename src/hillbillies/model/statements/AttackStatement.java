@@ -11,7 +11,7 @@ public class AttackStatement extends ActivityStatement{
 	}
 	
 	private void setUnit(Expression<Unit> unit) {
-		this.unit = unit.eval();
+		this.unit = unit.getValue();
 	}
 	
 	private Unit getUnit() {
@@ -21,7 +21,7 @@ public class AttackStatement extends ActivityStatement{
 	private Unit unit;
 	
 	@Override
-	public void execute(Task task) {
-		task.getExecutor().attack(this.getUnit());
+	public void execute() {
+		this.getTask().getExecutor().attack(this.getUnit());
 	}
 }

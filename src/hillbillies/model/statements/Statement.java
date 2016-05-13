@@ -13,9 +13,7 @@ import hillbillies.model.Task;
  */
 public abstract class Statement {
 	
-	public void execute(Task task){
-		this.task = task;
-	}
+	public abstract void execute();
 	
 	public List<Statement> getAsList(){
 		List<Statement> list = new ArrayList<>();

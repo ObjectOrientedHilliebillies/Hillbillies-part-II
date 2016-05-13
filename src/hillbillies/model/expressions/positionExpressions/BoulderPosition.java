@@ -8,10 +8,10 @@ import hillbillies.model.World;
 
 public class BoulderPosition extends CubeExpression{
 	public BoulderPosition() {
-		Unit thisUnit = this.getStatement().getTask().getUnit();
+		Unit thisUnit = this.getStatement().getTask().getExecutor();
 		Cube thisCube = thisUnit.getCube();
 		World thisWorld = thisUnit.getWorld();
-		Boulder nearestBoulder = thisWorld.getNearestBoulder(thisCube);
+		Boulder nearestBoulder = thisWorld.getClosestBoulder(thisCube);
 		setValue(nearestBoulder.getCube());
 	}
 }

@@ -1,9 +1,9 @@
 package hillbillies.model.expressions.positionExpressions;
 
-public class HerePosition {
+public class HerePosition extends CubeExpression {
 
 	public HerePosition() {
-		// TODO Auto-generated constructor stub
+		this.setValue(this.getStatement().getTask().getExecutor().getCube());
 	}
 
 }

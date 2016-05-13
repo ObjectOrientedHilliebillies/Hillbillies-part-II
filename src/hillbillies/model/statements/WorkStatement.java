@@ -20,15 +20,9 @@ public class WorkStatement extends ActivityStatement{
 	}
 	
 	@Override
-	public void execute(Task task) {
-		Cube cube = getPosition().eval();
-		task.getExecutor().workAt(cube);
-	}
-
-	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		Cube cube = getPosition().getValue();
+		this.getTask().getExecutor().workAt(cube);
 	}
 
 }

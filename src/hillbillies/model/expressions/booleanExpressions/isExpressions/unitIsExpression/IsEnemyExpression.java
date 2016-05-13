@@ -8,6 +8,6 @@ public class IsEnemyExpression extends UnitIsExpression{
 		super(unit);
 		Unit thisUnit = this.getStatement().getTask().getExecutor();
 		Unit otherUnit = (Unit) unit.getValue();
-		setValue(thisUnit.getFaction() == otherUnit.getFaction());		
+		setValue(thisUnit.getFaction() != otherUnit.getFaction());		
 	}
 }
