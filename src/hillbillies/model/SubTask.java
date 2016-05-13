@@ -40,10 +40,11 @@ public class SubTask {
 		
 		if (firstEvaluation){
 			firstEvaluationOfStatement();
-			timeCheck();
 			
-			if (!stillTimeLeft){
-				return remainingTime, isFinished;
+			// als dit alles is gewoon terugkeren
+			returnCheck();
+			if (needToReturn){
+				return returnTime;
 			}
 		}
 		
@@ -52,16 +53,30 @@ public class SubTask {
 		}
 	
 		while (true){
+			
+			// Only execute a statement of the sequence if there is 
+			// still time left. Else return -1 because this sequence is not finished yet.
+			if (remainingTime <= 0){
+				return -1;
+			}
 			remainingTime = subTask.advance(remainingTime);
-			timeCheck();
-//			if (!stillTimeLeft){
-//				return remainingTime, isFinished;
-//			}
+			
+			// If the statement we just executed was not able to finish we could continue
+			// here next time.
+			if (remainingTime == -1){
+				return -1;
+			}
+
+			// Only increment the index if the precessing statement was able to finish.
+			// 
 			index = index+1;
-//			if (index == statements.size()){
-//				// Each steatement done.
-//				return remainingTime;
-//			}
+			
+			returnCheck();
+			if (needToReturn){
+				return returnTime;
+			}
+
+			// enkel uitvoeren als er een volgende is.
 			setSubTaksOfSubStatement(index);
 		}	
 	}
@@ -89,32 +104,34 @@ public class SubTask {
 		this.firstEvaluation = false;
 	}
 	
-	private int timeCheck(){
-		if (!stillThingToDo){
+	private void returnCheck(){
+		
+		if (!stillThingsToDo()){
+			needToReturn = true;
 			if (remainingTime > 0){
 				returnTime = remainingTime;
 			}else if (remainingTime == -1){
 				returnTime = -1;
+			}else{
+				returnTime = 0;
 			}
-		}
-		if (remainingTime <= 0){
-			stillTimeLeft = false;
-		}
-		if (!stillTimeLeft){
-			if (isFinished==false){
-				returnTime = -1;
-			}else if (!hasSubStatements){
-				returnTime = 
-			}else if (index != subStatements.size()){
-				return 0, false;
-			}else if(){
-				return 0, true
-			}
+		}else if(remainingTime <= 0){
+			needToReturn = true;
+			returnTime = -1;
 		}
 	}
 	
 	private boolean stillThingsToDo(){
-		
+		if (firstEvaluation == true){
+			return true;
+		}
+		if (hasSubStatements == false){
+			return false;
+		}
+		if (subStatements.size() == index){
+			return false;
+		}
+		return true;
 	}
 
 	private void setSubTaksOfSubStatement(int index){
