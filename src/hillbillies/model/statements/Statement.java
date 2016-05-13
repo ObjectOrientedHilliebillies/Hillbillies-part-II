@@ -20,6 +20,8 @@ public abstract class Statement {
 		return defaultExecutionTime;
 	}
 	
+	
+	
 	private final static double defaultExecutionTime = 0.001;
 	
 }
