@@ -12,7 +12,7 @@ public abstract class Expression<T> {
 		return this.object;
 	}
 	
-	private Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 	

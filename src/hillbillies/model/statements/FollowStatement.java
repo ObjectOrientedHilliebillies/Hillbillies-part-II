@@ -11,7 +11,7 @@ public class FollowStatement extends ActivityStatement{
 	}
 	
 	private void setUnit(Expression<Unit> unit) {
-		this.unit = unit.eval();
+		this.unit = unit.getValue();
 	}
 	
 	private Unit getUnit() {
@@ -21,14 +21,8 @@ public class FollowStatement extends ActivityStatement{
 	Unit unit;
 	
 	@Override
-	public void execute(Task task) {
-		task.getExecutor().follow(this.getUnit());
-		
-	}
-
-	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
+		this.getTask().getExecutor().follow(this.getUnit());
 		
 	}
 

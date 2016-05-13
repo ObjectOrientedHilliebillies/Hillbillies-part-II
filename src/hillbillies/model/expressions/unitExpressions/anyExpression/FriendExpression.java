@@ -5,7 +5,10 @@ import hillbillies.model.expressions.unitExpressions.UnitExpression;
 public class FriendExpression extends UnitExpression {
 
 	public FriendExpression() {
-		// TODO Auto-generated constructor stub
+		this.setValue(this.getWorld().getUnits().stream()
+				.filter(i -> i.getFaction() 
+						== this.getStatement().getTask().getExecutor().getFaction())
+				.findAny().orElse(null));
 	}
 
 }
