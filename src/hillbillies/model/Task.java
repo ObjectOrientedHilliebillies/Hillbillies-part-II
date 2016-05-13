@@ -20,16 +20,16 @@ public class Task implements Comparable<Task>{
 	 * @post The priority of this new task is equal to the given priority.
 	 * 		| new.getPriority() == priority
 	 */
-	public Task(String name, int priority, Statement activity) {
+	public Task(String name, int priority, Statement statement) {
 		this.setName(name);
 		this.setPriority(priority);
-		this.setActivity(activity);
+		this.setStatement(statement);
 	}
 	
 	public Task(String name, int priority, Statement activity, int[] pos) {
 		this.setName(name);
 		this.setPriority(priority);
-		this.setActivity(activity);
+		this.setStatement(statement);
 		World world = this.getExecutor().getWorld();
 		Cube cube = world.getCube(pos);
 		this.setCube(cube);
@@ -65,12 +65,6 @@ public class Task implements Comparable<Task>{
 	
 	public String getName()  {
 		return this.name;
-	}
-	
-	private List<Statement> statements;
-	
-	public Statement getNextStatement() {
-		return statementes.get(next).execute(this);
 	}
 	
 	private Cube cube;
@@ -130,34 +124,36 @@ public class Task implements Comparable<Task>{
 		if (other == null){
 			throw new ClassCastException();
 		}
-		return getPriority().compareTo(other.getPriority())
+		return getPriority().compareTo(other.getPriority());
 	}
 
-	public void taskSucceeded(Task task) {
-		this.activeList.remove(task);
-		this.managedTasks.remove(task);
-	}
-	
-	public void taskFailed(Task task) {
-		this.activeList.remove(task);
-		task.reducePriority();
-		this.addTask(task);
-	}
-	
-	public void setActivitys(Statement statement) {
-		if (statement instanceof SequenceStatement) {
-			statements= statement.getAsList();
-			for (Statement subStatement : statements){
-				SubTask subTask = new SubTask(subStatement, getCube(), this);
-				subTask.advance(consumedTime);
-			}
+	public void taskSucceeded() {
+		for (Scheduler scheduler: this.schedulers){
+			scheduler.removeTask(this);
 		}
+		
 	}
 	
-	private 
+	public void taskFailed() {
+		setAvailable();
+		reducePriority();
+		this.subTask = null;
+	}
 	
-	public void advanceProgram(){
-		
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+	}
+	
+	private Statement statement;
+	private SubTask subTask = null;
+	
+	public void advanceProgram(double timeLeft){
+		if (subTask == null){
+			subTask = new SubTask(statement, cube, this);
+		}
+		if (subTask.advance(timeLeft) != -1){
+			taskSucceeded();
+		}
 	}
 
 }

@@ -1,8 +1,10 @@
 package hillbillies.model.statements;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import hillbillies.model.expressions.Expression;
-import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
-import hillbillies.part3.programs.SourceLocation;
 
 public class IfStatement extends Statement{
 	
@@ -11,23 +13,27 @@ public class IfStatement extends Statement{
 		this.ifBody = ifBody;
 		this.elseBody = elseBody;
 	}
-	
-	public IfStatement(Expression<Boolean> condition, Statement ifBody, Statement elseBody, 
-			SourceLocation sourceLocation){}
 
 	private Expression<Boolean> condition;
 	private Statement ifBody;
 	private Statement elseBody;
+	private Statement resultBody;
 	
+
 	@Override
 	public void execute() {
-		if (condition.eval()) {
-			ifBody.execute();
+		if (condition.getValue()) {
+			resultBody = ifBody;
 		}
 		else {
-			elseBody.execute();
+			resultBody = elseBody;
 		}
-		
 	}
 	
+	@Override
+	public List<Statement> result() {
+		List<Statement> returnList = new ArrayList<>(); 
+		returnList.add(resultBody);
+		return returnList;
+	}	
 }
