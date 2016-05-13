@@ -1,6 +1,9 @@
 package hillbillies.model.statements;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import hillbillies.model.Task;
 
 /**
  * Class for representing statements
@@ -10,17 +13,24 @@ import java.util.List;
  */
 public abstract class Statement {
 	
-	public abstract void execute();
-	
-	public List<Statement> result(){
-		return null;
+	public void execute(Task task){
+		this.task = task;
 	}
 	
-	public double executionTime(){
-		return defaultExecutionTime;
+	public List<Statement> getAsList(){
+		List<Statement> list = new ArrayList<>();
+		list.add(this);
+		return list;
 	}
 	
-	private final static double defaultExecutionTime = 0.001;
+	private Task task;
 	
+	public void setTask(Task task) {
+		this.task = task;
+	}
+	
+	public Task getTask() {
+		return this.task;
+	}
 }
 
