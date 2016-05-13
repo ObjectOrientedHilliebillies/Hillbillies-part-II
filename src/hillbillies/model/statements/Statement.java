@@ -13,7 +13,7 @@ import hillbillies.model.Task;
  */
 public abstract class Statement {
 	
-	public abstract void execute();
+	public abstract void execute(Task task);
 	
 	public List<Statement> getAsList(){
 		List<Statement> list = new ArrayList<>();
@@ -21,17 +21,21 @@ public abstract class Statement {
 		return list;
 	}
 	
-	private Task task;
+	public List<Statement> result(){
+		return null;
+	}	
 	
-<<<<<<< HEAD
-	
+	public double executionTime(){
+		return defaultExecutionTime;
+	}
 	
 	private final static double defaultExecutionTime = 0.001;
-=======
+
 	public void setTask(Task task) {
 		this.task = task;
 	}
->>>>>>> refs/remotes/origin/master
+
+	private Task task;
 	
 	public Task getTask() {
 		return this.task;

@@ -974,7 +974,7 @@ public void advanceTime(double tickTime) {
 	else 
 		this.speed=0;
 	if (this.getDefaultBehavior())
-		doDefaultBehavior();
+		doDefaultBehavior(tickTime);
 }
 
 /**
@@ -1761,13 +1761,13 @@ public boolean getDefaultBehavior(){
  * 		if newTargetCube is not a valid cube
  * 		| (!isValidCube(targetCube))
  */
-private void doDefaultBehavior(){
+private void doDefaultBehavior(double tickTime){
 	if (this.getTask() != null) {
-		this.getTask().getActivity().execute();
+		this.getTask().advanceProgram(tickTime);
 	}else{
-		this.setTask(this.getFaction().getScheduler().assignHighestPriorityTask());
+		this.setTask(this.getFaction().getScheduler().ascribeTask(this));
 		if (this.getTask() != null) {
-			this.getTask().getActivity().execute(this.getTask());
+			this.getTask().advanceProgram(tickTime);
 		}else {//TODO komt die hier ooit?
 			if (activeActivity == 3 && !sprinting && Math.random()<0.05){
 				this.sprinting = true;
@@ -1786,13 +1786,14 @@ private void doDefaultBehavior(){
 				}else if (randomActivity == 2 && 
 						(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 					this.rest();
-				}else 
-					this.doDefaultBehavior();
+				}else {
+					//this.doDefaultBehavior();
 				}
 			}
-
-	}
 		}
+	}
+	}
+		
 
 /**
  * Variable registering the Y-component of the beginning cube.
@@ -1857,8 +1858,8 @@ public void digTunnel() {
 	//FIXME
 }
 
-public void executeTask() {
-	this.getTask().
+public void executeTask(double tickTime) {
+	this.getTask().advanceProgram(tickTime);
 }
 
 

@@ -3,8 +3,6 @@ package hillbillies.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.stringtemplate.v4.compiler.STParser.namedArg_return;
-
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
@@ -20,6 +18,7 @@ import hillbillies.model.expressions.booleanExpressions.logicalExpressions.NotEx
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.OrExpression;
 import hillbillies.model.expressions.positionExpressions.BoulderPosition;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
@@ -35,7 +34,6 @@ import hillbillies.model.statements.SequenceStatement;
 import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.ITaskFactory;
 import hillbillies.part3.programs.SourceLocation;
-import hillbillies.model.World;
 
 /**
  * 
@@ -98,7 +96,8 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Statement createMoveTo(Expression position, SourceLocation sourceLocation) {
-		return new MoveToStatement(position);
+		CubeExpression cube = (CubeExpression) position;
+		return new MoveToStatement(cube);
 	}
 
 	@Override
@@ -213,8 +212,8 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createLiteralPosition(int x, int y, int z, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("TaskFactory createLiteralPosition");
+		return new LiteralPosition(x, y, z);
 	}
 
 	@Override

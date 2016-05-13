@@ -13,11 +13,11 @@ public class SubTask {
 	private boolean isLoop;
 	
 
-	public SubTask(Statement statement, Cube cube, Task task, boolean timeLess){
+	public SubTask(Statement statement, Cube cube, Task task, boolean inLoop){
 		this.statement = statement;
 		this.cube = cube;
 		this.task = task;
-		this.timeLess = timeLess;
+		this.inLoop = inLoop;
 	}
 	
 	private List<Statement> subStatements = null;
@@ -38,10 +38,10 @@ public class SubTask {
 			}
 		}
 		
-		if (hasSubStatements){
+		if (hasSubStatements){}
 		
 		if (subTask == null){
-			subTask = new SubTask(subStatements.get(index), cube, task, timeLess);
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}
 	
 		while (true){
@@ -69,9 +69,10 @@ public class SubTask {
 			}
 
 			// If the sequence in not completed yet, load the next substatement.
-			subTask = new SubTask(subStatements.get(index), cube, task, timeLess);
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}	
 	}
+	
 
 	private void decreaceRemainingTime(double amount){
 		remainingTime = remainingTime - amount;
@@ -88,7 +89,7 @@ public class SubTask {
 	
 	private void evaluationOfStatement(){
 		// Execute the statement.
-		statement.execute();
+		statement.execute(task);
 
 		double executionTime = statement.executionTime();
 		
@@ -102,7 +103,6 @@ public class SubTask {
 			
 		}
 			
-		}
 		// If the statement returns 0 it a break.
 		decreaceRemainingTime(statement.executionTime());
 		subStatements = statement.result();

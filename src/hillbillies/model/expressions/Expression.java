@@ -1,4 +1,5 @@
 package hillbillies.model.expressions;
+import hillbillies.model.Task;
 import hillbillies.model.statements.Statement;
 
 
@@ -8,14 +9,14 @@ public abstract class Expression<T> {
 		this.object = object;
 	}
 	
-	public T getValue(){
+	public T getValue(Task task){
 		return this.object;
 	}
 	
 	public Statement getStatement() {
 		return this.statement;
 	}
-	
+
 	private T object;
 	private Statement statement;
 	
