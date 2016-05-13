@@ -20,6 +20,9 @@ public class SubTask {
 	private boolean hasSubStatements;
 	private boolean stillTimeLeft;
 	private boolean isFinished;
+	private double returnTime;
+	private boolean stillThingToDo;
+	private boolean needToReturn = false;
 	
 	private final static int finishedWithNoTimeLeft = 0;
 	private final static int notFinished = -1;
@@ -39,9 +42,9 @@ public class SubTask {
 			firstEvaluationOfStatement();
 			timeCheck();
 			
-//			if (!stillTimeLeft){
-//				return remainingTime, isFinished;
-//			}
+			if (!stillTimeLeft){
+				return remainingTime, isFinished;
+			}
 		}
 		
 		if (subTask == null){
@@ -59,7 +62,7 @@ public class SubTask {
 //				// Each steatement done.
 //				return remainingTime;
 //			}
-			SubTask subTask = new SubTask(statements.get(index), cube, task);
+			setSubTaksOfSubStatement(index);
 		}	
 	}
 
@@ -87,20 +90,31 @@ public class SubTask {
 	}
 	
 	private int timeCheck(){
+		if (!stillThingToDo){
+			if (remainingTime > 0){
+				returnTime = remainingTime;
+			}else if (remainingTime == -1){
+				returnTime = -1;
+			}
+		}
 		if (remainingTime <= 0){
 			stillTimeLeft = false;
 		}
 		if (!stillTimeLeft){
 			if (isFinished==false){
-				return 0, false;
+				returnTime = -1;
 			}else if (!hasSubStatements){
-				return 0, true;
+				returnTime = 
 			}else if (index != subStatements.size()){
 				return 0, false;
 			}else if(){
 				return 0, true
 			}
 		}
+	}
+	
+	private boolean stillThingsToDo(){
+		
 	}
 
 	private void setSubTaksOfSubStatement(int index){
