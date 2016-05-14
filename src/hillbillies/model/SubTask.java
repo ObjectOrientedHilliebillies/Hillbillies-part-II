@@ -2,108 +2,121 @@ package hillbillies.model;
 
 import java.util.List;
 
-import org.antlr.v4.parse.ANTLRParser.ruleReturns_return;
-
-import hillbillies.model.statements.SequenceStatement;
 import hillbillies.model.statements.Statement;
 
 public class SubTask {
 	
 	private Statement statement;
 	private Cube cube;
-	private List<Statement> subStatements = null;
 	private Task task;
-	private int index = 0;	
-	private SubTask subTask = null;
-	private double remainingTime;
-	private boolean firstEvaluation = true;
-	private boolean hasSubStatements;
-	private boolean stillTimeLeft;
-	private boolean isFinished;
+	private boolean inLoop;
+	private boolean isLoop;
 	
-	private final static int finishedWithNoTimeLeft = 0;
-	private final static int notFinished = -1;
-	
-	public SubTask(Statement statement, Cube cube, Task task){
+
+	public SubTask(Statement statement, Cube cube, Task task, boolean inLoop){
 		this.statement = statement;
 		this.cube = cube;
 		this.task = task;
+		this.inLoop = inLoop;
 	}
+	
+	private List<Statement> subStatements = null;
+	private int index = 0;	
+	private SubTask subTask = null;
+	private double remainingTime;
 
 	public double advance(double time){
 		
 		remainingTime = time;
-		stillTimeLeft = true;
 		
-		if (firstEvaluation){
-			firstEvaluationOfStatement();
-			timeCheck();
+		if (mustEvaluate){
+			evaluationOfStatement();
 			
-//			if (!stillTimeLeft){
-//				return remainingTime, isFinished;
-//			}
+			// If there are no substatements we're done here.
+			if (!hasSubStatements){
+				return remainingTime;
+			}
 		}
 		
+		if (hasSubStatements){}
+		
 		if (subTask == null){
-			setSubTaksOfSubStatement(index);
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}
 	
 		while (true){
+			
+			// Only execute a statement of the sequence if there is 
+			// still time left. Else return -1 because this sequence is not finished yet.
+			if (remainingTime <= 0){
+				return -1;
+			}
+			
 			remainingTime = subTask.advance(remainingTime);
-			timeCheck();
-//			if (!stillTimeLeft){
-//				return remainingTime, isFinished;
-//			}
+			
+			// If the statement we just executed was not able to finish we could continue
+			// here next time.
+			if (remainingTime == -1){
+				return -1;
+			}
+
+			// Index is only incremented if the previous statement was able to finish.
 			index = index+1;
-//			if (index == statements.size()){
-//				// Each steatement done.
-//				return remainingTime;
-//			}
-			SubTask subTask = new SubTask(statements.get(index), cube, task);
+			
+			// If the processed statement was last in the sequence we return all is done here.
+			if (index == subStatements.size()){
+				return remainingTime;
+			}
+
+			// If the sequence in not completed yet, load the next substatement.
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}	
 	}
+	
 
-	
-	private void setRemainingTime(double time){
-		remainingTime = time;
-	}
-	
 	private void decreaceRemainingTime(double amount){
 		remainingTime = remainingTime - amount;
+		
+		// If the remaining time is 0 or less, we were just able to finish the execution of the
+		// statement, thus 0 should be returned.
+		if (remainingTime <= 0){
+			remainingTime = 0;
+		}
 	}
 	
-	private void firstEvaluationOfStatement(){
-		statement.execute();
+	private boolean mustEvaluate = true;
+	private boolean hasSubStatements;
+	
+	private void evaluationOfStatement(){
+		// Execute the statement.
+		statement.execute(task);
+
+		double executionTime = statement.executionTime();
+		
+		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
+		if (executionTime == -2){
+			remainingTime = 0;
+		}
+		
+		// If the statement returns -1 it should be executed one more time. (loop)
+		if (executionTime == -1){
+			
+		}
+			
+		// If the statement returns 0 it a break.
 		decreaceRemainingTime(statement.executionTime());
 		subStatements = statement.result();
 		
-		if (subStatements != null){
-			hasSubStatements = true;
-		}else{
-			hasSubStatements = false;
-		}
+		// Set the substatements and check if there are any.
+		subStatements = statement.result();
+		hasSubStatements = (subStatements != null);
 		
-		this.firstEvaluation = false;
-	}
-	
-	private int timeCheck(){
-		if (remainingTime <= 0){
-			stillTimeLeft = false;
-		}
-		if (!stillTimeLeft){
-			if (isFinished==false){
-				return 0, false;
-			}else if (!hasSubStatements){
-				return 0, true;
-			}else if (index != subStatements.size()){
-				return 0, false;
-			}else if(){
-				return 0, true
-			}
-		}
-	}
+		// If the statement says the effect of the execution lasts 
+		// longer than 1 tick
+		
+		
+		hasSubStatements = (subStatements != null);
 
-	private void setSubTaksOfSubStatement(int index){
-		subTask = new SubTask(subStatements.get(index), cube, task);
+		this.mustEvaluate = false;
 	}
 }
