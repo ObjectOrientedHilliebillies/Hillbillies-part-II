@@ -171,7 +171,7 @@ public class World {
 	public Cube getCube(List<Integer> position){
 		try{
 			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
-		} catch (IndexOutOfBoundsException e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}

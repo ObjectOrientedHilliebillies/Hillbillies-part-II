@@ -1,10 +1,8 @@
 package hillbillies.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
-import hillbillies.model.statements.SequenceStatement;
 import hillbillies.model.statements.Statement;
 
 public class Task implements Comparable<Task>{
@@ -43,6 +41,7 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public Unit getExecutor(){
+		System.out.println("Task/getExecutor" + executor.toString());
 		return this.executor;
 	}
 	
@@ -81,7 +80,7 @@ public class Task implements Comparable<Task>{
 		this.schedulers.add(scheduler);
 	}
 	
-	private Set<Scheduler> schedulers;
+	private Set<Scheduler> schedulers = new HashSet<>();
 	
 	public Set<Scheduler> getSchedulers() {
 		return this.schedulers;
@@ -101,7 +100,8 @@ public class Task implements Comparable<Task>{
 	
 	private boolean isOccupied;
 	
-	public void setOccupied() {
+	public void setOccupied(Unit unit) {
+		setExecutor(unit);
 		this.isOccupied = true;
 	}
 	
@@ -149,7 +149,7 @@ public class Task implements Comparable<Task>{
 	
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
-			subTask = new SubTask(statement, cube, this);
+			subTask = new SubTask(statement, cube, this, false);
 		}
 		if (subTask.advance(timeLeft) != -1){
 			taskSucceeded();

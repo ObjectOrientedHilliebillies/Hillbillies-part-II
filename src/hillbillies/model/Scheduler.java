@@ -64,9 +64,8 @@ public class Scheduler implements Iterable<Task> {
 		}
 	}
 	
-	
-	 @Override
-	    public Iterator<Task> iterator() {
+	@Override
+	public Iterator<Task> iterator() {
 	        Iterator<Task> it = new Iterator<Task>() {
 
 	            private int currentIndex = 0;
@@ -94,7 +93,7 @@ public class Scheduler implements Iterable<Task> {
 		return managedTasks.containsAll(tasks);
 	}
 	
-	private Task ascribeTask(Unit unit) {
+	public Task ascribeTask(Unit unit) {
 		Task mostImportantTask = null;
 		for (Task task : getManagedTasks()){
 			if (!task.isOccupied()){
@@ -104,9 +103,10 @@ public class Scheduler implements Iterable<Task> {
 				}
 			}
 		}
-		
-		this.activeList.add(mostImportantTask);
-		mostImportantTask.setOccupied();
+		if (mostImportantTask != null){
+			this.activeList.add(mostImportantTask);
+			mostImportantTask.setOccupied(unit);
+		}
 		return mostImportantTask;
 	}
 

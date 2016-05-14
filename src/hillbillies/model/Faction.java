@@ -17,6 +17,7 @@ public class Faction {
 	public Faction(World world) {
 		this.setWorld(world);
 		world.addFaction(this);
+		setScheduler(new Scheduler(this));
 	}
 	
 	/**
