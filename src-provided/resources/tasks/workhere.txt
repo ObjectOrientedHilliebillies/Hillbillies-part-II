@@ -1,0 +1,3 @@
+name : "work_here"
+priority : 10
+activities: work here;

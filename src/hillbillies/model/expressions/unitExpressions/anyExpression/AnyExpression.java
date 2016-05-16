@@ -8,7 +8,11 @@ import hillbillies.model.expressions.unitExpressions.UnitExpression;
 public class AnyExpression extends UnitExpression{
 
 	public AnyExpression() {
-		this.setValue(this.getWorld().getUnits().stream().findAny().orElse(null));
+	}
+	
+	@Override
+	public Unit getValue() {
+		return this.getWorld().getUnits().stream().findAny().orElse(null);
 	}
 	
 }

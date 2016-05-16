@@ -26,12 +26,9 @@ public class SequenceStatement extends Statement{
 	}
 	
 	@Override
-	private 
-	
-	@Override
 	public void setTask(Task task) {
 		for(Statement statement : statements) {
-			
+			statement.setTask(task);
 		}
 	}
 

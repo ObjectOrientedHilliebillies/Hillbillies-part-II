@@ -1,0 +1,3 @@
+name: "moveTo"
+priority : 5
+activities : moveTo (selected);
