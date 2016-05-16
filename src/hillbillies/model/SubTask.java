@@ -93,6 +93,7 @@ public class SubTask {
 	private void evaluationOfStatement(){
 		// Execute the statement.
 		//statement.execute(task);
+		System.out.println(statement);
 		double executionTime = statement.execute(); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
