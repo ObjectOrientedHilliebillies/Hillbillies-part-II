@@ -1,3 +1,5 @@
 name: "work"
 priority : 8
-activities: work selected;
+activities: 
+moveTo (selected);
+work (selected);
