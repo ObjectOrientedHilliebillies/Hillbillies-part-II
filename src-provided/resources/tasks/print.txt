@@ -1,0 +1,4 @@
+name: "print"
+priority : 8
+activities:
+	print "hallo";
