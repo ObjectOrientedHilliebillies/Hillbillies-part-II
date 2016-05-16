@@ -2,6 +2,8 @@ package hillbillies.model.statements;
 
 import java.util.List;
 
+import hillbillies.model.Task;
+
 public class SequenceStatement extends Statement{
 
 	public SequenceStatement(List<Statement> statements) {
@@ -21,6 +23,16 @@ public class SequenceStatement extends Statement{
 	@Override
 	public List<Statement> result() {
 		return this.statements;
+	}
+	
+	@Override
+	private 
+	
+	@Override
+	public void setTask(Task task) {
+		for(Statement statement : statements) {
+			
+		}
 	}
 
 }

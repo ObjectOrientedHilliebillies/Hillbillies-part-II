@@ -100,12 +100,17 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createMoveTo(Expression position, SourceLocation sourceLocation) {
 		CubeExpression cube = (CubeExpression) position;
-		return new MoveToStatement(cube);
+		MoveToStatement moveToStatement = new MoveToStatement(cube);
+		position.setStatement(moveToStatement);
+		return moveToStatement;
 	}
 
 	@Override
 	public Statement createWork(Expression position, SourceLocation sourceLocation) {
-		return new WorkStatement(position);
+		CubeExpression cube = (CubeExpression) position;
+		WorkStatement workStatement = new WorkStatement(cube);
+		position.setStatement(workStatement);
+		return workStatement;
 	}
 
 	@Override
