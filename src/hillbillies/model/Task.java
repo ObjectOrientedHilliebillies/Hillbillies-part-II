@@ -34,7 +34,7 @@ public class Task implements Comparable<Task>{
 		//this.setCube(cube);
 	}
 	
-	private int[] pos;
+	private int[] pos = null;
 	private void setPos(int[] pos) {
 		this.pos = pos;
 	}
@@ -47,8 +47,10 @@ public class Task implements Comparable<Task>{
 	
 	public void setExecutor(Unit unit){
 		World world = unit.getWorld();
-		Cube cube = world.getCube(this.getPos());
-		this.setCube(cube);
+		if (this.getPos() != null) {
+			Cube cube = world.getCube(this.getPos());
+			this.setCube(cube);
+		}
 		this.executor = unit;
 		unit.setTask(this);
 	}
