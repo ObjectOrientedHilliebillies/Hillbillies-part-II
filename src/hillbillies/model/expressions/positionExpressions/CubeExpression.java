@@ -15,11 +15,6 @@ public class CubeExpression extends Expression<Cube>{
 	
 	@Override
 	public Cube getValue() {
-		System.out.println(position);
-		System.out.println();
-		this.getStatement().getTask().getExecutor();
-		this.getStatement().getTask().getExecutor().getWorld();
-		this.getStatement().getTask().getExecutor().getWorld().getCube(position);
 		return this.getStatement().getTask().getExecutor().getWorld().getCube(position);
 	}
 }

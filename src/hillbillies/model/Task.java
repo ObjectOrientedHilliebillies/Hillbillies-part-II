@@ -37,11 +37,13 @@ public class Task implements Comparable<Task>{
 	
 	public void setExecutor(Unit unit){
 		this.executor = unit;
-		unit.setTask(this);
+		if (unit != null){
+			unit.setTask(this);	
+		}
 	}
 	
 	public Unit getExecutor(){
-		System.out.println("Task/getExecutor" + executor.toString());
+		System.out.println("Task/getExecutor: " + executor.toString());
 		return this.executor;
 	}
 	
