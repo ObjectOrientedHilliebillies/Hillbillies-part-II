@@ -12,10 +12,6 @@ public class AssignmentStatement extends Statement{
 		this.value = value;
 	}
 	
-	private Expression getValue() {
-		return this.value;
-	}
-	
 	private void setVariableName(String variableName) {
 		this.variableName = variableName;
 	}
@@ -28,9 +24,9 @@ public class AssignmentStatement extends Statement{
 	private String variableName;
 	
 	@Override
-	public void execute() {
+	public double execute() {
 		getVariableName() = getValue;
-		//FIXME 
+		return defaultExecutionTime;
 	}
 
 }

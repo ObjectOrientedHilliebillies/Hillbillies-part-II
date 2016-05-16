@@ -18,7 +18,9 @@ public class SequenceStatement extends Statement{
 	
 
 	@Override
-	public void execute() {}
+	public double execute() {
+		return defaultExecutionTime;
+	}
 	
 	@Override
 	public List<Statement> result() {

@@ -690,7 +690,7 @@ public class World {
 		if (this.getNbOfUnits()!=100){
 			unit.setWorld(this);
 			if (this.getNbOffFactions() != 5){
-				System.out.print("new faction");
+				System.out.println("new faction");
 				Faction newFaction =  new Faction(this);
 				//this.addFaction(newFaction);
 				newFaction.addUnit(unit);
