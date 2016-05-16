@@ -227,7 +227,6 @@ public Unit(String name, Vector initialPosition, boolean enableDefaultBehavior, 
 	this.orientation = (Math.PI/2);
 	
 	this.setDefaultBehavior(enableDefaultBehavior);
-	this.getWorld().addUnit(this);
 }
 
 /**

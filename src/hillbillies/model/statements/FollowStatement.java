@@ -1,6 +1,5 @@
 package hillbillies.model.statements;
 
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
 
@@ -21,9 +20,9 @@ public class FollowStatement extends ActivityStatement{
 	Unit unit;
 	
 	@Override
-	public void execute() {
+	public double execute() {
 		this.getTask().getExecutor().follow(this.getUnit());
-		
+		return -1;
 	}
 
 }

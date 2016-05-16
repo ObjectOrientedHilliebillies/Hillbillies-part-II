@@ -25,11 +25,7 @@ public abstract class Statement {
 		return null;
 	}	
 	
-	public double executionTime(){
-		return defaultExecutionTime;
-	}
-	
-	private final static double defaultExecutionTime = 0.001;
+	public final static double defaultExecutionTime = 0.001;
 
 	public void setTask(Task task) {
 		this.task = task;
