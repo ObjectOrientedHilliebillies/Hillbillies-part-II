@@ -1,9 +1,11 @@
 package hillbillies.model.expressions.positionExpressions;
 
-public class PositionOf {
+import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-	public PositionOf() {
-		// TODO Auto-generated constructor stub
+public class PositionOf extends CubeExpression{
+
+	public PositionOf(UnitExpression givenUnit) {
+		this.setValue(givenUnit.getStatement().getTask().getExecutor().getCube());
 	}
 
 }

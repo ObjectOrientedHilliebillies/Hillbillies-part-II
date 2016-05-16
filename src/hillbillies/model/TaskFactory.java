@@ -20,6 +20,7 @@ import hillbillies.model.expressions.positionExpressions.BoulderPosition;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
+import hillbillies.model.expressions.positionExpressions.PositionOf;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.AssignmentStatement;
@@ -69,7 +70,9 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Statement createWhile(Expression condition, Statement body, SourceLocation sourceLocation) {
-		return new WhileStatement(condition, body);
+		Statement whileStatement = new WhileStatement(condition, body);
+		condition.setStatement(whileStatement); //TODO nakijken 3
+		return whileStatement; 
 	}
 
 	@Override
@@ -97,12 +100,17 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createMoveTo(Expression position, SourceLocation sourceLocation) {
 		CubeExpression cube = (CubeExpression) position;
-		return new MoveToStatement(cube);
+		MoveToStatement moveToStatement = new MoveToStatement(cube);
+		position.setStatement(moveToStatement);
+		return moveToStatement;
 	}
 
 	@Override
 	public Statement createWork(Expression position, SourceLocation sourceLocation) {
-		return new WorkStatement(position);
+		CubeExpression cube = (CubeExpression) position;
+		WorkStatement workStatement = new WorkStatement(cube);
+		position.setStatement(workStatement);
+		return workStatement;
 	}
 
 	@Override
@@ -208,6 +216,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createPositionOf(Expression unit, SourceLocation sourceLocation) {
 		UnitExpression givenUnit = (UnitExpression) unit;
+		return new PositionOf(givenUnit);
 	}
 
 	@Override
