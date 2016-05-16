@@ -1,0 +1,3 @@
+name: "work"
+priority : 8
+activities: work selected;
