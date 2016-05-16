@@ -1,4 +1,5 @@
 package hillbillies.model.expressions;
+import hillbillies.model.Cube;
 import hillbillies.model.Task;
 import hillbillies.model.statements.Statement;
 
@@ -9,7 +10,7 @@ public abstract class Expression<T> {
 		this.object = object;
 	}
 	
-	public T getValue(Task task){
+	public T getValue(){
 		return this.object;
 	}
 	
@@ -20,7 +21,13 @@ public abstract class Expression<T> {
 	private T object;
 	private Statement statement;
 	
-}
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+		
+	}
+	}
+	
+
 
 //class evaluator 
 //{
