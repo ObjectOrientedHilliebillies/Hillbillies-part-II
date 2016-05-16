@@ -72,7 +72,7 @@ public class Task implements Comparable<Task>{
 		this.cube = cube;
 	}
 	
-	private Cube getCube() {
+	public Cube getCube() {
 		return this.cube;
 	}
 	

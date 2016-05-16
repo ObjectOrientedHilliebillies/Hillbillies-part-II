@@ -1,0 +1,4 @@
+name: "work (5, 6, 9)"
+priority : 10
+activities : moveTo (5, 6, 8);
+work (5,6,9);

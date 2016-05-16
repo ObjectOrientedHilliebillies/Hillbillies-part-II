@@ -1,9 +1,15 @@
 package hillbillies.model.expressions.positionExpressions;
 
-public class SelectedPosition {
+import hillbillies.model.Cube;
+
+public class SelectedPosition extends CubeExpression{
 
 	public SelectedPosition() {
-		// TODO Auto-generated constructor stub
+		
 	}
-
+	
+	@Override
+	public Cube getValue() {
+		return this.getStatement().getTask().getCube();
+	}
 }

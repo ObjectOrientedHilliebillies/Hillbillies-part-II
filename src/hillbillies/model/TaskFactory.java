@@ -18,11 +18,17 @@ import hillbillies.model.expressions.booleanExpressions.logicalExpressions.NotEx
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.OrExpression;
 import hillbillies.model.expressions.positionExpressions.BoulderPosition;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.expressions.positionExpressions.HerePosition;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
 import hillbillies.model.expressions.positionExpressions.PositionOf;
+import hillbillies.model.expressions.positionExpressions.SelectedPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
+import hillbillies.model.expressions.unitExpressions.anyExpression.AnyExpression;
+import hillbillies.model.expressions.unitExpressions.anyExpression.EnemyExpression;
+import hillbillies.model.expressions.unitExpressions.anyExpression.FriendExpression;
+import hillbillies.model.expressions.unitExpressions.thisExpression.ThisExpression;
 import hillbillies.model.statements.AssignmentStatement;
 import hillbillies.model.statements.AttackStatement;
 import hillbillies.model.statements.FollowStatement;
@@ -182,8 +188,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createHerePosition(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new HerePosition();
 	}
 	
 	@Override
@@ -203,8 +208,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createSelectedPosition(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SelectedPosition();
 	}
 
 	@Override
@@ -227,26 +231,22 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 
 	@Override
 	public Expression createThis(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ThisExpression();
 	}
 
 	@Override
 	public Expression createFriend(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new FriendExpression();
 	}
 
 	@Override
 	public Expression createEnemy(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new EnemyExpression();
 	}
 
 	@Override
 	public Expression createAny(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AnyExpression();
 	}
 
 	@Override

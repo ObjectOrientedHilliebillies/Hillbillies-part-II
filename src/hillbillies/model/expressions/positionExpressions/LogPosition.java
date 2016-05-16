@@ -7,10 +7,14 @@ import hillbillies.model.World;
 
 public class LogPosition extends CubeExpression{
 	public LogPosition() {
+	}
+	
+	@Override 
+	public Cube getValue() {
 		Unit thisUnit = this.getStatement().getTask().getExecutor();
 		Cube thisCube = thisUnit.getCube();
 		World thisWorld = thisUnit.getWorld();
-		Log nearestLog = thisWorld.getNearestLog(thisCube);
-		setValue(nearestLog.getCube());
+		Log nearestLog = thisWorld.getClosestLog(thisCube);
+		return nearestLog.getCube();
 	}
 }
