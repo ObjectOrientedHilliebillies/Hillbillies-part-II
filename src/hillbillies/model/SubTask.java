@@ -108,7 +108,7 @@ public class SubTask {
 		}
 			
 		// If the statement returns 0 it a break.
-		decreaceRemainingTime(statement.executionTime());
+		//decreaceRemainingTime(statement.executionTime());
 		subStatements = statement.result();
 		
 		// Set the substatements and check if there are any.
