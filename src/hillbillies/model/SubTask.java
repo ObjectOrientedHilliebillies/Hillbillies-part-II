@@ -18,6 +18,8 @@ public class SubTask {
 		this.cube = cube;
 		this.task = task;
 		this.inLoop = inLoop;
+		System.out.println(statement);
+		System.out.println(task);
 		this.statement.setTask(task); //TODO Nakijken
 	}
 	
