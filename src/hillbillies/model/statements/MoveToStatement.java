@@ -14,8 +14,8 @@ public class MoveToStatement extends ActivityStatement{
 	private Expression<Cube> position;
 
 	@Override
-	public void execute(Task task) {
-		Cube cube = position.getValue(task);
+	public void execute() {
+		Cube cube = position.getValue();
 		this.getTask().getExecutor().moveTo(cube);
 	}
 	

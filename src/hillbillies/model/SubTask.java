@@ -18,6 +18,7 @@ public class SubTask {
 		this.cube = cube;
 		this.task = task;
 		this.inLoop = inLoop;
+		this.statement.setTask(task); //TODO Nakijken
 	}
 	
 	private List<Statement> subStatements = null;
@@ -89,7 +90,8 @@ public class SubTask {
 	
 	private void evaluationOfStatement(){
 		// Execute the statement.
-		statement.execute(task);
+		//statement.execute(task);
+		statement.execute(); //TODO nakijken 2
 
 		double executionTime = statement.executionTime();
 		
