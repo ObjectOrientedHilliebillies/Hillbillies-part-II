@@ -52,11 +52,13 @@ public class Task implements Comparable<Task>{
 			this.setCube(cube);
 		}
 		this.executor = unit;
-		unit.setTask(this);
+		if (unit != null){
+			unit.setTask(this);	
+		}
 	}
 	
 	public Unit getExecutor(){
-		System.out.println("Task/getExecutor" + executor.toString());
+		System.out.println("Task/getExecutor: " + executor.toString());
 		return this.executor;
 	}
 	

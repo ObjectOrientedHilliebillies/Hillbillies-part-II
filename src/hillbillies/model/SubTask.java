@@ -91,18 +91,17 @@ public class SubTask {
 	private void evaluationOfStatement(){
 		// Execute the statement.
 		//statement.execute(task);
-		statement.execute(); //TODO nakijken 2
-
-		double executionTime = statement.executionTime();
+		double executionTime = statement.execute(); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
 		if (executionTime == -2){
 			remainingTime = 0;
 		}
 		
-		// If the statement returns -1 it should be executed one more time. (loop)
+		// If the statement returns -1 the statement took longer than one tick. (loop)
 		if (executionTime == -1){
-			
+			remainingTime = -1;
+			return;
 		}
 			
 		// If the statement returns 0 it a break.
@@ -111,12 +110,6 @@ public class SubTask {
 		
 		// Set the substatements and check if there are any.
 		subStatements = statement.result();
-		hasSubStatements = (subStatements != null);
-		
-		// If the statement says the effect of the execution lasts 
-		// longer than 1 tick
-		
-		
 		hasSubStatements = (subStatements != null);
 
 		this.mustEvaluate = false;

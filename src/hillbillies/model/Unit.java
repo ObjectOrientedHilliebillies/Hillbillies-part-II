@@ -944,14 +944,15 @@ private double getCurrentSpeed() {
 private double timeSinceLastRested = 0;
 
 // No documentation required for advanceTime
-public void advanceTime(double tickTime) {		
+public void advanceTime(double tickTime) {	
+	// Update time since last rested.
 	this.timeSinceLastRested = this.timeSinceLastRested + tickTime;
 	
+	// Do everything around falling.
 	this.falling(tickTime);
 	
 	if (this.timeSinceLastRested >= 180 && this.isValidActivity(4)){
 			this.rest();
-			System.out.println("3 min zijn om. Tijd om in bed te gaan.");
 		}
 	
 	if (this.activeActivity == 0 && this.nextActivity != 0){
@@ -971,9 +972,7 @@ public void advanceTime(double tickTime) {
 		this.doAttack(tickTime);
 	else if (this.isMoving())
 		doMove(tickTime);
-	else 
-		this.speed=0;
-	if (this.getDefaultBehavior())
+	else if (this.getDefaultBehavior())
 		doDefaultBehavior(tickTime);
 }
 
@@ -1227,9 +1226,8 @@ private void doMove(double tickTime){
 		stamina = stamina + (int) (oldExhaustedPoints) - (int) (exhaustedPoints);
 		if (stamina <= 0)
 			this.sprinting = false;
-		// TODO If the unit has some stamina left but is is not enough so sprint the whole tick, then the unit doesn't sprint at all.
 	}
-	
+	// FIXME speed is always the same.
 	this.setSpeed(this.targetPosition);
 	double d = Vector.distanceBetween(targetPosition, position);
 	
@@ -1245,6 +1243,7 @@ private void doMove(double tickTime){
 			this.targetCube = null;
 			this.exhaustedPoints = 0;
 			this.activeActivity = 0;
+			this.speed = 0;
 		}
 		this.startNextActivity();
 	}
@@ -1575,7 +1574,6 @@ public void attack(Unit defender){
 		&& (this.getCube() == defender.getCube() 
 			|| this.getCube().isNeighbourCube(defender.getCube())) 
 		&& !this.isAttacking()){
-		
 		System.out.println("attack");
 		this.remainingTimeToFinishAttack = 1;
 		this.activeActivity = 5;
@@ -1762,17 +1760,17 @@ public boolean getDefaultBehavior(){
  * 		| (!isValidCube(targetCube))
  */
 private void doDefaultBehavior(double tickTime){
-	if (this.getTask() != null) {
-		this.getTask().advanceProgram(tickTime);
-	}else{
-		this.setTask(this.getFaction().getScheduler().ascribeTask(this));
+	if (activeActivity == 3 && !sprinting && Math.random()<0.05){
+		this.sprinting = true;
+	}
+	else if (activeActivity == 0) {
 		if (this.getTask() != null) {
 			this.getTask().advanceProgram(tickTime);
-		}else {//TODO komt die hier ooit?
-			if (activeActivity == 3 && !sprinting && Math.random()<0.05){
-				this.sprinting = true;
-			}
-			else if (activeActivity == 0) {
+		}else{
+			this.setTask(this.getFaction().getScheduler().ascribeTask(this));
+			if (this.getTask() != null) {
+				this.getTask().advanceProgram(tickTime);
+			}else {
 				int randomActivity = (int) (Math.random() * 3);
 				if (randomActivity == 0){
 					Cube newTargetCube = world.generateRandomValidPosition();
@@ -1786,8 +1784,6 @@ private void doDefaultBehavior(double tickTime){
 				}else if (randomActivity == 2 && 
 						(hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())){
 					this.rest();
-				}else {
-					//this.doDefaultBehavior();
 				}
 			}
 		}
@@ -1820,7 +1816,6 @@ private final static Vector fallSpeed = new Vector(0, 0, -3);
 private void falling(double tickTime){
 	if (this.activeActivity != 2){
 		if (!this.position.hasSupportOfSolid(this.world)){
-			System.out.println("Started falling");
 			this.fellFrom = getCube().getPosition().get(2);
 			this.activeActivity = 2;
 		}
@@ -1831,7 +1826,6 @@ private void falling(double tickTime){
 			int cubesFallen = this.fellFrom - getCube().getPosition().get(2);
 			this.setHitpoints(this.hitpoints - 10*(cubesFallen));
 			this.startNextActivity();
-			System.out.println("Stopped falling");
 		}else{
 			this.position = Vector.sum(this.position, fallSpeed.scale(tickTime));
 		}
