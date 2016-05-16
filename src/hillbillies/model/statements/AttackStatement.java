@@ -21,7 +21,8 @@ public class AttackStatement extends ActivityStatement{
 	private Unit unit;
 	
 	@Override
-	public void execute() {
+	public double execute() {
 		this.getTask().getExecutor().attack(this.getUnit());
+		return -2;
 	}
 }

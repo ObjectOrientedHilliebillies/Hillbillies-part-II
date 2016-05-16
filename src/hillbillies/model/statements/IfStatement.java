@@ -21,13 +21,14 @@ public class IfStatement extends Statement{
 	
 
 	@Override
-	public void execute() {
+	public double execute() {
 		if (condition.getValue()) {
 			resultBody = ifBody;
 		}
 		else {
 			resultBody = elseBody;
 		}
+		return defaultExecutionTime;		
 	}
 	
 	@Override
