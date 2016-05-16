@@ -28,14 +28,27 @@ public class Task implements Comparable<Task>{
 		this.setName(name);
 		this.setPriority(priority);
 		this.setStatement(statement);
-		World world = this.getExecutor().getWorld();
-		Cube cube = world.getCube(pos);
-		this.setCube(cube);
+		this.setPos(pos);
+		//World world = this.getExecutor().getWorld();
+		//Cube cube = world.getCube(pos);
+		//this.setCube(cube);
 	}
+	
+	private int[] pos;
+	private void setPos(int[] pos) {
+		this.pos = pos;
+	}
+	private int[] getPos() {
+		return this.pos;
+	}
+	
 	
 	private Unit executor;
 	
 	public void setExecutor(Unit unit){
+		World world = unit.getWorld();
+		Cube cube = world.getCube(this.getPos());
+		this.setCube(cube);
 		this.executor = unit;
 		unit.setTask(this);
 	}
