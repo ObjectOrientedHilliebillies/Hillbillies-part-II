@@ -19,8 +19,9 @@ public class PrintStatement extends Statement{
 	private Expression<?> value;
 	
 	@Override
-	public void execute() {
+	public double execute() {
 		System.out.print(this.getValue().toString());
+		return defaultExecutionTime;
 	}
 
 }
