@@ -24,7 +24,7 @@ public class Task implements Comparable<Task>{
 		this.setStatement(statement);
 	}
 	
-	public Task(String name, int priority, Statement activity, int[] pos) {
+	public Task(String name, int priority, Statement statement, int[] pos) {
 		this.setName(name);
 		this.setPriority(priority);
 		this.setStatement(statement);
