@@ -4,6 +4,7 @@ import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.Cube;
 import hillbillies.model.Task;
+import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{
 	//TODO position een Cube maken
@@ -14,14 +15,14 @@ public class MoveToStatement extends ActivityStatement{
 	private Expression<Cube> position;
 
 	@Override
-	public void execute() {
+	public double execute() {
 		Cube cube = position.getValue();
-		this.getTask().getExecutor().moveTo(cube);
-	}
-	
-	@Override
-	public double executionTime() {
-		return 0;
-	}
-	
+		Unit unit = this.getTask().getExecutor();
+		if (unit.getCube().equals(cube)){
+			System.out.println("MoveToStatement: "+ "De unit staat er al");
+			return 0;
+		}
+		unit.moveTo(cube);
+		return -1;
+	}	
 }

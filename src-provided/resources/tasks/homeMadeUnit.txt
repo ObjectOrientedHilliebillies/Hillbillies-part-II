@@ -1,0 +1,4 @@
+name: "Banaan"
+priority : 22
+activities : 
+		if is

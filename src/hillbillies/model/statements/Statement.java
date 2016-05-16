@@ -13,7 +13,7 @@ import hillbillies.model.Task;
  */
 public abstract class Statement {
 	
-	public abstract void execute();
+	public abstract double execute();
 	
 	public List<Statement> getAsList(){
 		List<Statement> list = new ArrayList<>();
