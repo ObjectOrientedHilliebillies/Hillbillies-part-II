@@ -1844,7 +1844,7 @@ public Task getTask() {
 }
 
 public void follow(Unit unit) {
-	Cube otherTargetCube = unit.getTargetCube();
+	Cube otherTargetCube = unit.getCube();
 	this.moveTo(otherTargetCube);
 }
 
