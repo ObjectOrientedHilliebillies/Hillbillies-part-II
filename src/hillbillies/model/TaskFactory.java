@@ -21,6 +21,7 @@ import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.HerePosition;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
+import hillbillies.model.expressions.positionExpressions.NextToPosition;
 import hillbillies.model.expressions.positionExpressions.PositionOf;
 import hillbillies.model.expressions.positionExpressions.SelectedPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
@@ -88,7 +89,9 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Statement createIf(Expression condition, Statement ifBody, Statement elseBody,
 			SourceLocation sourceLocation) {
 		System.out.println("createIf");
-		return new IfStatement(condition, ifBody, elseBody);
+		Statement ifStatement = new IfStatement(condition, ifBody, elseBody);
+		condition.setStatement(ifStatement);
+		return ifStatement;
 	}
 
 	@Override
@@ -149,8 +152,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createIsSolid(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createIsSolid");
-		CubeExpression cube = (CubeExpression) position;
-		return new IsSolidExpression(cube);
+		return new IsSolidExpression((CubeExpression) position);
 	}
 
 	@Override
@@ -239,8 +241,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createNextToPosition(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createNextToPosition");
-		// TODO Auto-generated method stub
-		return null;
+		return new NextToPosition((CubeExpression<?>) position);
 	}
 
 	@Override

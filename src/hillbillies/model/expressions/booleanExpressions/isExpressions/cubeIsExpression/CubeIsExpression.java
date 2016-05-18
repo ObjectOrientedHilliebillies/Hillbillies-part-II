@@ -3,8 +3,8 @@ package hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExp
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 
-public abstract class CubeIsExpression extends IsExpression<CubeExpression>{
-	public CubeIsExpression(CubeExpression e) {
+public abstract class CubeIsExpression extends IsExpression<CubeExpression<?>>{
+	public CubeIsExpression(CubeExpression<?> e) {
 		setExpression(e);
 	}
 

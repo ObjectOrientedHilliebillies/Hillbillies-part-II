@@ -10,7 +10,7 @@ public class ThisExpression extends UnitExpression {
 	
 	@Override
 	public Unit getValue() {
-		return this.getStatement().getTask().getExecutor();
+		return getExecutor();
 	}
 	
 
