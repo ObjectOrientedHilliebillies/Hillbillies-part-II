@@ -260,10 +260,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isSolidConnectedToBorder(World world, int x, int y, int z) throws ModelException {
-		if (!world.getCube(x, y, z).isSolid()){
-			return false;
-		}
-		return world.isConnectedToBorder(x, y, z);
+		return world.isSolidConnectedToBorder(x, y, z);
 	}
 
 	@Override

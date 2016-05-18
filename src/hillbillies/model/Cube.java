@@ -233,21 +233,11 @@ public class Cube{
 		neighbours.removeAll(World.filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();
 		for (Cube neighbour: neighbours){
-			if (neighbour.hasSupportOfSolid()){
+			if (neighbour.getCenterOfCube().hasSupportOfSolid(getWorld())){
 				accessibleNeighbours.add(neighbour);
 			}
 		}
 		return accessibleNeighbours;
-	}
-	
-	/**
-	 * Returns whether this cube has a direct adjacent cube who is solid.
-	 *  
-	 * @param world
-	 * 		The world this vector is in.
-	 */
-	public boolean hasSupportOfSolid(){
-		return getWorld().isConnectedToBorder(this);
 	}
 	
 	/**

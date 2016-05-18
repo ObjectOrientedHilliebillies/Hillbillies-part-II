@@ -221,22 +221,22 @@ public class Vector {
 				+Math.pow(this.getZCoord(),2));
 	}
 	
-//	/**
-//	 * Returns whether this vector is in a cube that has a direct
-//	 *  adjacent cube who is solid.
-//	 *  
-//	 * @param world
-//	 * 		The world this vector is in.
-//	 */
-//	public boolean hasSupportOfSolid(World world){
-//		Set<Cube> directAdjenctCubes = this.getEnclosingCube(world).getDirectAdjenctCubes() ;
-//		if (directAdjenctCubes.size() == 6){
-//			if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
+	/**
+	 * Returns whether this vector is in a cube that has a direct
+	 *  adjacent cube who is solid.
+	 *  
+	 * @param world
+	 * 		The world this vector is in.
+	 */
+	public boolean hasSupportOfSolid(World world){
+		Set<Cube> directAdjenctCubes = this.getEnclosingCube(world).getDirectAdjenctCubes() ;
+		if (directAdjenctCubes.size() == 6){
+			if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	/**
 	 * Returns whether the cube this vector is part of has a solid cube

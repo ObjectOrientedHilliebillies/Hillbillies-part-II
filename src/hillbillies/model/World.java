@@ -85,7 +85,7 @@ public class World {
 	 * @param z
 	 * 		The z coord of cube to be checked.
 	 */
-	public boolean isConnectedToBorder(int x, int y, int z){
+	public boolean isSolidConnectedToBorder(int x, int y, int z){
 		return connectedToBorder.isSolidConnectedToBorder(x, y, z);
 	}
 	
@@ -95,7 +95,7 @@ public class World {
 	 * @param cube 
 	 * 		The cube to be checked
 	 */
-	public boolean isConnectedToBorder(Cube cube){
+	public boolean isSolidConnectedToBorder(Cube cube){
 		return connectedToBorder.isSolidConnectedToBorder(cube.getXGrit(),
 				cube.getYGrit(),
 				cube.getZGrit());
@@ -251,20 +251,21 @@ public class World {
 			throw new IllegalArgumentException();		
 		}
 		
-		boolean wasSolid = cube.isSolid();
+		int x = cube.getXGrit();
+		int y = cube.getYGrit();
+		int z = cube.getZGrit();
 		
-		terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
-				.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
-		modelListener.notifyTerrainChanged(cube.getXGrit(), 
-							cube.getYGrit(),
-							cube.getZGrit());
+		boolean oldSolid = cube.isSolid();
+		boolean newSolid = (terrainType == 1 || terrainType == 2);
 		
-		if (terrainType != 1 && terrainType != 2 && wasSolid){
-			
-			connectedToBorder.changeSolidToPassable(cube.getPosition().get(0), 
-					cube.getPosition().get(1),
-					cube.getPosition().get(2));
-			
+		terrainTypes.get(x).get(y).put(z, cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(x, y, z);
+		
+		if (!oldSolid && newSolid){
+			connectedToBorder.changePassableToSolid(x, y, z);
+			collapseIfFloating(getCube(x, y, z));
+		}else if (!newSolid && oldSolid){
+			connectedToBorder.changeSolidToPassable(x, y, z);
 			double rand = Math.random();
 			if (rand < 0.125) {
 				new Log(cube.getCenterOfCube(), this);
@@ -277,6 +278,7 @@ public class World {
 			for (Cube solidNeighbour : solidNeighbours){
 				this.collapseIfFloating(solidNeighbour);
 			}
+		
 		}
 	}
 	
@@ -287,10 +289,8 @@ public class World {
 	 * 		its terraintype is air.
 	 */
 	private void collapseIfFloating(Cube cube){
-		if (cube.isSolid()){
-			if (!this.isConnectedToBorder(cube)){
-				this.setTerrainType(cube, 0);
-			}
+		if (!this.isSolidConnectedToBorder(cube)){
+			this.setTerrainType(cube, 0);
 		}
 	}
 	
@@ -734,7 +734,17 @@ public class World {
 		unit.getFaction().removeUnit(unit);
 	}
 	
-
+	public Set<Cube> getAccessibleNeigbours (Cube cube){
+		Set<Cube> neighbours = cube.getNeighbourCubes();
+		neighbours.removeAll(filterPassableCubes(neighbours));
+		Set<Cube> accessibleNeighbours = new HashSet<>();
+		for (Cube neighbour: neighbours){
+			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
+	}
 	/*Time*/
 	
 	// No documentation required
