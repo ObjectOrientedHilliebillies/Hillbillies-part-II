@@ -90,6 +90,19 @@ public class World {
 	}
 	
 	/**
+	 * Returns whether the cube is connected with the border.
+	 * 
+	 * @param cube 
+	 * 		The cube to be checked
+	 */
+	public boolean isConnectedToBorder(Cube cube){
+		return connectedToBorder.isSolidConnectedToBorder(cube.getXGrit(),
+				cube.getYGrit(),
+				cube.getZGrit());
+	}
+	
+	
+	/**
 	 * Variable registering the number of cubes in x-direction
 	 */
 	private final int NbCubesX;
@@ -198,10 +211,20 @@ public class World {
 		}
 	}
 	
+	public Cube getCube(List<Integer> position) {
+		try{
+			return terrainTypes.get(position.get(0))
+					.get(position.get(1))
+					.get(position.get(2));
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * @param unfilterdCubes
-	 * 		The set of wish we need to filter the passable cubes.
-	 * @return The set that contains only the passable cubes of the unfilterdCubes set.
+	 * 		The set of wish we need to remove the unsolid cubes.
+	 * @return The set that contains only the solid cubes of the unfilterdCubes set.
 	 */
 	public static Set<Cube> filterPassableCubes(Set<Cube> unfilterdCubes){
 		Set<Cube> remainingCubes = new HashSet<>();
@@ -227,33 +250,34 @@ public class World {
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
 		}
-		if (terrainType != 1 && terrainType != 2 && cube.isSolid()){
-			terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
-							.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
-			modelListener.notifyTerrainChanged(cube.getXGrit(), 
-												cube.getYGrit(),
-												cube.getZGrit());
+		
+		boolean wasSolid = cube.isSolid();
+		
+		terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
+				.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
+		modelListener.notifyTerrainChanged(cube.getXGrit(), 
+							cube.getYGrit(),
+							cube.getZGrit());
+		
+		if (terrainType != 1 && terrainType != 2 && wasSolid){
+			
+			connectedToBorder.changeSolidToPassable(cube.getPosition().get(0), 
+					cube.getPosition().get(1),
+					cube.getPosition().get(2));
+			
 			double rand = Math.random();
 			if (rand < 0.125) {
 				new Log(cube.getCenterOfCube(), this);
 			} else if (rand < 0.25){
 				new Boulder(cube.getCenterOfCube(), this);
 			}
-			connectedToBorder.changeSolidToPassable(cube.getPosition().get(0), 
-													cube.getPosition().get(1),
-													cube.getPosition().get(2));
+			
 			Set<Cube> neighbours = cube.getDirectAdjenctCubes();
 			Set<Cube> solidNeighbours = filterPassableCubes(neighbours);
-			neighbours.removeAll(solidNeighbours);
 			for (Cube solidNeighbour : solidNeighbours){
 				this.collapseIfFloating(solidNeighbour);
 			}
 		}
-		terrainTypes.get(cube.getXGrit()).get(cube.getYGrit())
-						.put(cube.getZGrit(), cube.changeTerrainType(terrainType));
-		modelListener.notifyTerrainChanged(cube.getXGrit(), 
-							cube.getYGrit(),
-							cube.getZGrit());		
 	}
 	
 	/**
@@ -264,25 +288,10 @@ public class World {
 	 */
 	private void collapseIfFloating(Cube cube){
 		if (cube.isSolid()){
-			if (!this.isSolidConnectedToBorder(cube)){
+			if (!this.isConnectedToBorder(cube)){
 				this.setTerrainType(cube, 0);
 			}
 		}
-	}
-	
-	/**
-	 * Returns whether the cube cube is connected with the border.
-	 * 
-	 * @param cube
-	 * 		The cube to be checked.
-	 */
-	public boolean isSolidConnectedToBorder(Cube cube){
-		if (cube.isSolid()){
-			return connectedToBorder.isSolidConnectedToBorder(cube.getPosition().get(0), 
-																cube.getPosition().get(1),
-																cube.getPosition().get(2));
-		}
-		return true;
 	}
 	
 	/**

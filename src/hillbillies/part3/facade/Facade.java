@@ -167,13 +167,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void moveTo(Unit unit, int[] cube) throws ModelException {
-		System.out.println("moveTo");
-		List<Integer> cubePosition = new ArrayList<>();
-		cubePosition.add(cube[0]);
-		cubePosition.add(cube[1]);
-		cubePosition.add(cube[2]);
-		Cube cubeCube = unit.getWorld().getCube(cubePosition);
-		unit.moveTo(cubeCube);		
+		unit.moveTo(unit.getWorld().getCube(cube));		
 	}
 	
 	@Override
@@ -246,21 +240,22 @@ public class Facade implements IFacade {
 
 	@Override
 	public int getCubeType(World world, int x, int y, int z) throws ModelException {
-		List<Integer> cubeList = new ArrayList<>();
-		cubeList.add(x);
-		cubeList.add(y);
-		cubeList.add(z);
-		return world.getCube(cubeList).getTerrainType();
-
+		try{
+			return world.getCube(x, y, z).getTerrainType();
+		}catch (NullPointerException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override
 	public void setCubeType(World world, int x, int y, int z, int value) throws ModelException {
-		List<Integer> cubeList = new ArrayList<>();
-		cubeList.add(x);
-		cubeList.add(y);
-		cubeList.add(z);
-		world.setTerrainType(world.getCube(cubeList), value);
+		try{
+			world.setTerrainType(world.getCube(x, y, z), value);
+		}catch (NullPointerException e){
+			throw new ModelException();
+		}catch (IllegalArgumentException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override

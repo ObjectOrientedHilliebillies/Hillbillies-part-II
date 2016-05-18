@@ -80,7 +80,7 @@ public class Cube{
 	/**
 	 * Initialise this new cube with the position and world of the given cube and the given terrain type.
 	 * @param otherCube
-	 * 		The other cube of wish the position en world will be copieed.
+	 * 		The other cube of wish the position and world will be copieed.
 	 * @param terraintype
 	 * 		The terrain type of this new cube
 	 * @effect This new cube is initialised with the position and world of the given cube and the
@@ -233,7 +233,7 @@ public class Cube{
 		neighbours.removeAll(World.filterPassableCubes(neighbours));
 		Set<Cube> accessibleNeighbours = new HashSet<>();
 		for (Cube neighbour: neighbours){
-			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
+			if (neighbour.hasSupportOfSolid()){
 				accessibleNeighbours.add(neighbour);
 			}
 		}
@@ -246,18 +246,8 @@ public class Cube{
 	 * @param world
 	 * 		The world this vector is in.
 	 */
-	public boolean hasSupportOfSolid(World world){
-		return getWorld().connectedToBorder.isSolidConnectedToBorder(
-				getXGrit(), 
-				getYGrit(),
-				getZGrit());
-		Set<Cube> directAdjenctCubes = this.getEnclosingCube(world).getDirectAdjenctCubes() ;
-		if (directAdjenctCubes.size() == 6){
-			if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
-				return false;
-			}
-		}
-		return true;
+	public boolean hasSupportOfSolid(){
+		return getWorld().isConnectedToBorder(this);
 	}
 	
 	/**
