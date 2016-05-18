@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hillbillies.DebugStream;
 import hillbillies.common.internal.HillbilliesApplication;
 import hillbillies.common.internal.controller.GameController;
 import hillbillies.part3.facade.Facade;
@@ -31,6 +32,8 @@ public class Part3 extends HillbilliesApplication<Part2Options, IFacade, IHillbi
 	private static final String LEVELS_PATH = "resources/";
 
 	public static void main(String[] args) {
+		// TODO Van hier komen die wilde prints ;)
+		DebugStream.activate();
 		Application.launch(args);
 	}
 
