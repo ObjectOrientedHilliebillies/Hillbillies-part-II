@@ -25,13 +25,12 @@ public class NextToPosition extends CubeExpression{
 		List<Cube> randomCubesList = new ArrayList<Cube>();
 		randomCubesList.addAll(position.getNeighbourCubes());
 		Collections.shuffle(randomCubesList);
-		//FIXME
 		for (Cube cube : randomCubesList){
 				if (cube.isPassable()){
-					this.setPosition(cube);
-					break;
+					System.out.println("random next to cube chosen");
+					return cube;
 			} 
-			
 			}
+		throw new IllegalArgumentException();
 	}
 }
