@@ -1,0 +1,5 @@
+name: "dig0"
+priority : 8
+activities:
+		moveTo (next_to selected);
+		work selected;
