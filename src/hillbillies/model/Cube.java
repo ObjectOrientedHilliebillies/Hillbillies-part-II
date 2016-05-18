@@ -228,7 +228,37 @@ public class Cube{
 	 * Return a random cube that is adjenct to this cube.
 	 * @return A random adjenct cube that is adjenct to this cube.
 	 */
+	public Set<Cube> getAccessibleNeigbours (){
+		Set<Cube> neighbours = getNeighbourCubes();
+		neighbours.removeAll(World.filterPassableCubes(neighbours));
+		Set<Cube> accessibleNeighbours = new HashSet<>();
+		for (Cube neighbour: neighbours){
+			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
+	}
 	
+	/**
+	 * Returns whether this cube has a direct adjacent cube who is solid.
+	 *  
+	 * @param world
+	 * 		The world this vector is in.
+	 */
+	public boolean hasSupportOfSolid(World world){
+		return getWorld().connectedToBorder.isSolidConnectedToBorder(
+				getXGrit(), 
+				getYGrit(),
+				getZGrit());
+		Set<Cube> directAdjenctCubes = this.getEnclosingCube(world).getDirectAdjenctCubes() ;
+		if (directAdjenctCubes.size() == 6){
+			if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.

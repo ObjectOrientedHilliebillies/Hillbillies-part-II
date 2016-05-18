@@ -259,7 +259,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createThis(SourceLocation sourceLocation) {
 		System.out.println("createThis");
-		System.out.println("TashkFactory/createThis: " + sourceLocation.toString());
 		return new ThisExpression();
 	}
 

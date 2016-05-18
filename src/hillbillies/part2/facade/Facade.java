@@ -261,7 +261,10 @@ public class Facade implements IFacade {
 		cubeList.add(x);
 		cubeList.add(y);
 		cubeList.add(z);
-		return world.isSolidConnectedToBorder(world.getCube(cubeList));
+		if (!world.getCube(cubeList).isSolid()){
+			return false;
+		}
+		return world.isConnectedToBorder(x, y, z);
 	}
 
 	@Override

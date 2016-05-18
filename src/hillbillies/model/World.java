@@ -76,6 +76,20 @@ public class World {
 	private ConnectedToBorder connectedToBorder;
 	
 	/**
+	 * Returns whether the cube is connected with the border.
+	 * 
+	 * @param x
+	 * 		The x coord of cube to be checked.
+	 * @param y
+	 * 		The y coord of cube to be checked.
+	 * @param z
+	 * 		The z coord of cube to be checked.
+	 */
+	public boolean isConnectedToBorder(int x, int y, int z){
+		return connectedToBorder.isSolidConnectedToBorder(x, y, z);
+	}
+	
+	/**
 	 * Variable registering the number of cubes in x-direction
 	 */
 	private final int NbCubesX;
@@ -168,9 +182,9 @@ public class World {
 	 * @return The cube at the given position.
 	 * @return If the cube does not exist null is returned.
 	 */
-	public Cube getCube(List<Integer> position){
+	public Cube getCube(int x, int y, int z){
 		try{
-			return terrainTypes.get(position.get(0)).get(position.get(1)).get(position.get(2));
+			return terrainTypes.get(x).get(y).get(z);
 		} catch (NullPointerException e) {
 			return null;
 		}
@@ -179,7 +193,7 @@ public class World {
 	public Cube getCube(int[] position) {
 		try{
 			return terrainTypes.get(position[0]).get(position[1]).get(position[2]);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
@@ -328,11 +342,10 @@ public class World {
 	public Cube generateRandomValidPosition(){
 		Cube cube;
 		do{
-			List<Integer> cubeList = new ArrayList<>();
-			cubeList.add((int) (Math.random() * getNbCubesX()));
-			cubeList.add((int) (Math.random() * getNbCubesY()));
-			cubeList.add((int) (Math.random() * getNbCubesZ()));
-			cube = getCube(cubeList); 
+			int x = (int) (Math.random() * getNbCubesX());
+			int y = (int) (Math.random() * getNbCubesY());
+			int z = (int) (Math.random() * getNbCubesZ());
+			cube = getCube(x, y, z); 
 			}while (cube.isSolid() || !cube.getCenterOfCube().hasSupportOfSolidUnderneath(this));
 		return cube;
 	}
@@ -747,17 +760,7 @@ public class World {
 	 */
 	private final static double maxTimeLapse = 0.2;
 
-	public Set<Cube> getAccessibleNeigbours (Cube cube){
-		Set<Cube> neighbours = cube.getNeighbourCubes();
-		neighbours.removeAll(filterPassableCubes(neighbours));
-		Set<Cube> accessibleNeighbours = new HashSet<>();
-		for (Cube neighbour: neighbours){
-			if (neighbour.getCentreOfCube().hasSupportOfSolid(this)){
-				accessibleNeighbours.add(neighbour);
-			}
-		}
-		return accessibleNeighbours;
-	}
+	
 
 }
 
