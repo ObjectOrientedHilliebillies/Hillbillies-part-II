@@ -6,14 +6,16 @@ import hillbillies.model.expressions.Expression;
 
 public abstract class UnitExpression extends Expression<Unit>{
 
-	public UnitExpression() {
-	World world = this.getStatement().getTask().getExecutor().getWorld();
-	this.world = world;
-}
-
-private World world;
-
-public World getWorld() {
-return this.world;
-}
+	public UnitExpression(Unit unit) {
+		setValue(unit);
+//		World world = this.getStatement().getTask().getExecutor().getWorld();
+//		this.world = world;
+	}
+	
+	public UnitExpression(){
+		}
+	
+//	public World getWorld() {
+//		return this.world;
+//	}
 }

@@ -91,12 +91,8 @@ public class Vector {
 	 * 		The vector of wish the enclosing cube will be returned.
 	 * @return The cube enclosing the given vector.
 	 */
-	public Cube getEnclosingCube(World world){
-		List<Integer> position = new ArrayList<>();
-		position.add((int) getXCoord());
-		position.add((int) getYCoord());
-		position.add((int) getZCoord());		
-		return world.getCube(position);
+	public Cube getEnclosingCube(World world){		
+		return world.getCube((int) getXCoord(), (int) getYCoord(), (int) getZCoord());
 	}
 	
 	/**
@@ -247,12 +243,8 @@ public class Vector {
 	 * 	beneath it. 
 	 */
 	public boolean hasSupportOfSolidUnderneath(World world){
-		Cube thisCube = this.getEnclosingCube(world);
-		List<Integer> makeCube = new ArrayList<>();
-		makeCube.add(thisCube.getPosition().get(0));
-		makeCube.add(thisCube.getPosition().get(1));
-		makeCube.add(thisCube.getPosition().get(2)-1);
-		Cube cubeBenath = world.getCube(makeCube);
+		Cube cubeBenath = world.getCube((int) getXCoord(), 
+				(int) getYCoord(), (int) getZCoord()-1);
 		return (cubeBenath == null || cubeBenath.isSolid());
 	}	
 	

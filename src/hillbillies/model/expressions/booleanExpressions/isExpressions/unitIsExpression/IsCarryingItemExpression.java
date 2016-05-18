@@ -10,7 +10,12 @@ import hillbillies.model.expressions.unitExpressions.UnitExpression;
 public class IsCarryingItemExpression extends UnitIsExpression{
 	public IsCarryingItemExpression(UnitExpression unit){
 		super(unit);
-		Unit thisUnit = (Unit) unit.getValue();
-		setValue(thisUnit.isCarryingBoulder() || thisUnit.isCarryingLog());
+		
+	}
+	
+	@Override
+	public Boolean getValue(){
+		Unit thisUnit = getExpression().getValue();
+		return (thisUnit.isCarryingBoulder() || thisUnit.isCarryingLog());
 	}
 }
