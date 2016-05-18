@@ -80,7 +80,7 @@ public class Cube{
 	/**
 	 * Initialise this new cube with the position and world of the given cube and the given terrain type.
 	 * @param otherCube
-	 * 		The other cube of wish the position en world will be copieed.
+	 * 		The other cube of wish the position and world will be copieed.
 	 * @param terraintype
 	 * 		The terrain type of this new cube
 	 * @effect This new cube is initialised with the position and world of the given cube and the
@@ -228,7 +228,17 @@ public class Cube{
 	 * Return a random cube that is adjenct to this cube.
 	 * @return A random adjenct cube that is adjenct to this cube.
 	 */
-	
+	public Set<Cube> getAccessibleNeigbours (){
+		Set<Cube> neighbours = getNeighbourCubes();
+		neighbours.removeAll(World.filterPassableCubes(neighbours));
+		Set<Cube> accessibleNeighbours = new HashSet<>();
+		for (Cube neighbour: neighbours){
+			if (neighbour.getCenterOfCube().hasSupportOfSolid(getWorld())){
+				accessibleNeighbours.add(neighbour);
+			}
+		}
+		return accessibleNeighbours;
+	}
 	
 	/**
 	 * Variable referring the to offsets of direct adjenct neighbours.
