@@ -7,7 +7,6 @@ import hillbillies.model.Task;
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{
-	//TODO position een Cube maken
 	public MoveToStatement(CubeExpression position) {
 		this.position = position;
 	}
