@@ -2,7 +2,6 @@ package homeMadeTests.partIII;
 
 import static org.junit.Assert.*;
 
-import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import hillbillies.DebugStream;
-import hillbillies.model.Cube;
 import hillbillies.model.Faction;
-import hillbillies.model.Log;
 import hillbillies.model.Scheduler;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
