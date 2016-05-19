@@ -58,7 +58,6 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public Unit getExecutor(){
-		System.out.println(executor.toString());
 		return this.executor;
 	}
 	

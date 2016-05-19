@@ -52,7 +52,6 @@ public class IfStatement extends Statement{
 	
 	@Override
 	public Task getTask() {
-		System.out.println(this.task);
 		return this.task;
 	};
 	

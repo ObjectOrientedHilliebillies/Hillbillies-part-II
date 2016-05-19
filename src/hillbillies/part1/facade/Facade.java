@@ -1,5 +1,10 @@
 package hillbillies.part1.facade;
 
+import java.lang.annotation.Target;
+
+import org.antlr.v4.parse.ANTLRParser.throwsSpec_return;
+
+import hillbillies.model.Cube;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
 import ogp.framework.util.ModelException;
@@ -104,8 +109,15 @@ public class Facade implements IFacade {
 
 	@Override
 	public void moveToAdjacent(Unit unit, int dx, int dy, int dz) throws ModelException {
-		Vector positionDifference = new Vector(dx, dy, dz);	
-		unit.moveToAdjacent(positionDifference);
+		int x = unit.getCube().getXGrit()+dx;
+		int y = unit.getCube().getYGrit()+dy;
+		int z = unit.getCube().getZGrit()+dz;
+		try{
+			Cube target = unit.getWorld().getCube(x, y, z);
+		}catch (NullPointerException e){
+			throw new ModelException();
+		}
+		unit.moveToAdjacent(target);
 	}
 
 	@Override
