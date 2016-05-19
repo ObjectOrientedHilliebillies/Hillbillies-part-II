@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.ReadVariableExpression;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
@@ -73,8 +74,9 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createAssignment(String variableName, Expression value, SourceLocation sourceLocation) {
 		System.out.println("createAssignment");
-		return new AssignmentStatement(variableName, value);
-		//FIXME
+		Statement assignmentStatement = new AssignmentStatement(variableName, value, sourceLocation);
+		value.setStatement(assignmentStatement);
+		return assignmentStatement;
 	}
 
 	@Override
@@ -146,7 +148,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createReadVariable(String variableName, SourceLocation sourceLocation) {
 		System.out.println("createReadVariable");
-		return null;
+		return new ReadVariableExpression(variableName, sourceLocation);
 	}
 
 	@Override

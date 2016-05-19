@@ -2,6 +2,7 @@ package hillbillies.model;
 
 import java.util.List;
 
+import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.statements.Statement;
 
 public class SubTask {
@@ -12,9 +13,9 @@ public class SubTask {
 	private boolean isLoop;
 	
 
-	public SubTask(Statement statement, Cube cube, boolean inLoop){
+	public SubTask(Statement statement, Cube cube2, boolean inLoop){
 		this.statement = statement;
-		this.cube = cube;
+		this.cube = cube2;
 		this.inLoop = inLoop;
 	}
 	
