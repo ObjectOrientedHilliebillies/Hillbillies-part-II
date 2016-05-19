@@ -127,9 +127,20 @@ public class Facade implements IFacade {
 
 	@Override
 	public void moveToAdjacent(Unit unit, int dx, int dy, int dz) throws ModelException {
-		System.out.println("moveToAdjacent");
-		Vector positionDifference = new Vector(dx, dy, dz);	
-		unit.moveToAdjacent(positionDifference);
+		int x = unit.getCube().getXGrit()+dx;
+		int y = unit.getCube().getYGrit()+dy;
+		int z = unit.getCube().getZGrit()+dz;
+		Cube target;
+		try{
+			target = unit.getWorld().getCube(x, y, z);
+		}catch (NullPointerException e){
+			throw new ModelException();
+		}
+		try{
+			unit.moveToAdjacent(target);
+		}catch(IllegalArgumentException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override
