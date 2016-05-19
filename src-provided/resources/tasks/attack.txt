@@ -1,0 +1,7 @@
+name: "attack"
+priority: 10
+activities:
+	moveTo(next_to (position_of enemy));
+	while (is_alive enemy) do
+		attack enemy;
+		done

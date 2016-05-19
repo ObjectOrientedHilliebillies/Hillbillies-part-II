@@ -1,5 +1,6 @@
 package hillbillies.model.statements;
 
+import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
 
 public class WhileStatement extends Statement{
@@ -29,11 +30,11 @@ public class WhileStatement extends Statement{
 	private Statement body;
 	
 	@Override
-	public double execute() {
-		while (this.getCondition().getValue()) {
-			this.getBody().execute();
+	public double execute(Task task) {
+		while (this.getCondition().getValue(task)) {
+			this.getBody().execute(task);
 		}
-		return 0; //FIXME
+		return 0;
 		
 	}
 
