@@ -2,9 +2,9 @@ package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
 import hillbillies.model.Log;
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.World;
+import hillbillies.model.task.Task;
 
 public class LogPosition extends CubeExpression{
 	public LogPosition() {

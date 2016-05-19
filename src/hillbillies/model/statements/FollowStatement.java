@@ -4,9 +4,9 @@ import java.util.List;
 
 import hillbillies.model.Cube;
 import hillbillies.model.Pathfinding;
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class FollowStatement extends ActivityStatement{

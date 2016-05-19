@@ -1,6 +1,6 @@
 package hillbillies.model.expressions.booleanExpressions.booleanValueExpressions;
 
-import hillbillies.model.Task;
+import hillbillies.model.task.Task;
 
 public class FalseExpression extends BooleanValueExpression {
 	public FalseExpression(){

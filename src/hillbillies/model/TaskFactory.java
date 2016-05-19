@@ -38,6 +38,7 @@ import hillbillies.model.statements.FollowStatement;
 import hillbillies.model.statements.IfStatement;
 import hillbillies.model.statements.WhileStatement;
 import hillbillies.model.statements.WorkStatement;
+import hillbillies.model.task.Task;
 import hillbillies.model.statements.MoveToStatement;
 import hillbillies.model.statements.PrintStatement;
 import hillbillies.model.statements.SequenceStatement;
@@ -80,8 +81,8 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createWhile(Expression condition, Statement body, SourceLocation sourceLocation) {
 		System.out.println("createWhile");
-		Statement whileStatement = new WhileStatement(condition, body);
-		return whileStatement; 
+		BooleanExpression boolCondition = (BooleanExpression) condition;
+		return  new WhileStatement(boolCondition, body);
 	}
 
 	@Override

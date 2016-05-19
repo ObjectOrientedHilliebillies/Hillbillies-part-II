@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.table.TableStringConverter;
 
-import hillbillies.model.Task;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 /**

@@ -1,8 +1,8 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 
 public abstract class CubeExpression<T> extends Expression<Cube>{
 	private T position;

@@ -1,9 +1,13 @@
 package hillbillies.model.statements;
 
 import hillbillies.model.Cube;
+<<<<<<< HEAD
 import hillbillies.model.Task;
 import hillbillies.model.Unit;
+=======
+>>>>>>> refs/remotes/origin/Victor
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class WorkStatement extends ActivityStatement{
