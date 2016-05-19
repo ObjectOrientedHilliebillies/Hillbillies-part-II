@@ -3,9 +3,11 @@ package hillbillies.model.statements;
 import hillbillies.model.Cube;
 import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
+import hillbillies.part3.programs.SourceLocation;
 
 public class WorkStatement extends ActivityStatement{
-	public WorkStatement(Expression<Cube> position) {
+	public WorkStatement(Expression<Cube> position, SourceLocation sourceLocation) {
+		setSourceLocation(sourceLocation);
 		setPosition(position);
 	}
 	

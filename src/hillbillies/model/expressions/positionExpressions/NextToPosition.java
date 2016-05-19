@@ -1,16 +1,10 @@
 package hillbillies.model.expressions.positionExpressions;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Vector;
-import hillbillies.model.World;
-import hillbillies.model.expressions.Expression;
-import junit.framework.Test;
+import hillbillies.model.statements.Statement;
 
 public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	
@@ -24,6 +18,7 @@ public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	@Override 
 	public Cube getValue() {
 		Cube cube = getPosition().getValue();
+<<<<<<< HEAD
 		System.out.println(cube.toString());
 		//Set<Cube> accessibleNeigbours =	new HashSet<>(getWorld().getAccessibleNeigbours(cube));
 		List<Cube> randomCubesList = new ArrayList<>();
@@ -36,5 +31,25 @@ public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 			} 
 			}
 		throw new IllegalArgumentException();
+=======
+		Set<Cube> accessibleNeigbours =	new HashSet<>(getWorld().getAccessibleNeigbours(cube));
+//		List<Cube> randomCubesList = new ArrayList<>();
+//		randomCubesList.addAll(cube.getNeighbourCubes());
+//		Collections.shuffle(randomCubesList);
+		return accessibleNeigbours.stream().findAny().orElseThrow(null);
+	}
+	
+	private Statement statement;
+	
+	@Override
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+		getPosition().setStatement(statement);
+	}
+	
+	@Override
+	public Statement getStatement() {
+		return this.statement;
+>>>>>>> refs/remotes/origin/master
 	}
 }

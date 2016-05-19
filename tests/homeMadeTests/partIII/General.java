@@ -162,9 +162,25 @@ public class General {
 
 		Scheduler scheduler = facade.getScheduler(faction);
 
+//		List<Task> tasks = TaskParser.parseTasksFromString(
+//				"name: \"dig\"\n"
+//				+ "priority : 8\n"
+//				+ "activities:\n"
+//				+ "moveTo (next_to selected);\n"
+//				+ "work selected;", facade.createTaskFactory(),
+//				Collections.singletonList(new int[] { 1, 1, 1 }));
+
+		
 		List<Task> tasks = TaskParser.parseTasksFromString(
-				"name: \"dig\"\npriority : 8\nactivities:if carries_item(this) then\nwork here;\nfi\nif is_solid(selected) then\n"
-				+ "moveTo (next_to selected);\nwork selected;\nfi", facade.createTaskFactory(),
+				"name: \"dig\"\n"
+				+ "priority : 8\n"
+				+ "activities:if carries_item(this) then\n"
+				+ "work here;\n"
+				+ "fi\n"
+				+ "if is_solid(selected) then\n"
+				+ "moveTo (next_to selected);\n"
+				+ "work selected;\n"
+				+ "fi", facade.createTaskFactory(),
 				Collections.singletonList(new int[] { 1, 1, 1 }));
 
 		//Check if the unit's world and faction are correct.

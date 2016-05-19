@@ -3,10 +3,12 @@ package hillbillies.model.statements;
 import java.util.List;
 
 import hillbillies.model.Task;
+import hillbillies.part3.programs.SourceLocation;
 
 public class SequenceStatement extends Statement{
 
-	public SequenceStatement(List<Statement> statements) {
+	public SequenceStatement(List<Statement> statements, SourceLocation sourceLocation) {
+		setSourceLocation(sourceLocation);
 		setStatements(statements);
 	}
 	
