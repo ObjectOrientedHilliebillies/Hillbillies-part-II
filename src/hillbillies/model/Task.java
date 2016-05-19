@@ -1,8 +1,12 @@
 package hillbillies.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.statements.Statement;
 
 public class Task implements Comparable<Task>{
@@ -35,6 +39,7 @@ public class Task implements Comparable<Task>{
 	}
 	
 	private int[] pos = null;
+	
 	private void setPos(int[] pos) {
 		this.pos = pos;
 	}
@@ -52,6 +57,7 @@ public class Task implements Comparable<Task>{
 			World world = unit.getWorld();
 			if (this.getPos() != null) {
 				Cube cube = world.getCube(this.getPos());
+				CubeExpression cubeE = new LiteralPosition(pos[0], pos[1], pos[2]);
 				this.setCube(cube);
 			}
 		}
@@ -60,7 +66,6 @@ public class Task implements Comparable<Task>{
 	public Unit getExecutor(){
 		return this.executor;
 	}
-	
 	
 	private Integer priority;
 	
@@ -85,6 +90,7 @@ public class Task implements Comparable<Task>{
 	private Cube cube;
 	
 	private void setCube(Cube cube) {
+		cube.setStatement(this.statement);
 		this.cube = cube;
 	}
 	
@@ -170,6 +176,19 @@ public class Task implements Comparable<Task>{
 		if (subTask.advance(timeLeft) != -1){
 			taskSucceeded();
 		}
+	}
+	
+	private HashMap<String, Expression> variables = new HashMap();
+	
+	public Expression<?> getValue(String name) {
+		return variables.get(name);
+	}
+	
+	public void setVariable(String name, Expression value) {
+		System.out.println(name);
+		System.out.println(value);
+		System.out.println(variables);
+		variables.put(name, value);
 	}
 
 }

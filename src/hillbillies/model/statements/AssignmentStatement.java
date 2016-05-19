@@ -1,11 +1,14 @@
 package hillbillies.model.statements;
 
 import hillbillies.model.expressions.Expression;
+import hillbillies.part3.programs.SourceLocation;
 
 public class AssignmentStatement extends Statement{
 
-	public AssignmentStatement(String variableName, Expression<?> value) {
-		
+	public AssignmentStatement(String variableName, Expression<?> value, SourceLocation sourceLocation) {
+		setSourceLocation(sourceLocation);
+		setVariableName(variableName);
+		setValue(value);
 	}
 	
 	private void setValue(Expression value) {
@@ -25,7 +28,11 @@ public class AssignmentStatement extends Statement{
 	
 	@Override
 	public double execute() {
-		getVariableName() = getValue;
+		System.out.println(this.getTask());
+		System.out.println(this.variableName.toString());
+		System.out.println(this.value.toString());
+		System.out.println(this.value.getStatement());
+		this.getTask().setVariable(this.variableName, this.value);
 		return defaultExecutionTime;
 	}
 
