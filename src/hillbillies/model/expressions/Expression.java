@@ -2,6 +2,7 @@ package hillbillies.model.expressions;
 import hillbillies.model.Unit;
 import hillbillies.model.World;
 import hillbillies.model.statements.Statement;
+import hillbillies.part3.programs.SourceLocation;
 
 
 public abstract class Expression<T> {
@@ -25,14 +26,22 @@ public abstract class Expression<T> {
 	private Statement statement;
 	
 	public Unit getExecutor(){
-		System.out.println(this.getStatement());
-		System.out.println(this.getStatement().getTask());
 		return this.getStatement().getTask().getExecutor();
 	}
 	
 	public World getWorld(){
 		return this.getStatement().getTask().getExecutor().getWorld();
 	}	
+
+	private SourceLocation sourceLocation;
+	
+	public SourceLocation getSourceLocation(){
+		return this.sourceLocation;
+	}
+	
+	public void setSourceLocation(SourceLocation sourceLocation){
+		this.sourceLocation = sourceLocation;
+	}
 }
 	
 

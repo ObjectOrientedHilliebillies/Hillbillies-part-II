@@ -7,10 +7,12 @@ import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.statements.Statement;
+import hillbillies.part3.programs.SourceLocation;
 
 public class IsCarryingItemExpression extends UnitIsExpression{
-	public IsCarryingItemExpression(UnitExpression unit){
+	public IsCarryingItemExpression(UnitExpression unit, SourceLocation sourceLocation){
 		super(unit);
+		setSourceLocation(sourceLocation);
 		unit.setStatement(getStatement());
 	}
 	

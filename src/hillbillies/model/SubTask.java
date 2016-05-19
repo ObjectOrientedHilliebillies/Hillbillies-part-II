@@ -88,7 +88,7 @@ public class SubTask {
 	private void evaluationOfStatement(){
 		// Execute the statement.
 		//statement.execute(task);
-		System.out.println(statement);
+		System.out.println(statement.getSourceLocation().toString());
 		double executionTime = statement.execute(); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
@@ -105,9 +105,9 @@ public class SubTask {
 		// If the statement returns 0 it a break.
 		//decreaceRemainingTime(statement.executionTime());
 		subStatements = statement.result();
+		System.out.println(subStatements);
 		
 		// Set the substatements and check if there are any.
-		subStatements = statement.result();
 		hasSubStatements = (subStatements != null);
 
 		this.mustEvaluate = false;
