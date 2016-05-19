@@ -83,7 +83,7 @@ public class VariableAssignmentTest {
 		String thisUnit = "thisUnit";
 
 		// work task has been executed
-		assertEquals(task.getValue(thisUnit), task.getExecutor()); }
+		assertEquals(task.getExecutor(), task.getValue(thisUnit)); }
 	
 	
 		
