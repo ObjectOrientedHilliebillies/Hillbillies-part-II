@@ -1,7 +1,8 @@
 package hillbillies.model.statements;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.table.TableStringConverter;
 
 import hillbillies.model.Task;
 import hillbillies.part3.programs.SourceLocation;
@@ -15,28 +16,12 @@ import hillbillies.part3.programs.SourceLocation;
 public abstract class Statement {
 	
 	public abstract double execute(Task task);
-	
-	public List<Statement> getAsList(){
-		List<Statement> list = new ArrayList<>();
-		list.add(this);
-		return list;
-	}
-	
+
 	public List<Statement> result(){
 		return null;
 	}	
 	
 	public final static double defaultExecutionTime = 0.001;
-
-	public void setTask(Task task) {
-		this.task = task;
-	}
-
-	private Task task;
-	
-	public Task getTask() {
-		return this.task;
-	}
 
 	private SourceLocation sourceLocation;
 	
@@ -46,6 +31,10 @@ public abstract class Statement {
 	
 	public SourceLocation getSourceLocation() {
 		return sourceLocation;
+	}
+
+	public void taskFailed(Task task){
+		task.taskFailed();
 	}
 }
 

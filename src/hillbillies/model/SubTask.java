@@ -97,12 +97,15 @@ public class SubTask {
 		// Execute the statement.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		//statement.execute(task);
 		//System.out.println(statement.getSourceLocation().toString());
 >>>>>>> refs/remotes/origin/Jonas2
 =======
 >>>>>>> refs/remotes/origin/Jonas2
+=======
+>>>>>>> origin/master
 		double executionTime = statement.execute(task); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)

@@ -25,13 +25,11 @@ public class AssignmentStatement extends Statement{
 	}
 	
 	private Expression value;
+	
 	private String variableName;
 	
 	@Override
 	public double execute(Task task) {
-		System.out.println(this.getTask());
-		System.out.println(this.variableName.toString());
-		System.out.println(this.value.toString());
 		task.setVariable(this.variableName, this.value);
 		return defaultExecutionTime;
 	}

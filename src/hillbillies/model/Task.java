@@ -43,10 +43,10 @@ public class Task implements Comparable<Task>{
 	private void setPos(int[] pos) {
 		this.pos = pos;
 	}
+	
 	private int[] getPos() {
 		return this.pos;
 	}
-	
 	
 	private Unit executor;
 	
@@ -71,10 +71,17 @@ public class Task implements Comparable<Task>{
 	
 	private void setPriority(int priority) {
 		this.priority = priority;
+		resortSchedulers();
 	}
 	
 	public Integer getPriority() {
 		return this.priority;
+	}
+	
+	private void resortSchedulers(){
+		for (Scheduler scheduler : schedulers){
+			scheduler.sortManagedTasks();
+		}
 	}
 	
 	private void setName(String name) {
@@ -110,6 +117,7 @@ public class Task implements Comparable<Task>{
 	
 	public void reducePriority() {
 		this.setPriority(this.getPriority()/2);
+		resortSchedulers();
 	}
 	
 	/**
@@ -122,8 +130,11 @@ public class Task implements Comparable<Task>{
 	
 	private boolean isOccupied;
 	
-	public void setOccupied(Unit unit) {
+	private Scheduler executingScheduler;
+	
+	public void setOccupied(Unit unit, Scheduler scheduler) {
 		setExecutor(unit);
+		executingScheduler = scheduler;
 		this.isOccupied = true;
 	}
 	
@@ -153,13 +164,14 @@ public class Task implements Comparable<Task>{
 		for (Scheduler scheduler: this.schedulers){
 			scheduler.removeTask(this);
 		}
-		
 	}
 	
 	public void taskFailed() {
 		setAvailable();
 		reducePriority();
 		this.subTask = null;
+		executingScheduler.taskFailed(this);
+		getExecutor().setTask(null);
 	}
 	
 	public void setStatement(Statement statement) {

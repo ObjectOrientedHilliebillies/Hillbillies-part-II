@@ -8,7 +8,7 @@ import hillbillies.model.Task;
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{
-	public MoveToStatement(CubeExpression position, SourceLocation sourceLocation) {
+	public MoveToStatement(CubeExpression<?> position, SourceLocation sourceLocation) {
 		setSourceLocation(sourceLocation);
 		this.position = position;
 	}
