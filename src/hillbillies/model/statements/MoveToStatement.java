@@ -4,7 +4,15 @@ import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
+
+import java.util.List;
+
 import hillbillies.model.Cube;
+<<<<<<< HEAD
+import hillbillies.model.Pathfinding;
+import hillbillies.model.Task;
+=======
+>>>>>>> refs/remotes/origin/Victor
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{
@@ -18,7 +26,9 @@ public class MoveToStatement extends ActivityStatement{
 	@Override
 	public double execute(Task task) {
 		Cube cube = position.getValue(task);
-		if (cube == null){
+		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
+				cube, cube.getWorld());
+		if (path == null){
 			task.taskFailed();
 			return -1;
 		}
@@ -27,7 +37,7 @@ public class MoveToStatement extends ActivityStatement{
 			System.out.println("MoveToStatement: "+ "De unit staat er al");
 			return 0;
 		}
-		unit.moveTo(cube);
+		unit.moveTo(path.get(0));
 		return -1;
 	}	
 }
