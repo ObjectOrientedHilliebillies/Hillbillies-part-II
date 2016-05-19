@@ -1014,9 +1014,10 @@ private void startNextActivity(){
 	else if (nextActivity == 4)
 		this.rest();
 	else if (nextActivity == 0)
+		System.out.println("moveTo toch terug aan");
 		this.activeActivity = 0;
 	
-	nextActivity = 0;
+	nextActivity = -1;
 }
 
 /**
@@ -1031,7 +1032,7 @@ private void startNextActivity(){
  *  	<li>6: defending</li>
  *  </ul>
  */
-private int activeActivity = 0;
+private int activeActivity = -1;
 
 /**
  * Variable registering the next activity
@@ -1313,6 +1314,7 @@ public void moveTo(Cube cube){
 	if (cube == null)
 		throw new ClassCastException();
 	this.setTargetCube(cube);
+	activeActivity = 0;
 	System.out.println("target set");
 }
 

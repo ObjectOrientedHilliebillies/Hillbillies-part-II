@@ -66,6 +66,10 @@ public class General {
 	 */
 	@Test
 	public void cubeTypeTest() throws ModelException{
+		System.out.println("#################");
+		System.out.println("# cube collapse #");
+		System.out.println("#################");
+		
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
 		
 		// Illegal index test.
@@ -144,10 +148,13 @@ public class General {
 	}
 
 	/**
-	 * Test dig.
+	 * Test dig0.
 	 */
 	@Test
-	public void testTaskExecuted() throws ModelException {
+	public void testTaskDig0() throws ModelException {
+		System.out.println("#############");
+		System.out.println("# test dig0 #");
+		System.out.println("#############");
 		int[][][] types = new int[3][3][3];
 		types[1][1][0] = TYPE_ROCK;
 		types[1][1][1] = TYPE_ROCK;
@@ -161,21 +168,62 @@ public class General {
 		Faction faction = facade.getFaction(unit);
 
 		Scheduler scheduler = facade.getScheduler(faction);
-					
-//		List<Task> tasks = TaskParser.parseTasksFromString(
-//				"name: \"dig0\"\npriority : 8\nactivities:moveTo (next_to selected);\n"
-//				+ "work selected;", facade.createTaskFactory(),
-//				Collections.singletonList(new int[] { 1, 1, 1 }));
 
-//		List<Task> tasks = TaskParser.parseTasksFromString(
-//				"name: \"dig\"\n"
-//				+ "priority : 8\n"
-//				+ "activities:\n"
-//				+ "moveTo (next_to selected);\n"
-//				+ "work selected;", facade.createTaskFactory(),
-//				Collections.singletonList(new int[] { 1, 1, 1 }));
+		List<Task> tasks = TaskParser.parseTasksFromString(
+				"name: \"dig\"\n"
+				+ "priority : 8\n"
+				+ "activities:\n"
+				+ "moveTo (next_to selected);\n"
+				+ "work selected;", facade.createTaskFactory(),
+				Collections.singletonList(new int[] { 1, 1, 1 }));
 
+
+
+		//Check if the unit's world and faction are correct.
+		assertTrue(unit.getWorld() == world);
+		assertTrue(world.getActiveFactions().contains(faction));
 		
+		// tasks are created
+		assertNotNull(tasks);
+		// there's exactly one task
+		assertEquals(1, tasks.size());
+		Task task = tasks.get(0);
+		// test name
+		assertEquals("dig", facade.getName(task));
+		// test priority
+		assertEquals(8, facade.getPriority(task));
+
+		facade.schedule(scheduler, task);
+		advanceTimeFor(facade, world, 100, 0.02);
+
+		// work task has been executed
+		assertEquals(TYPE_AIR, facade.getCubeType(world, 1, 1, 1));
+		// work task is removed from scheduler
+		assertFalse(facade.areTasksPartOf(scheduler, Collections.singleton(task)));
+	}
+	
+	/**
+	 * Test dig0.
+	 */
+	@Test
+	public void testTaskDig() throws ModelException {
+		System.out.println("############");
+		System.out.println("# test dig #");
+		System.out.println("############");
+		int[][][] types = new int[3][3][3];
+		types[1][1][0] = TYPE_ROCK;
+		types[1][1][1] = TYPE_ROCK;
+		types[1][1][2] = TYPE_TREE;
+		types[2][2][2] = TYPE_WORKSHOP;
+
+		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
+		// FIXME Given syntacs does not work.
+		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, true);
+		facade.addUnit(unit, world);
+		Faction faction = facade.getFaction(unit);
+
+		Scheduler scheduler = facade.getScheduler(faction);
+
 		List<Task> tasks = TaskParser.parseTasksFromString(
 				"name: \"dig\"\n"
 				+ "priority : 8\n"
@@ -198,7 +246,7 @@ public class General {
 		assertEquals(1, tasks.size());
 		Task task = tasks.get(0);
 		// test name
-		assertEquals("dig0", facade.getName(task));
+		assertEquals("dig", facade.getName(task));
 		// test priority
 		assertEquals(8, facade.getPriority(task));
 
