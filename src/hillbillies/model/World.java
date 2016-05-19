@@ -1,14 +1,6 @@
 /*
- * Een unit moet steeds een factie hebben. Dit zorgt er al voor 
- * dat de eerste functie van de facade niet kan werken.
- * Als je dit probleem oplost door te stellen dat een factie niet moet afhangen van een wereld dan impliceerd dit dat
- * je geen functie addUnit kan maken omdat je dan niet een enkele unit kan toevoegen. Je moet dan direct zijn hele 
- * factie toevoegen.
- * Een andere mogelijkheid is dat een unit steeds moet aangemaakt worden door een wereld. Die wereld zorgt er dan voor
- * dat de unit en een correcte factie zit. Maar bij deze oplossing kan er ook geen addUnit bestaan omdat de unit dan
- * per definitie al in de wereld zit.
- * Hierdoor staan wij toe dat een een unit geen factie heeft als er geen enkele wereld is die van zijn bestaan afweet.
- */
+ * Een unit moet steeds een factie hebben. 
+ * Tenzij dat je de unit niet aan een wereld toevoegd?*/
 
 
 package hillbillies.model;
@@ -26,6 +18,7 @@ import java.util.Set;
 import javax.annotation.Generated;
 
 import org.junit.Test.None;
+import org.omg.CORBA.IRObject;
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
@@ -709,6 +702,9 @@ public class World {
 	 * 			smallest faction.
 	 */
 	public void addUnit(Unit unit){
+		if (!isPositionInWorld(unit.getPosition())){
+			throw new IllegalArgumentException("The unit is not standing in the world.");
+		}
 		if (this.getNbOfUnits()!=100){
 			unit.setWorld(this);
 			if (this.getNbOffFactions() != 5){
