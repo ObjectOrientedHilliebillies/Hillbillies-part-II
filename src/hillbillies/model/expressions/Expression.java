@@ -1,4 +1,5 @@
 package hillbillies.model.expressions;
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.World;
 import hillbillies.model.statements.Statement;
@@ -11,30 +12,16 @@ public abstract class Expression<T> {
 		this.object = object;
 	}
 	
-	public abstract T getValue();
+	public abstract T getValue(Task task);
 	
 	private T object;
 	
-	public Statement getStatement() {
-		return this.statement;
+	public Unit getExecutor(Task task){
+		return task.getExecutor();
 	}
 	
-	public void setStatement(Statement statement) {
-			this.statement = statement;	
-	}
-	
-	private Statement statement;
-	
-	public Unit getExecutor(){
-		return this.getStatement().getTask().getExecutor();
-	}
-	
-	public World getWorld(){
-		System.out.println(this.getStatement());
-		System.out.println(this.getStatement().getTask());
-		System.out.println(this.getStatement().getTask().getExecutor());
-		System.out.println(this.getStatement().getTask().getExecutor().getWorld());
-		return this.getStatement().getTask().getExecutor().getWorld();
+	public World getWorld(Task task){
+		return task.getExecutor().getWorld();
 	}	
 
 	private SourceLocation sourceLocation;

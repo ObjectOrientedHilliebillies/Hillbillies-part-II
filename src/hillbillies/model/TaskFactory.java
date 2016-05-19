@@ -62,12 +62,10 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		if (selectedCubes.size() == 0){
 			Task task = new Task(name, priority, activity);
 			taskList.add(task);
-			activity.setTask(task);
 		}else{
 		for (int[] cube : selectedCubes) {
 			Task task = new Task(name, priority, activity, cube);
 			taskList.add(task);
-			activity.setTask(task);
 		}}
 		return taskList;
 	}
@@ -76,7 +74,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Statement createAssignment(String variableName, Expression value, SourceLocation sourceLocation) {
 		System.out.println("createAssignment");
 		Statement assignmentStatement = new AssignmentStatement(variableName, value, sourceLocation);
-		value.setStatement(assignmentStatement);
 		return assignmentStatement;
 	}
 
@@ -84,7 +81,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Statement createWhile(Expression condition, Statement body, SourceLocation sourceLocation) {
 		System.out.println("createWhile");
 		Statement whileStatement = new WhileStatement(condition, body);
-		condition.setStatement(whileStatement); //TODO nakijken 3
 		return whileStatement; 
 	}
 
@@ -93,7 +89,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 			SourceLocation sourceLocation) {
 		System.out.println("createIf");
 		Statement ifStatement = new IfStatement(condition, ifBody, elseBody, sourceLocation);
-		condition.setStatement(ifStatement);
 		return ifStatement;
 	}
 
@@ -120,7 +115,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		System.out.println("createMoveTo");
 		CubeExpression cube = (CubeExpression) position;
 		MoveToStatement moveToStatement = new MoveToStatement(cube, sourceLocation);
-		position.setStatement(moveToStatement);
 		return moveToStatement;
 	}
 
@@ -129,7 +123,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		System.out.println("createWork");
 		CubeExpression cube = (CubeExpression) position;
 		WorkStatement workStatement = new WorkStatement(cube, sourceLocation);
-		position.setStatement(workStatement);
 		return workStatement;
 	}
 

@@ -1,6 +1,7 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
+import hillbillies.model.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class HerePosition extends CubeExpression {
@@ -10,8 +11,8 @@ public class HerePosition extends CubeExpression {
 	}
 	
 	@Override
-	public Cube getValue() {
-		return this.getStatement().getTask().getExecutor().getCube();
+	public Cube getValue(Task task) {
+		return task.getExecutor().getCube();
 	}
 
 }

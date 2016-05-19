@@ -1685,22 +1685,23 @@ public class Unit {
 				this.setTask(this.getFaction().getScheduler().ascribeTask(this));
 				if (this.getTask() != null) {
 					this.getTask().advanceProgram(tickTime);
-				} else {
-					int randomActivity = (int) (Math.random() * 3);
-					if (randomActivity == 0) {
-						Cube newTargetCube = world.generateRandomValidPosition();
-						this.setTargetCube(newTargetCube);
-
-					} else if (randomActivity == 1) {
-						List<Cube> randomCubesList = new ArrayList<Cube>();
-						randomCubesList.addAll(this.getCube().getNeighbourCubes());
-						Collections.shuffle(randomCubesList);
-						this.workAt(randomCubesList.get(0));
-					} else if (randomActivity == 2
-							&& (hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())) {
-						this.rest();
-					}
-				}
+				} 
+//				else {
+//					int randomActivity = (int) (Math.random() * 3);
+//					if (randomActivity == 0) {
+//						Cube newTargetCube = world.generateRandomValidPosition();
+//						this.setTargetCube(newTargetCube);
+//
+//					} else if (randomActivity == 1) {
+//						List<Cube> randomCubesList = new ArrayList<Cube>();
+//						randomCubesList.addAll(this.getCube().getNeighbourCubes());
+//						Collections.shuffle(randomCubesList);
+//						this.workAt(randomCubesList.get(0));
+//					} else if (randomActivity == 2
+//							&& (hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())) {
+//						this.rest();
+//					}
+//				}
 			}
 		}
 	}

@@ -1,6 +1,9 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
+import hillbillies.model.Task;
+import hillbillies.model.Unit;
+import hillbillies.model.World;
 
 public class LiteralPosition extends CubeExpression<int[]>{
 
@@ -9,7 +12,9 @@ public class LiteralPosition extends CubeExpression<int[]>{
 	}
 	
 	@Override
-	public Cube getValue() {
-		return this.getWorld().getCube(getPosition());
+	public Cube getValue(Task task) {
+		Unit unit = task.getExecutor();
+		World world = unit.getWorld();
+		return world.getCube(getPosition());
 	}
 }
