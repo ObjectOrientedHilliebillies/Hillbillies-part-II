@@ -23,6 +23,7 @@ public class WorkStatement extends ActivityStatement{
 	
 	@Override
 	public double execute() {
+		System.out.println(this.position.toString());
 		Cube cube = getPosition().getValue();
 		this.getTask().getExecutor().workAt(cube);
 		return -2;

@@ -1177,12 +1177,11 @@ public class Unit {
 			if (this.getCube().equals(this.targetCube)) {
 				this.increaseExperience(1);
 				System.out.println("targetCube op null zetten");
-				throw new IllegalArgumentException();
-				//this.sprinting = false;
-				//this.targetCube = null;
-				//this.exhaustedPoints = 0;
-				//this.activeActivity = 0;
-				//this.speed = 0;
+				this.sprinting = false;
+				this.targetCube = null;
+				this.exhaustedPoints = 0;
+				this.activeActivity = 0;
+				this.speed = 0;
 			}
 			this.startNextActivity();
 		} else {
