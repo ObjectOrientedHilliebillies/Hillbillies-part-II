@@ -2,12 +2,7 @@ package hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExp
 
 import hillbillies.model.Task;
 import hillbillies.model.Unit;
-import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.BooleanValueExpression;
-import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
-import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
-import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
-import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.SourceLocation;
 
 public class IsCarryingItemExpression extends UnitIsExpression{
@@ -15,14 +10,14 @@ public class IsCarryingItemExpression extends UnitIsExpression{
 	public IsCarryingItemExpression(UnitExpression unit, SourceLocation sourceLocation){
 		super(unit);
 		setSourceLocation(sourceLocation);
-//		unit.setStatement(getStatement());
+		this.unit = unit;
 	}
 	
-	private Statement statement;
+	private UnitExpression unit;
 	
 	@Override
 	public Boolean getValue(Task task){
-		Unit unit = getExpression().getValue(task);
+		Unit unit = this.unit.getValue(task);
 		return (unit.isCarryingBoulder() || unit.isCarryingLog());
 	}
 }
