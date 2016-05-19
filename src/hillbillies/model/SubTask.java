@@ -26,6 +26,8 @@ public class SubTask {
 
 	public double advance(double time){
 		
+		
+		
 		remainingTime = time;
 		
 		if (mustEvaluate){

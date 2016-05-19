@@ -66,6 +66,11 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		}else{
 		for (int[] cube : selectedCubes) {
 			Task task = new Task(name, priority, activity, cube);
+			try {
+				Statement duplicate = (Statement) Statement.deepCopy(activity);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			taskList.add(task);
 			activity.setTask(task);
 		}}

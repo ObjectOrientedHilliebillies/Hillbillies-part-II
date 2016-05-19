@@ -10,12 +10,12 @@ import hillbillies.model.statements.Statement;
 import hillbillies.part3.programs.SourceLocation;
 
 public class IsCarryingItemExpression extends UnitIsExpression{
+
 	public IsCarryingItemExpression(UnitExpression unit, SourceLocation sourceLocation){
 		super(unit);
 		setSourceLocation(sourceLocation);
-		unit.setStatement(getStatement());
+//		unit.setStatement(getStatement());
 	}
-	
 	
 	private Statement statement;
 	
@@ -28,11 +28,15 @@ public class IsCarryingItemExpression extends UnitIsExpression{
 	public void setStatement(Statement statement) {
 		this.statement = statement;
 		getExpression().setStatement(statement);
+		System.out.println(getExpression().getStatement());
 	};
 	
 	@Override
 	public Boolean getValue(){
-		Unit thisUnit = getExpression().getValue();
-		return (thisUnit.isCarryingBoulder() || thisUnit.isCarryingLog());
+		System.out.println(getStatement().getTask());
+		System.out.println(getExpression().getStatement());
+		Unit unit = getExpression().getValue();
+		System.out.println(unit);
+		return (unit.isCarryingBoulder() || unit.isCarryingLog());
 	}
 }

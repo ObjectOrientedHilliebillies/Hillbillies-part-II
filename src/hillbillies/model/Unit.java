@@ -1177,12 +1177,11 @@ public class Unit {
 			if (this.getCube().equals(this.targetCube)) {
 				this.increaseExperience(1);
 				System.out.println("targetCube op null zetten");
-				throw new IllegalArgumentException();
-				//this.sprinting = false;
-				//this.targetCube = null;
-				//this.exhaustedPoints = 0;
-				//this.activeActivity = 0;
-				//this.speed = 0;
+				this.sprinting = false;
+				this.targetCube = null;
+				this.exhaustedPoints = 0;
+				this.activeActivity = 0;
+				this.speed = 0;
 			}
 			this.startNextActivity();
 		} else {
@@ -1686,22 +1685,23 @@ public class Unit {
 				this.setTask(this.getFaction().getScheduler().ascribeTask(this));
 				if (this.getTask() != null) {
 					this.getTask().advanceProgram(tickTime);
-				} else {
-					int randomActivity = (int) (Math.random() * 3);
-					if (randomActivity == 0) {
-						Cube newTargetCube = world.generateRandomValidPosition();
-						this.setTargetCube(newTargetCube);
-
-					} else if (randomActivity == 1) {
-						List<Cube> randomCubesList = new ArrayList<Cube>();
-						randomCubesList.addAll(this.getCube().getNeighbourCubes());
-						Collections.shuffle(randomCubesList);
-						this.workAt(randomCubesList.get(0));
-					} else if (randomActivity == 2
-							&& (hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())) {
-						this.rest();
-					}
-				}
+				} 
+//				else {
+//					int randomActivity = (int) (Math.random() * 3);
+//					if (randomActivity == 0) {
+//						Cube newTargetCube = world.generateRandomValidPosition();
+//						this.setTargetCube(newTargetCube);
+//
+//					} else if (randomActivity == 1) {
+//						List<Cube> randomCubesList = new ArrayList<Cube>();
+//						randomCubesList.addAll(this.getCube().getNeighbourCubes());
+//						Collections.shuffle(randomCubesList);
+//						this.workAt(randomCubesList.get(0));
+//					} else if (randomActivity == 2
+//							&& (hitpoints != this.getMaxHitpoints() || stamina != getMaxStamina())) {
+//						this.rest();
+//					}
+//				}
 			}
 		}
 	}
