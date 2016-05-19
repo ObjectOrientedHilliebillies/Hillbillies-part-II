@@ -22,11 +22,13 @@ public class FollowStatement extends ActivityStatement{
 	
 	Expression<Unit> unit;
 	
-
 	@Override
 	public double execute(Task task) {
-		Unit follower = this.getUnit().getValue(task);
-		task.getExecutor().follow(follower);
+		Unit followTheLeaderLeader = this.getUnit().getValue(task); //Follow me!
+		if (followTheLeaderLeader == null){
+			return 0;
+		}
+		task.getExecutor().follow(followTheLeaderLeader);
 		return -1;
 	}
 

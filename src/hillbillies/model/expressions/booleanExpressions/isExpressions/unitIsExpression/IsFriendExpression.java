@@ -4,7 +4,7 @@ import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-public class IsFriendExpression extends UnitIsExpression {
+public class IsFriendExpression extends unitIsExpression {
 
 	public IsFriendExpression(UnitExpression other) {
 		super(other);

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import ogp.framework.util.ModelException;
 
 public class Scheduler implements Iterable<Task> {
+	
 	public Scheduler(Faction faction) {
 		this.setFaction(faction);
 		this.getFaction().setScheduler(this);
@@ -29,7 +30,7 @@ public class Scheduler implements Iterable<Task> {
 		return this.managedTasks;
 	}
 	
-	private void sortManagedTasks(){
+	public void sortManagedTasks(){
 		managedTasks.sort(null);
 	}
 	
@@ -41,10 +42,8 @@ public class Scheduler implements Iterable<Task> {
 	
 	public void removeTask(Task oldTask) {
 		if (activeList.remove(oldTask)){
-			oldTask.getExecutor().setTask(null);
-			oldTask.setExecutor(null);
-		}
-		if (!managedTasks.remove(oldTask)){
+			managedTasks.remove(oldTask);
+		}else if(!managedTasks.remove(oldTask)){
 			throw new IllegalArgumentException("Given task is not in scheduler.");
 		}		
 	}
@@ -55,13 +54,8 @@ public class Scheduler implements Iterable<Task> {
 	}
 	
 	public void taskFailed(Task task){
-		if (activeList.remove(task)){
-			task.getExecutor().setTask(null);
-			task.setExecutor(null);
-			task.taskFailed();
-		}else{
-			throw new IllegalArgumentException("Given task is not in active in scheduler.");
-		}
+		activeList.remove(task);
+		sortManagedTasks();
 	}
 	
 	@Override
@@ -89,7 +83,7 @@ public class Scheduler implements Iterable<Task> {
 	        return it;
 	    }
 	
-	public boolean areTasksPartOf(Collection<Task> tasks) throws ModelException {
+	public boolean areTasksPartOf(Collection<Task> tasks){
 		return managedTasks.containsAll(tasks);
 	}
 	
@@ -105,16 +99,8 @@ public class Scheduler implements Iterable<Task> {
 		}
 		if (mostImportantTask != null){
 			this.activeList.add(mostImportantTask);
-			mostImportantTask.setOccupied(unit);
+			mostImportantTask.setOccupied(unit, this);
 		}
 		return mostImportantTask;
-	}
-
-	private ArrayList<Task> getScheduledTasks() {
-		return this.managedTasks;
-	}
-
-	private ArrayList<Task> getActiveTasks() {
-		return this.activeList;
 	}
 }
