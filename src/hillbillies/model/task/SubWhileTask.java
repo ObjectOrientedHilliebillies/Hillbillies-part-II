@@ -1,5 +1,7 @@
 package hillbillies.model.task;
 
+import org.antlr.v4.parse.ANTLRParser.ruleReturns_return;
+
 import hillbillies.model.Cube;
 import hillbillies.model.statements.Statement;
 import hillbillies.model.statements.WhileStatement;
@@ -44,12 +46,17 @@ public class SubWhileTask {
 			
 			// Do the while body and if so return that this while body could not finish.
 			// The remaining time is -2 because only 0 to -1 indicate there is no more time.
-			if (-1 == subTask.advance(-2)){
+			double feedback = subTask.advance(-2);
+			if (feedback == -1){
 				return -1;
 			}
 			
 			// If the while body was able to finish the condition has to be met again.
 			subTask = null;
+			
+			if (feedback == 0){
+				return -1;
+			}
 			
 			// This iteration of the while loop decreased the remaining time.
 			decreaceRemainingTime(Statement.defaultExecutionTime);

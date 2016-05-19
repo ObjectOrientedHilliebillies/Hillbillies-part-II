@@ -3,7 +3,6 @@ package hillbillies.model.task;
 import java.util.List;
 
 import hillbillies.model.Cube;
-import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.statements.Statement;
 import hillbillies.model.statements.WhileStatement;
 
@@ -12,10 +11,8 @@ public class SubTask {
 	private Statement statement;
 	private Cube cube;
 	private boolean inLoop;
-	private boolean isLoop;
 	private Task task;
 	
-
 	public SubTask(Statement statement, Cube cube, Task task, boolean inLoop){
 		this.statement = statement;
 		this.cube = cube;
@@ -84,7 +81,6 @@ public class SubTask {
 	private void evaluationOfStatement(){
 //		System.out.println(statement.getSourceLocation().toString());
 
-		
 		// Execute the statement.
 		double executionTime = statement.execute(task);
 		
