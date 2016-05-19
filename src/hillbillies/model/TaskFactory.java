@@ -33,6 +33,7 @@ import hillbillies.model.expressions.unitExpressions.anyExpression.FriendExpress
 import hillbillies.model.expressions.unitExpressions.thisExpression.ThisExpression;
 import hillbillies.model.statements.AssignmentStatement;
 import hillbillies.model.statements.AttackStatement;
+import hillbillies.model.statements.BreakStatement;
 import hillbillies.model.statements.FollowStatement;
 import hillbillies.model.statements.IfStatement;
 import hillbillies.model.statements.WhileStatement;
@@ -99,8 +100,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createBreak(SourceLocation sourceLocation) {
 		System.out.println("createBreak");
-		// TODO Auto-generated method stub
-		return null;
+		return new BreakStatement(sourceLocation);
 	}
 
 	@Override

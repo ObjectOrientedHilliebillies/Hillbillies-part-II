@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.crypto.IllegalBlockSizeException;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 import ogp.framework.util.Util;
@@ -1146,6 +1148,7 @@ public class Unit {
 	 * 
 	 * @param tickTime
 	 *            The time the tick lasts.
+	 * @throws IllegalBlockSizeException 
 	 * 
 	 * @post The unit has moved a step to its target position. |
 	 *       new.getPosition() == this.getPosition + (this.speed *
@@ -1174,11 +1177,12 @@ public class Unit {
 			if (this.getCube().equals(this.targetCube)) {
 				this.increaseExperience(1);
 				System.out.println("targetCube op null zetten");
-				this.sprinting = false;
-				this.targetCube = null;
-				this.exhaustedPoints = 0;
-				this.activeActivity = 0;
-				this.speed = 0;
+				throw new IllegalArgumentException();
+				//this.sprinting = false;
+				//this.targetCube = null;
+				//this.exhaustedPoints = 0;
+				//this.activeActivity = 0;
+				//this.speed = 0;
 			}
 			this.startNextActivity();
 		} else {
