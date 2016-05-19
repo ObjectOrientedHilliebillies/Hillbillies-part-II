@@ -16,6 +16,7 @@ public class BoulderPosition extends CubeExpression{
 		Cube thisCube = thisUnit.getCube();
 		World thisWorld = thisUnit.getWorld();
 		Boulder nearestBoulder = thisWorld.getClosestBoulder(thisCube);
+		System.out.println(nearestBoulder);
 		return nearestBoulder.getCube();
 	}
 }

@@ -2,11 +2,13 @@ package hillbillies.model.statements;
 
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
+import hillbillies.part3.programs.SourceLocation;
 
 public class FollowStatement extends ActivityStatement{
 	
-	public FollowStatement(Expression<Unit> unit) {
+	public FollowStatement(Expression<Unit> unit, SourceLocation sourceLocation) {
 		setUnit(unit);
+		setSourceLocation(sourceLocation);
 	}
 	
 	private void setUnit(Expression<Unit> unit) {

@@ -30,6 +30,10 @@ public abstract class Expression<T> {
 	}
 	
 	public World getWorld(){
+		System.out.println(this.getStatement());
+		System.out.println(this.getStatement().getTask());
+		System.out.println(this.getStatement().getTask().getExecutor());
+		System.out.println(this.getStatement().getTask().getExecutor().getWorld());
 		return this.getStatement().getTask().getExecutor().getWorld();
 	}	
 
