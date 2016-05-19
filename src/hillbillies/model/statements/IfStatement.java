@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.omg.CORBA.IRObject;
 
-import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class IfStatement extends Statement{

@@ -1,8 +1,8 @@
 package hillbillies.model.statements;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class WorkStatement extends ActivityStatement{

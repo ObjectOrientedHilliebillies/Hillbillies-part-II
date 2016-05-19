@@ -1,7 +1,7 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class HerePosition extends CubeExpression {

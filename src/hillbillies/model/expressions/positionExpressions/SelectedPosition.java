@@ -1,7 +1,7 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
+import hillbillies.model.task.Task;
 
 public class SelectedPosition extends CubeExpression{
 

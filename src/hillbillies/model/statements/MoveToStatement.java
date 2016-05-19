@@ -2,9 +2,9 @@ package hillbillies.model.statements;
 
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{

@@ -1,8 +1,8 @@
 package hillbillies.model.statements;
 
-import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.task.Task;
 
 public class AttackStatement extends ActivityStatement{
 

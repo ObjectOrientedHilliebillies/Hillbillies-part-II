@@ -1,9 +1,13 @@
-package hillbillies.model;
+package hillbillies.model.task;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import hillbillies.model.Cube;
+import hillbillies.model.Scheduler;
+import hillbillies.model.Unit;
+import hillbillies.model.World;
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;

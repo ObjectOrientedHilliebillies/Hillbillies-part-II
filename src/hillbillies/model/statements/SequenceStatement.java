@@ -2,7 +2,7 @@ package hillbillies.model.statements;
 
 import java.util.List;
 
-import hillbillies.model.Task;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class SequenceStatement extends Statement{
