@@ -171,7 +171,7 @@ public class Task implements Comparable<Task>{
 	
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
-			subTask = new SubTask(statement, cube, false);
+			subTask = new SubTask(statement, cube, this, false);
 		}
 		if (subTask.advance(timeLeft) != -1){
 			taskSucceeded();

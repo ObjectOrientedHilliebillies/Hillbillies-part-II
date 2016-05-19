@@ -20,7 +20,7 @@ public class SequenceStatement extends Statement{
 	
 
 	@Override
-	public double execute() {
+	public double execute(Task task) {
 		return defaultExecutionTime;
 	}
 	
