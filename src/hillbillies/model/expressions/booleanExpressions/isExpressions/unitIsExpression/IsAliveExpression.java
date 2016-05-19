@@ -4,7 +4,7 @@ import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-public class IsAliveExpression extends UnitIsExpression{
+public class IsAliveExpression extends unitIsExpression{
 	public IsAliveExpression(UnitExpression unit){
 		super(unit);
 		this.unit = unit;
