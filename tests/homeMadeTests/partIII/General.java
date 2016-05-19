@@ -203,7 +203,7 @@ public class General {
 	}
 	
 	/**
-	 * Test dig0.
+	 * Test dig.
 	 */
 	@Test
 	public void testTaskDig() throws ModelException {
@@ -223,6 +223,10 @@ public class General {
 		Faction faction = facade.getFaction(unit);
 
 		Scheduler scheduler = facade.getScheduler(faction);
+		
+		List<int[]> selected = new ArrayList<>();
+		selected.add(new int[] { 1, 1, 1 });
+		selected.add(new int[] { 1, 1, 0 });
 
 		List<Task> tasks = TaskParser.parseTasksFromString(
 				"name: \"dig\"\n"
@@ -234,7 +238,7 @@ public class General {
 				+ "moveTo (next_to selected);\n"
 				+ "work selected;\n"
 				+ "fi", facade.createTaskFactory(),
-				Collections.singletonList(new int[] { 1, 1, 1 }));
+				selected);
 
 		//Check if the unit's world and faction are correct.
 		assertTrue(unit.getWorld() == world);
@@ -243,7 +247,7 @@ public class General {
 		// tasks are created
 		assertNotNull(tasks);
 		// there's exactly one task
-		assertEquals(1, tasks.size());
+		assertEquals(2, tasks.size());
 		Task task = tasks.get(0);
 		// test name
 		assertEquals("dig", facade.getName(task));

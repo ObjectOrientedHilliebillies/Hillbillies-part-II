@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.antlr.v4.parse.ANTLRParser.ruleReturns_return;
+
 import ogp.framework.util.Util;
 
 /**
@@ -230,10 +232,11 @@ public class Vector {
 	 */
 	public boolean hasSupportOfSolid(World world){
 		Set<Cube> directAdjenctCubes = this.getEnclosingCube(world).getDirectAdjenctCubes() ;
-		if (directAdjenctCubes.size() == 6){
-			if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
-				return false;
-			}
+		if (directAdjenctCubes.size() != 6){
+			return true;
+		}
+		if (World.filterPassableCubes(directAdjenctCubes).size() == 0){
+			return false;
 		}
 		return true;
 	}

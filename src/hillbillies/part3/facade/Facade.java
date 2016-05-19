@@ -136,7 +136,11 @@ public class Facade implements IFacade {
 		}catch (NullPointerException e){
 			throw new ModelException();
 		}
-		unit.moveToAdjacent(target);
+		try{
+			unit.moveToAdjacent(target);
+		}catch(IllegalArgumentException e){
+			throw new ModelException();
+		}
 	}
 
 	@Override
