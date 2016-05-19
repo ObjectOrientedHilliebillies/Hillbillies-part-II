@@ -1,0 +1,15 @@
+name: "SetVariable"
+priority : 8
+activities:
+
+	enemy:= enemy;
+	thisUnit:= this;
+
+
+	if carries_item(this) then
+		work here;
+	fi
+	if is_solid(selected) then
+		moveTo (next_to selected);
+		work selected;
+	fi

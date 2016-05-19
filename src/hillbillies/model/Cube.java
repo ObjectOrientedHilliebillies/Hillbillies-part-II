@@ -10,6 +10,7 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 import be.kuleuven.cs.som.annotate.Value;
+import hillbillies.model.statements.Statement;
 
 /**
  * A class of cubes involving a position, terrain type and world.
@@ -348,5 +349,15 @@ public class Cube{
 		return new Vector(getPosition().get(0) + 0.5,
 						  getPosition().get(1) + 0.5,
 						  getPosition().get(2) + 0.5);
+	}
+
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+	}
+	
+	private Statement statement;
+	
+	public Statement getStatement() {
+		return this.statement;
 	}
 }

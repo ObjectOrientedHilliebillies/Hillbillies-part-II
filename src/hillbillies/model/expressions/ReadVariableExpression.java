@@ -1,9 +1,18 @@
 package hillbillies.model.expressions;
 
-public class ReadVariableExpression {
+import hillbillies.part3.programs.SourceLocation;
 
-	public ReadVariableExpression() {
-		// TODO Auto-generated constructor stub
+public class ReadVariableExpression<T> extends Expression<Object> {
+
+	public ReadVariableExpression(String variableName, SourceLocation sourceLocation)  {
+		this.variableName = variableName;
+	}
+	
+	private String variableName;
+	
+	@Override
+	public Object getValue() {
+		return this.getStatement().getTask().getValue(variableName);
 	}
 
 }
