@@ -25,24 +25,20 @@ public class FollowStatement extends ActivityStatement{
 	}
 	
 	Expression<Unit> unit;
-<<<<<<< HEAD
 
-	@Override
-	public double execute(Task task) {
-		Unit follower = this.getUnit().getValue(task);
-		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
-				follower.getCube(), follower.getWorld());
-		task.getExecutor().moveTo(path.get(0));
-=======
-	
 	@Override
 	public double execute(Task task) {
 		Unit followTheLeaderLeader = this.getUnit().getValue(task); //Follow me!
 		if (followTheLeaderLeader == null){
 			return 0;
 		}
-		task.getExecutor().follow(followTheLeaderLeader);
->>>>>>> refs/remotes/origin/Victor
+		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
+				followTheLeaderLeader.getCube(), followTheLeaderLeader.getWorld());
+		if (path == null){
+			taskFailed(task);
+			return -1;
+		}
+		task.getExecutor().moveTo(path.get(0));
 		return -1;
 	}
 
