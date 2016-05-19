@@ -7,4 +7,9 @@ public class FalseExpression extends BooleanValueExpression {
 		setValue(false);
 	}
 
+	@Override
+	public Boolean getValue(Task task) {
+		return false;
+	}
+
 }

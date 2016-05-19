@@ -5,13 +5,16 @@ import hillbillies.model.Task;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 
 public class IsSolidExpression extends CubeIsExpression{
-	public IsSolidExpression(CubeExpression e) {
-		super(e);
+	public IsSolidExpression(CubeExpression<?> cube) {
+		super(cube);
+		this.cube = cube;
 	}
-
+	
+	private CubeExpression<?> cube;
+	
 	@Override
 	public Boolean getValue(Task task) {
-		Cube thisCube = getExpression().getValue(task);
+		Cube thisCube = cube.getValue(task);
 		return thisCube.isSolid();
 	}
 }

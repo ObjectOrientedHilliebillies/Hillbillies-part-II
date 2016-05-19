@@ -11,7 +11,7 @@ public class EnemyExpression extends UnitExpression {
 	
 	@Override
 	public Unit getValue(Task task) {
-		return this.getWorld(task).getUnits().stream()
+		return task.getExecutor().getWorld().getUnits().stream()
 				.filter(i -> i.getFaction() 
 						!= task.getExecutor().getFaction())
 				.findAny().orElse(null);

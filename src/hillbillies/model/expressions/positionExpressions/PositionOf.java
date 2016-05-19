@@ -1,6 +1,8 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
+import hillbillies.model.Task;
+import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
 public class PositionOf extends CubeExpression{
@@ -11,8 +13,8 @@ public class PositionOf extends CubeExpression{
 	
 	@Override
 	public Cube getValue(Task task) {
-		//givenUnit.setStatement(this.getStatement());
-		return givenUnit.getStatement().getTask().getExecutor().getCube();
+		Unit unit = this.givenUnit.getValue(task);
+		return unit.getCube();
 	}
 	
 	private UnitExpression givenUnit;
