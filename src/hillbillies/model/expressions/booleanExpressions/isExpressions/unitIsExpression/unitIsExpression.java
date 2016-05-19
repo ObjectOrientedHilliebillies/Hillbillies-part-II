@@ -3,8 +3,8 @@ package hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExp
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
-public abstract class UnitIsExpression extends IsExpression<UnitExpression> {
-	public UnitIsExpression(UnitExpression e){
+public abstract class unitIsExpression extends IsExpression<UnitExpression> {
+	public unitIsExpression(UnitExpression e){
 		setExpression(e);
 	}
 }

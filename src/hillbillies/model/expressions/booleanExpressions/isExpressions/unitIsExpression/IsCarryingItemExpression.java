@@ -5,7 +5,7 @@ import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.part3.programs.SourceLocation;
 
-public class IsCarryingItemExpression extends UnitIsExpression{
+public class IsCarryingItemExpression extends unitIsExpression{
 
 	public IsCarryingItemExpression(UnitExpression unit, SourceLocation sourceLocation){
 		super(unit);

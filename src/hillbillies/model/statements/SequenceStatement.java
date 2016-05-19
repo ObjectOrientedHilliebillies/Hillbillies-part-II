@@ -28,12 +28,5 @@ public class SequenceStatement extends Statement{
 	public List<Statement> result() {
 		return this.statements;
 	}
-	
-	@Override
-	public void setTask(Task task) {
-		for(Statement statement : statements) {
-			statement.setTask(task);
-		}
-	}
 
 }
