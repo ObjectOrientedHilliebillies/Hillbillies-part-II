@@ -23,7 +23,10 @@ public class AttackStatement extends ActivityStatement{
 	@Override
 	public double execute(Task task) {
 		Unit defender = this.getUnit().getValue(task);
+		if (defender == null) {
+			return 0;
+		}
 		task.getExecutor().attack(defender);
-		return -2;
+		return -3; //FIXME VICTOR
 	}
 }
