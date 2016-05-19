@@ -1183,9 +1183,8 @@ private void setSpeed(Vector targetPosition) {
  * 		targetPosition is not a valid position
  * 		| !isValidPosition(targetPosition)
  */
-public void moveToAdjacent(Vector positionDifference){
-	Vector targetPosition = Vector.sum(getCube().getCenterOfCube(),
-			positionDifference);
+public void moveToAdjacent(Cube target){
+	Vector targetPosition = target.getCenterOfCube();
 	if (!isValidActivity(3) || !this.world.isPositionInWorld(targetPosition)
 			|| !targetPosition.getEnclosingCube(getWorld()).isPassable()){
 		throw new IllegalArgumentException();
@@ -1346,8 +1345,8 @@ private void doMoveTo(){
 	if (path == null){
 		this.targetCube = null;
 	}else{
-		Vector next = path.get(path.size()-2).getCenterOfCube();
-		this.moveToAdjacent(Vector.getVectorFromTo(getPosition(), next));
+		Cube target = path.get(path.size()-2);
+		this.moveToAdjacent(target);
 	}
 }
 
