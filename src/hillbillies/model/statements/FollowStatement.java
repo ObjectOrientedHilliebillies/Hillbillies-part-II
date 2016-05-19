@@ -1,5 +1,9 @@
 package hillbillies.model.statements;
 
+import java.util.List;
+
+import hillbillies.model.Cube;
+import hillbillies.model.Pathfinding;
 import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
@@ -21,12 +25,13 @@ public class FollowStatement extends ActivityStatement{
 	}
 	
 	Expression<Unit> unit;
-	
 
 	@Override
 	public double execute(Task task) {
 		Unit follower = this.getUnit().getValue(task);
-		task.getExecutor().follow(follower);
+		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
+				follower.getCube(), follower.getWorld());
+		task.getExecutor().moveTo(path.get(0));
 		return -1;
 	}
 

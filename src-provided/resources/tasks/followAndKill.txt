@@ -1,0 +1,8 @@
+name: "follow and kill"
+priority: 8
+activities:
+	if ((position_of enemy) next_to (here)) then
+		(attack enemy);
+	fi
+	follow enemy;
+	

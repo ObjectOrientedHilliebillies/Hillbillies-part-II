@@ -1756,15 +1756,6 @@ public class Unit {
 		return this.task;
 	}
 
-	public void follow(Unit unit) {
-		Cube otherTargetCube = unit.getCube();
-		this.moveTo(otherTargetCube);
-	}
-
-	public void digTunnel() {
-		// FIXME
-	}
-
 	public void executeTask(double tickTime) {
 		this.getTask().advanceProgram(tickTime);
 	}
