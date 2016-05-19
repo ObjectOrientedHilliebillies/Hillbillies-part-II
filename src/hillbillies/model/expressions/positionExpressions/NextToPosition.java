@@ -23,6 +23,6 @@ public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 //		List<Cube> randomCubesList = new ArrayList<>();
 //		randomCubesList.addAll(cube.getNeighbourCubes());
 //		Collections.shuffle(randomCubesList);
-		return accessibleNeigbours.stream().findAny().orElseThrow(null);
+		return accessibleNeigbours.stream().findAny().orElse(null);
 	}
 }

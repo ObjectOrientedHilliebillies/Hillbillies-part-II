@@ -91,9 +91,15 @@ public class SubTask {
 	private boolean hasSubStatements;
 	
 	private void evaluationOfStatement(){
+//		System.out.println(statement.getSourceLocation().toString());
+
+		
 		// Execute the statement.
+<<<<<<< HEAD
 		//statement.execute(task);
 		//System.out.println(statement.getSourceLocation().toString());
+=======
+>>>>>>> refs/remotes/origin/master
 		double executionTime = statement.execute(task); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
