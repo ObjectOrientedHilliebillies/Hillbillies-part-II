@@ -11,6 +11,9 @@ public class SelectedPosition extends CubeExpression{
 	@Override
 	public Cube getValue() {
 		System.out.print("cube selected");
+		System.out.println(this.getStatement().toString());
+		System.out.println(this.getStatement().getTask().toString());
+		System.out.println(this.getStatement().getTask().getCube().toString());
 		return this.getStatement().getTask().getCube();
 	}
 }

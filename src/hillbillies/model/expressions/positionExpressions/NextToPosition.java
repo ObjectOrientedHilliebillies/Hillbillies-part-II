@@ -24,6 +24,7 @@ public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	@Override 
 	public Cube getValue() {
 		Cube cube = getPosition().getValue();
+		System.out.println(cube.toString());
 		//Set<Cube> accessibleNeigbours =	new HashSet<>(getWorld().getAccessibleNeigbours(cube));
 		List<Cube> randomCubesList = new ArrayList<>();
 		randomCubesList.addAll(cube.getNeighbourCubes());
