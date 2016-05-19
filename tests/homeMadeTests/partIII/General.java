@@ -161,6 +161,11 @@ public class General {
 		Faction faction = facade.getFaction(unit);
 
 		Scheduler scheduler = facade.getScheduler(faction);
+					
+//		List<Task> tasks = TaskParser.parseTasksFromString(
+//				"name: \"dig0\"\npriority : 8\nactivities:moveTo (next_to selected);\n"
+//				+ "work selected;", facade.createTaskFactory(),
+//				Collections.singletonList(new int[] { 1, 1, 1 }));
 
 		List<Task> tasks = TaskParser.parseTasksFromString(
 				"name: \"dig\"\npriority : 8\nactivities:if carries_item(this) then\nwork here;\nfi\nif is_solid(selected) then\n"
@@ -177,7 +182,7 @@ public class General {
 		assertEquals(1, tasks.size());
 		Task task = tasks.get(0);
 		// test name
-		assertEquals("dig", facade.getName(task));
+		assertEquals("dig0", facade.getName(task));
 		// test priority
 		assertEquals(8, facade.getPriority(task));
 
