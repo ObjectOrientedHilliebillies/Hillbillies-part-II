@@ -1,5 +1,6 @@
 package hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression;
 
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.BooleanValueExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
@@ -20,23 +21,8 @@ public class IsCarryingItemExpression extends UnitIsExpression{
 	private Statement statement;
 	
 	@Override
-	public Statement getStatement() {
-		return this.statement;
-	}
-	
-	@Override
-	public void setStatement(Statement statement) {
-		this.statement = statement;
-		getExpression().setStatement(statement);
-		System.out.println(getExpression().getStatement());
-	};
-	
-	@Override
-	public Boolean getValue(){
-		System.out.println(getStatement().getTask());
-		System.out.println(getExpression().getStatement());
-		Unit unit = getExpression().getValue();
-		System.out.println(unit);
+	public Boolean getValue(Task task){
+		Unit unit = getExpression().getValue(task);
 		return (unit.isCarryingBoulder() || unit.isCarryingLog());
 	}
 }

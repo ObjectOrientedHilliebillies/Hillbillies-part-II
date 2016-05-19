@@ -249,16 +249,19 @@ public class General {
 		// there's exactly one task
 		assertEquals(2, tasks.size());
 		Task task = tasks.get(0);
+		
 		// test name
 		assertEquals("dig", facade.getName(task));
 		// test priority
 		assertEquals(8, facade.getPriority(task));
 
-		facade.schedule(scheduler, task);
+		facade.schedule(scheduler, tasks.get(0));
+		facade.schedule(scheduler, tasks.get(1));
 		advanceTimeFor(facade, world, 100, 0.02);
 
 		// work task has been executed
 		assertEquals(TYPE_AIR, facade.getCubeType(world, 1, 1, 1));
+		assertEquals(TYPE_AIR, facade.getCubeType(world, 1, 1, 0));
 		// work task is removed from scheduler
 		assertFalse(facade.areTasksPartOf(scheduler, Collections.singleton(task)));
 	}

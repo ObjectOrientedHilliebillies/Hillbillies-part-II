@@ -10,7 +10,7 @@ public class PositionOf extends CubeExpression{
 	}
 	
 	@Override
-	public Cube getValue() {
+	public Cube getValue(Task task) {
 		//givenUnit.setStatement(this.getStatement());
 		return givenUnit.getStatement().getTask().getExecutor().getCube();
 	}

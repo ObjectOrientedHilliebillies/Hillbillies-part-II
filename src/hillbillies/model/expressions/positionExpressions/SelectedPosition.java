@@ -1,6 +1,7 @@
 package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
+import hillbillies.model.Task;
 
 public class SelectedPosition extends CubeExpression{
 
@@ -9,7 +10,7 @@ public class SelectedPosition extends CubeExpression{
 	}
 	
 	@Override
-	public Cube getValue() {
-		return this.getStatement().getTask().getCube();
+	public Cube getValue(Task task) {
+		return task.getCube();
 	}
 }

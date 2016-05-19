@@ -15,6 +15,6 @@ public abstract class CubeExpression<T> extends Expression<Cube>{
 		this.position = position;
 	}
 	
-	public abstract Cube getValue();
+	public abstract Cube getValue(Task task);
 	
 }

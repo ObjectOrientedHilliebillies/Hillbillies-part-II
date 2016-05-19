@@ -11,12 +11,14 @@ public class SubTask {
 	private Cube cube;
 	private boolean inLoop;
 	private boolean isLoop;
+	private Task task;
 	
 
-	public SubTask(Statement statement, Cube cube2, boolean inLoop){
+	public SubTask(Statement statement, Cube cube2, Task task, boolean inLoop){
 		this.statement = statement;
 		this.cube = cube2;
 		this.inLoop = inLoop;
+		this.task = task;
 	}
 	
 	private List<Statement> subStatements = null;
@@ -42,7 +44,7 @@ public class SubTask {
 		if (hasSubStatements){}
 		
 		if (subTask == null){
-			subTask = new SubTask(subStatements.get(index), cube, inLoop);
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}
 	
 		while (true){
@@ -70,7 +72,7 @@ public class SubTask {
 			}
 
 			// If the sequence in not completed yet, load the next substatement.
-			subTask = new SubTask(subStatements.get(index), cube, inLoop);
+			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 		}	
 	}
 	
@@ -92,7 +94,7 @@ public class SubTask {
 		// Execute the statement.
 		//statement.execute(task);
 		System.out.println(statement.getSourceLocation().toString());
-		double executionTime = statement.execute(); //TODO nakijken 2
+		double executionTime = statement.execute(task); //TODO nakijken 2
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)
 		if (executionTime == -2){
