@@ -27,10 +27,9 @@ public class IfStatement extends Statement{
 	
 
 	@Override
-	public double execute() {
-		if (condition.getValue()) {
+	public double execute(Task task) {
+		if (condition.getValue(task)) {
 			resultBody = ifBody;
-//			ifBody.setTask(task);
 		}
 		else {
 			resultBody = elseBody;
@@ -47,23 +46,4 @@ public class IfStatement extends Statement{
 		returnList.add(resultBody);
 		return returnList;
 	}	
-		
-	private Task task;
-	
-	@Override
-	public Task getTask() {
-		return this.task;
-	};
-	
-	@Override 
-	public void setTask(Task task){
-		this.task = task;
-		if (ifBody != null){
-			ifBody.setTask(task);
-		}
-		if (elseBody != null){
-			elseBody.setTask(task);
-		}
-		condition.setStatement(this);
-	}
 }

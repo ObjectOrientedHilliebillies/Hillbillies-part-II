@@ -16,9 +16,9 @@ public class MoveToStatement extends ActivityStatement{
 	private Expression<Cube> position;
 
 	@Override
-	public double execute() {
-		Cube cube = position.getValue();
-		Unit unit = this.getTask().getExecutor();
+	public double execute(Task task) {
+		Cube cube = position.getValue(task);
+		Unit unit = task.getExecutor();
 		if (unit.getCube().equals(cube)){
 			System.out.println("MoveToStatement: "+ "De unit staat er al");
 			return 0;

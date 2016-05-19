@@ -2,6 +2,7 @@ package hillbillies.model.expressions.positionExpressions;
 
 import hillbillies.model.Cube;
 import hillbillies.model.Log;
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.World;
 
@@ -10,8 +11,8 @@ public class LogPosition extends CubeExpression{
 	}
 	
 	@Override 
-	public Cube getValue() {
-		Unit thisUnit = this.getStatement().getTask().getExecutor();
+	public Cube getValue(Task task) {
+		Unit thisUnit = task.getExecutor();
 		Cube thisCube = thisUnit.getCube();
 		World thisWorld = thisUnit.getWorld();
 		Log nearestLog = thisWorld.getClosestLog(thisCube);
