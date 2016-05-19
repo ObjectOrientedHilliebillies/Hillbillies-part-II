@@ -25,6 +25,8 @@ public abstract class Expression<T> {
 	private Statement statement;
 	
 	public Unit getExecutor(){
+		System.out.println(this.getStatement());
+		System.out.println(this.getStatement().getTask());
 		return this.getStatement().getTask().getExecutor();
 	}
 	

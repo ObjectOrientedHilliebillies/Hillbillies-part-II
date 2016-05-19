@@ -181,8 +181,6 @@ public Unit(String name, int[] initialCube, int weight, int agility, int strengt
 	setStamina(getMaxStamina()-5);
 	
 	this.orientation = (Math.PI/2);
-	
-	this.getWorld().addUnit(this);
 }
 
 /**
@@ -295,7 +293,7 @@ private Vector targetPosition;
  * Return the position of this unit.
  */
 @Basic @Raw
-private Vector getPosition() {
+public Vector getPosition() {
 	return this.position;
 }
 
@@ -322,8 +320,10 @@ public double[] getDoublePosition() {
  */
 @Raw
 private void setPosition(Vector position){
-	if (this.world == null)
-		throw new ClassCastException();
+	if (this.world == null){
+		this.position = position;
+		return;
+	}
 	if (!this.world.isPositionInWorld(position))
 		throw new IllegalArgumentException();
 	this.position = position;
@@ -1673,7 +1673,6 @@ public void rest() throws IllegalArgumentException{
 		throw new IllegalArgumentException();
 	}
 	if (activeActivity != 4){
-		System.out.println("begin te pitten");
 		recoverdPoints = 0;
 		this.activeActivity = 4;
 	}

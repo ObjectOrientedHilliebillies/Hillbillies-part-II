@@ -8,19 +8,14 @@ public class SubTask {
 	
 	private Statement statement;
 	private Cube cube;
-	private Task task;
 	private boolean inLoop;
 	private boolean isLoop;
 	
 
-	public SubTask(Statement statement, Cube cube, Task task, boolean inLoop){
+	public SubTask(Statement statement, Cube cube, boolean inLoop){
 		this.statement = statement;
 		this.cube = cube;
-		this.task = task;
 		this.inLoop = inLoop;
-		System.out.println(statement);
-		System.out.println(task);
-		this.statement.setTask(task); //TODO Nakijken
 	}
 	
 	private List<Statement> subStatements = null;
@@ -44,7 +39,7 @@ public class SubTask {
 		if (hasSubStatements){}
 		
 		if (subTask == null){
-			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+			subTask = new SubTask(subStatements.get(index), cube, inLoop);
 		}
 	
 		while (true){
@@ -72,7 +67,7 @@ public class SubTask {
 			}
 
 			// If the sequence in not completed yet, load the next substatement.
-			subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+			subTask = new SubTask(subStatements.get(index), cube, inLoop);
 		}	
 	}
 	

@@ -24,13 +24,14 @@ public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	@Override 
 	public Cube getValue() {
 		Cube cube = getPosition().getValue();
-		Set<Cube> accessibleNeigbours =	new HashSet<>(world.getAccessibleNeigbours(cube));
-		randomCubesList.addAll(position.getNeighbourCubes());
+		//Set<Cube> accessibleNeigbours =	new HashSet<>(getWorld().getAccessibleNeigbours(cube));
+		List<Cube> randomCubesList = new ArrayList<>();
+		randomCubesList.addAll(cube.getNeighbourCubes());
 		Collections.shuffle(randomCubesList);
-		for (Cube cube : randomCubesList){
-				if (cube.isPassable()){
-					System.out.println("random next to cube chosen");
-					return cube;
+		for (Cube neighbour : randomCubesList){
+				if (neighbour.isPassable()){
+					System.out.println(neighbour.toString());
+					return neighbour;
 			} 
 			}
 		throw new IllegalArgumentException();
