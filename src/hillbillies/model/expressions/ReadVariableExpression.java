@@ -1,5 +1,6 @@
 package hillbillies.model.expressions;
 
+import hillbillies.model.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class ReadVariableExpression<T> extends Expression<Object> {
@@ -11,8 +12,8 @@ public class ReadVariableExpression<T> extends Expression<Object> {
 	private String variableName;
 	
 	@Override
-	public Object getValue() {
-		return this.getStatement().getTask().getValue(variableName);
+	public Object getValue(Task task) {
+		return task.getValue(variableName);
 	}
 
 }

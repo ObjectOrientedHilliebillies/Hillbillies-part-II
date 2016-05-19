@@ -22,7 +22,7 @@ import hillbillies.part3.facade.IFacade;
 import hillbillies.part3.programs.TaskParser;
 import ogp.framework.util.ModelException;
 
-public class ClosestBoulderTest {
+public class FollowTest {
 	
 	private Facade facade;
 	
@@ -48,27 +48,19 @@ public class ClosestBoulderTest {
 		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
 		// FIXME Given syntacs does not work.
 		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, false);
+		facade.spawnUnit(world, false);
+		//Unit unit2 = facade.createUnit("Dummy", new int[] { 0, 1, 2 }, 50, 50, 50, 50, false);
 		facade.addUnit(unit, world);
+		//facade.addUnit(unit2, world);
 		Faction faction = facade.getFaction(unit);
-		Boulder boulder = new Boulder(new Vector(1, 1, 1), world);
+		//Faction faction2 = facade.getFaction(unit2);
 		Scheduler scheduler = facade.getScheduler(faction);
 		
-
-//		List<Task> tasks = TaskParser.parseTasksFromString(
-//				"name: \"dig\"\n"
-//				+ "priority : 8\n"
-//				+ "activities:\n"
-//				+ "moveTo (next_to selected);\n"
-//				+ "work selected;", facade.createTaskFactory(),
-//				Collections.singletonList(new int[] { 1, 1, 1 }));
-		
 		List<Task> tasks = TaskParser.parseTasksFromString(
-				"name: \"pickUpBoulder\" \n "
-				+ "priority : 8\n "
-				+ "activities: \n "
-				//+ "moveTo (next_to boulder); \n "
-				//+ "work boulder;" 
-				+ "work (1,1,1);"
+				"name: \"follow\" \n "
+				+ "priority : 8 \n "
+				+ "activities:  \n "
+				+ "follow enemy;"
 				,facade.createTaskFactory(), 
 				Collections.singletonList(new int[] {1,1,1}));
 		

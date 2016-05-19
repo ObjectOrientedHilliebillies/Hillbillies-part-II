@@ -1,5 +1,6 @@
 package hillbillies.model.expressions.unitExpressions.thisExpression;
 
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.part3.programs.SourceLocation;
@@ -11,8 +12,8 @@ public class ThisExpression extends UnitExpression {
 	}
 	
 	@Override
-	public Unit getValue() {
-		return getExecutor();
+	public Unit getValue(Task task) {
+		return task.getExecutor();
 	}
 	
 

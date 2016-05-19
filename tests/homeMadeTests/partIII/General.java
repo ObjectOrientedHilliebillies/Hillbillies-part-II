@@ -217,7 +217,6 @@ public class General {
 		types[2][2][2] = TYPE_WORKSHOP;
 
 		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
-		// FIXME Given syntacs does not work.
 		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, true);
 		facade.addUnit(unit, world);
 		Faction faction = facade.getFaction(unit);
@@ -249,22 +248,101 @@ public class General {
 		// there's exactly one task
 		assertEquals(2, tasks.size());
 		Task task = tasks.get(0);
+		
 		// test name
 		assertEquals("dig", facade.getName(task));
 		// test priority
 		assertEquals(8, facade.getPriority(task));
 
-		facade.schedule(scheduler, task);
+		facade.schedule(scheduler, tasks.get(0));
+		facade.schedule(scheduler, tasks.get(1));
 		advanceTimeFor(facade, world, 100, 0.02);
 
 		// work task has been executed
 		assertEquals(TYPE_AIR, facade.getCubeType(world, 1, 1, 1));
+		assertEquals(TYPE_AIR, facade.getCubeType(world, 1, 1, 0));
+		// work task is removed from scheduler
+		assertFalse(facade.areTasksPartOf(scheduler, Collections.singleton(task)));
+	}
+
+	/**
+	 * test impossible task
+	 */
+	@Test
+	public void  testImpossibleTask() throws ModelException{
+		System.out.println("##################");
+		System.out.println("# impossible dig #");
+		System.out.println("##################");
+		int[][][] types = new int[10][10][10];
+		for (int x=0; x!=5; x++){
+			for (int y=0; y!=5; y++){
+				for (int z=0; z!=5; z++){
+					types[x][y][z] = TYPE_ROCK;
+				}
+			}
+		}
+		types[1][1][2] = TYPE_TREE;
+		types[5][5][5] = TYPE_WORKSHOP;
+	
+		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
+		
+		// FIXME Unit is also able to spauwn in 0,0,0!
+		Unit unit = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
+		facade.addUnit(unit, world);
+		Faction faction = facade.getFaction(unit);
+	
+		Scheduler scheduler = facade.getScheduler(faction);
+		
+		List<int[]> selected = new ArrayList<>();
+		selected.add(new int[] { 1, 1, 1 });
+		selected.add(new int[] { 1, 1, 0 });
+	
+		List<Task> tasks = TaskParser.parseTasksFromString(
+				"name: \"dig\"\n"
+				+ "priority : 8\n"
+				+ "activities:if carries_item(this) then\n"
+				+ "work here;\n"
+				+ "fi\n"
+				+ "if is_solid(selected) then\n"
+				+ "moveTo (next_to selected);\n"
+				+ "work selected;\n"
+				+ "fi", facade.createTaskFactory(),
+				selected);
+	
+		//Check if the unit's world and faction are correct.
+		assertTrue(unit.getWorld() == world);
+		assertTrue(world.getActiveFactions().contains(faction));
+		
+		// tasks are created
+		assertNotNull(tasks);
+		// there's exactly one task
+		assertEquals(2, tasks.size());
+		Task task = tasks.get(0);
+		
+		// test name
+		assertEquals("dig", facade.getName(task));
+		// test priority
+		assertTrue(8 == task.getPriority());
+	
+		System.out.println(tasks.get(0).getPriority());
+		System.out.println(tasks.get(1).getPriority());
+		
+		facade.schedule(scheduler, tasks.get(0));
+		facade.schedule(scheduler, tasks.get(1));
+		advanceTimeFor(facade, world, 100, 0.02);
+	
+		// The tasks priority should been reduced.
+		assertTrue(8 > tasks.get(0).getPriority());
+		System.out.println(tasks.get(0).getPriority());
+		System.out.println(tasks.get(1).getPriority());
+		assertTrue(8 > tasks.get(1).getPriority());
+	
 		// work task is removed from scheduler
 		assertFalse(facade.areTasksPartOf(scheduler, Collections.singleton(task)));
 	}
 	
 	/**
-	 * Helper method to advance time for the given world by some time.
+ 	 * Helper method to advance time for the given world by some time.
 	 * 
 	 * @param time
 	 *            The time, in seconds, to advance.

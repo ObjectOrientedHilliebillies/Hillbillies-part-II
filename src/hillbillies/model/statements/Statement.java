@@ -14,7 +14,7 @@ import hillbillies.part3.programs.SourceLocation;
  */
 public abstract class Statement {
 	
-	public abstract double execute();
+	public abstract double execute(Task task);
 	
 	public List<Statement> getAsList(){
 		List<Statement> list = new ArrayList<>();

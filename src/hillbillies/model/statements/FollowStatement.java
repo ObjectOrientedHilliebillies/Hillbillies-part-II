@@ -1,27 +1,32 @@
 package hillbillies.model.statements;
 
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
+import hillbillies.part3.programs.SourceLocation;
 
 public class FollowStatement extends ActivityStatement{
 	
-	public FollowStatement(Expression<Unit> unit) {
+	public FollowStatement(Expression<Unit> unit, SourceLocation sourceLocation) {
 		setUnit(unit);
+		setSourceLocation(sourceLocation);
 	}
 	
 	private void setUnit(Expression<Unit> unit) {
-		this.unit = unit.getValue();
+		this.unit = unit;
 	}
 	
-	private Unit getUnit() {
+	private Expression<Unit> getUnit() {
 		return this.unit;
 	}
 	
-	Unit unit;
+	Expression<Unit> unit;
 	
+
 	@Override
-	public double execute() {
-		this.getTask().getExecutor().follow(this.getUnit());
+	public double execute(Task task) {
+		Unit follower = this.getUnit().getValue(task);
+		task.getExecutor().follow(follower);
 		return -1;
 	}
 

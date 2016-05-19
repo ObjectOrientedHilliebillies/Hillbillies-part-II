@@ -1,0 +1,5 @@
+name: "pickUpBoulder"
+priority : 8
+activities:
+	moveTo(next_to boulder);
+	work boulder;
