@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hillbillies.model.Task;
+import hillbillies.part3.programs.SourceLocation;
 
 /**
  * Class for representing statements
@@ -35,6 +36,16 @@ public abstract class Statement {
 	
 	public Task getTask() {
 		return this.task;
+	}
+
+	private SourceLocation sourceLocation;
+	
+	public void setSourceLocation(SourceLocation sourceLocation) {
+		this.sourceLocation = sourceLocation;
+	}
+	
+	public SourceLocation getSourceLocation() {
+		return sourceLocation;
 	}
 }
 

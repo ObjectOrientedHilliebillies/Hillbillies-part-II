@@ -6,12 +6,29 @@ import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
 import hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
+import hillbillies.model.statements.Statement;
+import hillbillies.part3.programs.SourceLocation;
 
 public class IsCarryingItemExpression extends UnitIsExpression{
-	public IsCarryingItemExpression(UnitExpression unit){
+	public IsCarryingItemExpression(UnitExpression unit, SourceLocation sourceLocation){
 		super(unit);
-		
+		setSourceLocation(sourceLocation);
+		unit.setStatement(getStatement());
 	}
+	
+	
+	private Statement statement;
+	
+	@Override
+	public Statement getStatement() {
+		return this.statement;
+	}
+	
+	@Override
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+		getExpression().setStatement(statement);
+	};
 	
 	@Override
 	public Boolean getValue(){

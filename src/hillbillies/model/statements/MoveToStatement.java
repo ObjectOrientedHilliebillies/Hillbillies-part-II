@@ -2,12 +2,14 @@ package hillbillies.model.statements;
 
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.part3.programs.SourceLocation;
 import hillbillies.model.Cube;
 import hillbillies.model.Task;
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{
-	public MoveToStatement(CubeExpression position) {
+	public MoveToStatement(CubeExpression position, SourceLocation sourceLocation) {
+		setSourceLocation(sourceLocation);
 		this.position = position;
 	}
 	

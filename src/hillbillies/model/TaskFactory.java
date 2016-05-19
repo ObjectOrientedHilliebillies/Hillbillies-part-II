@@ -21,6 +21,7 @@ import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.HerePosition;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
+import hillbillies.model.expressions.positionExpressions.NextToPosition;
 import hillbillies.model.expressions.positionExpressions.PositionOf;
 import hillbillies.model.expressions.positionExpressions.SelectedPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
@@ -88,7 +89,9 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Statement createIf(Expression condition, Statement ifBody, Statement elseBody,
 			SourceLocation sourceLocation) {
 		System.out.println("createIf");
-		return new IfStatement(condition, ifBody, elseBody);
+		Statement ifStatement = new IfStatement(condition, ifBody, elseBody, sourceLocation);
+		condition.setStatement(ifStatement);
+		return ifStatement;
 	}
 
 	@Override
@@ -107,14 +110,14 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Statement createSequence(List<Statement> statements, SourceLocation sourceLocation) {
 		System.out.println("createSequence");
-		return new SequenceStatement(statements);
+		return new SequenceStatement(statements, sourceLocation);
 	}
 
 	@Override
 	public Statement createMoveTo(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createMoveTo");
 		CubeExpression cube = (CubeExpression) position;
-		MoveToStatement moveToStatement = new MoveToStatement(cube);
+		MoveToStatement moveToStatement = new MoveToStatement(cube, sourceLocation);
 		position.setStatement(moveToStatement);
 		return moveToStatement;
 	}
@@ -123,7 +126,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Statement createWork(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createWork");
 		CubeExpression cube = (CubeExpression) position;
-		WorkStatement workStatement = new WorkStatement(cube);
+		WorkStatement workStatement = new WorkStatement(cube, sourceLocation);
 		position.setStatement(workStatement);
 		return workStatement;
 	}
@@ -149,8 +152,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createIsSolid(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createIsSolid");
-		CubeExpression cube = (CubeExpression) position;
-		return new IsSolidExpression(cube);
+		return new IsSolidExpression((CubeExpression) position);
 	}
 
 	@Override
@@ -185,7 +187,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	public Expression createCarriesItem(Expression unit, SourceLocation sourceLocation) {
 		System.out.println("createCarriesItem");
 		UnitExpression givenUnit = (UnitExpression) unit;
-		return new IsCarryingItemExpression(givenUnit);
+		return new IsCarryingItemExpression(givenUnit, sourceLocation);
 	}
 
 	@Override
@@ -209,7 +211,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createHerePosition(SourceLocation sourceLocation) {
 		System.out.println("createHerePosition");
-		return new HerePosition();
+		return new HerePosition(sourceLocation);
 	}
 	
 	@Override
@@ -239,8 +241,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createNextToPosition(Expression position, SourceLocation sourceLocation) {
 		System.out.println("createNextToPosition");
-		// TODO Auto-generated method stub
-		return null;
+		return new NextToPosition((CubeExpression<?>) position);
 	}
 
 	@Override
@@ -259,7 +260,7 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 	@Override
 	public Expression createThis(SourceLocation sourceLocation) {
 		System.out.println("createThis");
-		return new ThisExpression();
+		return new ThisExpression(sourceLocation);
 	}
 
 	@Override
