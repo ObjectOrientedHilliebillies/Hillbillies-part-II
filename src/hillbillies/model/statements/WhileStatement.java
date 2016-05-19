@@ -29,10 +29,11 @@ public class WhileStatement extends Statement{
 	private Statement body;
 	
 	@Override
-	public void execute() {
+	public double execute() {
 		while (this.getCondition().getValue()) {
 			this.getBody().execute();
 		}
+		return 0; //FIXME
 		
 	}
 
