@@ -96,9 +96,12 @@ public class SubTask {
 		
 		// Execute the statement.
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		//statement.execute(task);
 		//System.out.println(statement.getSourceLocation().toString());
+>>>>>>> refs/remotes/origin/Jonas2
+=======
 >>>>>>> refs/remotes/origin/Jonas2
 		double executionTime = statement.execute(task); //TODO nakijken 2
 		
