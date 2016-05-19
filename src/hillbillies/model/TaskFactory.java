@@ -131,7 +131,6 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>{
 		System.out.println("createFollow");
 		UnitExpression unitE = (UnitExpression) unit;
 		FollowStatement followStatement = new FollowStatement(unitE, sourceLocation);
-		unitE.setStatement(followStatement);
 		return followStatement;
 	}
 
