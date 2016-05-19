@@ -20,27 +20,8 @@ public abstract class Expression<T> {
 		return task.getExecutor();
 	}
 	
-<<<<<<< HEAD
-	public void setStatement(Statement statement) {
-			this.statement = statement;	
-	}
-	
-	private Statement statement;
-	
-	public Unit getExecutor(){
-		return this.getStatement().getTask().getExecutor();
-	}
-	
-	public World getWorld(){
-		System.out.println(this.getStatement());
-		System.out.println(this.getStatement().getTask());
-		System.out.println(this.getStatement().getTask().getExecutor());
-		System.out.println(this.getStatement().getTask().getExecutor().getWorld());
-		return this.getStatement().getTask().getExecutor().getWorld();
-=======
 	public World getWorld(Task task){
 		return task.getExecutor().getWorld();
->>>>>>> refs/remotes/origin/master
 	}	
 
 	private SourceLocation sourceLocation;

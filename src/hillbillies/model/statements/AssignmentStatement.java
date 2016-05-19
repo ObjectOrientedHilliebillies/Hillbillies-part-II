@@ -1,5 +1,6 @@
 package hillbillies.model.statements;
 
+import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
 import hillbillies.part3.programs.SourceLocation;
 
@@ -27,12 +28,11 @@ public class AssignmentStatement extends Statement{
 	private String variableName;
 	
 	@Override
-	public double execute() {
+	public double execute(Task task) {
 		System.out.println(this.getTask());
 		System.out.println(this.variableName.toString());
 		System.out.println(this.value.toString());
-		System.out.println(this.value.getStatement());
-		this.getTask().setVariable(this.variableName, this.value);
+		task.setVariable(this.variableName, this.value);
 		return defaultExecutionTime;
 	}
 

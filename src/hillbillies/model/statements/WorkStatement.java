@@ -22,16 +22,9 @@ public class WorkStatement extends ActivityStatement{
 	}
 	
 	@Override
-<<<<<<< HEAD
-	public double execute() {
-		System.out.println(this.position.toString());
-		Cube cube = getPosition().getValue();
-		this.getTask().getExecutor().workAt(cube);
-=======
 	public double execute(Task task) {
 		Cube cube = getPosition().getValue(task);
 		task.getExecutor().workAt(cube);
->>>>>>> refs/remotes/origin/master
 		return -2;
 	}
 

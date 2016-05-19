@@ -1,5 +1,6 @@
 package hillbillies.model.expressions.unitExpressions.anyExpression;
 
+import hillbillies.model.Task;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 
@@ -9,10 +10,10 @@ public class EnemyExpression extends UnitExpression {
 	}
 	
 	@Override
-	public Unit getValue() {
-		return this.getWorld().getUnits().stream()
+	public Unit getValue(Task task) {
+		return this.getWorld(task).getUnits().stream()
 				.filter(i -> i.getFaction() 
-						!= this.getStatement().getTask().getExecutor().getFaction())
+						!= task.getExecutor().getFaction())
 				.findAny().orElse(null);
 	}
 
