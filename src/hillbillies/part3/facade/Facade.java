@@ -213,8 +213,7 @@ public class Facade implements IFacade {
 	}
 
 	@Override
-	public void setDefaultBehaviorEnabled(Unit unit, boolean value) throws ModelException {
-		System.out.println("setDefaultBehaviorEnabled");
+	public void setDefaultBehaviorEnabled(Unit unit, boolean value) throws ModelException { 
 		unit.setDefaultBehavior(value);
 	}
 
