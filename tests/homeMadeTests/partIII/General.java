@@ -2,7 +2,6 @@ package homeMadeTests.partIII;
 
 import static org.junit.Assert.*;
 
-import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import hillbillies.DebugStream;
-import hillbillies.model.Cube;
 import hillbillies.model.Faction;
-import hillbillies.model.Log;
 import hillbillies.model.Scheduler;
 import hillbillies.model.Unit;
 import hillbillies.model.Vector;
@@ -270,7 +267,7 @@ public class General {
 	 */
 	@Test
 	public void  testImpossibleTask() throws ModelException{
-		System.out.println("##################");
+		System.out.println("#################################################");
 		System.out.println("# impossible dig #");
 		System.out.println("##################");
 		int[][][] types = new int[10][10][10];
@@ -293,11 +290,11 @@ public class General {
 	
 		Scheduler scheduler = facade.getScheduler(faction);
 		
-		List<int[]> selected = new ArrayList<>();
-		selected.add(new int[] { 1, 1, 1 });
-		selected.add(new int[] { 1, 1, 0 });
-	
-		List<Task> tasks = TaskParser.parseTasksFromString(
+		//List<int[]> selected = new ArrayList<>();
+		int [] pos1 = new int[] { 1, 1, 1 };
+		int [] pos2 = new int[] { 5, 5, 5 };
+
+		List<Task> tasks1 = TaskParser.parseTasksFromString(
 				"name: \"dig\"\n"
 				+ "priority : 8\n"
 				+ "activities:if carries_item(this) then\n"
@@ -307,38 +304,33 @@ public class General {
 				+ "moveTo (next_to selected);\n"
 				+ "work selected;\n"
 				+ "fi", facade.createTaskFactory(),
-				selected);
+				Collections.singletonList(pos1));
+		
+		List<Task> tasks2 = TaskParser.parseTasksFromString(
+				"name: \"dig\"\n"
+				+ "priority : 7\n"
+				+ "activities:if carries_item(this) then\n"
+				+ "work here;\n"
+				+ "fi\n"
+				+ "if is_solid(selected) then\n"
+				+ "moveTo (next_to selected);\n"
+				+ "work selected;\n"
+				+ "fi", facade.createTaskFactory(),
+				Collections.singletonList(pos2));
 	
-		//Check if the unit's world and faction are correct.
-		assertTrue(unit.getWorld() == world);
-		assertTrue(world.getActiveFactions().contains(faction));
+		System.out.println(tasks1.get(0).getPriority());
+		System.out.println(tasks2.get(0).getPriority());
 		
-		// tasks are created
-		assertNotNull(tasks);
-		// there's exactly one task
-		assertEquals(2, tasks.size());
-		Task task = tasks.get(0);
-		
-		// test name
-		assertEquals("dig", facade.getName(task));
-		// test priority
-		assertTrue(8 == task.getPriority());
-	
-		System.out.println(tasks.get(0).getPriority());
-		System.out.println(tasks.get(1).getPriority());
-		
-		facade.schedule(scheduler, tasks.get(0));
-		facade.schedule(scheduler, tasks.get(1));
+		facade.schedule(scheduler, tasks1.get(0));
+		facade.schedule(scheduler, tasks2.get(0));
 		advanceTimeFor(facade, world, 100, 0.02);
 	
 		// The tasks priority should been reduced.
-		assertTrue(8 > tasks.get(0).getPriority());
-		System.out.println(tasks.get(0).getPriority());
-		System.out.println(tasks.get(1).getPriority());
-		assertTrue(8 > tasks.get(1).getPriority());
-	
-		// work task is removed from scheduler
-		assertFalse(facade.areTasksPartOf(scheduler, Collections.singleton(task)));
+		
+		assertTrue(facade.areTasksPartOf(scheduler, tasks1));
+		assertFalse(facade.areTasksPartOf(scheduler, tasks2));
+		System.out.println(tasks1.get(0).getPriority());
+		System.out.println(tasks2.get(0).getPriority());
 	}
 	
 	/**

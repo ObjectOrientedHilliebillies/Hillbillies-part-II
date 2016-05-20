@@ -40,15 +40,15 @@ public class FollowTest {
 	@Test
 	public void testTaskExecuted() throws ModelException {
 		int[][][] types = new int[3][3][3];
-		types[1][1][0] = TYPE_ROCK;
+		types[1][1][0] = TYPE_AIR;
 		types[1][1][1] = TYPE_AIR;
-		types[1][1][2] = TYPE_TREE;
+		types[1][1][2] = TYPE_AIR;
 		types[2][2][2] = TYPE_WORKSHOP;
 
 		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
 		// FIXME Given syntacs does not work.
 		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, false);
-		facade.spawnUnit(world, false);
+		Unit unit2 = facade.spawnUnit(world, false);
 		//Unit unit2 = facade.createUnit("Dummy", new int[] { 0, 1, 2 }, 50, 50, 50, 50, false);
 		facade.addUnit(unit, world);
 		//facade.addUnit(unit2, world);
@@ -86,8 +86,8 @@ public class FollowTest {
 		advanceTimeFor(facade, world, 100, 0.02);
 		unit.setDefaultBehavior(false);
 		
+		assertTrue(unit.getCube() == unit2.getCube());
 		// work task has been executed
-		assertTrue(unit.isCarryingBoulder());
 		}
 	
 	

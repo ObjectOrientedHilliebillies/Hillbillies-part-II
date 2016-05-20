@@ -15,6 +15,10 @@ public class IsAliveExpression extends unitIsExpression{
 	@Override
 	public Boolean getValue(Task task) {
 		Unit unit = this.unit.getValue(task);
+		if (unit == null) {
+			return false;
+			// TODO miss nog niet finnaal.
+		}
 		return unit.isAlive();
 	}
 }

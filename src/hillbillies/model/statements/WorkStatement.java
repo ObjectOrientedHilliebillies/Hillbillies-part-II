@@ -1,5 +1,6 @@
 package hillbillies.model.statements;
 
+
 import hillbillies.model.Cube;
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.Expression;
@@ -34,7 +35,8 @@ public class WorkStatement extends ActivityStatement{
 			return -1;
 		}
 		unit.workAt(cube);
-		return -1;
+		System.out.println(cube.toString());
+		return -3;
 	}
 
 }

@@ -165,12 +165,15 @@ public class Task implements Comparable<Task>{
 	}
 
 	public void taskSucceeded() {
+		System.out.println("TASK SUCCEEDED!!!");
 		for (Scheduler scheduler: this.schedulers){
 			scheduler.removeTask(this);
 		}
+		getExecutor().setTask(null);
 	}
 	
 	public void taskFailed() {
+		System.out.println("TASK FAILED!!!");
 		setAvailable();
 		reducePriority();
 		this.subTask = null;

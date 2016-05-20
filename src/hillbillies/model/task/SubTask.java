@@ -42,9 +42,11 @@ public class SubTask {
 			while (true){
 				// If remainingTime is zero there is no time left
 				// return -1 because this sequence is not finished yet.
-				if (remainingTime == 0){
+				if (remainingTime == 0 || remainingTime == -1){
 					return -1;
 				}
+				
+				
 				
 				remainingTime = subTask.advance(remainingTime);
 				
@@ -61,9 +63,15 @@ public class SubTask {
 				if (index == subStatements.size()){
 					return remainingTime;
 				}
-	
+				
+				System.out.println(subStatements);
 				// If the sequence in not completed yet, load the next substatement.
-				subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+				try {
+					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+			
+				}catch (IndexOutOfBoundsException e){
+					task.taskFailed();
+				}
 			}
 		}
 		
