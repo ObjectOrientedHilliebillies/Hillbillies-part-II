@@ -418,13 +418,8 @@ public class Task implements Comparable<Task>{
 		if (feedback == -4){
 			throw new IllegalArgumentException("Break was not in while");
 		}
-<<<<<<< HEAD
 		if (feedback != SubTask.hasToBeExecutedAgain){
 			System.out.println("Task succeeded!");
-=======
-		if (feedback != -1){
-			System.out.println("Task succeeded");
->>>>>>> refs/remotes/origin/master
 			taskSucceeded();
 		}
 		System.out.println(feedback);
@@ -457,15 +452,8 @@ public class Task implements Comparable<Task>{
 	 * @post the given variable is assigned to this task
 	 * 		| new.getValue(name) == value
 	 */
-<<<<<<< HEAD
 	public void setVariable(String name, Object value) {
-=======
-	public void setVariable(String name, Expression value) {
-		System.out.println(name);
-		System.out.println(value);
->>>>>>> refs/remotes/origin/master
 		variables.put(name, value);
-		System.out.println(variables);
 	}
 	
 	/**
