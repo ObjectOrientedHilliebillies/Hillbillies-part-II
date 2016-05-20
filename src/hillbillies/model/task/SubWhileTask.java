@@ -1,5 +1,7 @@
 package hillbillies.model.task;
 
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.Cube;
 import hillbillies.model.statements.Statement;
 import hillbillies.model.statements.WhileStatement;
@@ -33,7 +35,7 @@ public class SubWhileTask {
 				
 				// If the condition is violated the while is terminated and 
 				// the remaining time is returned.
-				if (whileStatement.execute(task) != -2){
+				if (whileStatement.execute(task) != -4){
 					return remainingTime;
 				}
 				
@@ -41,10 +43,15 @@ public class SubWhileTask {
 				// present the while body.
 				subTask = new SubTask(whileBody, cube, task, true);
 			}
+			double feedback = subTask.advance(-10);
+			
+			if (feedback == -10){
+				return remainingTime;
+			}
 			
 			// Do the while body and if so return that this while body could not finish.
 			// The remaining time is -2 because only 0 to -1 indicate there is no more time.
-			double feedback = subTask.advance(-2);
+			
 			if (feedback == -1){
 				return -1;
 			}
@@ -53,6 +60,7 @@ public class SubWhileTask {
 			subTask = null;
 			
 			if (feedback == 0){
+				System.out.println("while feedback == 0");
 				return -1;
 			}
 			

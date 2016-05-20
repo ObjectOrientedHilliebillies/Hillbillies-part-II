@@ -40,8 +40,7 @@ public class FollowStatement extends ActivityStatement{
 			return -1;
 		}
 		if (!(path.size() == 1)){
-		System.out.println(path.get(path.size() - 2).toString());
-		task.getExecutor().moveTo(path.get(path.size() - 2)); }
+		task.getExecutor().moveToAdjacent(path.get(path.size() - 2)); }
 		return -1;
 	}
 

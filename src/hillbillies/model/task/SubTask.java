@@ -2,6 +2,8 @@ package hillbillies.model.task;
 
 import java.util.List;
 
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.Cube;
 import hillbillies.model.statements.Statement;
 import hillbillies.model.statements.WhileStatement;
@@ -46,6 +48,9 @@ public class SubTask {
 					return -1;
 				}
 				
+				if (remainingTime == -4) {
+					return -4;
+				}
 				
 				
 				remainingTime = subTask.advance(remainingTime);
@@ -54,6 +59,10 @@ public class SubTask {
 				// here next time.
 				if (remainingTime == -1){
 					return -1;
+				}
+				
+				if (remainingTime == -4){
+					return -4;
 				}
 	
 				// Index is only incremented if the previous statement was able to finish.
@@ -77,7 +86,7 @@ public class SubTask {
 		
 		// If the statement is a while.
 		if (subWhileTask != null) {
-			subWhileTask.doWhile(remainingTime);
+			remainingTime = subWhileTask.doWhile(remainingTime);
 		}
 		return remainingTime;
 	}
@@ -91,6 +100,11 @@ public class SubTask {
 
 		// Execute the statement.
 		double executionTime = statement.execute(task);
+		
+		if (executionTime == -4){
+			remainingTime = -4;
+			return;
+		}
 		
 		// If the statement returns -3 it took longer than 1 tick but
 		// it mustn't be executed again.

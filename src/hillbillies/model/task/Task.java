@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.Cube;
 import hillbillies.model.Scheduler;
 import hillbillies.model.Unit;
@@ -120,7 +122,7 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public void reducePriority() {
-		this.setPriority(this.getPriority()/2);
+		this.setPriority(this.getPriority()-2);
 		resortSchedulers();
 	}
 	
@@ -173,7 +175,6 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public void taskFailed() {
-		System.out.println("TASK FAILED!!!");
 		setAvailable();
 		reducePriority();
 		this.subTask = null;
@@ -191,6 +192,10 @@ public class Task implements Comparable<Task>{
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
 			subTask = new SubTask(statement, cube, this, false);
+		}
+		double feedback = subTask.advance(timeLeft);
+		if (feedback == -4){
+			throw new IllegalArgumentException("Break was not in while");
 		}
 		if (subTask.advance(timeLeft) != -1){
 			taskSucceeded();
