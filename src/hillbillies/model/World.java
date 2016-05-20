@@ -196,6 +196,12 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Return the cube with the given position
+	 * 
+	 * @param position
+	 * 		The position to be checked
+	 */
 	public Cube getCube(int[] position) {
 		try{
 			return terrainTypes.get(position[0]).get(position[1]).get(position[2]);
@@ -204,6 +210,12 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Return the cube with the given position
+	 * 
+	 * @param position
+	 * 		The position to be checked
+	 */
 	public Cube getCube(List<Integer> position) {
 		try{
 			return terrainTypes.get(position.get(0))
@@ -239,6 +251,21 @@ public class World {
 	private Map<Integer, Map<Integer, Map<Integer, Cube>>> terrainTypes 
 		= new HashMap<>();
 	
+	/**
+	 * Set the terraintype of the given cube to the given terraintype.
+	 * 
+	 * @param cube
+	 * 		The cube for which the terraintype is set
+	 * 
+	 * @param terrainType
+	 * 		The new terraintype for the given cube
+	 * 			0: Air
+	 * 			1: Rock
+	 * 			2: Wood
+	 * 			3: Workshop
+	 * 
+	 * @post the terraintype of the given cube is equal to the given terraintype
+	 */
 	public void setTerrainType(Cube cube, int terrainType){
 		if (!isValidTerrainType(terrainType)){
 			throw new IllegalArgumentException();		
@@ -467,6 +494,15 @@ public class World {
 		return nearestLog;
 	}
 	
+	/**
+	 * Return the log closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Cube
+	 * 		The cube that represents the  log closest 
+	 * 		to the given cube. If no such log exists 
+	 * 		null is returned.
+	 */
 	public Log getClosestLog(Cube thisCube) {
 		return this.getLogs().stream()
 			.min(Comparator.comparing(i -> 
@@ -501,6 +537,15 @@ public class World {
 		return nearestBoulder;
 	}
 	
+	/**
+	 * Return the boulder closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Cube
+	 * 		The cube that represents the  boulder closest 
+	 * 		to the given cube. If no such boulder exists 
+	 * 		null is returned.
+	 */
 	public Boulder getClosestBoulder(Cube thisCube) {
 		return this.getBoulders().stream()
 			.min(Comparator.comparing(i -> 
@@ -514,7 +559,7 @@ public class World {
 	 * 		The reference cube
 	 * @return Cube
 	 * 		The cube that represents the  workshop closest 
-	 * 		to the given cube. If no such boulder exists 
+	 * 		to the given cube. If no such workshop exists 
 	 * 		null is returned.
 	 */
 	public Cube getNearestWorkshop(Cube thisCube) {
@@ -536,6 +581,15 @@ public class World {
 		return nearestWorkshop;
 	}
 	
+	/**
+	 * Return the workshop closest to the given cube.
+	 * @param thisCube
+	 * 		The reference cube
+	 * @return Cube
+	 * 		The cube that represents the  workshop closest 
+	 * 		to the given cube. If no such workshop exists 
+	 * 		null is returned.
+	 */
 	public Cube getClosestWorkshop(Cube thisCube) {
 		return this.getWorkshops().stream()
 			.min(Comparator.comparing(i -> 
@@ -730,6 +784,12 @@ public class World {
 		unit.getFaction().removeUnit(unit);
 	}
 	
+	/**
+	 * Return a set of accesible neighbours
+	 * 
+	 * @param cube
+	 * 		the cube for which the neighbours wil be checked
+	 */
 	public Set<Cube> getAccessibleNeigbours (Cube cube){
 		Set<Cube> neighbours = cube.getNeighbourCubes();
 		neighbours.removeAll(filterPassableCubes(neighbours));

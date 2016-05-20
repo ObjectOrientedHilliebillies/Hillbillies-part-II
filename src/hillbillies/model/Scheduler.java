@@ -210,14 +210,16 @@ public class Scheduler implements Iterable<Task> {
 	}
 	
 	/**
-	 * Returns the most priorit
+	 * Returns the task with the highest priority and set it occupied by the given unit
+	 * 
 	 * @param unit
+	 * 		The unit who will execute the returned task
 	 */
 	public Task ascribeTask(Unit unit) {
 		Task mostImportantTask = null;
 		for (Task task : getManagedTasks()){
 			if (!task.isOccupied()){
-				if (mostImportantTask == null
+				if (mostImportantTask == null //TODO weghalen
 						|| (mostImportantTask.getPriority() < task.getPriority())){
 					mostImportantTask = task;
 				}

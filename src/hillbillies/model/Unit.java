@@ -1746,17 +1746,39 @@ public class Unit {
 		}
 
 	}
-
+	
+	/**
+	 * Variable registering the task of this unit.
+	 */
 	public Task task;
-
+	
+	/**
+	 * Set the task of this unit to the given task
+	 * 
+	 * @param task
+	 * 		The new task for this unit
+	 * 
+	 * @post the task of this unit is equal to the given task
+	 * 		| new.getTask == task
+	 */
+	@Raw
 	public void setTask(Task task) {
 		this.task = task;
 	}
-
+	
+	/**
+	 * Return the task of this unit
+	 */
+	@Basic @Raw
 	public Task getTask() {
 		return this.task;
 	}
-
+	
+	/**
+	 * Execute the task
+	 *  //FIXME
+	 * @param tickTime
+	 */
 	public void executeTask(double tickTime) {
 		this.getTask().advanceProgram(tickTime);
 	}

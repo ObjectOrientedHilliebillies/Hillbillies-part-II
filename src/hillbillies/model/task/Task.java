@@ -393,16 +393,16 @@ public class Task implements Comparable<Task>{
 	 */
 	private SubTask subTask = null;
 	
-<<<<<<< HEAD
-	public getSubTask
-	
-=======
+
+	public SubTask getSubTask() {
+		return this.subTask;
+	}
+
 	/**
 	 * advance the program with the given time left
 	 * //FIXME
 	 * @param timeLeft
 	 */
->>>>>>> refs/remotes/origin/master
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
 			subTask = new SubTask(statement, cube, this, false);

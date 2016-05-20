@@ -3,6 +3,9 @@ package hillbillies.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
+
 public class Faction {
 	
 	/**
@@ -82,14 +85,31 @@ public class Faction {
 		if (this.getNbOffUnitsInFaction() == 0)
 				this.getWorld().removeFaction(this);
 	}
-
+	
+	/**
+	 * Returns the scheduler of this faction.
+	 */
+	@Basic @Raw
 	public Scheduler getScheduler() {
 		return this.scheduler;
 	}
 	
+	/**
+	 * Set the scheduler of this faction to the given scheduler
+	 * 
+	 * @param scheduler
+	 * 		The new scheduler for this faction
+	 * 
+	 * @post the scheduler of this faction is equal to the given scheduler
+	 * 		| new.getScheduler == scheduler
+	 */
+	@Raw
 	public void setScheduler(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 	
+	/**
+	 * Variable registering the scheduler of this faction.
+	 */
 	private Scheduler scheduler;
 }
