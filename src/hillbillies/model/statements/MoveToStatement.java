@@ -27,12 +27,11 @@ public class MoveToStatement extends ActivityStatement{
 		Cube cube = position.getValue(task);
 		if (cube == null) {
 			task.taskFailed();
-			return -1;
+			return repeatingLong;
 		}
 		
 		Unit unit = task.getExecutor();
 		if (unit.getCube().equals(cube)){
-			System.out.println("MoveToStatement: "+ "De unit staat er al");
 			return 0;
 		}
 		
@@ -41,12 +40,11 @@ public class MoveToStatement extends ActivityStatement{
 		
 		if (path == null){
 			task.taskFailed();
-			System.out.println("Task Failed");
-			return -1;
+			return repeatingLong;
 		}
 		
 		unit.moveToAdjacent(path.get(path.size()-2)); 
 
-		return -1;
+		return repeatingLong;
 	}	
 }
