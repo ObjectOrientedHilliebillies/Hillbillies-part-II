@@ -14,5 +14,10 @@ public class BreakStatement extends Statement{
 		return breakStatement;
 
 	}
+	
+	@Override
+	public boolean doYouHaveABreak() {
+		return true;
+	}
 
 }

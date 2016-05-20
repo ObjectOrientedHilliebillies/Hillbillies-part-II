@@ -342,19 +342,21 @@ public class General {
 	@Test
 	public void Bannaan() throws ModelException{
 		System.out.println("#################################################");
-		System.out.println("# impossible dig #");
+		System.out.println("# Kill everybody #");
 		System.out.println("##################");
 		
 	
 		World world = createWorld1();
 		
-		Unit unit = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
+		Unit unit = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 200, 200, 200, 200, true);
+		Unit unit1 = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
+		Unit unit2 = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
 		facade.addUnit(unit, world);
+		facade.addUnit(unit1, world);
+		facade.addUnit(unit2, world);
+	
 		Faction faction = facade.getFaction(unit);
 		Scheduler scheduler = facade.getScheduler(faction);
-		
-		facade.spawnUnit(world, true);
-		facade.spawnUnit(world, true);
 
 		List<Task> tasks1 = TaskParser.parseTasksFromString(
 				"name: \"Banaan\"\n"
@@ -365,13 +367,16 @@ public class General {
 				+ "if is_friend a then\n"
 				+ "break;\n"
 				+ "fi\n"
+				+ "while is_alive a do\n"				
 				+ "moveTo (position_of a);\n"
 				+ "attack (a);\n"
+				+ "done\n"
 				+ "a := any;\n"
 				+ "done", facade.createTaskFactory(),
 				new ArrayList<>());
+		
 		facade.schedule(scheduler, tasks1.get(0));
-		advanceTimeFor(facade, world, 100, 0.2);
+		advanceTimeFor(facade, world, 180, 0.2);
 		
 		assertTrue(facade.getUnits(world).size()==1);
 

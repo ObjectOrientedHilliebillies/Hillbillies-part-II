@@ -31,6 +31,11 @@ public class WhileStatement extends Statement{
 	private Statement body;
 	
 	@Override
+	public boolean doYouHaveABreak() {
+		return false;
+	}
+	
+	@Override
 	public double execute(Task task) {
 		if (getCondition().getValue(task)){
 			return SubTask.startNewWhileLoop;

@@ -14,6 +14,9 @@ public class AnyExpression extends UnitExpression{
 	
 	@Override
 	public Unit getValue(Task task) {
+		System.out.println(task.getExecutor());
+		System.out.println(task.getExecutor().getWorld());
+		System.out.println(task.getExecutor().getWorld().getUnits());
 		Set<Unit> units = task.getExecutor().getWorld().getUnits();
 		units.remove(task.getExecutor());
 		return units.stream().findAny().orElse(null);
