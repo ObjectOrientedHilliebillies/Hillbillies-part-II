@@ -9,7 +9,6 @@ import hillbillies.model.task.Task;
 
 public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	
-	// FIXME Is it allowed to use the questionmark?
 	public NextToPosition(CubeExpression<?> position) {
 		setPosition(position);
 	}

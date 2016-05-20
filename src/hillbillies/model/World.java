@@ -375,7 +375,7 @@ public class World {
 			int y = (int) (Math.random() * getNbCubesY());
 			int z = (int) (Math.random() * getNbCubesZ());
 			cube = getCube(x, y, z); 
-			}while (cube.isSolid() || !cube.getCenterOfCube().hasSupportOfSolidUnderneath(this));
+			}while (cube.isSolid() || !cube.getCenterOfCube().hasSupportOfSolidUnderneath(this)||(cube.getXGrit() == 0 && cube.getYGrit() == 0 && cube.getZGrit() == 0));
 		return cube;
 	}
 	

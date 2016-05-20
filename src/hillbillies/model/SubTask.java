@@ -96,11 +96,11 @@ public class SubTask {
 
 		
 		// Execute the statement.
-		double executionTime = statement.execute(task); //TODO nakijken 2
+		double executionTime = statement.execute(task);
 		//If -3: Gets ready but no time over.
 		if (executionTime == -3) {
 			remainingTime = 0;
-		} //FIXME VICTOR
+		}
 		
 		
 		// If the statement lasts -2 it's effects last longer than one tick. (follow, goto, work,..)

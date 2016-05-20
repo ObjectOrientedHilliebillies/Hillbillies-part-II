@@ -378,8 +378,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public void work(Unit unit) throws ModelException {
-		// TODO Auto-generated method stub
-		
+		// Not implemented
 	}
 
 	@Override
@@ -389,8 +388,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isWellFormed(Task task) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return task.isWellFormed();
 	}
 
 	@Override
@@ -416,8 +414,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public Iterator<Task> getAllTasksIterator(Scheduler scheduler) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return scheduler.iterator();
 	}
 
 	@Override
