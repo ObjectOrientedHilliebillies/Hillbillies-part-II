@@ -37,7 +37,6 @@ public class SubTask {
 		remainingTime = time;
 		
 		if (mustEvaluate){
-			System.out.println(statement);
 			evaluationOfStatement();
 		}
 		
@@ -48,7 +47,6 @@ public class SubTask {
 			}
 		
 			while (true){
-				System.out.println(statement);
 				// If remainingTime is zero there is no time left
 				// return -1 because this sequence is not finished yet.
 				if (remainingTime == finishedWithNoTimeLeft || remainingTime == hasToBeExecutedAgain){
@@ -92,7 +90,6 @@ public class SubTask {
 		
 		// If the statement is a while.
 		if (subWhileTask != null) {
-			System.out.println("do subWhile");
 			remainingTime = subWhileTask.doWhile(remainingTime);
 		}
 		return remainingTime;
