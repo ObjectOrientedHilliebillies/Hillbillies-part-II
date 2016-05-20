@@ -1,9 +1,9 @@
 name: "attack"
 priority: 10
 activities:
-	e:= enemy;
-	while (is_alive e) do
-		moveTo (position_of e);
+
+	while (is_alive enemy) do
+		moveTo (position_of enemy);
 		attack enemy;
-	done
+		done
 

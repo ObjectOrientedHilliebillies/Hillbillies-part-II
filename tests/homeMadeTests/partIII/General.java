@@ -55,6 +55,20 @@ public class General {
 	private static final int TYPE_TREE = 2;
 	private static final int TYPE_WORKSHOP = 3;
 	
+	private World createWorld1() throws ModelException{
+		int[][][] types = new int[10][10][10];
+		for (int x=0; x!=5; x++){
+			for (int y=0; y!=5; y++){
+				for (int z=0; z!=5; z++){
+					types[x][y][z] = TYPE_ROCK;
+				}
+			}
+		}
+		types[1][1][2] = TYPE_TREE;
+		types[5][5][5] = TYPE_WORKSHOP;
+	
+		return facade.createWorld(types, new DefaultTerrainChangeListener());
+	}
 	
 	/**
 	 * Facade getCubeType test.
@@ -270,18 +284,8 @@ public class General {
 		System.out.println("#################################################");
 		System.out.println("# impossible dig #");
 		System.out.println("##################");
-		int[][][] types = new int[10][10][10];
-		for (int x=0; x!=5; x++){
-			for (int y=0; y!=5; y++){
-				for (int z=0; z!=5; z++){
-					types[x][y][z] = TYPE_ROCK;
-				}
-			}
-		}
-		types[1][1][2] = TYPE_TREE;
-		types[5][5][5] = TYPE_WORKSHOP;
-	
-		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
+		
+		World world = createWorld1();
 		
 		// FIXME Unit is also able to spauwn in 0,0,0!
 		Unit unit = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
@@ -335,6 +339,48 @@ public class General {
 	}
 	
 	/**
+	 * Test Banaan.
+	 */
+	@Test
+	public void Bannaan() throws ModelException{
+		System.out.println("#################################################");
+		System.out.println("# impossible dig #");
+		System.out.println("##################");
+		
+	
+		World world = createWorld1();
+		
+		// FIXME Unit is also able to spauwn in 0,0,0!
+		Unit unit = facade.createUnit("Dummy", new int[] { 7, 0, 0 }, 50, 50, 50, 50, true);
+		facade.addUnit(unit, world);
+		Faction faction = facade.getFaction(unit);
+		Scheduler scheduler = facade.getScheduler(faction);
+		
+		facade.spawnUnit(world, true);
+		facade.spawnUnit(world, true);
+
+		List<Task> tasks1 = TaskParser.parseTasksFromString(
+				"name: \"Banaan\"\n"
+				+ "priority : 22\n"
+				+ "activities :\n"
+				+ "a := any;\n"
+				+ "while is_alive a do\n"
+				+ "if is_friend a then\n"
+				+ "break;\n"
+				+ "fi\n"
+				+ "moveTo (position_of a);\n"
+				+ "attack (a);\n"
+				+ "a := any;\n"
+				+ "done", facade.createTaskFactory(),
+				new ArrayList<>());
+		facade.schedule(scheduler, tasks1.get(0));
+		advanceTimeFor(facade, world, 100, 0.2);
+		
+		assertTrue(facade.getUnits(world).size()==1);
+
+	}
+	
+	/**
  	 * Helper method to advance time for the given world by some time.
 	 * 
 	 * @param time
@@ -350,109 +396,4 @@ public class General {
 	}
 	
 }
-//	
-//	@Test
-//	public void getWorldTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit = new Unit("Name", position, false, world);
-//		assertEquals(unit.getWorld(), world);
-//	}
-//	
-//	@Test
-//	public void setWorldTest() throws ModelException {
-//		World world1 = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		World world2 = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit = new Unit("Name", position, false, world1);
-//		unit.setWorld(world2);
-//		assertEquals(unit.getWorld(), world2);
-//	}
-//	
-//	@Test
-//	public void getFactionTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit = new Unit("Name", position, false, world);
-//		assertEquals( world.getActiveFactions().contains(unit.getFaction()), true);
-//	}
-//	
-//	@Test
-//	public void setFactionTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit = new Unit("Name", position, false, world);
-//		Faction faction = new Faction(world);
-//		unit.setFaction(faction);
-//		assertEquals(unit.getFaction(), faction);
-//	}
-//	
-//	@Test
-//	public void getCubeTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit = new Unit("Name", position, false, world);
-//		assertEquals(true, position.getEnclosingCube(world).equals(unit.getCube())); //FIXME
-//	}
-//	
-////	@Test
-////	public void getExperienceTest() throws ModelException {
-////		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-////		int[] position = {5,5,5};
-////		Unit unit = new Unit("Name", position, false, world);
-////		unit.workAt(position);
-////	}
-//	
-//	@Test
-//	public void isAliveTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit1 = new Unit("Name", position, false, world);
-//		Unit unit2 = new Unit("Name", position, false, world);
-//		unit1.setStrength(200);
-//		unit1.setAgility(200);
-//		unit2.setStrength(1);
-//		unit2.setAgility(1);
-//		assertEquals(unit1.isAlive(), true); 
-//		for (int i = 1; i < 10000; i++) {
-//			unit2.advanceTime(0.2);
-//			unit1.advanceTime(0.2);
-//			unit2.attack(unit1); //FIXME geraakt niet voorbij de if in deze functie
-//		}
-//		assertEquals(unit1.isAlive(), false);
-//	}
-//	
-//	@Test
-//	public void getCarriedMaterialTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit1 = new Unit("Name", position, false, world);
-//		new Log(position, world);
-//		Cube position1 = new Cube(this.getPosition1(), world);
-//		unit1.workAt(position1);
-//		for (int i = 1; i<100;i++){
-//			unit1.advanceTime(0.2);}
-//		assertEquals(unit1.getCarriedMaterial(), 2);
-//		assertEquals(unit1.isCarryingLog(), true);
-//		assertEquals(unit1.isCarryingBoulder(), false);
-//	}
-//	
-//	@Test
-//	public void workAtTest() throws ModelException {
-//		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-//		Unit unit1 = new Unit("Name", position, false, world);
-//		Log log = new Log(position, world);
-//		Cube position1 = new Cube(this.getPosition1(), world);
-//		System.out.println(position1.toString());
-//		System.out.println(position.toString());
-//		unit1.workAt(position1);
-//		for (int i = 1; i<100;i++){
-//			unit1.advanceTime(0.2);} //unit1 is carrying a log now
-//		assertEquals(unit1.isCarryingLog(), true);
-//		Cube position2 = new Cube(this.getPosition2(), world);
-//		unit1.workAt(position2);
-//		for (int i = 1; i<100;i++){
-//			unit1.advanceTime(0.2);} //unit1 has dropped the log now
-//		assertEquals(world.getLogs().contains(log), true); //FIXME dropmaterial
-//		assertEquals(log.getPosition(), position2.getCentreOfCube());
-//		world.setTerrainType(position1, TYPE_ROCK);
-//		unit1.workAt(position1);
-//		for (int i = 1; i<100;i++){
-//			unit1.advanceTime(0.2);} // unit1 has mined the rock
-//		assertEquals(world.getBoulders().size(), 1);
-//		assertEquals(position2.getTerrainType(), TYPE_AIR);
-//	}
-//}
+

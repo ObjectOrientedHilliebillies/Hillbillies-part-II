@@ -1568,7 +1568,8 @@ public class Unit {
 			this.increaseExperience(20);
 		} else if (!(Math.random() < blockChance)) {
 			attacker.increaseExperience(20);
-			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10);
+			// TODO Unit attack op buff.
+			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10 - 1000);
 		} else
 			this.increaseExperience(20);
 	}
