@@ -1,5 +1,6 @@
 package hillbillies.model.statements;
 
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 public class BreakStatement extends Statement{
@@ -9,8 +10,8 @@ public class BreakStatement extends Statement{
 	}
 
 	@Override
-	public double execute() {
-		
+	public double execute(Task task) {
+		return -4;
 	}
 
 }
