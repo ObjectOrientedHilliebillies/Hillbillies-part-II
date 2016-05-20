@@ -1,4 +1,4 @@
 name: "follow"
 priority : 8
 activities:
-	follow friend;
+	follow enemy;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.statements.Statement;
+import hillbillies.model.task.Task;
 
 public class SubTask {
 	
