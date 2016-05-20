@@ -36,8 +36,10 @@ public class FollowStatement extends ActivityStatement{
 				followTheLeaderLeader.getCube(), followTheLeaderLeader.getWorld());
 		if (path == null){
 			taskFailed(task);
+			System.out.println("FOLLOW FAILED");
 			return -1;
 		}
+		System.out.println(path.get(0).toString());
 		task.getExecutor().moveTo(path.get(0));
 		return -1;
 	}
