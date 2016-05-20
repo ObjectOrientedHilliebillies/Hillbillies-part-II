@@ -46,4 +46,19 @@ public class IfStatement extends Statement{
 		returnList.add(resultBody);
 		return returnList;
 	}	
+	
+	@Override
+	public boolean doYouHaveABreak() {
+		if (ifBody != null) {
+			if (ifBody.doYouHaveABreak()) {
+				return true;
+			}
+		}
+		if (resultBody != null) {
+			if (resultBody.doYouHaveABreak()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -23,7 +23,6 @@ public class MoveToStatement extends ActivityStatement{
 
 	@Override
 	public double execute(Task task) {
-		System.out.println("execute moveTo");
 		Cube cube = position.getValue(task);
 		if (cube == null) {
 			task.taskFailed();

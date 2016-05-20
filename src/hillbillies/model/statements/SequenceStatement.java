@@ -18,7 +18,16 @@ public class SequenceStatement extends Statement{
 
 	private List<Statement> statements;
 	
-
+	@Override
+	public boolean doYouHaveABreak() {
+		for (Statement statement:statements){
+			if (statement.doYouHaveABreak()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public double execute(Task task) {
 		return defaultExecutionTime;

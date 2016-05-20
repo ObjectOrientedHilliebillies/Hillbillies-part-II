@@ -17,7 +17,7 @@ import hillbillies.model.expressions.positionExpressions.CubeExpression;
 import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.statements.Statement;
 
-public class Task {
+public class Task implements Comparable<Task>{
 	
 	/**
 	 * Initialize this new task with the given name and priority.
@@ -311,6 +311,24 @@ public class Task {
 	}
 
 	/**
+	 * Compare this task with the other task.
+	 * 
+	 * @param other
+	 * 		The other task
+	 * @return The result is equal to the  comparison of the priority
+	 * 			of this task and the other task.
+	 * @throws ClassCastException
+	 * 			The other task is not effective.
+	 */
+	@Override
+	public int compareTo(Task other) {
+		if (other == null){
+			throw new ClassCastException();
+		}
+		return getPriority().compareTo(other.getPriority());
+	}
+	
+	/**
 	 * Set this task as succeded
 	 * 
 	 * @effect this task is removed from all schedulers
@@ -381,9 +399,14 @@ public class Task {
 	}
 
 	/**
-	 * advance the program with the given time left
-	 * //FIXME
+	 * Advance the program with the given time left
+	 * 
 	 * @param timeLeft
+	 * 		The time this task has left for executing its statement
+	 * 
+	 * @effect This task will be advanced by the executor.
+	 * 
+	 * @effect If the textfile is finished, this task is finished.
 	 */
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
@@ -439,7 +462,7 @@ public class Task {
 	/**
 	 * Return whether this task is well formed or not.
 	 */
-	public boolean isWellFormed() {
-		return true; //FIXME
+	public boolean isWellFormed() {		
+		return (!statement.doYouHaveABreak());
 	}
 }

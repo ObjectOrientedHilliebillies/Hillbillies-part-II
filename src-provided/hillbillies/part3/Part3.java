@@ -32,7 +32,6 @@ public class Part3 extends HillbilliesApplication<Part2Options, IFacade, IHillbi
 	private static final String LEVELS_PATH = "resources/";
 
 	public static void main(String[] args) {
-		// TODO Van hier komen die wilde prints ;)
 		DebugStream.activate();
 		Application.launch(args);
 	}

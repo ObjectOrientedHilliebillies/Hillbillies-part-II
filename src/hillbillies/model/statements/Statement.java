@@ -25,7 +25,9 @@ public abstract class Statement {
 		return null;
 	}	
 	
-	
+	public boolean doYouHaveABreak(){
+		return false;
+	}
 
 	private SourceLocation sourceLocation;
 	

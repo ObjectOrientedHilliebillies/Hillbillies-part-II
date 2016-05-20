@@ -1784,8 +1784,8 @@ public class Unit {
 	
 	/**
 	 * Execute the task
-	 *  //FIXME
-	 * @param tickTime
+	 * 
+	 * @effect Task will be executed.
 	 */
 	public void executeTask(double tickTime) {
 		this.getTask().advanceProgram(tickTime);
