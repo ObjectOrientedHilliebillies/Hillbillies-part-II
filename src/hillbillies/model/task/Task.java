@@ -417,6 +417,7 @@ public class Task implements Comparable<Task>{
 			throw new IllegalArgumentException("Break was not in while");
 		}
 		if (feedback != SubTask.hasToBeExecutedAgain){
+			System.out.println("Task succeeded!");
 			taskSucceeded();
 		}
 	}
@@ -424,7 +425,7 @@ public class Task implements Comparable<Task>{
 	/**
 	 * Map registering the variables for this task with their values.
 	 */
-	private HashMap<String, Expression> variables = new HashMap();
+	private HashMap<String, Object> variables = new HashMap();
 	
 	/**
 	 * Returns the values of the variable with the given name.
@@ -433,7 +434,7 @@ public class Task implements Comparable<Task>{
 	 * 		The name of the retrieved variable
 	 */
 	@Basic @Raw
-	public Expression<?> getValue(String name) {
+	public Object getValue(String name) {
 		return variables.get(name);
 	}
 	
@@ -448,7 +449,7 @@ public class Task implements Comparable<Task>{
 	 * @post the given variable is assigned to this task
 	 * 		| new.getValue(name) == value
 	 */
-	public void setVariable(String name, Expression value) {
+	public void setVariable(String name, Object value) {
 		variables.put(name, value);
 	}
 	

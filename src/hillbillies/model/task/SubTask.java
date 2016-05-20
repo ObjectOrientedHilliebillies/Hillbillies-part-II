@@ -75,6 +75,9 @@ public class SubTask {
 				
 				// If the processed statement was last in the sequence we return all is done here.
 				if (index == subStatements.size()){
+					System.out.println(statement.getSourceLocation().toString());
+					System.out.println(remainingTime);
+					System.out.println(statement);
 					return remainingTime;
 				}
 				
@@ -83,6 +86,7 @@ public class SubTask {
 					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 			
 				}catch (IndexOutOfBoundsException e){
+					System.out.println(index);
 					task.taskFailed();
 				}
 			}

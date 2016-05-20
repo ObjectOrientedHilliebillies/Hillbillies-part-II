@@ -9,6 +9,7 @@ import org.stringtemplate.v4.compiler.STParser.ifstat_return;
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.ReadVariableExpression;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
+import hillbillies.model.expressions.booleanExpressions.BooleanReadVariableExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression;
 import hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression;
 import hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExpression.IsPassableExpression;
@@ -17,6 +18,7 @@ import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpr
 import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsCarryingItemExpression;
 import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsEnemyExpression;
 import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsFriendExpression;
+import hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.unitIsExpression;
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.AndExpression;
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.NotExpression;
 import hillbillies.model.expressions.booleanExpressions.logicalExpressions.OrExpression;
@@ -27,9 +29,11 @@ import hillbillies.model.expressions.positionExpressions.LiteralPosition;
 import hillbillies.model.expressions.positionExpressions.LogPosition;
 import hillbillies.model.expressions.positionExpressions.NextToPosition;
 import hillbillies.model.expressions.positionExpressions.PositionOf;
+import hillbillies.model.expressions.positionExpressions.PositionReadVariableExpression;
 import hillbillies.model.expressions.positionExpressions.SelectedPosition;
 import hillbillies.model.expressions.positionExpressions.WorkshopPosition;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
+import hillbillies.model.expressions.unitExpressions.UnitReadVariableExpression;
 import hillbillies.model.expressions.unitExpressions.anyExpression.AnyExpression;
 import hillbillies.model.expressions.unitExpressions.anyExpression.EnemyExpression;
 import hillbillies.model.expressions.unitExpressions.anyExpression.FriendExpression;
@@ -152,7 +156,22 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task> {
 	@Override
 	public Expression createReadVariable(String variableName, SourceLocation sourceLocation) {
 		System.out.println("createReadVariable");
-		return dictionary.get(variableName);
+		if (dictionary.get(variableName) instanceof UnitExpression) {
+			return new UnitReadVariableExpression(variableName, sourceLocation);
+		}
+		
+		if (dictionary.get(variableName) instanceof CubeExpression<?>) {
+			return new PositionReadVariableExpression(variableName, sourceLocation);
+		}
+		
+		if (dictionary.get(variableName) instanceof BooleanExpression) {
+			return new BooleanReadVariableExpression(variableName, sourceLocation);
+		}
+		
+		return null;
+	
+//		return dictionary.get(variableName);
+//		return new ReadVariableExpression<>(variableName, dictionary.get(variableName), sourceLocation);
 	}
 
 	@Override

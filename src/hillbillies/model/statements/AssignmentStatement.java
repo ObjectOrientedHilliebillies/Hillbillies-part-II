@@ -30,7 +30,8 @@ public class AssignmentStatement extends Statement{
 	
 	@Override
 	public double execute(Task task) {
-		task.setVariable(this.variableName, this.value);
+//		task.setVariable(this.variableName, this.value.getValue(task));
+		task.setVariable(this.variableName, this.value.getValue(task));
 		return defaultExecutionTime;
 	}
 }
