@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import be.kuleuven.cs.som.annotate.*;
 import hillbillies.model.task.Task;
-import ogp.framework.util.ModelException;
 
 public class Scheduler implements Iterable<Task> {
 	
@@ -166,12 +165,18 @@ public class Scheduler implements Iterable<Task> {
 		sortManagedTasks();
 	}
 	
+	/**
+	 * Iterator for the managed task list
+	 */
 	@Override
 	public Iterator<Task> iterator() {
 	        Iterator<Task> it = new Iterator<Task>() {
 
 	            private int currentIndex = 0;
-
+	            
+	            /**
+	             * Returns true if the iteration has more elements.
+	             */
 	            @Override
 	            public boolean hasNext() {
 	                return currentIndex < managedTasks.size() 
