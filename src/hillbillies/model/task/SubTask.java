@@ -42,9 +42,11 @@ public class SubTask {
 			while (true){
 				// If remainingTime is zero there is no time left
 				// return -1 because this sequence is not finished yet.
-				if (remainingTime == 0){
+				if (remainingTime == 0 || remainingTime == -1){
 					return -1;
 				}
+				
+				
 				
 				remainingTime = subTask.advance(remainingTime);
 				
