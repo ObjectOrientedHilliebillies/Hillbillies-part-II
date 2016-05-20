@@ -1,7 +1,7 @@
 package hillbillies.model.expressions.booleanExpressions.logicalExpressions;
 
-import hillbillies.model.Task;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
+import hillbillies.model.task.Task;
 
 public class NotExpression extends BooleanExpression{
 	public NotExpression(BooleanExpression e){

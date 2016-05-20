@@ -1,11 +1,12 @@
 package hillbillies.model.statements;
 
-import hillbillies.model.Task;
 import hillbillies.model.expressions.Expression;
+import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
+import hillbillies.model.task.Task;
 
 public class WhileStatement extends Statement{
 
-	public WhileStatement(Expression<Boolean> condition, Statement body) {
+	public WhileStatement(BooleanExpression condition, Statement body) {
 		setCondition(condition);
 		setBody(body);
 	}
@@ -14,7 +15,7 @@ public class WhileStatement extends Statement{
 		this.body = body;
 	}
 	
-	private Statement getBody() {
+	public Statement getBody() {
 		return this.body;
 	}
 	
@@ -22,19 +23,18 @@ public class WhileStatement extends Statement{
 		this.condition = condition;
 	}
 	
-	private Expression<Boolean> getCondition() {
+	private BooleanExpression getCondition() {
 		return this.condition;
 	}
 	
-	private Expression<Boolean> condition;
+	private BooleanExpression condition;
 	private Statement body;
 	
 	@Override
 	public double execute(Task task) {
-		while (this.getCondition().getValue(task)) {
-			this.getBody().execute(task);
+		if (getCondition().getValue(task)){
+			return 
 		}
-		return 0;
 		
 	}
 

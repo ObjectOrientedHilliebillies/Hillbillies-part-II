@@ -3,6 +3,8 @@ package hillbillies.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import hillbillies.model.task.Task;
 import ogp.framework.util.ModelException;
 
 public class Scheduler implements Iterable<Task> {

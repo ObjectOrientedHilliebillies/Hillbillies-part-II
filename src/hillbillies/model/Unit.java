@@ -41,6 +41,7 @@ import javax.crypto.IllegalBlockSizeException;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
+import hillbillies.model.task.Task;
 import ogp.framework.util.Util;
 
 /**

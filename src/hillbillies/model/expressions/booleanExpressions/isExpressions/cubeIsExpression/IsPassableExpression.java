@@ -1,8 +1,8 @@
 package hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExpression;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.task.Task;
 
 public class IsPassableExpression extends CubeIsExpression{
 	

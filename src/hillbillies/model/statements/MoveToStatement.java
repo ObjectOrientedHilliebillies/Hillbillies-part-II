@@ -2,13 +2,17 @@ package hillbillies.model.statements;
 
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.positionExpressions.CubeExpression;
+import hillbillies.model.task.Task;
 import hillbillies.part3.programs.SourceLocation;
 
 import java.util.List;
 
 import hillbillies.model.Cube;
+<<<<<<< HEAD
 import hillbillies.model.Pathfinding;
 import hillbillies.model.Task;
+=======
+>>>>>>> refs/remotes/origin/Victor
 import hillbillies.model.Unit;
 
 public class MoveToStatement extends ActivityStatement{

@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import hillbillies.model.Cube;
-import hillbillies.model.Task;
 import hillbillies.model.statements.Statement;
+import hillbillies.model.task.Task;
 
 public class NextToPosition extends CubeExpression<CubeExpression<?>>{
 	
