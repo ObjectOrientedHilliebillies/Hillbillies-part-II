@@ -94,7 +94,7 @@ public class Material {
 	 * Set the position of this material to the given position.
 	 */
 	private void setPosition(Vector vector){
-		if (! this.world.isPositionInWorld(vector)) // TODO falling toevoegen
+		if (! this.world.isPositionInWorld(vector))
 			throw new IllegalArgumentException();
 		this.position = vector;
 	}

@@ -44,7 +44,6 @@ public class VariableAssignmentTest {
 		types[2][2][2] = TYPE_WORKSHOP;
 
 		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
-		// FIXME Given syntacs does not work.
 		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, true);
 		facade.addUnit(unit, world);
 		Faction faction = facade.getFaction(unit);

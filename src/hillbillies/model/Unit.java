@@ -852,6 +852,9 @@ public class Unit {
 	private void die() {
 		if (this.isCarryingMaterial())
 			this.dropMaterial(this.getPosition());
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
+		}
 		this.alive = false;
 		this.getFaction().removeUnit(this);
 	}
@@ -1086,9 +1089,9 @@ public class Unit {
 		// this.speed = 0;
 		// else{
 		double heightDifference = Vector.heightDifference(this.position, targetPosition);
-		if (heightDifference == -1)
+		if (Util.fuzzyGreaterThanOrEqualTo(heightDifference,-1))
 			this.speed = this.getBaseSpeed() / 2;
-		else if (heightDifference == 1)
+		else if (Util.fuzzyGreaterThanOrEqualTo(heightDifference, 1))
 			this.speed = this.getBaseSpeed() * 1.2;
 		else {
 			this.speed = this.getBaseSpeed();
@@ -1166,7 +1169,6 @@ public class Unit {
 			if (stamina <= 0)
 				this.sprinting = false;
 		}
-		// FIXME speed is always the same.
 		this.setSpeed(this.targetPosition);
 		double d = Vector.distanceBetween(targetPosition, position);
 
@@ -1337,7 +1339,6 @@ public class Unit {
 		// * Set the carried material of this unit to the given material.
 		// */
 		// public void setCarriedMaterial(Material material) {
-		// TODO defensive
 		if (material instanceof Log)
 			this.carriedMaterial = 2;
 		else if (material instanceof Boulder)
@@ -1456,7 +1457,7 @@ public class Unit {
 	 * 
 	 * @post if this unit was carrying a log, this log will now be part of the
 	 *       world with position as position. The same for a boulder. This unit
-	 *       is not carrying any material. //TODO of is dit effect?
+	 *       is not carrying any material.
 	 */
 	private void dropMaterial(Vector position) {
 		if (!position.getEnclosingCube(this.getWorld()).isSolid()) {
@@ -1537,7 +1538,8 @@ public class Unit {
 	 * 
 	 * @param unit
 	 *            the unit who is attacking this unit
-	 * @post | if Math.random() < dodgeChance new.getPosition ==
+	 * @post | if Math.random() < dodgeChance 
+	 * 		new.getPosition ==
 	 *       this.getPosition + random this.getOrientation = unit.getOrientation
 	 *       this.increaseExperience(20) | else if (!Math.random() <
 	 *       blockChance) new.getHitpoints() == this.getHitpoints() -
@@ -1546,6 +1548,9 @@ public class Unit {
 	 */
 	private void defenseAgainst(Unit attacker) {
 		System.out.println("defend");
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
+		}
 		this.activeActivity = 6;
 		double blockChance = 0.25 * (this.getStrength() + this.getAgility())
 				/ (attacker.getAgility() + attacker.getStrength());
@@ -1568,8 +1573,7 @@ public class Unit {
 			this.increaseExperience(20);
 		} else if (!(Math.random() < blockChance)) {
 			attacker.increaseExperience(20);
-			// TODO Unit attack op buff.
-			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10 - 1000);
+			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10);
 		} else
 			this.increaseExperience(20);
 	}
@@ -1598,6 +1602,9 @@ public class Unit {
 		if (activeActivity != 4) {
 			recoverdPoints = 0;
 			this.activeActivity = 4;
+		}
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
 		}
 	}
 
@@ -1747,17 +1754,39 @@ public class Unit {
 		}
 
 	}
-
+	
+	/**
+	 * Variable registering the task of this unit.
+	 */
 	public Task task;
-
+	
+	/**
+	 * Set the task of this unit to the given task
+	 * 
+	 * @param task
+	 * 		The new task for this unit
+	 * 
+	 * @post the task of this unit is equal to the given task
+	 * 		| new.getTask == task
+	 */
+	@Raw
 	public void setTask(Task task) {
 		this.task = task;
 	}
-
+	
+	/**
+	 * Return the task of this unit
+	 */
+	@Basic @Raw
 	public Task getTask() {
 		return this.task;
 	}
-
+	
+	/**
+	 * Execute the task
+	 *  //FIXME
+	 * @param tickTime
+	 */
 	public void executeTask(double tickTime) {
 		this.getTask().advanceProgram(tickTime);
 	}

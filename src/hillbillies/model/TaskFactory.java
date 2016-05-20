@@ -55,7 +55,7 @@ import hillbillies.part3.programs.SourceLocation;
  * @param <T>
  *
  */
-public class TaskFactory implements ITaskFactory<Expression, Statement, Task>, IVariableDictionary<String, Expression>{
+public class TaskFactory implements ITaskFactory<Expression, Statement, Task> {
 
 	@Override
 	public List<Task> createTasks(String name, int priority, Statement activity, List<int[]> selectedCubes) {
@@ -69,11 +69,10 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>, I
 			Task task = new Task(name, priority, activity, cube);
 			taskList.add(task);
 		}}
+		this.dictionary.clear();
 		return taskList;
 	}
 
-	public void test(){}
-	
 	@Override
 	public Statement createAssignment(String variableName, Expression value, SourceLocation sourceLocation) {
 		System.out.println("createAssignment");
@@ -293,23 +292,8 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>, I
 		System.out.println("createFalse");
 		return new FalseExpression();
 	}
-
-
-
-	
-	@Override
-	public Expression createValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	@Override
-	public String createName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	private HashMap<String, Expression<?>> dictionary = new HashMap();
+
 }
 	
