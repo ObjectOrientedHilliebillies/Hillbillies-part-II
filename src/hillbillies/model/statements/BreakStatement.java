@@ -11,9 +11,8 @@ public class BreakStatement extends Statement{
 
 	@Override
 	public double execute(Task task) {
-		if (!task.getSubTask().inLoop)
-			throw new 
-		return -4;
+		return breakStatement;
+
 	}
 
 }

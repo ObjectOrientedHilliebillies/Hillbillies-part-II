@@ -27,16 +27,14 @@ public class WorkStatement extends ActivityStatement{
 	public double execute(Task task) {
 		Cube cube = getPosition().getValue(task);
 		Unit unit = task.getExecutor();
-		//if (!unit.isCarryingBoulder() && !unit.isCarryingLog() && cube.isPassable()) {
-		//	return 0;
-		//}
+		
 		if (!(cube.isNeighbourCube(unit.getCube()) || cube.equals(unit.getCube()))){
 			taskFailed(task);
-			return -1;
+			return repeatingLong;
 		}
 		unit.workAt(cube);
 		System.out.println(cube.toString());
-		return -3;
+		return singularLong;
 	}
 
 }
