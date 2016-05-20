@@ -12,20 +12,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Generated;
 
-import org.junit.Test.None;
-import org.omg.CORBA.IRObject;
 
 import hillbillies.part2.listener.TerrainChangeListener;
 import hillbillies.util.ConnectedToBorder;
 import ogp.framework.util.Util;
 
 
-public class World {
+public class World implements IModifyWorld<Cube, Material>{
 	/**
 	 * Initialize this new world with given terrain.
 	 * 
@@ -161,7 +157,7 @@ public class World {
 			|	|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|	|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ)
 	 */
-	boolean isCubeInWorld(List<Integer> cubePosition){
+	public boolean isCubeInWorld(List<Integer> cubePosition){
 		if (cubePosition.get(0) < 0 || cubePosition.get(0) >= NbCubesX
 			|| cubePosition.get(1) < 0 || cubePosition.get(1) >= NbCubesY
 			|| cubePosition.get(2) < 0 || cubePosition.get(2) >= NbCubesZ){
@@ -308,7 +304,7 @@ public class World {
 	 * @post If this cube was not connected to a border,
 	 * 		its terraintype is air.
 	 */
-	private void collapseIfFloating(Cube cube){
+	public void collapseIfFloating(Cube cube){
 		if (!this.isSolidConnectedToBorder(cube)){
 			this.setTerrainType(cube, 0);
 		}
@@ -321,7 +317,7 @@ public class World {
 	 * 		the border are changed in air.
 	 * 		
 	 */
-	private void collapseAllFloatingCubes(){
+	public void collapseAllFloatingCubes(){
 		for (int x=0 ; x != NbCubesX ; x++){
 			for (int y=0 ; y != NbCubesY; y++){
 				for  (int z=0 ; z != NbCubesZ; z++){
