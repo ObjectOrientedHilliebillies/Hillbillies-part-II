@@ -189,6 +189,8 @@ public class Task implements Comparable<Task>{
 	private Statement statement;
 	private SubTask subTask = null;
 	
+	public getSubTask
+	
 	public void advanceProgram(double timeLeft){
 		if (subTask == null){
 			subTask = new SubTask(statement, cube, this, false);

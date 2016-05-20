@@ -69,11 +69,10 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task>, I
 			Task task = new Task(name, priority, activity, cube);
 			taskList.add(task);
 		}}
+		this.dictionary.clear();
 		return taskList;
 	}
 
-	public void test(){}
-	
 	@Override
 	public Statement createAssignment(String variableName, Expression value, SourceLocation sourceLocation) {
 		System.out.println("createAssignment");
