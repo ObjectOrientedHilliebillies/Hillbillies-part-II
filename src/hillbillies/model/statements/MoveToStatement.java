@@ -23,26 +23,30 @@ public class MoveToStatement extends ActivityStatement{
 
 	@Override
 	public double execute(Task task) {
+		System.out.println("execute moveTo");
 		Cube cube = position.getValue(task);
 		if (cube == null) {
 			task.taskFailed();
 			return -1;
 		}
-		cube.getWorld();
-		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
-				cube, cube.getWorld());
-		if (path == null){
-			task.taskFailed();
-			System.out.println("Task Failed");
-			return -1;
-		}
+		
 		Unit unit = task.getExecutor();
 		if (unit.getCube().equals(cube)){
 			System.out.println("MoveToStatement: "+ "De unit staat er al");
 			return 0;
 		}
-		if (!(path.size() == 1)){
-		unit.moveTo(path.get(path.size()-2)); }
+		
+		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
+				cube, cube.getWorld());
+		
+		if (path == null){
+			task.taskFailed();
+			System.out.println("Task Failed");
+			return -1;
+		}
+		
+		unit.moveToAdjacent(path.get(path.size()-2)); 
+
 		return -1;
 	}	
 }
