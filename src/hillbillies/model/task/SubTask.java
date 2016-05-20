@@ -74,6 +74,7 @@ public class SubTask {
 				}
 				
 				System.out.println(subStatements);
+				System.out.println(index);
 				// If the sequence in not completed yet, load the next substatement.
 				try {
 					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
