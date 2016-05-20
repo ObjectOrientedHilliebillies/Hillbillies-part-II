@@ -175,19 +175,22 @@ public class Scheduler implements Iterable<Task> {
 	            private int currentIndex = 0;
 	            
 	            /**
-	             * Returns true if the iteration has more elements.
+	             * Returns true if the managed task list has more elements.
 	             */
 	            @Override
 	            public boolean hasNext() {
 	                return currentIndex < managedTasks.size() 
 	                		&& managedTasks.get(currentIndex) != null;
 	            }
-
+	            
+	            /**
+	             * Returns the next element from the managed task list.
+	             */
 	            @Override
 	            public Task next() {
 	                return managedTasks.get(currentIndex++);
 	            }
-
+	            
 	            @Override
 	            public void remove() {
 	                throw new UnsupportedOperationException();
@@ -196,15 +199,27 @@ public class Scheduler implements Iterable<Task> {
 	        return it;
 	    }
 	
+	/**
+	 * Returns whether the given collection of tasks is part of this scheduler.
+	 * 
+	 * @param tasks
+	 * 		The taksks to be checked.
+	 */
 	public boolean areTasksPartOf(Collection<Task> tasks){
 		return managedTasks.containsAll(tasks);
 	}
 	
+	/**
+	 * Returns the task with the highest priority and set it occupied by the given unit
+	 * 
+	 * @param unit
+	 * 		The unit who will execute the returned task
+	 */
 	public Task ascribeTask(Unit unit) {
 		Task mostImportantTask = null;
 		for (Task task : getManagedTasks()){
 			if (!task.isOccupied()){
-				if (mostImportantTask == null
+				if (mostImportantTask == null //TODO weghalen
 						|| (mostImportantTask.getPriority() < task.getPriority())){
 					mostImportantTask = task;
 				}

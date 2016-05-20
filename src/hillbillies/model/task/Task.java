@@ -393,6 +393,11 @@ public class Task implements Comparable<Task>{
 	 */
 	private SubTask subTask = null;
 	
+
+	public SubTask getSubTask() {
+		return this.subTask;
+	}
+
 	/**
 	 * advance the program with the given time left
 	 * //FIXME
