@@ -38,7 +38,7 @@ public class FollowStatement extends ActivityStatement{
 			taskFailed(task);
 			return -1;
 		}
-		task.getExecutor().moveTo(path.get(0));
+		task.getExecutor().moveToAdjacent(path.get(0));
 		return -1;
 	}
 

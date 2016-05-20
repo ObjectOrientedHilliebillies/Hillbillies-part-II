@@ -53,6 +53,7 @@ public class SubWhileTask {
 			subTask = null;
 			
 			if (feedback == 0){
+				System.out.println("while feedback == 0");
 				return -1;
 			}
 			

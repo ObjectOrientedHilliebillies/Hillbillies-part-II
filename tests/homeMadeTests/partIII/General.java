@@ -331,6 +331,7 @@ public class General {
 		assertFalse(facade.areTasksPartOf(scheduler, tasks2));
 		System.out.println(tasks1.get(0).getPriority());
 		System.out.println(tasks2.get(0).getPriority());
+		assertTrue(world.getCube(pos2).getTerrainType() == TYPE_AIR);
 	}
 	
 	/**

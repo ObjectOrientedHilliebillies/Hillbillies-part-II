@@ -77,7 +77,7 @@ public class SubTask {
 		
 		// If the statement is a while.
 		if (subWhileTask != null) {
-			subWhileTask.doWhile(remainingTime);
+			remainingTime = subWhileTask.doWhile(remainingTime);
 		}
 		return remainingTime;
 	}
