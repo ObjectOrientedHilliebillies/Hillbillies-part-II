@@ -46,7 +46,6 @@ public class FollowTest {
 		types[2][2][2] = TYPE_WORKSHOP;
 
 		World world = facade.createWorld(types, new DefaultTerrainChangeListener());
-		// FIXME Given syntacs does not work.
 		Unit unit = facade.createUnit("Dummy", new int[] { 0, 0, 0 }, 50, 50, 50, 50, false);
 		Unit unit2 = facade.spawnUnit(world, false);
 		//Unit unit2 = facade.createUnit("Dummy", new int[] { 0, 1, 2 }, 50, 50, 50, 50, false);

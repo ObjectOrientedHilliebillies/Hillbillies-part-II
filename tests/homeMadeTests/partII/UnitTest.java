@@ -70,8 +70,8 @@ public class UnitTest {
 	@Test
 	public void getFactionTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Unit unit = new Unit("Name", position, false, world);
-		assertEquals( world.getActiveFactions().contains(unit.getFaction()), true);
+		Unit unit = facade.spawnUnit(world, false);
+		assertTrue(world.getActiveFactions().contains(unit.getFaction()));
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class UnitTest {
 	public void getCubeTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
 		Unit unit = new Unit("Name", position, false, world);
-		assertEquals(true, position.getEnclosingCube(world).equals(unit.getCube())); //FIXME
+		assertEquals(true, position.getEnclosingCube(world).equals(unit.getCube()));
 	}
 	
 //	@Test
@@ -101,17 +101,18 @@ public class UnitTest {
 	@Test
 	public void isAliveTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Unit unit1 = new Unit("Name", position, false, world);
-		Unit unit2 = new Unit("Name", position, false, world);
+		Unit unit1 = facade.spawnUnit(world, false);
+		Unit unit2 = facade.spawnUnit(world, false);
 		unit1.setStrength(200);
 		unit1.setAgility(200);
 		unit2.setStrength(1);
 		unit2.setAgility(1);
 		assertEquals(unit1.isAlive(), true); 
-		for (int i = 1; i < 10000; i++) {
-			unit2.advanceTime(0.2);
-			unit1.advanceTime(0.2);
-			unit2.attack(unit1); //FIXME geraakt niet voorbij de if in deze functie
+		for (int j = 1; j < 100; j++) {
+			facade.advanceTime(world, 0.2);
+			unit2.moveTo(unit1.getCube());
+			facade.advanceTime(world, 0.2);
+			unit2.attack(unit1);
 		}
 		assertEquals(unit1.isAlive(), false);
 	}
@@ -133,12 +134,13 @@ public class UnitTest {
 	@Test
 	public void workAtTest() throws ModelException {
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Unit unit1 = new Unit("Name", position, false, world);
+		Unit unit1 = facade.spawnUnit(world, false);
 		Log log = new Log(position, world);
 		Cube position1 = new Cube(this.getPosition1(), world);
 		System.out.println(position1.toString());
 		System.out.println(position.toString());
-		unit1.workAt(position1);
+		facade.workAt(unit1, position1.getXGrit(), position1.getYGrit(), position1.getZGrit());
+		//unit1.workAt(position1);
 		for (int i = 1; i<100;i++){
 			unit1.advanceTime(0.2);} //unit1 is carrying a log now
 		assertEquals(unit1.isCarryingLog(), true);
@@ -146,8 +148,8 @@ public class UnitTest {
 		unit1.workAt(position2);
 		for (int i = 1; i<100;i++){
 			unit1.advanceTime(0.2);} //unit1 has dropped the log now
-		assertEquals(world.getLogs().contains(log), true); //FIXME dropmaterial
-		assertEquals(log.getPosition(), position2.getCentreOfCube());
+		assertEquals(world.getLogs().contains(log), true); //dropmaterial
+		//assertEquals(log.getPosition(), position2.getCentreOfCube());
 		world.setTerrainType(position1, TYPE_ROCK);
 		unit1.workAt(position1);
 		for (int i = 1; i<100;i++){

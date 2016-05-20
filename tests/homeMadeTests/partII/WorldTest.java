@@ -53,7 +53,7 @@ public class WorldTest {
 //		position1.add(5);
 //		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
 //		assertEquals(world.isCubeInWorld(position1), true);
-//		assertEquals(world.isCubeInWorld(position2), true); //FIXME
+//		assertEquals(world.isCubeInWorld(position2), true);
 //		assertEquals(world.isCubeInWorld(position3), false);
 //	}
 	
@@ -226,15 +226,15 @@ public class WorldTest {
 	public void getUnitsTest() throws ModelException {
 		Vector position1 = new Vector(1,1,0);
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Unit unit1 = new Unit("Name", position1, false, world);
-		assertEquals(world.getUnits().contains(unit1), true); //FIXME unit wordt geïnitialiseerd met negatieve waarde hitpoints? Dus hij gaat dood voordat hij heeft geleefd...
+		Unit unit1 = facade.spawnUnit(world, false);
+		assertEquals(world.getUnits().contains(unit1), true);
 	}
 	
 	@Test
 	public void addUnitTest() throws ModelException {
 		Vector position1 = new Vector(1,1,0);
 		World world = facade.createWorld(new int[10][10][10], new DefaultTerrainChangeListener());
-		Unit unit1 = new Unit("Name", position1, false, world);
+		Unit unit1 = facade.spawnUnit(world, false);
 		assertEquals(world.getUnits().contains(unit1), true);
 	}	
 

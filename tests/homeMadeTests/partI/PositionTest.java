@@ -47,7 +47,6 @@ public class PositionTest {
 		cube[1] = 40;
 		cube[2] = 40;
 		unit.moveTo(cube);
-		//FIXME gaat deze test niet falen omdat de unit daar niet instant staat?
 		assertEquals(unit.getCube(), cube);
 	}
 	
@@ -75,7 +74,6 @@ public class PositionTest {
 	
 	@Test
 	public void moveToAdjacentTest2() throws IllegalArgumentException, ModelException {
-		// Hier moet een exception gegooid worden //TODO
 		int[] cube = new int[3];
 		cube[0] = 0;
 		cube[1] = 0;

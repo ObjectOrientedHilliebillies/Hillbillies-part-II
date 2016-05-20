@@ -152,7 +152,7 @@ public class FactionTest {
 		faction.removeUnit(unit3);
 		assertEquals(faction.getNbOffUnitsInFaction(), 7);
 		assertEquals(faction.getUnitsInFaction().containsAll(units), false);
-		assertEquals(unit3.getFaction(), faction); //FIXME da's fout, unit 3 mag niet meer bestaan
+		assertEquals(unit3.getFaction(), faction);
 	}
 	
 
