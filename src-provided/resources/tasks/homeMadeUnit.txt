@@ -1,4 +1,12 @@
 name: "Banaan"
 priority : 22
 activities : 
-		if is
+	a := any;
+	while is_alive a do
+		if is_friend a then
+			break;
+		fi
+		moveTo (position_of a);
+		attack (a);
+		a := any;
+	done

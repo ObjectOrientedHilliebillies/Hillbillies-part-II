@@ -1,5 +1,9 @@
 package hillbillies.model.expressions.unitExpressions.anyExpression;
 
+import java.util.Set;
+
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.Unit;
 import hillbillies.model.expressions.unitExpressions.UnitExpression;
 import hillbillies.model.task.Task;
@@ -11,7 +15,9 @@ public class AnyExpression extends UnitExpression{
 	
 	@Override
 	public Unit getValue(Task task) {
-		return task.getExecutor().getWorld().getUnits().stream().findAny().orElse(null);
+		Set<Unit> units = task.getExecutor().getWorld().getUnits();
+		units.remove(task.getExecutor());
+		return units.stream().findAny().orElse(null);
 	}
 	
 }
