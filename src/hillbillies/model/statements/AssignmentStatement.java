@@ -33,5 +33,4 @@ public class AssignmentStatement extends Statement{
 		task.setVariable(this.variableName, this.value);
 		return defaultExecutionTime;
 	}
-
 }

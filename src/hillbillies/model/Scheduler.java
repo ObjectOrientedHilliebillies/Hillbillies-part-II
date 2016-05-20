@@ -219,10 +219,8 @@ public class Scheduler implements Iterable<Task> {
 		Task mostImportantTask = null;
 		for (Task task : getManagedTasks()){
 			if (!task.isOccupied()){
-				if (mostImportantTask == null //TODO weghalen
-						|| (mostImportantTask.getPriority() < task.getPriority())){
 					mostImportantTask = task;
-				}
+					break;
 			}
 		}
 		if (mostImportantTask != null){

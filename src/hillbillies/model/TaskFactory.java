@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.ReadVariableExpression;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
@@ -60,6 +62,10 @@ public class TaskFactory implements ITaskFactory<Expression, Statement, Task> {
 	@Override
 	public List<Task> createTasks(String name, int priority, Statement activity, List<int[]> selectedCubes) {
 		System.out.println("createTasks");
+		if (activity.doYouHaveABreak()) {
+			// TODO Of we zetten task.isWellFormed = false ofzo?
+			throw new IllegalAccessError("Break outside of while");
+		}
 		List<Task> taskList = new ArrayList<>(); 
 		if (selectedCubes.size() == 0){
 			Task task = new Task(name, priority, activity);

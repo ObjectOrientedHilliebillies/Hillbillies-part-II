@@ -743,7 +743,7 @@ public class World {
 	 */
 	public Unit spawnUnit(boolean enableDefaultBehavior){
 		Unit newUnit =  new Unit("Harry", generateRandomValidPosition().getCenterOfCube(), 
-				enableDefaultBehavior, this); //TODO name not final
+				enableDefaultBehavior, this);
 		this.addUnit(newUnit);
 		return newUnit;
 	}
