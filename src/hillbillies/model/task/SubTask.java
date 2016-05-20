@@ -61,9 +61,15 @@ public class SubTask {
 				if (index == subStatements.size()){
 					return remainingTime;
 				}
-	
+				
+				System.out.println(subStatements);
 				// If the sequence in not completed yet, load the next substatement.
-				subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+				try {
+					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+			
+				}catch (IndexOutOfBoundsException e){
+					task.taskFailed();
+				}
 			}
 		}
 		

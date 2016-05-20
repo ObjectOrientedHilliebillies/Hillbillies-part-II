@@ -1,6 +1,5 @@
 package hillbillies.model.statements;
 
-import hillbillies.model.expressions.Expression;
 import hillbillies.model.expressions.booleanExpressions.BooleanExpression;
 import hillbillies.model.task.Task;
 
@@ -19,7 +18,7 @@ public class WhileStatement extends Statement{
 		return this.body;
 	}
 	
-	private void setCondition(Expression<Boolean> condition) {
+	private void setCondition(BooleanExpression condition) {
 		this.condition = condition;
 	}
 	
@@ -33,9 +32,8 @@ public class WhileStatement extends Statement{
 	@Override
 	public double execute(Task task) {
 		if (getCondition().getValue(task)){
-			return 
-		}
-		
+			return -2;
+		}	
+		return 0;
 	}
-
 }
