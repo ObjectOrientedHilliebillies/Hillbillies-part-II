@@ -39,8 +39,9 @@ public class FollowStatement extends ActivityStatement{
 			System.out.println("FOLLOW FAILED");
 			return -1;
 		}
-		System.out.println(path.get(0).toString());
-		task.getExecutor().moveTo(path.get(0));
+		if (!(path.size() == 1)){
+		System.out.println(path.get(path.size() - 2).toString());
+		task.getExecutor().moveTo(path.get(path.size() - 2)); }
 		return -1;
 	}
 
