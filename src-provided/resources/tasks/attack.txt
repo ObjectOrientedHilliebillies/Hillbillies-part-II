@@ -1,12 +1,9 @@
 name: "attack"
 priority: 10
 activities:
-<<<<<<< HEAD
+
 	while (is_alive enemy) do
 		moveTo (position_of enemy);
 		attack enemy;
 		done
-=======
-	moveTo(next_to (position_of enemy));
-	attack enemy;
->>>>>>> refs/remotes/origin/master
+
