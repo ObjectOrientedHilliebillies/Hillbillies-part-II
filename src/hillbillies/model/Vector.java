@@ -217,7 +217,7 @@ public class Vector {
 	/**
 	 * Returns the length of this vector.
 	 */
-	private double lenght(){
+	public double lenght(){
 		return Math.sqrt(Math.pow(this.getXCoord(),2) 
 				+Math.pow(this.getYCoord(),2)
 				+Math.pow(this.getZCoord(),2));

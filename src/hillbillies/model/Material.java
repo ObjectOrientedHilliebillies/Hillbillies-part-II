@@ -37,7 +37,7 @@ public class Material {
  * @post if the given weight is a valid weight for any material, the weight
  * 		of this material is equal to the given weight.
  */
-	protected Material(Vector initialPosition, World world, int weight){
+	protected Material(Vector initialPosition, World world, int weight) {
 		this.setWorld(world); 
 		this.setWeight(weight);
 		this.setPosition(initialPosition.getEnclosingCube(world).getCentreOfCube());
