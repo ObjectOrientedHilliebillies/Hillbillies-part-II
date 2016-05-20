@@ -38,6 +38,7 @@ public class MoveToStatement extends ActivityStatement{
 		
 		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
 				cube, cube.getWorld());
+		
 		if (path == null){
 			task.taskFailed();
 			System.out.println("Task Failed");

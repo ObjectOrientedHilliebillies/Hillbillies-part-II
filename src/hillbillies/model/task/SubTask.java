@@ -32,6 +32,7 @@ public class SubTask {
 		remainingTime = time;
 		
 		if (mustEvaluate){
+			System.out.println(statement);
 			evaluationOfStatement();
 		}
 		
@@ -42,6 +43,7 @@ public class SubTask {
 			}
 		
 			while (true){
+				System.out.println(statement);
 				// If remainingTime is zero there is no time left
 				// return -1 because this sequence is not finished yet.
 				if (remainingTime == 0 || remainingTime == -1){
@@ -66,16 +68,18 @@ public class SubTask {
 				}
 	
 				// Index is only incremented if the previous statement was able to finish.
+				System.out.println("increment index");
 				index = index+1;
 				
 				// If the processed statement was last in the sequence we return all is done here.
 				if (index == subStatements.size()){
+					System.out.println("index == size");
 					return remainingTime;
 				}
 				
-				System.out.println(subStatements);
+				System.out.println(remainingTime);
 				System.out.println(index);
-				// If the sequence in not completed yet, load the next substatement.
+				// If the sequence is not completed yet, load the next substatement.
 				try {
 					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 			
@@ -87,6 +91,7 @@ public class SubTask {
 		
 		// If the statement is a while.
 		if (subWhileTask != null) {
+			System.out.println("do subWhile");
 			remainingTime = subWhileTask.doWhile(remainingTime);
 		}
 		return remainingTime;
@@ -101,7 +106,7 @@ public class SubTask {
 
 		// Execute the statement.
 		double executionTime = statement.execute(task);
-		
+		System.out.println(executionTime);
 		if (executionTime == -4){
 			remainingTime = -4;
 			return;
@@ -116,6 +121,7 @@ public class SubTask {
 		
 		// If the statement lasts -2 it is a while that does one loop.
 		if (executionTime == -2){
+			
 			subWhileTask = new SubWhileTask((WhileStatement) statement, cube, task);
 			mustEvaluate = false;
 			return;

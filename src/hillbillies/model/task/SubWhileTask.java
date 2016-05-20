@@ -1,5 +1,6 @@
 package hillbillies.model.task;
 
+import org.stringtemplate.v4.compiler.CodeGenerator.includeExpr_return;
 import org.stringtemplate.v4.compiler.STParser.ifstat_return;
 
 import hillbillies.model.Cube;
@@ -14,6 +15,7 @@ public class SubWhileTask {
 	private Statement whileBody;
 
 	public SubWhileTask(WhileStatement whileStatement, Cube cube, Task task){
+		System.out.println("subwhile made");
 		this.whileStatement = whileStatement;
 		this.whileBody = whileStatement.getBody();
 		this.cube = cube;
@@ -27,17 +29,26 @@ public class SubWhileTask {
 		// Set the remaining time.
 		this.remainingTime = remainingTime;
 		
+		
+		
 		// Do this until there is no remaining time left.
 		while (remainingTime != 0){
+			
+			System.out.println("in while of subwhile");
 			
 			// Do this if the previous iteration has completely finished.
 			if (subTask == null){
 				
 				// If the condition is violated the while is terminated and 
 				// the remaining time is returned.
-				if (whileStatement.execute(task) != -4){
+				if (whileStatement.execute(task) != -2){
+					System.out.println("while condition not met");
+					System.out.println(whileStatement);
+					System.out.println(remainingTime);
 					return remainingTime;
 				}
+				
+				System.out.println("while condition met");
 				
 				// If the condition is met we create a subtask that will 
 				// present the while body.
@@ -45,7 +56,8 @@ public class SubWhileTask {
 			}
 			double feedback = subTask.advance(-10);
 			
-			if (feedback == -10){
+			if (feedback == -4){
+				System.out.println("BREAK");
 				return remainingTime;
 			}
 			

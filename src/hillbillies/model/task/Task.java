@@ -194,12 +194,16 @@ public class Task implements Comparable<Task>{
 			subTask = new SubTask(statement, cube, this, false);
 		}
 		double feedback = subTask.advance(timeLeft);
+		System.out.println("TERUG BIJ TASK");
+		System.out.println(feedback);
 		if (feedback == -4){
 			throw new IllegalArgumentException("Break was not in while");
 		}
-		if (subTask.advance(timeLeft) != -1){
+		if (feedback != -1){
+			System.out.println("Task succeeded");
 			taskSucceeded();
 		}
+		System.out.println(feedback);
 	}
 	
 	private HashMap<String, Expression> variables = new HashMap();
@@ -211,8 +215,8 @@ public class Task implements Comparable<Task>{
 	public void setVariable(String name, Expression value) {
 		System.out.println(name);
 		System.out.println(value);
-		System.out.println(variables);
 		variables.put(name, value);
+		System.out.println(variables);
 	}
 
 }
