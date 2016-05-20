@@ -390,12 +390,16 @@ public class Task {
 			subTask = new SubTask(statement, cube, this, false);
 		}
 		double feedback = subTask.advance(timeLeft);
-		if (feedback == SubTask.finishedOnBreak){
+		System.out.println("TERUG BIJ TASK");
+		System.out.println(feedback);
+		if (feedback == -4){
 			throw new IllegalArgumentException("Break was not in while");
 		}
-		if (feedback != SubTask.hasToBeExecutedAgain){
+		if (feedback != -1){
+			System.out.println("Task succeeded");
 			taskSucceeded();
 		}
+		System.out.println(feedback);
 	}
 	
 	/**
@@ -426,12 +430,14 @@ public class Task {
 	 * 		| new.getValue(name) == value
 	 */
 	public void setVariable(String name, Expression value) {
+		System.out.println(name);
+		System.out.println(value);
 		variables.put(name, value);
+		System.out.println(variables);
 	}
 	
 	/**
 	 * Return whether this task is well formed or not.
-	 * @return
 	 */
 	public boolean isWellFormed() {
 		return true; //FIXME
