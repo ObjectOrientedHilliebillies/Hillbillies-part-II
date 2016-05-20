@@ -32,11 +32,20 @@ public class SubTask {
 	private int index = 0;	
 	private SubTask subTask = null;
 	private double remainingTime;
+	
+	private boolean temp = false;
 
 	public double advance(double time){
+		if (temp) {
+			System.out.println("Vanaf nu fout");
+			
+		}
+		System.out.println(statement.getSourceLocation().toString());
+		
 		remainingTime = time;
 		
 		if (mustEvaluate){
+			System.out.println("evaluate");
 			evaluationOfStatement();
 		}
 		
@@ -66,6 +75,10 @@ public class SubTask {
 					return finishedWithNoTimeLeft;
 				}
 				
+				if (remainingTime == hasToBeExecutedAgain) {
+					return hasToBeExecutedAgain;
+				}
+				
 				if (remainingTime == finishedOnBreak){
 					return finishedOnBreak;
 				}
@@ -75,20 +88,14 @@ public class SubTask {
 				
 				// If the processed statement was last in the sequence we return all is done here.
 				if (index == subStatements.size()){
-					System.out.println(statement.getSourceLocation().toString());
-					System.out.println(remainingTime);
-					System.out.println(statement);
+					temp = true;
 					return remainingTime;
 				}
 				
 				// If the sequence is not completed yet, load the next substatement.
-				try {
-					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
+				
+				subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
 			
-				}catch (IndexOutOfBoundsException e){
-					System.out.println(index);
-					task.taskFailed();
-				}
 			}
 		}
 		
