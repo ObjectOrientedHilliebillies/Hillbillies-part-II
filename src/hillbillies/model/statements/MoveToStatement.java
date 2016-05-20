@@ -7,6 +7,8 @@ import hillbillies.part3.programs.SourceLocation;
 
 import java.util.List;
 
+import org.stringtemplate.v4.compiler.STParser.ifstat_return;
+
 import hillbillies.model.Cube;
 import hillbillies.model.Pathfinding;
 import hillbillies.model.Unit;
@@ -22,6 +24,11 @@ public class MoveToStatement extends ActivityStatement{
 	@Override
 	public double execute(Task task) {
 		Cube cube = position.getValue(task);
+		if (cube == null) {
+			task.taskFailed();
+			return -1;
+		}
+		cube.getWorld();
 		List<Cube> path = Pathfinding.getPath(task.getExecutor().getCube(), 
 				cube, cube.getWorld());
 		if (path == null){

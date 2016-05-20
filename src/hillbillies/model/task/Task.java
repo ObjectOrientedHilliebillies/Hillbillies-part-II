@@ -122,7 +122,7 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public void reducePriority() {
-		this.setPriority(this.getPriority()/2);
+		this.setPriority(this.getPriority()-2);
 		resortSchedulers();
 	}
 	
@@ -175,7 +175,6 @@ public class Task implements Comparable<Task>{
 	}
 	
 	public void taskFailed() {
-		System.out.println("TASK FAILED!!!");
 		setAvailable();
 		reducePriority();
 		this.subTask = null;
