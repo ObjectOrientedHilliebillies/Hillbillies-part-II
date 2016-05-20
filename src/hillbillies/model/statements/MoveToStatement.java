@@ -41,7 +41,8 @@ public class MoveToStatement extends ActivityStatement{
 			System.out.println("MoveToStatement: "+ "De unit staat er al");
 			return 0;
 		}
-		unit.moveTo(path.get(0));
+		if (!(path.size() == 1)){
+		unit.moveTo(path.get(path.size()-2)); }
 		return -1;
 	}	
 }

@@ -27,6 +27,6 @@ public class AttackStatement extends ActivityStatement{
 			return 0;
 		}
 		task.getExecutor().attack(defender);
-		return -3; //FIXME VICTOR
+		return -3;
 	}
 }

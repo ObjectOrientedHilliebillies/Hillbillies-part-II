@@ -1552,7 +1552,7 @@ public class Unit {
 		double dodgeChance = 0.2 * this.getAgility() / (double) attacker.getAgility();
 		if (Math.random() < dodgeChance) {
 			List<Cube> randomCubesList = new ArrayList<Cube>();
-			randomCubesList.addAll(this.getCube().getNeighbourCubes());
+			randomCubesList.addAll(this.getCube().getAccessibleNeigbours());
 			Collections.shuffle(randomCubesList);
 
 			for (Cube cube : randomCubesList) {
@@ -1568,7 +1568,7 @@ public class Unit {
 			this.increaseExperience(20);
 		} else if (!(Math.random() < blockChance)) {
 			attacker.increaseExperience(20);
-			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10 - 100);
+			this.setHitpoints(this.getHitpoints() - attacker.getStrength() / 10);
 		} else
 			this.increaseExperience(20);
 	}
