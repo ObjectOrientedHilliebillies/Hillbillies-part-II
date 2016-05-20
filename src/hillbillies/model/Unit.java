@@ -852,6 +852,9 @@ public class Unit {
 	private void die() {
 		if (this.isCarryingMaterial())
 			this.dropMaterial(this.getPosition());
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
+		}
 		this.alive = false;
 		this.getFaction().removeUnit(this);
 	}
@@ -1535,7 +1538,8 @@ public class Unit {
 	 * 
 	 * @param unit
 	 *            the unit who is attacking this unit
-	 * @post | if Math.random() < dodgeChance new.getPosition ==
+	 * @post | if Math.random() < dodgeChance 
+	 * 		new.getPosition ==
 	 *       this.getPosition + random this.getOrientation = unit.getOrientation
 	 *       this.increaseExperience(20) | else if (!Math.random() <
 	 *       blockChance) new.getHitpoints() == this.getHitpoints() -
@@ -1544,6 +1548,9 @@ public class Unit {
 	 */
 	private void defenseAgainst(Unit attacker) {
 		System.out.println("defend");
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
+		}
 		this.activeActivity = 6;
 		double blockChance = 0.25 * (this.getStrength() + this.getAgility())
 				/ (attacker.getAgility() + attacker.getStrength());
@@ -1595,6 +1602,9 @@ public class Unit {
 		if (activeActivity != 4) {
 			recoverdPoints = 0;
 			this.activeActivity = 4;
+		}
+		if (this.getTask() != null) {
+			this.getTask().taskFailed();
 		}
 	}
 
