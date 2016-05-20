@@ -169,6 +169,7 @@ public class Task implements Comparable<Task>{
 		for (Scheduler scheduler: this.schedulers){
 			scheduler.removeTask(this);
 		}
+		getExecutor().setTask(null);
 	}
 	
 	public void taskFailed() {

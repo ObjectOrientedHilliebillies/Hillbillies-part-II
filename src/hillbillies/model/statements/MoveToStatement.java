@@ -26,6 +26,7 @@ public class MoveToStatement extends ActivityStatement{
 				cube, cube.getWorld());
 		if (path == null){
 			task.taskFailed();
+			System.out.println("Task Failed");
 			return -1;
 		}
 		Unit unit = task.getExecutor();
