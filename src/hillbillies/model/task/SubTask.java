@@ -9,7 +9,13 @@ import hillbillies.model.statements.Statement;
 import hillbillies.model.statements.WhileStatement;
 
 public class SubTask {
-	
+	public final static double thisIsAWhileLoop = -4;
+	public final static double startNewWhileLoop = -4;
+	public final static double finishedOnBreak = -3;
+	public final static double singularLong = -2;
+	public final static double hasToBeExecutedAgain = -1;
+	public final static double finishedWithNoTimeLeft = 0;
+		
 	private Statement statement;
 	private Cube cube;
 	private boolean inLoop;
@@ -27,7 +33,6 @@ public class SubTask {
 	private SubTask subTask = null;
 	private double remainingTime;
 
-	// If the given remaining time is smaller than -1 than this subtask is in a while loop.
 	public double advance(double time){
 		remainingTime = time;
 		
@@ -46,12 +51,12 @@ public class SubTask {
 				System.out.println(statement);
 				// If remainingTime is zero there is no time left
 				// return -1 because this sequence is not finished yet.
-				if (remainingTime == 0 || remainingTime == -1){
-					return -1;
+				if (remainingTime == finishedWithNoTimeLeft || remainingTime == hasToBeExecutedAgain){
+					return hasToBeExecutedAgain;
 				}
 				
-				if (remainingTime == -4) {
-					return -4;
+				if (remainingTime == finishedOnBreak) {
+					return finishedOnBreak;
 				}
 				
 				
@@ -59,26 +64,22 @@ public class SubTask {
 				
 				// If the statement we just executed was not able to finish we could continue
 				// here next time.
-				if (remainingTime == -1){
-					return -1;
+				if (remainingTime == finishedWithNoTimeLeft){
+					return finishedWithNoTimeLeft;
 				}
 				
-				if (remainingTime == -4){
-					return -4;
+				if (remainingTime == finishedOnBreak){
+					return finishedOnBreak;
 				}
 	
 				// Index is only incremented if the previous statement was able to finish.
-				System.out.println("increment index");
 				index = index+1;
 				
 				// If the processed statement was last in the sequence we return all is done here.
 				if (index == subStatements.size()){
-					System.out.println("index == size");
 					return remainingTime;
 				}
 				
-				System.out.println(remainingTime);
-				System.out.println(index);
 				// If the sequence is not completed yet, load the next substatement.
 				try {
 					subTask = new SubTask(subStatements.get(index), cube, task, inLoop);
@@ -105,39 +106,37 @@ public class SubTask {
 //		System.out.println(statement.getSourceLocation().toString());
 
 		// Execute the statement.
-		double executionTime = statement.execute(task);
-		System.out.println(executionTime);
-		if (executionTime == -4){
-			remainingTime = -4;
-			return;
-		}
-		
-		// If the statement returns -3 it took longer than 1 tick but
-		// it mustn't be executed again.
-		if (executionTime == -3){
-			remainingTime = 0;
+		double feedback = statement.execute(task);
+		if (feedback == finishedOnBreak){
+			remainingTime = finishedOnBreak;
 			return;
 		}
 		
 		// If the statement lasts -2 it is a while that does one loop.
-		if (executionTime == -2){
-			
+		if (feedback == startNewWhileLoop){
 			subWhileTask = new SubWhileTask((WhileStatement) statement, cube, task);
 			mustEvaluate = false;
 			return;
 		}
 		
+		// Statement took longer than 1 tick but
+		// it mustn't be executed again.
+		if (feedback == singularLong){
+			remainingTime = finishedWithNoTimeLeft;
+			return;
+		}
+		
 		// If the statement returns -1 the statement took longer 
 		// than one tick AND should be executed again. (follow, got, work)
-		if (executionTime == -1){
-			remainingTime = -1;
+		if (feedback == hasToBeExecutedAgain){
+			remainingTime = hasToBeExecutedAgain;
 			return;
 		}
 			
 		// If the statement returns it took no time. (example goto where you are)
 			// No special treatment necessary.
 		
-		decreaceRemainingTime(executionTime);
+		decreaceRemainingTime(feedback);
 		subStatements = statement.result();
 		
 		// Set the substatements and check if there are any.
@@ -147,7 +146,7 @@ public class SubTask {
 	}
 	
 	private void decreaceRemainingTime(double amount){
-		if (remainingTime < -1){
+		if (remainingTime == thisIsAWhileLoop){
 			return;
 		}
 		remainingTime = remainingTime - amount;
@@ -155,7 +154,7 @@ public class SubTask {
 		// If the remaining time is 0 or less, we were just able to finish the execution of the
 		// statement, thus 0 should be returned.
 		if (remainingTime <= 0){
-			remainingTime = 0;
+			remainingTime = finishedWithNoTimeLeft;
 		}
 	}
 }

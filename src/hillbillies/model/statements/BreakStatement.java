@@ -11,7 +11,7 @@ public class BreakStatement extends Statement{
 
 	@Override
 	public double execute(Task task) {
-		return -4;
+		return breakStatement;
 	}
 
 }
