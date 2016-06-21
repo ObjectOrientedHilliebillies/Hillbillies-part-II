@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="hillbillies.model.task.Task" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/task/Task.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-295" y="-98"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="hillbillies.model.statements.Statement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/Statement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-135" y="-100"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="hillbillies.model.expressions.Expression" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/Expression.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-134" y="446"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="hillbillies.model.statements.ActivityStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/ActivityStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="334" y="-188"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="hillbillies.model.statements.AssignmentStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/AssignmentStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="333" y="-69"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="hillbillies.model.statements.AttackStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/AttackStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="676" y="-243"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="hillbillies.model.statements.BreakStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/BreakStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="334" y="-249"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="hillbillies.model.statements.FollowStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/FollowStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="678" y="-183"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="hillbillies.model.statements.MoveToStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/MoveToStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="678" y="-302"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="hillbillies.model.statements.IfStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/IfStatement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="324" y="-10"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="hillbillies.model.statements.PrintStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/PrintStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="334" y="-128"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="hillbillies.model.statements.SequenceStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/SequenceStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="331" y="-308"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="hillbillies.model.statements.WhileStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/WhileStatement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="333" y="-367"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="hillbillies.model.statements.WorkStatement" project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/statements/WorkStatement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="679" y="-124"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.BooleanValueExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/booleanValueExpressions/BooleanValueExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="501" y="133"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.FalseExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/booleanValueExpressions/FalseExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="737" y="97"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.booleanValueExpressions.TrueExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/booleanValueExpressions/TrueExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="731" y="157"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="hillbillies.model.expressions.booleanExpressions.BooleanExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/BooleanExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="211" x="166" y="212"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="hillbillies.model.expressions.booleanExpressions.isExpressions.IsExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/IsExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="481" y="247"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExpression.CubeIsExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/cubeIsExpression/CubeIsExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="722" y="223"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.unitIsExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/unitIsExpression/unitIsExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="143" x="657" y="257"/>    
+    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExpression.IsPassableExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/cubeIsExpression/IsPassableExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="955" y="141"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.cubeIsExpression.IsSolidExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/cubeIsExpression/IsSolidExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="945" y="191"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsAliveExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/unitIsExpression/IsAliveExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="959" y="242"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsCarryingItemExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/unitIsExpression/IsCarryingItemExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="953" y="281"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsEnemyExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/unitIsExpression/IsEnemyExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="966" y="321"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.isExpressions.unitIsExpression.IsFriendExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/isExpressions/unitIsExpression/IsFriendExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="975" y="359"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.logicalExpressions.LogicalExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/logicalExpressions/LogicalExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="532" y="427"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.logicalExpressions.AndExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/logicalExpressions/AndExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="763" y="398"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" 
+    name="hillbillies.model.expressions.booleanExpressions.logicalExpressions.NotExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/logicalExpressions/NotExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="763" y="436"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="hillbillies.model.expressions.booleanExpressions.logicalExpressions.OrExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/logicalExpressions/OrExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="762" y="473"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="hillbillies.model.expressions.booleanExpressions.BooleanReadVariableExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/booleanExpressions/BooleanReadVariableExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="517" y="36"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="33" language="java" name="hillbillies.model.expressions.positionExpressions.CubeExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/CubeExpression.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="286" y="682"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="34" language="java" name="hillbillies.model.expressions.unitExpressions.UnitExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/unitExpressions/UnitExpression.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="271" y="930"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="hillbillies.model.expressions.positionExpressions.BoulderPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/BoulderPosition.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="849" y="786"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="hillbillies.model.expressions.positionExpressions.HerePosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/HerePosition.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="844" y="669"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="hillbillies.model.expressions.positionExpressions.LiteralPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/LiteralPosition.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="839" y="581"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="hillbillies.model.expressions.positionExpressions.LogPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/LogPosition.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="846" y="708"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="hillbillies.model.expressions.positionExpressions.NextToPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/NextToPosition.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="839" y="627"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="hillbillies.model.expressions.positionExpressions.PositionOf" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/PositionOf.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="857" y="863"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="hillbillies.model.expressions.positionExpressions.PositionReadVariableExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/PositionReadVariableExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="819" y="534"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="hillbillies.model.expressions.positionExpressions.SelectedPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/SelectedPosition.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="849" y="747"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="hillbillies.model.expressions.positionExpressions.WorkshopPosition" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/positionExpressions/WorkshopPosition.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="848" y="823"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="hillbillies.model.expressions.unitExpressions.thisExpression.ThisExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/unitExpressions/thisExpression/ThisExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="645" y="963"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="hillbillies.model.expressions.unitExpressions.anyExpression.AnyExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/unitExpressions/anyExpression/AnyExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="646" y="924"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" name="hillbillies.model.expressions.unitExpressions.anyExpression.EnemyExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/unitExpressions/anyExpression/EnemyExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="649" y="1001"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="hillbillies.model.expressions.unitExpressions.anyExpression.FriendExpression" 
+    project="Hillbillies-part-II" 
+    file="/Hillbillies-part-II/src/hillbillies/model/expressions/unitExpressions/anyExpression/FriendExpression.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="649" y="1038"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <generalization id="48">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="49">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <generalization id="51">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="53">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="54">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="55" name="position"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="58" name="elseBody"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="60">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="61">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="62" name="givenUnit"/>      
+      <multiplicity id="63" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <generalization id="65">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="66">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="67">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="68">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="69" name="e"/>      
+      <multiplicity id="70" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="71">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="72">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="73" name="condition"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="75">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <generalization id="76">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="77">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <generalization id="78">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <generalization id="79">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="80">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="81" name="e2"/>      
+      <multiplicity id="82" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="83">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="84">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="85" name="unit"/>      
+      <multiplicity id="86" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="87">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <association id="88">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="89" name="ifBody"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="91">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <association id="92">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="93" name="resultBody"/>      
+      <multiplicity id="94" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="95">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="96" name="cube"/>      
+      <multiplicity id="97" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="98">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <association id="99">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="100" name="body"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="103" name="e1"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="106" name="unit"/>      
+      <multiplicity id="107" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="108">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="109" name="unit"/>      
+      <multiplicity id="110" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="111">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <association id="112">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="113" name="value"/>      
+      <multiplicity id="114" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="115">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <association id="116">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="117" name="statement"/>      
+      <multiplicity id="118" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="119">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="120" name="e1"/>      
+      <multiplicity id="121" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="122">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="123">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="124" name="other"/>      
+      <multiplicity id="125" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="126">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="127" name="statements"/>      
+      <multiplicity id="128" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="129">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <association id="130">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="131" name="condition"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="133">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="28"/>  
+  </generalization>  
+  <association id="134">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="135" name="e2"/>      
+      <multiplicity id="136" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="137">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="138">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="139">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="140">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="141">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="142" name="value"/>      
+      <multiplicity id="143" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="144">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <association id="145">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="146" name="unit"/>      
+      <multiplicity id="147" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="148">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="149" name="position"/>      
+      <multiplicity id="150" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="151">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="152" name="cube"/>      
+      <multiplicity id="153" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="154">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="155">    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="156">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <generalization id="157">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="158">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <generalization id="159">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <association id="160">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="161" name="unit"/>      
+      <multiplicity id="162" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="163">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="164">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <generalization id="165">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="166">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="167">    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="33"/>  
+  </generalization>  
+  <generalization id="168">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="28"/>  
+  </generalization>  
+  <generalization id="169">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="true" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
